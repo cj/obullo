@@ -1,6 +1,7 @@
 <?php
 if( !defined('BASE') ) exit('Access Denied!');
 
+
 /**
  * Obullo Framework (c) 2009.
  *
