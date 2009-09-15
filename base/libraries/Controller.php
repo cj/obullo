@@ -23,10 +23,10 @@ if( !defined('BASE') ) exit('Access Denied!');
 Class OBException extends CommonException {}
 
 /**
- * Obullo Super Static Controller (OSSC)
+ * Obullo Super Static Controller (SSC)
  * We put all static main codes here
  * Like cookie , session, register
- * Goal of the OSSC to get all static functions
+ * Goal of the SSC to get all static functions
  * like this ob::instance(), ob::session_set(), 
  * ob::cookie_get(),ob::dbconnect() you can 
  * also use $this var inside form static
@@ -38,35 +38,6 @@ Class OBException extends CommonException {}
  
 Class ob extends loader
 {
-    
-    /**
-    * $this->load variable
-    * 
-    * We don't need load var
-    * We use loader as static
-    * like this loader::library();
-    * 
-    * @var object $load
-    * @deprecated
-    */
-    
-    /**
-    * Obullo Models
-    * Store all loaded Obullo Models
-    * 
-    * @var array
-    */
-    public $om = array();
-
-    /**
-    * Model assign db switch
-    * Check model loader::database() 
-    * declared or not
-    * 
-    * @var boolean
-    */
-    public $mod_DB = FALSE;
-
     /**
     * Obullo instance
     * 
@@ -116,7 +87,7 @@ Class ob extends loader
         return $this->input->get($key); 
     }
     
-        /**
+    /**
     * ob::dbconnect();
     * Factory and Connect to database driver
     * Get pdo database handle

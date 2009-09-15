@@ -10,6 +10,14 @@ Class Model_test extends Model
         parent::__construct();
         
         // Load database connection
+        
+         ### WARNING database i burada ilan edince çalışmıyo !! ###
+        
+        
+         
+        //load another model 
+        //loader::model('blog/model_blog');
+        
         loader::database();
         
         // Using library from model
@@ -22,8 +30,12 @@ Class Model_test extends Model
     */
     public function test()
     {            
-        echo '<b>Using library from model_test:</b> successful!<br />';
-        echo '<b>Using database from library:</b> successful!<br />';
+        
+        //echo 'Using Model inside another model: succesfull!<br /> ';
+        //$this->model_blog->test();
+        
+        echo '<b>Using library from model_test:</b> successful!<br /><br /><br />';
+        echo '<b>Using database from library:</b> successful!<br /><br /><br />';
         $this->myclass->testDB();
         
         /*---------- Prepared Query ----------*/

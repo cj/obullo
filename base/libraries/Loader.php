@@ -38,8 +38,25 @@ Class LoaderException extends CommonException {}
 require(APP.'extends'.DIRECTORY_SEPARATOR.'Ob_user'.EXT);
 
 Class loader extends ob_user {
+
+    /**
+    * Obullo Models
+    * Store all loaded Obullo Models
+    * 
+    * @var array
+    */
+    public $om = array();
     
-    // construct
+    /**
+    * Store all models
+    * Which model use database
+    * 
+    * @var mixed
+    */
+    public $db_models = array(); 
+    
+    
+    // Allow user access to SSC Pattern.
     function __construct()
     {   
         parent::__construct();
@@ -58,14 +75,15 @@ Class loader extends ob_user {
     * @author Ersin Güvenç
     * @author you..
     * @param string $class class name
-    * @param boolean $static instantiate switch
-    *                        just load class not declare it
+    * @param mixed $static instantiate switch 
+    *                      just load class not declare it
+    *                      or provide __CONSTRUCT params
     * @version 0.1
     * @version 0.2  added register_static functions
     *               added OB_Library
     * @return void
     */
-    public static function library($class, $static = FALSE)
+    public static function library($class, $static = '')
     {
         if ($class == '')
         return FALSE;
@@ -159,9 +177,11 @@ Class loader extends ob_user {
     
     /**
     * loader::model();
+    * Obullo Model Pattern (c)
     * 
     * @author Ersin Güvenç
     * @author you..
+    * @copyright obullo.com
     * @param string $model
     * @version 0.1
     * @return void
@@ -215,7 +235,7 @@ Class loader extends ob_user {
                 
         $OB->$model_name = new $model();    //Register($class); we don't need it
         
-        if($OB->mod_DB)
+        if(isset($OB->db_models[$model])) //if($OB->mod_DB)
         {
             // Lazy Loading. (Prevent to Loading Db Class and Prevent Connect to Db more than one time)
             if (class_exists('DB') AND isset($OB->db) AND is_object($OB->db)) {
@@ -238,12 +258,13 @@ Class loader extends ob_user {
         
         } else {
             
-            // if model hasn't got loader::database() word remove db object.
+            // if model hasn't got loader::database() element remove db object.
             $OB->$model_name->db = NULL;    
         }
         
-        // Reset db load variable loading for other models.
-        $OB->mod_DB = FALSE;
+        // Reset db switch arrays loading db for other models.
+        /** @deprecated for declaring two one model inside another model with db support */
+        //$OB->db_models = array();
 
         // assign all loaded libraries inside to current model
         // loader::library() support for Model_x { function __construct() { loader::library() }}
@@ -257,7 +278,7 @@ Class loader extends ob_user {
     /**
     * loader::database();
     * 
-    * (c) Obullo database load pattern
+    * Obullo database load pattern (c)
     * This function just load database class
     * When you use it inside from model like this loader::database();
     * mod_DB var turns to true and it tells to loader class 
@@ -265,7 +286,11 @@ Class loader extends ob_user {
     * 
     * @author Ersin Güvenç
     * @author you..
+    * @copyright obullo.com
     * @version 0.1
+    * @version 0.2 multiple models load::database func. support
+    *              loading model inside again model bug fixed.
+    *              added db_models[] array.
     * @return void
     */
     public static function database()
@@ -275,17 +300,16 @@ Class loader extends ob_user {
         // For php 5.3.0 and upper versions maybe 
         // we can use get_called_class() func.
         $trace = debug_backtrace();
-        
+
         // if model contains loader::database() func
         // load_DB = true else return to false.
-        
-        $OB->mod_DB = FALSE;
+
         foreach($trace as $t)
         {
            if(isset($t['object']))
            { 
              if($t['object'] instanceof Model)        
-             $OB->mod_DB = TRUE;
+             $OB->db_models[$t['class']] = $t['class'];
            } 
         }
         

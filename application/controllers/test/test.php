@@ -13,7 +13,7 @@ Class Test extends Controller
         parent::__construct();
         
         // load the database
-        loader::database();
+        //loader::database();
         
         // load helper file
         loader::helper('helper_test');
@@ -22,13 +22,15 @@ Class Test extends Controller
         
         // show directory list of current controller
         loader::dir();
-
+        
         // i want to use blog's model from blog/ folder
-        loader::model('blog/model_blog');
+        
         
         // model_test from current folder
+        loader::model('blog/model_blog');
         loader::model('model_test');
         
+    
     }                               
     
     function run()
@@ -38,13 +40,19 @@ Class Test extends Controller
         ob::session_userdata('key');
         ob::session_flashdata('key');
         */
+        //print_r($this->db_models);
         
         echo "<br />Run function succesfully works.<br /><br />";
         
         $data['sample_array'] = array('1','2','3','4','5');
         $data['example_var'] = "Hello World!";
 
+        $this->model_blog->test();
+        
         $this->model_test->test();
+        
+        
+        
         
         ob::input_set('name','ersin');
         echo ob::input_get('name');
