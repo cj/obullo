@@ -28,7 +28,8 @@ if( !defined('BASE') ) exit('Access Denied!');
  *                      added load_DB variable (Model database load on/off).
  *                      added asn_to_models(),helper(),dir()
  * @version         0.4 renamed static functions ob::instance(),ob::register()..
- *                  added static param to library func.
+ *                  added static param to library func.Added __construct support
+ *                  to library.
  */
 
 
@@ -75,21 +76,21 @@ Class loader extends ob_user {
     * @author Ersin Güvenç
     * @author you..
     * @param string $class class name
-    * @param mixed $static instantiate switch 
-    *                      just load class not declare it
-    *                      or provide __CONSTRUCT params
+    * @param mixed $static instantiate switch load class not declare it 
+    *                      Booelan or Array (provide __CONSTRUCT params)
     * @version 0.1
     * @version 0.2  added register_static functions
     *               added OB_Library
     * @return void
     */
-    public static function library($class, $static = '')
+    public static function library($class, $static_or_params = NULL)
     {
         if ($class == '')
         return FALSE;
         
-        if($static)
-        {   // if someone want to load static class
+        if($static_or_params === TRUE)
+        {   
+            // if someone want to load static class
             // like Myclass::mymethod, include it.
             ob::register_static($class);
             return;
@@ -109,10 +110,8 @@ Class loader extends ob_user {
         // Lazy Loading
         if (class_exists($class) AND isset($OB->$class) AND is_object($OB->$class))
         return FALSE;  
-
-        echo '{class}'.$class.'<br />';
         
-        $OB->$class = ob::register($class);
+        $OB->$class = ob::register($class,$static_or_params);
         
         if($OB->$class === NULL)
         throw new LoaderException('Unable to locate the library file: '.$class);
@@ -281,8 +280,8 @@ Class loader extends ob_user {
     * Obullo database load pattern (c)
     * This function just load database class
     * When you use it inside from model like this loader::database();
-    * mod_DB var turns to true and it tells to loader class 
-    * this model function use the database class
+    * func store all models which use db and it tells to loader class 
+    * this model use the database func.
     * 
     * @author Ersin Güvenç
     * @author you..
@@ -301,8 +300,8 @@ Class loader extends ob_user {
         // we can use get_called_class() func.
         $trace = debug_backtrace();
 
-        // if model contains loader::database() func
-        // load_DB = true else return to false.
+        // is model contains loader::database() func
+        // and is it instance of Model ?
 
         foreach($trace as $t)
         {
@@ -325,16 +324,15 @@ Class loader extends ob_user {
         $OB->db = ob::dbconnect();
         
         // echo 'DB class initalized one time!';
-        
     }        
 
     /**
     * loader::helper();
     * 
     * We have three helper directory unlike CI
-    * o Base/helpers  : system helpers
-    * o App/helpers   : common application helpers
-    * o Controllers/helper_controller.php : controller helpers
+    *   o Base/helpers  : system helpers
+    *   o App/helpers   : common application helpers
+    *   o Controllers/helper_$controller : controller helpers
     * 
     * @author Ersin Güvenç
     * @author you..
