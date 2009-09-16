@@ -51,12 +51,7 @@ Class ob extends loader
     */
     public function __construct()
     {
-        /** @deprecated **/
-        //$this->load = $this;
-        
         self::$instance = $this;
-        /** @deprecated **/
-        //self::$instance = $this->load;
         
         parent::__construct();
     }
@@ -141,17 +136,18 @@ Class ob extends loader
     * @version 0.1
     * @version 0.2 added $file_exists var
     * @version 0.3 moved into ob class
+    * @version 0.4 added __construct(params=array()) support
     * @return object | NULL
     */
-    static function register($class)
+    static function register($class,$static_or_params = NULL)
     {
-        $Obj = OB_Registry::singleton();
+        $registry = OB_Registry::singleton();
         
         $Class = strtolower($class); //lowercase classname.
+    
+        $getObject = $registry->getObject($Class);
         
-        //if class already stored we are done.
-        
-        $getObject = $Obj->getObject($Class);
+        // if class already stored we are done.
         
         if ($getObject !== NULL)
         return $getObject;
@@ -165,10 +161,18 @@ Class ob extends loader
             if (class_exists('OB_'.$class))
             $classname = 'OB_'.$classname;
             
-            $Obj->storeObject($Class, new $classname()); 
-            
+            // construct support.
+            if(is_array($static_or_params))
+            {
+                $registry->storeObject($Class, new $classname($static_or_params));
+                
+            } else 
+            {
+                $registry->storeObject($Class, new $classname());
+            }
+             
             //return singleton object.
-            $Object = $Obj->getObject($Class);
+            $Object = $registry->getObject($Class);
 
             if(is_object($Object))
             return $Object;
