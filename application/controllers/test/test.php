@@ -24,20 +24,22 @@ Class Test extends Controller
         // like this loader::helper('blog/helper_blog');
         
         // show directory list of current controller
-        loader::dir();
+        //loader::dir();
         
         // i want to use blog's model from blog/ folder
-        
-        
+    
         // model_test from current folder
-        loader::model('blog/model_blog');
+        //loader::model('blog/model_blog');
         loader::model('model_test');
         
-    
+        loader::library('mylibrary');
+        
     }                               
     
     function run()
     {
+        $this->mylibrary->test_ssc();
+        
         /*
         ob::session_set_userdata(array());
         ob::session_userdata('key');
@@ -50,19 +52,16 @@ Class Test extends Controller
         $data['sample_array'] = array('1','2','3','4','5');
         $data['example_var'] = "Hello World!";
 
-        $this->model_blog->test();
+        //$this->model_blog->test();
         
-        $this->model_test->test();
+        //$this->model_test->test();
         
-        
-        
-        
-        ob::input_set('name','ersin');
-        echo ob::input_get('name');
+        // ob::input_set('name','ersin');
+        // echo ob::input_get('name');
         
 
-        //ob_user::nav_level1();
-        ob_user::nav_level2();
+        // ob_user::nav_level1();
+        // ob_user::nav_level2();
      
         echo "<br />";
         

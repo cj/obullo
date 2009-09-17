@@ -1,6 +1,6 @@
 <?php
   
-  Class Navigation 
+  Class Navigation extends Library
   {
       
       function nav_level1()

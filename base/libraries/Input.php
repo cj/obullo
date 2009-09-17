@@ -31,6 +31,12 @@ Class OB_Input
     {
         return $this->items[$key];
     }
+    
+    function ip()
+    {
+        return $_SERVER['REMOTE_ADDR'];
+    }
+    
   
 }//end of the class..
 

@@ -6,7 +6,7 @@
 * 
 */
 
-Class Myclass
+Class Myclass extends Library
 {
   
     function testMe($a,$b)

@@ -12,9 +12,6 @@ Class Model_test extends Model
         // Load database connection
         
          ### WARNING database i burada ilan edince çalışmıyo !! ###
-        
-        
-         
         //load another model 
         //loader::model('blog/model_blog');
         
@@ -30,10 +27,10 @@ Class Model_test extends Model
     */
     public function test()
     {   
-        ob::input_set('name','mahmut');
-        echo ob::input_get('name');
+        //ob::input_set('name','mahmut');
+        //echo ob::input_get('name');
         
-        ob_user::nav_level1();
+        //ob_user::nav_level1();
         
         //echo 'Using Model inside another model: succesfull!<br /> ';
         //$this->model_blog->test();

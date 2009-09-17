@@ -61,11 +61,11 @@ define('CONTROLLER_PATH', 'application'.DIRECTORY_SEPARATOR.'controllers'.DIRECT
 // Don't change classes order.
 require (BASE.DIRECTORY_SEPARATOR.'Common'.EXT);    
 require (BASE.'libraries'.DIRECTORY_SEPARATOR.'Errors'.EXT); 
-require (BASE.'libraries'.DIRECTORY_SEPARATOR.'Library'.EXT); 
+require (BASE.'libraries'.DIRECTORY_SEPARATOR.'Library_factory'.EXT); 
 require (BASE.'libraries'.DIRECTORY_SEPARATOR.'Registry'.EXT); 
 require (BASE.'libraries'.DIRECTORY_SEPARATOR.'Loader'.EXT);
-//require (BASE.'libraries'.DIRECTORY_SEPARATOR.'Ob'.EXT); 
 require (BASE.'libraries'.DIRECTORY_SEPARATOR.'Controller'.EXT); 
+require (BASE.'libraries'.DIRECTORY_SEPARATOR.'Library'.EXT); 
 require (BASE.'libraries'.DIRECTORY_SEPARATOR.'Model'.EXT);
 
 

@@ -12,9 +12,9 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @copyright       Copyright (c) 2009 Ersin Güvenç.
  * @license         http://www.opensource.org/licenses/gpl-3.0.html GPL  
  * @filesource
- */ 
- 
-/**
+ */
+  
+ /**
  * Library factory class
  *
  * Include library files
@@ -24,63 +24,46 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @category        Loader
  * @version         0.1
  */
-
-Class OB_Library
+ 
+Class Library extends ob
 {
     
-    /**
-    * Library Factory
-    * 
-    * @access public static
-    * @author Ersin Güvenç
-    * @version 1.0
-    * @return boolean $file_exists
-    */
-    static function factory($class)
+public $cm = ''; 
+    
+    function __construct()
     {
-        $file_exists = FALSE;
+        $this->_asn_lib(); 
         
-        $Class = strtolower($class);
+        // this is just called model name 
+        $this->cm = ucfirst(get_class($this));
+    }
+    
+    function _asn_lib()
+    {
+        $OB = ob::instance();
         
-        if(file_exists(APP.'libraries'.DIRECTORY_SEPARATOR.$Class.EXT)) 
+        // declared objects
+        $dec_ob = array_keys(get_object_vars($OB));
+        //print_r($dec_ob);  open this line you can see the declared objects.
+        //exit;
+        
+        //for using to declared objects and variables inside model that we assign before
+        //we must assign them again inside to model class.
+       
+        foreach ($dec_ob as $key)
         {   
-            $file_exists = TRUE;
+            if(!isset($this->$key) AND $key != $this->cm  AND $key != 'db')
+            {
+                $this->$key = $OB->$key;
+            }
             
-            require(APP.'libraries'.DIRECTORY_SEPARATOR.$Class.EXT);
-            
-        } elseif(file_exists(BASE.'libraries'.DIRECTORY_SEPARATOR.ucfirst($Class).EXT))
-        {
-            $file_exists = TRUE;
-            
-            require(BASE.'libraries'.DIRECTORY_SEPARATOR.ucfirst($Class).EXT);
         }
-        
-        return $file_exists;
         
     } // end func.
     
     
-    // @ Support for loader::libray() inside from public model functions 
-    // If you declare a library like this loader::library(); 
-    // inside from model __construct() it works good this ok
-    // because loader::model() function already loads it via $OB->$model_name->_asn_lib();
-    // but when u declare it inside a model function it will not work
-    // so you will get an error: Undefined property: Model_test::$myclass
-    // This function fix the problem, assigns all library files to model 
-
-    static function asn_to_models()
-    {
-        $OB = ob::instance();
-        
-        if (count($OB->om) == 0)
-        return;
-        
-        foreach ($OB->om as $model_name)
-        $OB->$model_name->_asn_lib();
-    }
-    
-        
-               
 } // end class.
-        
+ 
+ 
+
 ?>

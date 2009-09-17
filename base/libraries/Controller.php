@@ -313,8 +313,9 @@ Class ob extends loader
     // ob::input_ip();
     // Returns the IP address for the current user
     // alias of CI $this->input->ip_address
-    static function user_ip(){
+    public function user_ip(){
         
+        echo $this->input->ip();
         //$input = self::register('input');
     }
     static function user_agent(){} 
@@ -447,5 +448,6 @@ Class Controller extends ob
 
          
 } //end class.
+  
   
 ?>

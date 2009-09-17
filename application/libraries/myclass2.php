@@ -6,15 +6,15 @@
 * 
 */
 
-Class Myclass2
+Class Myclass2 extends Library
 {
   
     // test for Can use db object from library or not ?
     function testDB()
     {
-        $ob = OB_instance();
+        $ob = ob::instance();
         
-        load::database();
+        loader::database();
         //$ob->load->database(); 
         
         $ob->db->drivers();

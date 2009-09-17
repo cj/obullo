@@ -119,6 +119,8 @@ Class loader extends ob_user {
         // from now on we can use our class
         // like $this->Myclass->myMethod 
         
+        //$OB->$class->_asn_lib();
+        
         // assign all libraries to all models
         // support for loader::libray() func. inside from
         // public model functions
