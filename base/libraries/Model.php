@@ -26,7 +26,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @version         0.1
  */                    
 
-Class Model {
+Class Model extends ob {
 
 public $cm;   // called model
 

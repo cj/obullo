@@ -61,8 +61,8 @@ Class Test extends Controller
         echo ob::input_get('name');
         
 
-        ob_user::nav_level1();
-        //ob_user::nav_level2();
+        //ob_user::nav_level1();
+        ob_user::nav_level2();
      
         echo "<br />";
         

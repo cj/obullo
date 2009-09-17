@@ -29,7 +29,11 @@ Class Model_test extends Model
     * @link http://tr.php.net/manual/en/pdostatement.fetch.php  
     */
     public function test()
-    {            
+    {   
+        ob::input_set('name','mahmut');
+        echo ob::input_get('name');
+        
+        ob_user::nav_level1();
         
         //echo 'Using Model inside another model: succesfull!<br /> ';
         //$this->model_blog->test();
