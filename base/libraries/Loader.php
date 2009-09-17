@@ -60,7 +60,7 @@ Class loader extends ob_user {
     // Allow user access to SSC Pattern.
     function __construct()
     {   
-        parent::__construct();
+        //parent::__construct();
     }
     
     // disable clone

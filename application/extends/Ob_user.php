@@ -18,14 +18,24 @@
   Class ob_user
   {
       
-      // automatically load your static classes.
-      function __construct()
+      public $base_url;
+      public $base_img;
+      public $base_css;
+   
+      /**
+      * parent::obuser();
+      * 
+      * User common __construct for all controllers
+      */
+      function ob_user()
       {
           // ALSO YOU CAN load your static classes like this !
           // loader::library('mystatic_class',true);
           // loader::library('mystatic_class2',true);
           
           loader::library('navigation');
+          
+          echo 'this my top __Constructor for all controllers of application !!!!!!!!!';
       }
       
       // forexample show navigation menu level1

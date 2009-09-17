@@ -13,6 +13,7 @@ public $sample_var = "you can use variable from view";
     function __construct()
     {
         parent::__construct();
+        parent::ob_user();
         
         //load your class.
         $this->load->library('myclass');

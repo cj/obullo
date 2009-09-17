@@ -12,6 +12,9 @@ Class Test extends Controller
     {
         parent::__construct();
         
+        // Global constructor for every controllers.
+        parent::ob_user();
+        
         // load the database
         //loader::database();
         
@@ -59,7 +62,7 @@ Class Test extends Controller
         
 
         ob_user::nav_level1();
-        ob_user::nav_level2();
+        //ob_user::nav_level2();
      
         echo "<br />";
         
