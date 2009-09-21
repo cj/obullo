@@ -28,7 +28,7 @@ if( !defined('BASE') ) exit('Access Denied!');
 
 Class Model extends ob {
 
-public $cm;   // called model
+public $myself;   // called model
 
     function __construct()
     {
@@ -36,7 +36,7 @@ public $cm;   // called model
         $this->_asn_lib(); 
         
         // this is just called model name 
-        $this->cm = ucfirst(get_class($this));
+        $this->myself = ucfirst(get_class($this));
     }
     
     function _asn_lib()
@@ -51,14 +51,19 @@ public $cm;   // called model
         //for using to declared objects and variables inside model that we assign before
         //we must assign them again inside to model class.
        
-        foreach ($dec_ob as $key)
+        // Fetch models which use loader::database();   
+        // print_r($OB->db_models);
+       
+       
+        foreach ($dec_ob as $key)                                   // AND $key != 'db'
         {   
-            if(!isset($this->$key) AND $key != $this->cm  AND $key != 'db')
+            if( ! isset($this->$key) AND $key != $this->myself) // this is wrong 
             {
                 $this->$key = $OB->$key;
             }
             
         }
+        
         
     } // end func.
     

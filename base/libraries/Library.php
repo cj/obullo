@@ -15,27 +15,25 @@ if( !defined('BASE') ) exit('Access Denied!');
  */
   
  /**
- * Library factory class
- *
- * Include library files
+ * Library Class
  *
  * @package         Obullo 
  * @subpackage      Base.libraries     
- * @category        Loader
+ * @category        Library
  * @version         0.1
  */
  
 Class Library extends ob
 {
     
-public $cm = ''; 
+public $myself = ''; 
     
     function __construct()
     {
         $this->_asn_lib(); 
         
         // this is just called model name 
-        $this->cm = ucfirst(get_class($this));
+        $this->myself = ucfirst(get_class($this));
     }
     
     function _asn_lib()
@@ -44,15 +42,12 @@ public $cm = '';
         
         // declared objects
         $dec_ob = array_keys(get_object_vars($OB));
-        //print_r($dec_ob);  open this line you can see the declared objects.
-        //exit;
-        
-        //for using to declared objects and variables inside model that we assign before
-        //we must assign them again inside to model class.
        
-        foreach ($dec_ob as $key)
+        // print_r($dec_ob);
+
+        foreach ($dec_ob as $key)                                   // AND $key != 'db'
         {   
-            if(!isset($this->$key) AND $key != $this->cm  AND $key != 'db')
+            if( ! isset($this->$key) AND $key != $this->myself) // this is wrong 
             {
                 $this->$key = $OB->$key;
             }

@@ -14,11 +14,10 @@ Class Model_test extends Model
          ### WARNING database i burada ilan edince çalışmıyo !! ###
         //load another model 
         //loader::model('blog/model_blog');
-        
         loader::database();
         
         // Using library from model
-        loader::library('myclass');
+        //loader::library('myclass');
     }
 
     /**
@@ -27,11 +26,17 @@ Class Model_test extends Model
     */
     public function test()
     {   
+        
+        //loader::database(); 
         //ob::input_set('name','mahmut');
         //echo ob::input_get('name');
         
         //ob_user::nav_level1();
+
+       $this->db->drivers();
         
+        //echo ob::input_ip();
+        /*
         //echo 'Using Model inside another model: succesfull!<br /> ';
         //$this->model_blog->test();
         
@@ -39,11 +44,12 @@ Class Model_test extends Model
         echo '<b>Using database from library:</b> successful!<br /><br /><br />';
         $this->myclass->testDB();
         
-        /*---------- Prepared Query ----------*/
+        
+        //---------- Prepared Query ----------//
         
         echo '<br /><b>Prepared Query:</b><br />';
         
-        $this->db->prepare();   // tell to db class use pdo prepare
+        $this->db->_prepare();   // tell to db class use pdo prepare
         $this->db->query("SELECT * FROM articles WHERE article_id=:id OR link=:code");
         $this->db->bval(':id', $id=1, p_int); //INTEGER 
         // alias of PDOStatement::bindValue();
@@ -62,13 +68,13 @@ Class Model_test extends Model
         $a = $this->db->row();  // or obj
         echo '<br />'.$a->title;
         
-        /*---------- Prepared Query ----------*/
+        //---------- Prepared Query ----------//
         
-        /*------- Without bindvalue ----------*/
+        //------- Without bindvalue ----------//
         
         echo '<br /><br /><b>Without bindvalue Query:</b> <br />';
                     
-        $this->db->prepare();   // tell to db class use pdo prepare
+        $this->db->_prepare();   // tell to db class use pdo prepare
         $this->db->query("SELECT * FROM articles WHERE article_id=:id"); 
 
         $this->db->exec(array(':id'=>1));           
@@ -80,10 +86,10 @@ Class Model_test extends Model
         $b = $this->db->row();   
         echo '<br />'.$b->article;
         
-        /*------- Without bindvalue ----------*/
+        //------- Without bindvalue ----------//
         
         
-        /*-- Direct Query and Next Row Example --*/
+        //-- Direct Query and Next Row Example --//
         
         echo '<br /><br /><b>Direct Query:</b> <br />';
         
@@ -101,9 +107,8 @@ Class Model_test extends Model
         $d = $res->all(assoc); //or obj // NEXT ROW
         '<br />'.print_r($d).'<br /><br />'; 
         
-        /*-- Direct Query and Next Row Example --*/
-
-        
+        //-- Direct Query and Next Row Example --//
+        */
     } //end func.
 
 } //end class

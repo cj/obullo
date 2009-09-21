@@ -68,9 +68,10 @@ Class OB_DBFactory
            
            // MySQL 3.x/4.x/5.x  
            case 'MYSQL':
-            
-             $dbh = new DB("mysql:host=$hostname;dbname=$database","$username","$password", 
-             array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES $char_set"));
+           
+             // array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES $char_set")
+             $dbh = new DB("mysql:host=$hostname;dbname=$database","$username","$password");
+             $dbh->query("SET NAMES utf8");
              break;
            
            // Oracle Call Interface  

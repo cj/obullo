@@ -156,7 +156,7 @@ Class DB extends OB_DB_active_record
     } 
     
     // PDO prepare function.
-    function prepare($options=array())
+    function _prepare($options = array())
     {
         $this->p_opt = $options;
         $this->prepare = TRUE;
@@ -178,7 +178,7 @@ Class DB extends OB_DB_active_record
     }                    
         
     // Execute prepared query
-    function exec($array=NULL)
+    function exec($array = NULL)
     {
         $this->PQ->execute($array);
         

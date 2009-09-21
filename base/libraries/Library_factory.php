@@ -72,11 +72,23 @@ Class OB_Library
     {
         $OB = ob::instance();
         
-        if (count($OB->om) == 0)
+        if (count($OB->mods) == 0)
         return;
         
-        foreach ($OB->om as $model_name)
+        foreach ($OB->mods as $model_name)
         $OB->$model_name->_asn_lib();
+    }
+    
+    
+    static function asn_to_libraries()
+    {
+        $OB = ob::instance();
+        
+        if (count($OB->libs) == 0)
+        return;
+        
+        foreach ($OB->libs as $lib_name)
+        $OB->$lib_name->_asn_lib();
     }
     
         

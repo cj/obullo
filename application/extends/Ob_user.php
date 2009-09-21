@@ -18,7 +18,7 @@
   Class ob_user
   {
       
-      public $base_url;
+      public $base_url = 'http://localhost/obullo_v1';
       public $base_img;
       public $base_css;
    
@@ -34,6 +34,8 @@
           // loader::library('mystatic_class2',true);
           
           loader::library('navigation');
+          //loader::library('session');
+
           
           echo 'this my top __Constructor for all controllers of application !!!!!!!!!';
       }

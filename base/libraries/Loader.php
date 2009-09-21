@@ -15,7 +15,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  */ 
  
 /**
- * Loader Class (Obullo Loader Pattern)
+ * Loader Class (Obullo Loader Pattern) (c) 2009
  *
  * Load obullo library,model,view.. files
  *
@@ -36,35 +36,32 @@ if( !defined('BASE') ) exit('Access Denied!');
  
 Class LoaderException extends CommonException {}
 
-require(APP.'extends'.DIRECTORY_SEPARATOR.'Ob_user'.EXT);
-
-Class loader extends ob_user {
+require(APP.'extends'.DS.'Ob_user'.EXT);
+                
+Class loader extends ob_user {  
 
     /**
     * Obullo Models
-    * Store all loaded Obullo Models
+    * Store all loaded Models
     * 
     * @var array
     */
-    public $om = array();
+    public $mods = array();
     
     /**
-    * Store all models
-    * Which model use database
+    * Obullo Libraries
+    * Store all loaded Libraries
     * 
-    * @var mixed
+    * @var array
     */
-    public $db_models = array(); 
+    public $libs = array();
     
     
     // Allow user access to SSC Pattern.
     function __construct()
     {   
-        //parent::__construct();
+        parent::__construct();
     }
-    
-    // disable clone
-    //private function __clone(){}
     
     /**
     * loader::library();
@@ -95,15 +92,7 @@ Class loader extends ob_user {
             ob::register_static($class);
             return;
         }
-        /*------------- user static end ----------------*/
-        
-        // Check if class static or not.
-        $class = strtolower($class);
-        if(ob::register_base_static($class))
-        return;
-        
-        /*------------- base static end ----------------*/
-        
+
         // Instantiate the Super Object.        
         $OB = ob::instance();
         
@@ -111,21 +100,23 @@ Class loader extends ob_user {
         if (class_exists($class) AND isset($OB->$class) AND is_object($OB->$class))
         return FALSE;  
         
-        $OB->$class = ob::register($class,$static_or_params);
+        $params = $static_or_params;
+        $OB->$class = ob::register($class,$params);
         
         if($OB->$class === NULL)
         throw new LoaderException('Unable to locate the library file: '.$class);
     
-        // from now on we can use our class
-        // like $this->Myclass->myMethod 
-        
-        //$OB->$class->_asn_lib();
+        $OB->$class->_asn_lib();   // __construct load db support.
         
         // assign all libraries to all models
         // support for loader::libray() func. inside from
         // public model functions
-        OB_Library::asn_to_models(); 
+        OB_Library::asn_to_models();
         
+        // assign all base libraries to all libraries
+        OB_Library::asn_to_libraries();
+        
+        $OB->libs[] = $class;
     }
     
     /**
@@ -143,13 +134,13 @@ Class loader extends ob_user {
     */
     public function view($view, $data = array(), $string = FALSE)
     {            
-        $file = VIEW . DIRECTORY_SEPARATOR . $view . EXT;
+        $file = VIEW . DS . $view . EXT;
         
         if(sizeof($data) > 0)
         extract($data, EXTR_SKIP);
 
-        if (file_exists($file)) {
-
+        if (file_exists($file))
+        {
                 if($string) {
 
                 //get file as a srtring.
@@ -168,7 +159,6 @@ Class loader extends ob_user {
                 include($file);
                 }
 
-
         } else {
             
             throw new LoaderException('Unable to locate the view: '.$file);
@@ -178,7 +168,7 @@ Class loader extends ob_user {
     
     /**
     * loader::model();
-    * Obullo Model Pattern (c)
+    * Obullo Model Pattern
     * 
     * @author Ersin Güvenç
     * @author you..
@@ -226,64 +216,30 @@ Class loader extends ob_user {
         if ( ! file_exists($MODEL_PATH))
         throw new LoaderException('Unable to locate the model: '.$model_name);
         
-        $OB = ob::instance();
+        $OB = ob::instance();  
         
         if (isset($OB->$model_name))
         throw new LoaderException('This model already loaded before: '.$model_name);
-
+        
         require($MODEL_PATH);
-        $model = ucfirst($model_name);
-                
-        $OB->$model_name = new $model();    //Register($class); we don't need it
-        
-        if(isset($OB->db_models[$model])) //if($OB->mod_DB)
-        {
-            // Lazy Loading. (Prevent to Loading Db Class and Prevent Connect to Db more than one time)
-            if (class_exists('DB') AND isset($OB->db) AND is_object($OB->db)) {
-            
-                $OB->$model_name->db = $OB->db;
-              
-            } else
-            {
-                require(BASE.'database/DB'.EXT);
-                require(BASE.'database/DBFactory'.EXT);    
-                
-                // Connect to PDO.
-                // Good work.
-                // we must assign db object for each model
-                // $OB->db = OB_DBFactory::Connect();
-                $OB->$model_name->db = ob::dbconnect();  
+        $model = ucfirst($model_name);   
 
-                echo 'DB class initalized one time!'; 
-            }     
-        
-        } else {
-            
-            // if model hasn't got loader::database() element remove db object.
-            $OB->$model_name->db = NULL;    
-        }
-        
-        // Reset db switch arrays loading db for other models.
-        /** @deprecated for declaring two one model inside another model with db support */
-        //$OB->db_models = array();
+        $OB->$model_name = new $model();    //Register($class); we don't need it   
 
         // assign all loaded libraries inside to current model
         // loader::library() support for Model_x { function __construct() { loader::library() }}
         $OB->$model_name->_asn_lib();
         
         // store loaded obullo models
-        $OB->om[] = $model_name;
+        $OB->mods[] = $model_name;
         
     }
     
     /**
     * loader::database();
     * 
-    * Obullo database load pattern (c)
-    * This function just load database class
-    * When you use it inside from model like this loader::database();
-    * func store all models which use db and it tells to loader class 
-    * this model use the database func.
+    * Database load.
+    * This function just load database to $OB
     * 
     * @author Ersin Güvenç
     * @author you..
@@ -291,41 +247,29 @@ Class loader extends ob_user {
     * @version 0.1
     * @version 0.2 multiple models load::database func. support
     *              loading model inside again model bug fixed.
-    *              added db_models[] array.
+    * @version 0.3 Deprecated debug_backtrace();
     * @return void
     */
     public static function database()
     {
         $OB = ob::instance();
         
-        // For php 5.3.0 and upper versions maybe 
-        // we can use get_called_class() func.
-        $trace = debug_backtrace();
-
-        // is model contains loader::database() func
-        // and is it instance of Model ?
-
-        foreach($trace as $t)
-        {
-           if(isset($t['object']))
-           { 
-             if($t['object'] instanceof Model)        
-             $OB->db_models[$t['class']] = $t['class'];
-           } 
-        }
-        
-        unset($trace); // reset var, prevent memory consumption
-        
         if (class_exists('DB') AND isset($OB->db) AND is_object($OB->db))
         return FALSE;  
         
-        require(BASE.'database/DB'.EXT);
-        require(BASE.'database/DBFactory'.EXT);    
+        require(BASE.'database'.DS.'DB'.EXT);
+        require(BASE.'database'.DS.'DBFactory'.EXT);    
         
         // Extends to PDO.
         $OB->db = ob::dbconnect();
+
+        // assign db object to all models
+        OB_Library::asn_to_models(); 
         
+        // assign db object to all libraries
+        OB_Library::asn_to_libraries();    // function load db support.
         // echo 'DB class initalized one time!';
+
     }        
 
     /**
@@ -366,19 +310,18 @@ Class loader extends ob_user {
         
         $helper = strtolower('helper_'.str_replace('helper_', '', $helper)).EXT;
         
-        // Check system helper
-        if(file_exists(BASE.'helpers/'.$helper)) 
+        if(file_exists(BASE.'helpers'.DS.$helper)) 
         {
-            include(BASE.'helpers/'.$helper);
-        // Check application helper
-        } elseif(file_exists(APP.'helpers/'.$helper))
+            include(BASE.'helpers'.DS.$helper);
+
+        } elseif(file_exists(APP.'helpers'.DS.$helper))
         {
-            include(APP.'helpers/'.$helper);
-        // Check controller helper    
+            include(APP.'helpers'.DS.$helper);
+   
         } elseif(file_exists(CONTROLLER.$helper))
         {
             include(CONTROLLER.$helper);
-        // If file not exists 
+
         } else
         {
             throw new LoaderException('Unable to locate the helper: '.$helper);

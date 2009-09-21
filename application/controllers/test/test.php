@@ -13,13 +13,10 @@ Class Test extends Controller
         parent::__construct();
         
         // Global constructor for every controllers.
-        parent::ob_user();
-        
-        // load the database
-        //loader::database();
+        //parent::ob_user();
         
         // load helper file
-        loader::helper('helper_test');
+        //loader::helper('helper_test');
         // or you can load another controller's helper
         // like this loader::helper('blog/helper_blog');
         
@@ -30,16 +27,17 @@ Class Test extends Controller
     
         // model_test from current folder
         //loader::model('blog/model_blog');
-        loader::model('model_test');
-        
+                                       
+        loader::model('model_test');  
         loader::library('mylibrary');
-        
+        //loader::library('input'); 
     }                               
     
     function run()
     {
         $this->mylibrary->test_ssc();
-        
+        //print_r($OB->db_libraries);
+            
         /*
         ob::session_set_userdata(array());
         ob::session_userdata('key');
@@ -47,25 +45,25 @@ Class Test extends Controller
         */
         //print_r($this->db_models);
         
-        echo "<br />Run function succesfully works.<br /><br />";
+        echo '<br />Run function succesfully works.<br /><br />';
         
         $data['sample_array'] = array('1','2','3','4','5');
-        $data['example_var'] = "Hello World!";
+        $data['example_var']  = 'Hello World!';
 
         //$this->model_blog->test();
-        
-        //$this->model_test->test();
+        $this->model_test->test();
         
         // ob::input_set('name','ersin');
         // echo ob::input_get('name');
         
-
+        //echo ob::input_ip(); 
+        
         // ob_user::nav_level1();
         // ob_user::nav_level2();
      
-        echo "<br />";
-        
-        loader::view("view_test",$data);
+        echo '<br />';
+                                    
+        loader::view('view_test',$data);
         //fetch as string  loader::view("run",$data,true);   
     }
     

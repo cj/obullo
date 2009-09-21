@@ -13,7 +13,7 @@
  * @since           Version 1.0 @alpha
  * @license         http://www.opensource.org/licenses/gpl-3.0.html GPL 
  */
- 
+                              
 /* ---------------------------------------------------------------------------*/                               
 
 // This function just for memory testing..
@@ -49,26 +49,26 @@ $GLOBALS['controller'] = strtolower($controller);
 $GLOBALS['method'] = strtolower($method);
 
 // Base paths
-define('BASE', 'base'.DIRECTORY_SEPARATOR);            
-define('APP',  'application'.DIRECTORY_SEPARATOR);   
+define('DS',DIRECTORY_SEPARATOR);
+define('BASE', 'base'.DS);            
+define('APP',  'application'.DS);   
 define('EXT',  '.php');                                
-define('MODEL', 'application'.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.$GLOBALS['controller'].DIRECTORY_SEPARATOR);
-define('VIEW', 'application'.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.$GLOBALS['controller'].DIRECTORY_SEPARATOR);
-define('CONTROLLER', 'application'.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.$GLOBALS['controller'].DIRECTORY_SEPARATOR);
-define('CONTROLLER_PATH', 'application'.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR);
+define('MODEL', 'application'.DS.'controllers'.DS.$GLOBALS['controller'].DS);
+define('VIEW', 'application'.DS.'controllers'.DS.$GLOBALS['controller'].DS);
+define('CONTROLLER', 'application'.DS.'controllers'.DS.$GLOBALS['controller'].DS);
+define('CONTROLLER_PATH', 'application'.DS.'controllers'.DS);
 
 // Very Important Base Libraries
 // Don't change classes order.
-require (BASE.DIRECTORY_SEPARATOR.'Common'.EXT);    
-require (BASE.'libraries'.DIRECTORY_SEPARATOR.'Errors'.EXT); 
-require (BASE.'libraries'.DIRECTORY_SEPARATOR.'Library_factory'.EXT); 
-require (BASE.'libraries'.DIRECTORY_SEPARATOR.'Registry'.EXT); 
-require (BASE.'libraries'.DIRECTORY_SEPARATOR.'Loader'.EXT);
-require (BASE.'libraries'.DIRECTORY_SEPARATOR.'Controller'.EXT); 
-require (BASE.'libraries'.DIRECTORY_SEPARATOR.'Library'.EXT); 
-require (BASE.'libraries'.DIRECTORY_SEPARATOR.'Model'.EXT);
-
-
+require (BASE.DS.'Common'.EXT);    
+require (BASE.'libraries'.DS.'Errors'.EXT); 
+require (BASE.'libraries'.DS.'Library_factory'.EXT); 
+require (BASE.'libraries'.DS.'Registry'.EXT); 
+require (BASE.'libraries'.DS.'Loader'.EXT);
+require (BASE.'libraries'.DS.'Ob'.EXT);
+require (BASE.'libraries'.DS.'Controller'.EXT);
+require (BASE.'libraries'.DS.'Library'.EXT); 
+require (BASE.'libraries'.DS.'Model'.EXT);
 
 // call the controller.
 require (CONTROLLER.$GLOBALS['controller'].EXT);

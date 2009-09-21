@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<?php echo $this->myclass->testMe(1,2); ?>
+<?php //echo $this->myclass->testMe(1,2); ?>
 
 <?php echo "<h1>".$example_var."</h1>"; ?>
 
