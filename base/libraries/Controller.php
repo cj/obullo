@@ -39,14 +39,26 @@ Class Controller extends ob
     function ob_init()
     {
       // Load Automatically None Static Classes.
-      
+      /*
+        $classes = array(
+                    'config'    => 'Config',
+                    'input'        => 'Input',
+                    'benchmark'    => 'Benchmark',
+                    'uri'        => 'URI',
+                    'output'    => 'Output',
+                    'lang'        => 'Language',
+                    'router'    => 'Router'
+                    );
+      */
         $Classes = array(
-                            'input'     => 'Input',
+                            'config'  => 'Config',
+                            'input'   => 'Input',
+                            'uri'     => 'URI',
                             );
         
         foreach ($Classes as $public_var => $Class)
         {
-            $this->$public_var = ob::register($Class);
+            $this->$public_var = base_register($Class);
         }
       
       // from now on we can none static classes like this

@@ -4,33 +4,21 @@ if( !defined('BASE') ) exit('Access Denied!');
 /**
  * Obullo Framework (c) 2009.
  *
- * PHP5 MVC Framework software for PHP 5.2.4 or newer
+ * PHP5 MVC-min Framework software for PHP 5.2.4 or newer
  *
  * @package         obullo
  * @filename        base/Common.php        
  * @author          obullo.com
  * @copyright       Ersin Güvenç (c) 2009.
- * @since           Version 1.0  @alpha
  * @filesource
  * @license
  */
  
 Class ConfigException extends CommonException {}  
 
-/* 
-abstract class Config
-{
-    abstract public static function get($key);
-    //get config item.
-    abstract public static function set($key,$val);
-    //set config item.
-    abstract public static function load($file);
-    //load config file.
-}
-*/
-
 /**
- * CodeIgniter Config Class
+ * Obullo Config Class
+ * Derived from CodeIgniter
  *
  * This class contains functions that enable config files to be managed
  *
@@ -41,53 +29,77 @@ abstract class Config
  * @author      Ersin Güvenç
  * @link        
  */
- 
-class OB_Config {
+ class OB_Config {
 
-    static $is_loaded = array();
+    var $config = array();
+    var $is_loaded = array();
 
     /**
-    * Load Config File
-    *
-    * @access    public
-    * @param    string    the config file name
-    * @return    boolean    if the file was loaded correctly
-    */    
-    static function load($file = '', $use_sections = FALSE, $fail_gracefully = FALSE)
+     * Constructor
+     *
+     * Sets the $config data from the primary config.php file as a class variable
+     *
+     * @access   public
+     * @param   string    the config file name
+     * @param   boolean  if configuration values should be loaded into their own section
+     * @param   boolean  true if errors should just return false, false if an error message should be displayed
+     * @return  boolean  if the file was successfully loaded or not
+     */
+    function __construct()
+    {
+        $this->config = get_config();
+        //log_message('debug', "Config Class Initialized");
+    }
+      
+    // --------------------------------------------------------------------
+
+    /**
+     * Load Config File
+     *
+     * @access    public
+     * @param    string    the config file name
+     * @return    boolean    if the file was loaded correctly
+     */    
+    function load($file = '', $use_sections = FALSE, $fail_gracefully = FALSE)
     {
         $file = ($file == '') ? 'config' : str_replace(EXT, '', $file);
     
-        if (in_array($file, self::$is_loaded, TRUE))
-        return TRUE;
+        if (in_array($file, $this->is_loaded, TRUE))
+        {
+            return TRUE;
+        }
 
-        if ( ! file_exists(APP.'config/'.$file.EXT))
+        if ( ! file_exists(APP.'config'.DS.$file.EXT))
         {
             if ($fail_gracefully === TRUE)
-            return FALSE;
+            {
+                return FALSE;
+            }
             
             throw new ConfigException('The configuration file '.$file.EXT.' does not exist.');
         }
     
-        include(APP.'config/'.$file.EXT);
+        include(APP.'config'.DS.$file.EXT);
 
         if ( ! isset($config) OR ! is_array($config))
         {
             if ($fail_gracefully === TRUE)
-            return FALSE;
+            {
+                return FALSE;
+            }
             
-            throw new ConfigException('Your '.$file.EXT.' file does not appear to contain a 
-            valid configuration array.');
+            throw new ConfigException('Your '.$file.EXT.' file does not appear to contain a valid configuration array.');
         }
 
         if ($use_sections === TRUE)
         {
             if (isset($this->config[$file]))
             {
-                self::$config[$file] = array_merge($this->config[$file], $config);
+                $this->config[$file] = array_merge($this->config[$file], $config);
             }
             else
             {
-                self::$config[$file] = $config;
+                $this->config[$file] = $config;
             }
         }
         else
@@ -98,27 +110,27 @@ class OB_Config {
         $this->is_loaded[] = $file;
         unset($config);
 
-        log_message('debug', 'Config file loaded: config/'.$file.EXT);
+        //log_message('debug', 'Config file loaded: config/'.$file.EXT);
         return TRUE;
     }
       
     // --------------------------------------------------------------------
 
     /**
-    * Fetch a config file item
-    *
-    *
-    * @access    public
-    * @param    string    the config item name
-    * @param    string    the index name
-    * @param    bool
-    * @return    string
-    */
-    public static function item($item, $index = '')
+     * Fetch a config file item
+     *
+     *
+     * @access    public
+     * @param    string    the config item name
+     * @param    string    the index name
+     * @param    bool
+     * @return    string
+     */
+    function item($item, $index = '')
     {    
         if ($index == '')
         {    
-            if ( ! isset(self::$config[$item]))
+            if ( ! isset($this->config[$item]))
             {
                 return FALSE;
             }
@@ -210,7 +222,7 @@ class OB_Config {
      */
     function system_url()
     {
-        $x = explode("/", preg_replace("|/*(.+?)/*$|", "\\1", BASEPATH));
+        $x = explode("/", preg_replace("|/*(.+?)/*$|", "\\1", BASE));
         return $this->slash_item('base_url').end($x).'/';
     }
       
@@ -229,6 +241,5 @@ class OB_Config {
         $this->config[$item] = $value;
     }
 
-} // end class
-
+}
 ?>

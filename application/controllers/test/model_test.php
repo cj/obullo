@@ -26,30 +26,22 @@ Class Model_test extends Model
     */
     public function test()
     {   
-        
         //loader::database(); 
         //ob::input_set('name','mahmut');
         //echo ob::input_get('name');
         
         //ob_user::nav_level1();
 
-       $this->db->drivers();
+       //$this->db->drivers();
         
         //echo ob::input_ip();
-        /*
+
         //echo 'Using Model inside another model: succesfull!<br /> ';
         //$this->model_blog->test();
+                    
+        //---------- Prepared Query ----------//  
         
-        echo '<b>Using library from model_test:</b> successful!<br /><br /><br />';
-        echo '<b>Using database from library:</b> successful!<br /><br /><br />';
-        $this->myclass->testDB();
-        
-        
-        //---------- Prepared Query ----------//
-        
-        echo '<br /><b>Prepared Query:</b><br />';
-        
-        $this->db->_prepare();   // tell to db class use pdo prepare
+        $this->db->prep();   // tell to db class use pdo prepare
         $this->db->query("SELECT * FROM articles WHERE article_id=:id OR link=:code");
         $this->db->bval(':id', $id=1, p_int); //INTEGER 
         // alias of PDOStatement::bindValue();
@@ -74,7 +66,7 @@ Class Model_test extends Model
         
         echo '<br /><br /><b>Without bindvalue Query:</b> <br />';
                     
-        $this->db->_prepare();   // tell to db class use pdo prepare
+        $this->db->prep();   // tell to db class use pdo prepare
         $this->db->query("SELECT * FROM articles WHERE article_id=:id"); 
 
         $this->db->exec(array(':id'=>1));           
@@ -108,7 +100,7 @@ Class Model_test extends Model
         '<br />'.print_r($d).'<br /><br />'; 
         
         //-- Direct Query and Next Row Example --//
-        */
+        
     } //end func.
 
 } //end class

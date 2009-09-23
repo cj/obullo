@@ -24,8 +24,7 @@
           // static functions...
           //ob::input_set('name','ersin');
           //echo ob::input_get('name');
-          
-          echo ob::input_ip();
+          echo ob::ip();
         
           ob_user::nav_level1();
           ob_user::nav_level2();
@@ -33,7 +32,5 @@
       }
       
   }
-  
-  
-  
+
 ?>

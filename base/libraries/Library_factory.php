@@ -40,19 +40,17 @@ Class OB_Library
     {
         $file_exists = FALSE;
         
-        $Class = strtolower($class);
-        
-        if(file_exists(APP.'libraries'.DIRECTORY_SEPARATOR.$Class.EXT)) 
+        if(file_exists(APP.'libraries'.DS.$class.EXT)) 
         {   
             $file_exists = TRUE;
             
-            require(APP.'libraries'.DIRECTORY_SEPARATOR.$Class.EXT);
+            require(APP.'libraries'.DS.$class.EXT);
             
-        } elseif(file_exists(BASE.'libraries'.DIRECTORY_SEPARATOR.ucfirst($Class).EXT))
+        } elseif(file_exists(BASE.'libraries'.DS.ucfirst($class).EXT))
         {
             $file_exists = TRUE;
             
-            require(BASE.'libraries'.DIRECTORY_SEPARATOR.ucfirst($Class).EXT);
+            require(BASE.'libraries'.DS.ucfirst($class).EXT);
         }
         
         return $file_exists;

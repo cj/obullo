@@ -156,7 +156,7 @@ Class DB extends OB_DB_active_record
     } 
     
     // PDO prepare function.
-    function _prepare($options = array())
+    function prep($options = array())
     {
         $this->p_opt = $options;
         $this->prepare = TRUE;
@@ -225,7 +225,7 @@ Class DB extends OB_DB_active_record
     }
     
     // Get all results by assoc, object or what u want
-    function all($type=NULL)
+    function all($type = NULL)
     {    
         $constant = DB_Results::fetch($type);
         $all = $this->PQ->fetchAll($constant);

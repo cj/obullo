@@ -37,33 +37,41 @@ $usage = '';
 $start = memory_get_usage();
 
 header('Content-type: text/html;charset=UTF-8'); 
-/* 
-try 
-{
-*/
-$controller = "test";    
-$class  = ucfirst(strtolower($controller));
-$method = "run"; 
 
-$GLOBALS['controller'] = strtolower($controller);
-$GLOBALS['method'] = strtolower($method);
+Class CommonException extends Exception {}  
 
 // Base paths
 define('DS',DIRECTORY_SEPARATOR);
 define('BASE', 'base'.DS);            
 define('APP',  'application'.DS);   
-define('EXT',  '.php');                                
-define('MODEL', 'application'.DS.'controllers'.DS.$GLOBALS['controller'].DS);
-define('VIEW', 'application'.DS.'controllers'.DS.$GLOBALS['controller'].DS);
-define('CONTROLLER', 'application'.DS.'controllers'.DS.$GLOBALS['controller'].DS);
-define('CONTROLLER_PATH', 'application'.DS.'controllers'.DS);
+define('EXT',  '.php');
+define('MODEL', 'application'.DS.'controllers'.DS);
+define('VIEW', 'application'.DS.'controllers'.DS);
+define('CONTROLLER', 'application'.DS.'controllers'.DS);
+define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));  
 
-// Very Important Base Libraries
-// Don't change classes order.
-require (BASE.DS.'Common'.EXT);    
-require (BASE.'libraries'.DS.'Errors'.EXT); 
-require (BASE.'libraries'.DS.'Library_factory'.EXT); 
 require (BASE.'libraries'.DS.'Registry'.EXT); 
+require (BASE.'libraries'.DS.'Library_factory'.EXT); 
+require (BASE.'Common'.EXT);    
+require (BASE.'libraries'.DS.'Errors'.EXT); 
+
+$Config = base_register('Config');
+$Uri    = base_register('URI');
+$Router = base_register('Router');
+
+//echo 'class: '.$Router->fetch_class().'<br />';
+//echo 'method: '.$Router->fetch_method();  exit;
+
+$GLOBALS['c'] = $Router->fetch_class();  // Get requested controller
+$GLOBALS['m'] = $Router->fetch_method(); // Get requested method
+
+// Check the controller exists or not
+if ( ! file_exists(APP.'controllers'.DS.$GLOBALS['c'].DS.$GLOBALS['c'].EXT))
+{
+    new CommonException('Unable to load your default controller.
+    Please make sure the controller specified in your Routes.php file is valid.');
+}
+
 require (BASE.'libraries'.DS.'Loader'.EXT);
 require (BASE.'libraries'.DS.'Ob'.EXT);
 require (BASE.'libraries'.DS.'Controller'.EXT);
@@ -71,61 +79,39 @@ require (BASE.'libraries'.DS.'Library'.EXT);
 require (BASE.'libraries'.DS.'Model'.EXT);
 
 // call the controller.
-require (CONTROLLER.$GLOBALS['controller'].EXT);
+require (CONTROLLER.$GLOBALS['c'].DS.$GLOBALS['c'].EXT);
 
 
-/*
-*  Super Class (Our called controller class)
-*
-* */
-             
-$OB = new $class();
-//You can also set a var from outside of the class like this.
-//$OB->name = "My Name"; but this not useful from here.
+if ( ! class_exists($GLOBALS['c'])
+    OR $GLOBALS['m'] == 'controller'
+    OR strncmp($GLOBALS['m'], '_', 1) == 0
+    OR in_array(strtolower($GLOBALS['m']), array_map('strtolower', get_class_methods('Controller')))
+    )
+{
+    show_404("{$GLOBALS['c']}/{$GLOBALS['m']}");
+}
 
 
-$objects = array_keys(get_object_vars($OB)); 
-//print_r($objects);
+// If Everyting ok !
+$OB = new $GLOBALS['c']();
 
-$arg_array = array(); //write your arguments here...
-call_user_func_array(array($OB, $method), $arg_array);
 
-// end memory test
+// Check method exist or not
+if ( ! in_array(strtolower($GLOBALS['m']), array_map('strtolower', get_class_methods($OB))))
+{
+    show_404("{$GLOBALS['c']}/{$GLOBALS['m']}"); 
+}
+
+// Call the requested method.
+// Any URI segments present (besides the class/function) will be passed to the method for convenience
+call_user_func_array(array($OB, $GLOBALS['m']), array_slice($Uri->rsegments, 2));
+
+
 //$end = OB_memory_usage();
 $end = memory_get_usage();
 
 echo '<b>Started memory:</b> '.$start.'<br />';
 echo '<b>Total consumed memory: </b>'.$end.'<br />';
 
-/*
-// We Don't need try/catch blocks because of we use
-// set_exception_handler(); function look at libraries
-// Errors.php
 
-//catch all errors.
-} catch (CommonException $e) {
-
-    echo $e;
-
-    echo Common_ErrorTemplate(
-    $e->getCode(),
-    $e->getMessage(),
-    $e->getFile(),
-    $e->getLine(),
-    'General');
-    
-} catch (PDOException $e) {
-
-    echo $e;
-    
-   // echo Common_ErrorTemplate(
-   // $e->getCode(),
-   // $e->getMessage(),
-   // $e->getFile(),
-   // $e->getLine(),
-   // 'Database');
-    
-}   
-
-*/
 ?>

@@ -89,7 +89,7 @@ Class loader extends ob_user {
         {   
             // if someone want to load static class
             // like Myclass::mymethod, include it.
-            ob::register_static($class);
+            register_static($class);
             return;
         }
 
@@ -101,7 +101,7 @@ Class loader extends ob_user {
         return FALSE;  
         
         $params = $static_or_params;
-        $OB->$class = ob::register($class,$params);
+        $OB->$class = register($class,$params);
         
         if($OB->$class === NULL)
         throw new LoaderException('Unable to locate the library file: '.$class);
@@ -134,7 +134,7 @@ Class loader extends ob_user {
     */
     public function view($view, $data = array(), $string = FALSE)
     {            
-        $file = VIEW . DS . $view . EXT;
+        $file = VIEW . $GLOBALS['c']. DS . $view . EXT;
         
         if(sizeof($data) > 0)
         extract($data, EXTR_SKIP);
@@ -194,24 +194,23 @@ Class loader extends ob_user {
             $path = implode('/',$paths).'/';
             
             // if requested path in same controller
-            if($path[0] == $GLOBALS['controller'])
+            if($path[0] == $GLOBALS['c'])
             {
                 // Load user called current path like current_controller/model_test
-                $MODEL_PATH = MODEL.$path.$model_name.EXT;  
+                $MODEL_PATH = MODEL.$GLOBALS['c'].DS.$path.$model_name.EXT;  
             
             // if requested path from another controller
             } else {
                 
                 // Load user called another_controller/model_test
-                $MODEL_PATH = CONTROLLER_PATH.$path.$model_name.EXT;
+                $MODEL_PATH = CONTROLLER.$path.$model_name.EXT;
             }
 
              
         } else {
                 // Load current controller model
-                $MODEL_PATH = MODEL.$model_name.EXT;
+                $MODEL_PATH = MODEL.$GLOBALS['c'].DS.$model_name.EXT;
         }
-        
         
         if ( ! file_exists($MODEL_PATH))
         throw new LoaderException('Unable to locate the model: '.$model_name);
@@ -297,9 +296,9 @@ Class loader extends ob_user {
             
             $helper_name = strtolower('helper_'.str_replace('helper_', '', $helper_name)).EXT;
             
-            if(file_exists(CONTROLLER_PATH.$path.$helper_name))
+            if(file_exists(CONTROLLER.$path.$helper_name))
             {
-                include(CONTROLLER_PATH.$path.$helper_name);
+                include(CONTROLLER.$path.$helper_name);
     
             } else
             {
@@ -318,9 +317,9 @@ Class loader extends ob_user {
         {
             include(APP.'helpers'.DS.$helper);
    
-        } elseif(file_exists(CONTROLLER.$helper))
+        } elseif(file_exists(CONTROLLER.$GLOBALS['c'].DS.$helper))
         {
-            include(CONTROLLER.$helper);
+            include(CONTROLLER.$GLOBALS['c'].DS.$helper);
 
         } else
         {
@@ -339,11 +338,13 @@ Class loader extends ob_user {
     */
     public static function dir()
     {
-        if(is_readable(CONTROLLER))
+        $dir = CONTROLLER.$GLOBALS['c'].DS;
+        
+        if(is_readable($dir))
         {
             // opendir function
-            $handle = opendir(CONTROLLER);
-            echo '<br />Directory Listing of <b>'.CONTROLLER.'</b><br/>';
+            $handle = opendir($dir);
+            echo '<br />Directory Listing of <b>'.$dir.'</b><br/>';
 
             // running the while loop
             while ($file = readdir($handle)) 
@@ -355,7 +356,7 @@ Class loader extends ob_user {
             return TRUE;              
         } 
         
-        throw new LoaderException($GLOBALS['controller']. ' directory is not readable! ');
+        throw new LoaderException($GLOBALS['c']. DS . ' directory is not readable! ');
     }
     
     /**

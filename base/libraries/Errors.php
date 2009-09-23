@@ -35,12 +35,8 @@ if( !defined('BASE') ) exit('Access Denied!');
 8192  E_DEPRECATED
 16384 E_USER_DEPRECATED
 30719 E_ALL
-*/
+*/         
 
-error_reporting(E_ALL | E_STRICT);
-ini_set('display_errors', 1);
-
-Class CommonException extends Exception {}
 
 // Obullo error template for error handling.
 function Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, $type)
@@ -71,7 +67,26 @@ function Obullo_ExceptionHandler($e)
     $msg.= '</div>';
     
     echo $msg;
-}            
+}       
+ 
+ /**
+ * 404 Page Not Found Handler
+ *
+ * @access    private
+ * @param    string
+ * @return    string
+ */
+function show_404($page = '')
+{    
+    $heading = "404 Page Not Found";
+    $message = "The page (".$page.") you requested was not found.";
+
+    $msg = '<div style=\'width:50%;padding:5px;background-color:#eee;\'>';
+    $msg.= '<b>['.$heading.']: </b>'.$message.'<br />';
+    $msg.= '</div>';
+    echo $msg;
+    exit;
+}
 
 /*
 *  Main error handler function.
@@ -146,7 +161,7 @@ function Obullo_ErrorHandler($errno, $errstr, $errfile, $errline)
     }
 
     /* Don't execute PHP internal error handler */
-    return true;
+    return TRUE;
 }
 
 // Catch all errors !

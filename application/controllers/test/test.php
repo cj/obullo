@@ -37,7 +37,9 @@ Class Test extends Controller
     {
         $this->mylibrary->test_ssc();
         //print_r($OB->db_libraries);
-            
+    
+        echo ob::ip();
+
         /*
         ob::session_set_userdata(array());
         ob::session_userdata('key');
@@ -51,7 +53,7 @@ Class Test extends Controller
         $data['example_var']  = 'Hello World!';
 
         //$this->model_blog->test();
-        $this->model_test->test();
+        //$this->model_test->test();
         
         // ob::input_set('name','ersin');
         // echo ob::input_get('name');
