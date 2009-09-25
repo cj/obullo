@@ -17,13 +17,21 @@ if( !defined('BASE') ) exit('Access Denied!');
  */
 
 /**
- * Obullo Super Static Controller (SSC) (c) 2009
+*  o SSC Pattern (c) 2009 Ersin Güvenç
+*  o We use Super Static Controllers  
+*  o for prevent long writing ($this->navigation->nav_level1())
+*  o we just write like this user::nav_level1();
+*/
+ 
+/**
+ * Obullo Super Static Controller (SSC)
+ * 
  * We put all static main codes here
  * Like cookie , session, register
  * Goal of the SSC to get all static functions
  * like this ob::instance(), ob::session_set(), 
  * ob::cookie_get(),ob::dbconnect() you can 
- * also use $this var inside form static
+ * also use $this var inside from static
  * functions.
  * 
  * @version 0.1
@@ -44,7 +52,7 @@ Class SSC extends loader
 
         if ( ! isset($config_item[$item]))
         {
-            $config =& ob::get_config();
+            $config =& get_config();
 
             if ( ! isset($config[$item]))
             {

@@ -41,7 +41,7 @@ if( !defined('BASE') ) exit('Access Denied!');
 |
 */
 
-$route['default_controller'] = "";
+$route['default_controller'] = "test";
 // $route['scaffolding_trigger'] = "";
 
 

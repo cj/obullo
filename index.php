@@ -1,21 +1,4 @@
 <?php
-        
-/**
- * Obullo Framework (c) 2009.
- *
- * PHP5 MVC-min Software for PHP 5.2.4 or newer
- * Derived from Code Igniter.
- * 
- * @package         obullo
- * @filesource      index.php        
- * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009.
- * @since           Version 1.0 @alpha
- * @license         http://www.opensource.org/licenses/gpl-3.0.html GPL 
- */
-                              
-/* ---------------------------------------------------------------------------*/                               
-
 // This function just for memory testing..
 function OB_memory_usage() {
 $usage = '';
@@ -35,6 +18,26 @@ $usage = '';
 // start memory test
 //$start = OB_memory_usage();
 $start = memory_get_usage();
+
+//ini_set('register_globals', false);       
+
+/**
+ * Obullo Framework (c) 2009.
+ *
+ * PHP5 MVC-min Software for PHP 5.2.4 or newer
+ * Derived from Code Igniter.
+ * 
+ * @package         obullo
+ * @filesource      index.php        
+ * @author          obullo.com
+ * @copyright       Ersin Güvenç (c) 2009.
+ * @since           Version 1.0 @alpha
+ * @license         http://www.opensource.org/licenses/gpl-3.0.html GPL 
+ */
+                              
+/* ---------------------------------------------------------------------------*/                               
+
+
 
 header('Content-type: text/html;charset=UTF-8'); 
 
@@ -62,8 +65,8 @@ $Router = base_register('Router');
 //echo 'class: '.$Router->fetch_class().'<br />';
 //echo 'method: '.$Router->fetch_method();  exit;
 
-$GLOBALS['c'] = $Router->fetch_class();  // Get requested controller
-$GLOBALS['m'] = $Router->fetch_method(); // Get requested method
+$GLOBALS['c']   = $Router->fetch_class();  // Get requested controller
+$GLOBALS['m']   = $Router->fetch_method(); // Get requested method
 
 // Check the controller exists or not
 if ( ! file_exists(APP.'controllers'.DS.$GLOBALS['c'].DS.$GLOBALS['c'].EXT))

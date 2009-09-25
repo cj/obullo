@@ -38,7 +38,7 @@ Class LoaderException extends CommonException {}
 
 require(APP.'extends'.DS.'Ob_user'.EXT);
                 
-Class loader extends ob_user {  
+Class loader extends user {  
 
     /**
     * Obullo Models
@@ -58,10 +58,7 @@ Class loader extends ob_user {
     
     
     // Allow user access to SSC Pattern.
-    function __construct()
-    {   
-        parent::__construct();
-    }
+    function __construct(){}
     
     /**
     * loader::library();

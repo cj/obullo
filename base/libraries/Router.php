@@ -80,7 +80,8 @@ class OB_Router {
         }
         
         // Load the routes.php file.
-        @include(APP.'config'.DS.'routes'.EXT);
+        include(APP.'config'.DS.'routes'.EXT);
+        
         $this->routes = ( ! isset($route) OR ! is_array($route)) ? array() : $route;
         unset($route);
 

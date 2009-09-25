@@ -20,7 +20,7 @@ ini_set('display_errors', 1);
 
 
 /**
-* ob::register();
+* register();
 * Registry Controller Function
 * 
 * @access public
@@ -80,7 +80,8 @@ function register($class, $params = NULL)
 
 
 /**
-* ob::base_register()
+* base_register()
+* 
 * Register base classes which start by OB_ prefix
 * Like CI load class
 * 
@@ -119,7 +120,7 @@ function base_register($class, $instantiate = TRUE)
 }
 
 /**
-* ob::register_static();
+* register_static();
 * 
 * User register static class func.
 * use class like Myclass::method

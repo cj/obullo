@@ -5,29 +5,31 @@
       function __construct()
       {
           parent::__construct();
+                  
+          loader::database();
           
-          parent::ob_user();
+          // you don't need it if you declare it before in test controller
+          // parent::__user();  
           
-          loader::database();  
       }
    
       function test_ssc()
       {
-      
-          echo $this->base_url;
           
-          //loader::database();
+          echo '<br />'.$this->base_url.' <-- this comes from ob_user.php<br />';
+          
+          // I can use db class directly from my lib.
+          // WITHOUT ci = &get_instance() func unlike CI
+          echo '<br /><b>i can use db functions directly from library.(Without get_instance() func.)</b><br />';
           $this->db->drivers();
         
-          //echo 'my ssc library result: '.$ob->db->drivers();
+          echo '<br /><b>i can use static function from library:</b> '.ob::ip().'<br />';
         
-          // static functions...
-          //ob::input_set('name','ersin');
-          //echo ob::input_get('name');
-          echo ob::ip();
-        
-          ob_user::nav_level1();
-          ob_user::nav_level2();
+          // My Super Static Class Functions
+          // Look at application/extends/Ob_user.php
+          user::nav_level1();
+          echo '<br />';
+          user::nav_level2();
         
       }
       

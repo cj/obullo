@@ -11,41 +11,42 @@ Class Test extends Controller
     function __construct()
     {
         parent::__construct();
-        
-        // Global constructor for every controllers.
-        //parent::ob_user();
+        // top constructor for every controllers.
+        parent::__user();
         
         // load helper file
-        //loader::helper('helper_test');
+        loader::helper('helper_test');
         // or you can load another controller's helper
         // like this loader::helper('blog/helper_blog');
         
         // show directory list of current controller
         //loader::dir();
-        
-        // i want to use blog's model from blog/ folder
     
-        // model_test from current folder
-        //loader::model('blog/model_blog');
-                                       
+        // model from another folder
+        loader::model('blog/model_blog');
+        
+        // model from current folder                       
         loader::model('model_test');  
         loader::library('mylibrary');
         //loader::library('input'); 
     }                               
     
+    function index()
+    {
+        echo "<br /><br />";
+        echo "<a href='http://localhost/obullo/index.php/test/run'>run this method   /test/run </a>";
+        echo "<br /><br />";
+    }
+    
+    
     function run()
     {
+        // Run our static functions
         $this->mylibrary->test_ssc();
-        //print_r($OB->db_libraries);
     
-        echo ob::ip();
+        // System static function
+        echo ob::ip();  
 
-        /*
-        ob::session_set_userdata(array());
-        ob::session_userdata('key');
-        ob::session_flashdata('key');
-        */
-        //print_r($this->db_models);
         
         echo '<br />Run function succesfully works.<br /><br />';
         
@@ -54,14 +55,7 @@ Class Test extends Controller
 
         //$this->model_blog->test();
         //$this->model_test->test();
-        
-        // ob::input_set('name','ersin');
-        // echo ob::input_get('name');
-        
-        //echo ob::input_ip(); 
-        
-        // ob_user::nav_level1();
-        // ob_user::nav_level2();
+
      
         echo '<br />';
                                     

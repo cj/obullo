@@ -5,13 +5,13 @@ if( !defined('BASE') ) exit('Access Denied!');
 | Base Site URL
 |--------------------------------------------------------------------------
 |
-| URL to your CodeIgniter root. Typically this will be your base URL,
+| URL to your Obullo root. Typically this will be your base URL,
 | WITH a trailing slash:
 |
 |    http://example.com/
 |
 */
-$config['base_url']                = "http://localhost/CI/";
+$config['base_url']                = "http://localhost/obullo/";
 
 /*
 |--------------------------------------------------------------------------
