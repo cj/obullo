@@ -36,6 +36,8 @@ if( !defined('BASE') ) exit('Access Denied!');
  * 
  * @version 0.1
  * @version 0.2 added core functions like ob::register
+ * @version 0.3 moved some func to common.php like 
+ *              ob::register functions
  */
  
 Class SSC extends loader 
@@ -154,7 +156,8 @@ Class OBException extends CommonException {}
  * 
  * @version 0.1
  * @version 0.2 added core functions like ob::register
- * @version 0.3 added extending to SSC.
+ * @version 0.3 added extending to SSC, moved register
+ *              functions to common.php
  */
  
 Class ob extends SSC
