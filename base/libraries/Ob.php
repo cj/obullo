@@ -92,12 +92,7 @@ Class SSC extends loader
         return $this->input->get($key); 
     }
    
-    // test function
-    
-    // ob::input_get();
-    //static function input_get($key,$const = NULL){}
-    
-    // identical CI $this->input->get_post
+    // identical CI $this->input->get_both
     static function both($key,$bool){}
     
     // identical CI $this->input->get_post
@@ -120,9 +115,6 @@ Class SSC extends loader
 
     public function user_agent(){echo 'ok';} 
     
-    ### Session class ı static olarak kullanıcı yüklüyor
-    ### test controller için loader::library('class','static')
-    ### loader library içine static classları tanımla.
     // sessions
     public function session_set($key,$array = NULL)
     {
