@@ -24,6 +24,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @subpackage      Base.libraries     
  * @category        Libraries
  * @version         0.1
+ * @version         0.2 added extend to ob
  */                    
 
 Class Model extends ob {
@@ -44,18 +45,9 @@ public $myself;   // called model
         $OB = ob::instance();
         
         // declared objects
-        $dec_ob = array_keys(get_object_vars($OB));
-        //print_r($dec_ob);  open this line you can see the declared objects.
-        //exit;
-        
-        //for using to declared objects and variables inside model that we assign before
-        //we must assign them again inside to model class.
+        $dec_ob = array_keys(get_object_vars($OB));       
        
-        // Fetch models which use loader::database();   
-        // print_r($OB->db_models);
-       
-       
-        foreach ($dec_ob as $key)                                   // AND $key != 'db'
+        foreach ($dec_ob as $key)                                
         {   
             if( ! isset($this->$key) AND $key != $this->myself) // this is wrong 
             {

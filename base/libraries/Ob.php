@@ -74,20 +74,23 @@ Class SSC extends loader
     // $this->config->system_url();
     static function config_system(){}
    
-   
-    ###  input class  static otomtik olarak yüklenecek
-    ### load::library()
+
     /**
     * ob::input_post();
     * 
     * @author Ersin Güvenç
     * @param mixed $key form field
-    * @param mixed $const p_int,p_bool,p_string
     * @version 1.0
     * @return void
     */
-    public function post($key,$const = NULL){}
-    public function get($key){}
+    public function post($key)
+    {
+        return $this->input->post($key);    
+    }
+    public function get($key)
+    {
+        return $this->input->get($key); 
+    }
    
     // test function
     
@@ -110,26 +113,11 @@ Class SSC extends loader
     public function ip()
     {
         return $this->input->ip();
-        //$input = ob::register('input');
-        // bu yeterli değil functionu class içinden static yazmalısın
     }
     
-    static function input_server($key)
-    {
-        //$input = ob::register('input');
-    }
+    public function input_server($key){}
     
-    // browser
-    // ob::input_ip();
-    // Returns the IP address for the current user
-    // alias of CI $this->input->ip_address
-    /*
-    public function user_ip(){
-        
-        echo $this->input->ip();
-        //$input = self::register('input');
-    }
-    */
+
     public function user_agent(){echo 'ok';} 
     
     ### Session class ı static olarak kullanıcı yüklüyor
@@ -150,19 +138,19 @@ Class SSC extends loader
     public function session_flashdata($array = NULL){}
     
     // cookies..
-    static function cookie_get(){}
+    public function cookie_get(){}
     
-    static function cookie_set(){}
+    public function cookie_set(){}
    
     
     // language class
     // otomatik yada kullanıcı tarafından yukleniyor.
     // load library ile
-    static function lang(){}
+    public function lang(){}
 
     
     // redirect function
-    static function redirect(){}
+    public function redirect(){}
     
 }  // end ssc class.
  

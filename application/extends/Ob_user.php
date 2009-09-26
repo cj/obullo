@@ -31,7 +31,6 @@
                    
       /**
       * parent::__user();
-      * User __construct for all constructors.
       * User common __construct for all controllers
       */
       function __user()

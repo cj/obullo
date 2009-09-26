@@ -45,7 +45,7 @@ public $myself = '';
        
         // print_r($dec_ob);
 
-        foreach ($dec_ob as $key)                                   // AND $key != 'db'
+        foreach ($dec_ob as $key)                                 
         {   
             if( ! isset($this->$key) AND $key != $this->myself) // this is wrong 
             {

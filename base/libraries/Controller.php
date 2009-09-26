@@ -23,7 +23,8 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @subpackage      Base.libraries     
  * @category        Libraries
  * @version         1.0
- * @version         1.1 renamed Register as ob::register
+ * @version         1.1 renamed Register as base_register
+ * @version         1.2 added extend to ob
  */   
  
 Class Controller extends ob
@@ -39,17 +40,7 @@ Class Controller extends ob
     function ob_init()
     {
       // Load Automatically None Static Classes.
-      /*
-        $classes = array(
-                    'config'    => 'Config',
-                    'input'        => 'Input',
-                    'benchmark'    => 'Benchmark',
-                    'uri'        => 'URI',
-                    'output'    => 'Output',
-                    'lang'        => 'Language',
-                    'router'    => 'Router'
-                    );
-      */
+
         $Classes = array(
                             'config'  => 'Config',
                             'input'   => 'Input',

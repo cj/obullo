@@ -23,7 +23,7 @@
           echo '<br /><b>i can use db functions directly from library.(Without get_instance() func.)</b><br />';
           $this->db->drivers();
         
-          echo '<br /><b>i can use static function from library:</b> '.ob::ip().'<br />';
+          echo '<br /><b>i can use static functions from library:</b> '.ob::ip().'<br />';
         
           // My Super Static Class Functions
           // Look at application/extends/Ob_user.php
