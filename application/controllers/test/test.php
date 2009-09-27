@@ -34,7 +34,13 @@ Class Test extends Controller
     function index()
     {
         echo "<br /><br />";
-        echo "<a href='http://localhost/obullo/index.php/test/run'>run this method   /test/run </a>";
+        echo "<b>Directory:</b> test/ &nbsp;<b>Controller:</b> test/ &nbsp;<b>Method:</b> /run &nbsp;<br /><br />";
+        echo "Click and run test contoller  <a href='http://localhost/obullo/index.php/test/test/run'>  /test/test/run </a>";
+        echo "<br /><br />";
+        
+        echo "<br /><br />";
+        echo "<b>Directory:</b> test/ &nbsp;<b>Controller:</b> test2/ &nbsp;<b>Method:</b> /run  &nbsp;<b>Params:</b> /hello/3 <br /><br />";
+        echo "Click and run test2 contoller  <a href='http://localhost/obullo/index.php/test/test2/run/hello/3'>  /test/test2/run/hello/3 </a>";
         echo "<br /><br />";
     }
     
