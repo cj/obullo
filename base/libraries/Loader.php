@@ -1,5 +1,7 @@
-<?php
+<?php                      
 if( !defined('BASE') ) exit('Access Denied!');
+
+/* SVN FILE: $Id: Loader.php $Rev: 15 27-09-2009 22:31 develturk $ */
 
 /**
  * Obullo Framework (c) 2009.
@@ -30,6 +32,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @version         0.4 renamed static functions ob::instance(),ob::register()..
  *                  added static param to library func.Added __construct support
  *                  to library.
+ * @version         0.5 Changed direcory structure added $GLOBALS['d'] (directory)
  */
 
 
@@ -121,17 +124,20 @@ Class loader extends user {
     * 
     * Load view files
     * Don't declare this func as static
-    * because of ability to use $this 
-    * 
+    * because of ability to use $this
+    *  
+    * @author Ersin Güvenç
+    * @author you..
     * @param string $view filename
     * @param array $data view data
     * @param boolean $string fetch as string
     * @version 0.1
+    * @version 0.2 Changed $GLOBALS['c'] as $GLOBALS['d']
     * @return void
     */
     public function view($view, $data = array(), $string = FALSE)
     {            
-        $file = VIEW . $GLOBALS['c']. DS . $view . EXT;
+        $file = VIEW . $GLOBALS['d']. DS . $view . EXT;
         
         if(sizeof($data) > 0)
         extract($data, EXTR_SKIP);
@@ -172,6 +178,8 @@ Class loader extends user {
     * @copyright obullo.com
     * @param string $model
     * @version 0.1
+    * @version 0.2 added directory support
+    * @version 0.3 changed $GLOBALS['c'] as $GLOBALS['d']
     * @return void
     */
     public static function model($model)
@@ -191,10 +199,10 @@ Class loader extends user {
             $path = implode('/',$paths).'/';
             
             // if requested path in same controller
-            if($path[0] == $GLOBALS['c'])
+            if($path[0] == $GLOBALS['d'])
             {
                 // Load user called current path like current_controller/model_test
-                $MODEL_PATH = MODEL.$GLOBALS['c'].DS.$path.$model_name.EXT;  
+                $MODEL_PATH = MODEL.$GLOBALS['d'].DS.$path.$model_name.EXT;  
             
             // if requested path from another controller
             } else {
@@ -206,7 +214,7 @@ Class loader extends user {
              
         } else {
                 // Load current controller model
-                $MODEL_PATH = MODEL.$GLOBALS['c'].DS.$model_name.EXT;
+                $MODEL_PATH = MODEL.$GLOBALS['d'].DS.$model_name.EXT;
         }
         
         if ( ! file_exists($MODEL_PATH))
@@ -220,7 +228,7 @@ Class loader extends user {
         require($MODEL_PATH);
         $model = ucfirst($model_name);   
 
-        $OB->$model_name = new $model();    //Register($class); we don't need it   
+        $OB->$model_name = new $model();    //register($class); we don't need it   
 
         // assign all loaded libraries inside to current model
         // loader::library() support for Model_x { function __construct() { loader::library() }}
@@ -280,6 +288,7 @@ Class loader extends user {
     * @author you..
     * @param string $helper
     * @version 0.1
+    * @version 0.2 Changed $GLOBALS['c'] as $GLOBALS['d']
     * @return void
     */
     public static function helper($helper)
@@ -314,9 +323,9 @@ Class loader extends user {
         {
             include(APP.'helpers'.DS.$helper);
    
-        } elseif(file_exists(CONTROLLER.$GLOBALS['c'].DS.$helper))
+        } elseif(file_exists(CONTROLLER.$GLOBALS['d'].DS.$helper))
         {
-            include(CONTROLLER.$GLOBALS['c'].DS.$helper);
+            include(CONTROLLER.$GLOBALS['d'].DS.$helper);
 
         } else
         {
@@ -330,12 +339,14 @@ Class loader extends user {
     * Show directory list of current controller
     * 
     * @author Ersin Güvenç
+    * @author you..
     * @version 0.1
+    * @version 0.2 Changed $GLOBALS['c'] as $GLOBALS['d']
     * @return booelan
     */
     public static function dir()
     {
-        $dir = CONTROLLER.$GLOBALS['c'].DS;
+        $dir = CONTROLLER.$GLOBALS['d'].DS;
         
         if(is_readable($dir))
         {
@@ -353,7 +364,7 @@ Class loader extends user {
             return TRUE;              
         } 
         
-        throw new LoaderException($GLOBALS['c']. DS . ' directory is not readable! ');
+        throw new LoaderException($GLOBALS['d']. DS . ' directory is not readable! ');
     }
     
     /**
