@@ -46,6 +46,12 @@
           echo 'this my top __Constructor for all controllers ! It comes from /application/extends/Ob_user.php<br />';
       }
       
+      function __header()
+      {
+          echo 'Header functions here!<br />';
+      }
+      
+      
       // SSC Pattern (c) 2009 Ersin Güvenç
       // We use super static controllers 
       // for prevent long writing ($this->navigation->nav_level1())
