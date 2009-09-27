@@ -1,5 +1,7 @@
-<?php
+<?php                                       
 if( !defined('BASE') ) exit('Access Denied!');
+
+/* SVN FILE: $Id: Router.php $Rev: 15 27-09-2009 22:32 develturk $ */
 
 /**
  * Obullo Framework (c) 2009.
@@ -26,6 +28,8 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @category    URI
  * @author      Code Igniter - ExpressionEngine Dev Team
  * @author      Ersin Güvenç
+ * @version     0.1 changed php4 rules as php5
+ * @version     0.2 Routing structure changed as /directory/class/method/arg..
  * @link        
  */
 class OB_Router {
@@ -102,10 +106,11 @@ class OB_Router {
 
             // Turn the default route into an array.  We explode it in the event that
             // the controller is located in a subfolder
-            $segments = $this->_validate_request(explode('/', $this->default_controller));
-
+            //$segments = $this->_validate_request(explode('/', $this->default_controller));
+            $segments = $this->_validate_request(explode('/', $this->default_controller)); 
+        
             // Set the class and method
-            $this->set_class($segments[0]);
+            $this->set_class($segments[1]);
             $this->set_method('index');
             
             // Assign the segments to the URI class
@@ -135,17 +140,22 @@ class OB_Router {
     // --------------------------------------------------------------------
     
     /**
-     * Set the Route
-     *
-     * This function takes an array of URI segments as
-     * input, and sets the current class/method
-     *
-     * @access    private
-     * @param    array
-     * @param    bool
-     * @return    void
-     */
-    function _set_request($segments = array())
+    * Set the Route
+    *
+    * This function takes an array of URI segments as
+    * input, and sets the current class/method
+    *
+    * @access   private
+    * @author   Code Igniter - ExpressionEngine Dev Team
+    * @author   Ersin Güvenç
+    * @param    array
+    * @param    bool
+    * @version  0.1
+    * @version  0.2 Changed $segments[0] as $segments[1]  and 
+    *           $segments[1] as $segments[2]
+    * @return   void
+    */
+    private function _set_request($segments = array())
     {    
         $segments = $this->_validate_request($segments);
         
@@ -154,18 +164,18 @@ class OB_Router {
             return;
         }
                         
-        $this->set_class($segments[0]);
+        $this->set_class($segments[1]);
         
-        if (isset($segments[1]))
+        if (isset($segments[2]))
         {
                 // A standard method request
-                $this->set_method($segments[1]);   
+                $this->set_method($segments[2]);   
         }
         else
         {
             // This lets the "routed" segment array identify that the default
             // index method is being used.
-            $segments[1] = 'index';
+            $segments[2] = 'index';
         }
         
         // Update our "routed" segment array to contain the segments.
@@ -177,20 +187,36 @@ class OB_Router {
     // --------------------------------------------------------------------
     
     /**
-     * Validates the supplied segments.  Attempts to determine the path to
-     * the controller.
-     *
-     * @access    private
-     * @param    array
-     * @return    array
-     */    
-    function _validate_request($segments)
+    * Validates the supplied segments.  Attempts to determine the path to
+    * the controller.
+    *
+    * @author   Code Igniter - ExpressionEngine Dev Team
+    * @author   Ersin Güvenç
+    * @access   private
+    * @param    array
+    * @version  Changed segments[0] as segments[1]
+    *           added directory set to segments[0]
+    * @return   array
+    */    
+    private function _validate_request($segments)
     {
         //---------- OBULLO validate request changes ----------//
         
-        if (file_exists(APP.'controllers'.DS.$segments[0].DS.$segments[0].EXT))
-        {
-            return $segments;
+        //print_r($segments);
+        
+        // Check directory
+        if (is_dir(APP.'controllers'.DS.$segments[0]))
+        {  
+            $this->set_directory($segments[0]);
+            
+            if(isset($segments[1]))
+            {
+                if (file_exists(APP.'controllers'.DS.$segments[0].DS.$segments[1].EXT))
+                {
+                    return $segments;
+                }   
+            }
+            
         }
         
         //---------- OBULLO validate request changes ----------//
@@ -358,7 +384,8 @@ class OB_Router {
      */    
     function set_directory($dir)
     {
-        $this->directory = $dir.'/';
+        //$this->directory = $dir.'/';
+        $this->directory = $dir.'';  // Obullo changes..
     }
 
     // --------------------------------------------------------------------
@@ -381,3 +408,17 @@ class OB_Router {
 /* Location: ./system/libraries/Router.php */
 
 ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Windows (vers 14 February 2006), see www.w3.org">
+
+  <title></title>
+</head>
+
+<body>
+</body>
+</html>
