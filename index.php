@@ -47,6 +47,8 @@ $start = memory_get_usage();
 * @version 1.2 added router and uri classes
 * @version 1.3 changed directory structure completely
 *              like /directory/class/method/arguments...
+*              added FCPATH constant
+* 
 */
 
 header('Content-type: text/html;charset=UTF-8'); 
@@ -62,6 +64,7 @@ define('EXT',  '.php');
 define('MODEL', 'application'.DS.'controllers'.DS);
 define('VIEW', 'application'.DS.'controllers'.DS);
 define('CONTROLLER', 'application'.DS.'controllers'.DS);
+define('FCPATH', __FILE__);
 define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));  
 
 require (BASE.'libraries'.DS.'Errors'.EXT); 
@@ -74,9 +77,9 @@ $Config = base_register('Config');
 $Uri    = base_register('URI');
 $Router = base_register('Router');
 
-//echo 'directory: '.$Router->fetch_directory().'<br />'; 
-//echo 'class: '.$Router->fetch_class().'<br />';
-//echo 'method: '.$Router->fetch_method(); 
+echo 'directory: '.$Router->fetch_directory().'<br />'; 
+echo 'class: '.$Router->fetch_class().'<br />';
+echo 'method: '.$Router->fetch_method(); 
 
 // directory    
 $GLOBALS['d']   = $Router->fetch_directory();  
@@ -86,6 +89,9 @@ $GLOBALS['m']   = $Router->fetch_method(); // Get requested method
 // Check the controller exists or not
 if ( ! file_exists(APP.'controllers'.DS.$GLOBALS['d'].DS.$GLOBALS['c'].EXT))
 {
+    if($Router->query_string)
+    show_404("{$GLOBALS['c']}/{$GLOBALS['m']}"); //throw new CommonException('Controller Not Found!');
+    
     throw new CommonException('Unable to load your default controller.
     Please make sure the controller specified in your Routes.php file is valid.');
 }

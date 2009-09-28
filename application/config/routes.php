@@ -41,7 +41,7 @@ if( !defined('BASE') ) exit('Access Denied!');
 |
 */
 
-// WARNING !! YOU MUST PROVIDE DIRECTORY SEPARATOR UNLIKE CI
+// WARNING !! YOU MUST PROVIDE DIRECTORY SEPARATOR '/' !!
 $route['default_controller'] = "test/test";   
 // $route['scaffolding_trigger'] = "";
 

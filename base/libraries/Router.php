@@ -30,6 +30,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @author      Ersin Güvenç
  * @version     0.1 changed php4 rules as php5
  * @version     0.2 Routing structure changed as /directory/class/method/arg..
+ * @version     0.3 added query string support d= directory & c= class & m= method
  * @link        
  */
 class OB_Router {
@@ -42,6 +43,8 @@ class OB_Router {
     public $directory           = '';
     public $uri_protocol        = 'auto';
     public $default_controller;
+    
+    public $query_string = FALSE;
     
     /**
     * Constructor
@@ -59,20 +62,26 @@ class OB_Router {
     // --------------------------------------------------------------------
     
     /**
-     * Set the route mapping
-     *
-     * This function determines what should be served based on the URI request,
-     * as well as any "routes" that have been set in the routing config file.
-     *
-     * @access    private
-     * @return    void
-     */
-    function _set_routing()
+    * Set the route mapping
+    *
+    * This function determines what should be served based on the URI request,
+    * as well as any "routes" that have been set in the routing config file.
+    *
+    * @access    private
+    * @author    Code Igniter - ExpressionEngine Dev Team
+    * @author    Ersin Güvenç
+    * @version   0.1
+    * @version   0.2 added query_sting = true var
+    * @return    void
+    */
+    private function _set_routing()
     {
         // Are query strings enabled in the config file?
         // If so, we're done since segment based URIs are not used with query strings.
         if ($this->config->item('enable_query_strings') === TRUE AND isset($_GET[$this->config->item('controller_trigger')]))
         {
+            $this->query_string = TRUE;
+            $this->set_directory(trim($this->uri->_filter_uri($_GET[$this->config->item('directory_trigger')])));
             $this->set_class(trim($this->uri->_filter_uri($_GET[$this->config->item('controller_trigger')])));
 
             if (isset($_GET[$this->config->item('function_trigger')]))
@@ -260,16 +269,16 @@ class OB_Router {
     // --------------------------------------------------------------------
 
     /**
-     *  Parse Routes
-     *
-     * This function matches any routes that may exist in
-     * the config/routes.php file against the URI to
-     * determine if the class/method need to be remapped.
-     *
-     * @access    private
-     * @return    void
-     */
-    function _parse_routes()
+    * Parse Routes
+    *
+    * This function matches any routes that may exist in
+    * the config/routes.php file against the URI to
+    * determine if the class/method need to be remapped.
+    *
+    * @access    private
+    * @return    void
+    */
+    private function _parse_routes()
     {
         // Do we even have any custom routing to deal with?
         // There is a default scaffolding trigger, so we'll look just for 1
@@ -317,13 +326,13 @@ class OB_Router {
     // --------------------------------------------------------------------
     
     /**
-     * Set the class name
-     *
-     * @access    public
-     * @param    string
-     * @return    void
-     */    
-    function set_class($class)
+    * Set the class name
+    *
+    * @access    public
+    * @param     string
+    * @return    void
+    */    
+    public function set_class($class)
     {
         $this->class = $class;
     }
@@ -331,12 +340,12 @@ class OB_Router {
     // --------------------------------------------------------------------
     
     /**
-     * Fetch the current class
-     *
-     * @access    public
-     * @return    string
-     */    
-    function fetch_class()
+    * Fetch the current class
+    *
+    * @access    public
+    * @return    string
+    */    
+    public function fetch_class()
     {
         return $this->class;
     }
@@ -344,13 +353,13 @@ class OB_Router {
     // --------------------------------------------------------------------
     
     /**
-     *  Set the method name
-     *
-     * @access    public
-     * @param    string
-     * @return    void
-     */    
-    function set_method($method)
+    *  Set the method name
+    *
+    * @access    public
+    * @param     string
+    * @return    void
+    */    
+    public function set_method($method)
     {
         $this->method = $method;
     }
@@ -358,12 +367,12 @@ class OB_Router {
     // --------------------------------------------------------------------
     
     /**
-     *  Fetch the current method
-     *
-     * @access    public
-     * @return    string
-     */    
-    function fetch_method()
+    *  Fetch the current method
+    *
+    * @access    public
+    * @return    string
+    */    
+    public function fetch_method()
     {
         if ($this->method == $this->fetch_class())
         {
@@ -376,13 +385,13 @@ class OB_Router {
     // --------------------------------------------------------------------
     
     /**
-     *  Set the directory name
-     *
-     * @access    public
-     * @param    string
-     * @return    void
-     */    
-    function set_directory($dir)
+    *  Set the directory name
+    *
+    * @access    public
+    * @param    string
+    * @return    void
+    */    
+    public function set_directory($dir)
     {
         //$this->directory = $dir.'/';
         $this->directory = $dir.'';  // Obullo changes..
@@ -391,12 +400,12 @@ class OB_Router {
     // --------------------------------------------------------------------
     
     /**
-     *  Fetch the sub-directory (if any) that contains the requested controller class
-     *
-     * @access    public
-     * @return    string
-     */    
-    function fetch_directory()
+    *  Fetch the sub-directory (if any) that contains the requested controller class
+    *
+    * @access    public
+    * @return    string
+    */    
+    public function fetch_directory()
     {
         return $this->directory;
     }
@@ -405,6 +414,6 @@ class OB_Router {
 // END Router Class
 
 /* End of file Router.php */
-/* Location: ./system/libraries/Router.php */
+/* Location: ./base/libraries/Router.php */
 
 ?>

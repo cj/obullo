@@ -79,7 +79,7 @@ function Obullo_ExceptionHandler($e)
 function show_404($page = '')
 {    
     $heading = "404 Page Not Found";
-    $message = "The page (".$page.") you requested was not found.";
+    $message = "The page '".$page."' you requested was not found.";
 
     $msg = '<div style=\'width:50%;padding:5px;background-color:#eee;\'>';
     $msg.= '<b>['.$heading.']: </b>'.$message.'<br />';
