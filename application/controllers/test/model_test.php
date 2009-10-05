@@ -56,6 +56,8 @@ Class Model_test extends Model
         $a = $this->db->all(assoc);  // or obj
         print_r($a);
         
+        $this->db->bval(':id', $id=2, p_int); //INTEGER
+        
         $this->db->exec();
         $a = $this->db->row();  // or obj
         echo '<br />'.$a->title;
@@ -67,7 +69,7 @@ Class Model_test extends Model
         echo '<br /><br /><b>Without bindvalue Query:</b> <br />';
                     
         $this->db->prep();   // tell to db class use pdo prepare
-        $this->db->query("SELECT * FROM articles WHERE article_id=:id"); 
+        $this->db->query("SELECT * FROM articles WHERE article_id = :id"); 
 
         $this->db->exec(array(':id'=>1));           
         $a = $this->db->assoc();

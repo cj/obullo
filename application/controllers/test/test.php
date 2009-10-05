@@ -49,6 +49,7 @@ Class Test extends Controller
     {
         // Run our static functions
         $this->mylibrary->test_ssc();
+        //$this->model_test->test();
     
         // System static function
         echo ob::ip();  

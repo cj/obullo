@@ -228,6 +228,9 @@ Class loader extends user {
         require($MODEL_PATH);
         $model = ucfirst($model_name);   
 
+        if( ! class_exists($model_name))
+        throw new LoaderException('Model name is not correct in file: '.$model_name);
+        
         $OB->$model_name = new $model();    //register($class); we don't need it   
 
         // assign all loaded libraries inside to current model
@@ -388,6 +391,12 @@ Class loader extends user {
         throw new LoaderException('Unable to locate the pear library:'. $class.EXT);
         
     } //end func.
+    
+    
+    public static function js(){}
+    public static function script(){}
+    public static function form(){}
+    public static function extend(){}
    
     
 } //end class.

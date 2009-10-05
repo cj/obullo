@@ -1,0 +1,3 @@
+<?php
+  // blog third controller...
+?>

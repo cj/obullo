@@ -174,14 +174,14 @@ function get_config()
     {
         if ( ! file_exists(APP.'config'.DS.'config'.EXT))
         {
-            exit('The configuration file config'.EXT.' does not exist.');
+            throw new CommonException('The configuration file config'.EXT.' does not exist.');
         }
 
         require(APP.'config'.DS.'config'.EXT);
 
         if ( ! isset($config) OR ! is_array($config))
         {
-            exit('Your config file does not appear to be formatted correctly.');
+            throw new CommonException('Your config file does not appear to be formatted correctly.');
         }
 
         $main_conf[0] =& $config;

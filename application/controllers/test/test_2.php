@@ -2,7 +2,7 @@
 /**
 *  Our second controller controllers/test/test2.php
 */
-Class Test2 extends Controller
+Class Test_2 extends Controller
 {
     public $sample_var  = 'you can use $this->variable from view';    
     public $sample_var2 = 'you can use $this->variable from model';   
