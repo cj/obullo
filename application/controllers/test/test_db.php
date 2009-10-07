@@ -42,16 +42,18 @@ Class Test_db extends Controller
         $this->db->select("*");
         $this->db->join('comments','cm_article_id = article_id','left');
         $this->db->where('article_id',':id');
-        $this->db->table('articles'); 
+        $this->db->get('articles'); 
+        $res = $this->db->all(assoc);
+        print_r($res);
+        echo $this->db->last_query();
         
-        //echo $this->db->output(); exit;
-         
+        //$this->db->bval(':id',1,p_int);
         
-        //$this->db->output();
-        
-        $this->db->exec(array(':id' => 1));           
+        $this->db->exec(array(':id'=> 1));           
+        //$this->db->exec();           
         $a = $this->db->assoc();
         print_r($a).'<br />';
+        echo $this->db->last_query();
         
         // change the value
         $this->db->exec(array(':id' => 2));

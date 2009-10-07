@@ -103,8 +103,17 @@ Class DB_Results
     
 }  //end class.
 
+/**
+ * Active Record Class.
+ * Derived from Code Igniter.
+ *
+ * @package         Obullo 
+ * @subpackage      Base.database     
+ * @category        Database
+ * @version         0.1
+ */
 Class OB_DB_active_record extends PDO 
-{                                             
+{                                         
     public $ar_select              = array();
     public $ar_distinct            = FALSE;
     public $ar_from                = array();
@@ -119,7 +128,7 @@ Class OB_DB_active_record extends PDO
     public $ar_orderby             = array();
     public $ar_set                 = array();    
     public $ar_wherein             = array();
-    public $ar_aliased_tables      = array();
+    //public $ar_aliased_tables      = array();
     public $ar_store_array         = array();
     
     // Active Record Caching variables
@@ -135,6 +144,23 @@ Class OB_DB_active_record extends PDO
     public $ar_cache_orderby       = array();
     public $ar_cache_set           = array();    
     
+    // Brackets for FROM portion..
+    public $left  = ''; 
+    public $right = '';
+    
+    /**
+    * Store Curent PDO driver
+    * 
+    * @var string
+    */
+    public $db_driver = '';
+    
+    /**
+    * Store $this->_compile_select();
+    * result into $sql var
+    * 
+    * @var string
+    */
     public $sql;
     
     /**
@@ -157,6 +183,19 @@ Class OB_DB_active_record extends PDO
     * @var mixed
     */
     public $p_opt = array();
+    
+    
+    // set db_driver
+    function set_driver($db_driver)
+    {
+        $this->db_driver = $db_driver;
+    }
+    
+    // get current db driver.
+    function get_driver()
+    {
+         return $this->db_driver;
+    }
     
     
     // PDO prepare function.
@@ -191,9 +230,6 @@ Class OB_DB_active_record extends PDO
                 }
             }
         }
-        
-        //$this->sql_select = 'SELECT ';
-        //$this->sql_select.= $select.' ';  
     }    
     
     /**
@@ -224,11 +260,15 @@ Class OB_DB_active_record extends PDO
     
     function where($key, $value = NULL, $escape = TRUE)
     {
+        if($this->prepare) $escape = FALSE;
+        
         $this->_where($key, $value, 'AND ', $escape);
     }
     
     function or_where($key, $value = NULL, $escape = TRUE)
     {
+        if($this->prepare) $escape = FALSE;
+        
         return $this->_where($key, $value, 'OR ', $escape);
     }
     
@@ -259,7 +299,7 @@ Class OB_DB_active_record extends PDO
             if ( ! is_null($v))
             {
                 if ($escape === TRUE)
-                $v = ' '.self::escape($v);
+                $v = ' '.$this->escape($v);
                 
                 if ( ! self::has_operator($k))
                 $k .= ' =';
@@ -323,7 +363,14 @@ Class OB_DB_active_record extends PDO
         $not = ($not) ? ' NOT' : '';
 
         foreach ($values as $value)
-        $this->ar_wherein[] = self::escape($value);
+        {
+            if($this->prepare)
+            {
+                $this->ar_wherein[] = $value;
+            } else {
+                $this->ar_wherein[] = $this->escape($value);     
+            }
+        }
 
         $prefix = (count($this->ar_where) == 0) ? '' : $type;
  
@@ -393,20 +440,21 @@ Class OB_DB_active_record extends PDO
         foreach ($field as $k => $v)
         {
             $prefix = (count($this->ar_like) == 0) ? '' : $type;
-
-            $v = self::escape($v);
-
+            
+            // escape LIKE condition wildcards
+            $v = str_replace(array('%', '_'), array('\\%', '\\_'), $v); 
+            
             if ($side == 'before')
             {
-                $like_statement = $prefix." $k $not LIKE '%{$v}'";
+                $like_statement = $prefix." $k $not LIKE ".$this->quote('%'."{$v}");
             }
             elseif ($side == 'after')
             {
-                $like_statement = $prefix." $k $not LIKE '{$v}%'";
+                $like_statement = $prefix." $k $not LIKE ".$this->quote("{$v}".'%');
             }
             else
             {
-                $like_statement = $prefix." $k $not LIKE '%{$v}%'";
+                $like_statement = $prefix." $k $not LIKE ".$this->quote('%'."{$v}".'%');
             }
             
             $this->ar_like[] = $like_statement;
@@ -458,6 +506,8 @@ Class OB_DB_active_record extends PDO
     
     function having($key, $value = '', $escape = TRUE)
     {
+        if($this->prepare) $escape = FALSE;
+        
         return $this->_having($key, $value, 'AND ', $escape);
     }
 
@@ -465,6 +515,8 @@ Class OB_DB_active_record extends PDO
 
     function orhaving($key, $value = '', $escape = TRUE)
     {
+        if($this->prepare) $escape = FALSE;
+        
         return $this->or_having($key, $value, $escape);
     }    
     
@@ -472,6 +524,8 @@ Class OB_DB_active_record extends PDO
     
     function or_having($key, $value = '', $escape = TRUE)
     {
+        if($this->prepare) $escape = FALSE;
+        
         return $this->_having($key, $value, 'OR ', $escape);
     }
     
@@ -498,7 +552,7 @@ Class OB_DB_active_record extends PDO
             $k .= ' = ';
 
             if ($v != '')
-            $v = ' '.self::escape($v);
+            $v = ' '.$this->escape($v);
             
             $this->ar_having[] = $prefix.$k.$v;
             if ($this->ar_caching === TRUE)
@@ -590,7 +644,6 @@ Class OB_DB_active_record extends PDO
         $this->ar_offset = $offset;
     }
     
-    
     /**
     * The "set" function.  Allows key/value pairs to be set for inserting or updating
     *
@@ -615,13 +668,13 @@ Class OB_DB_active_record extends PDO
             }
             else
             {
-                $this->ar_set[$k] = self::escape($v);
+                $this->ar_set[$k] = $this->escape($v);
             }
         }
     }
     
     /**
-    * Table alias of CI Get
+    * Get
     *
     * Compiles the select statement based on the other functions called
     * and runs the query
@@ -632,7 +685,7 @@ Class OB_DB_active_record extends PDO
     * @param    string    the offset clause
     * @return   object | void
     */
-    function table($table = '', $limit = null, $offset = null)
+    function get($table = '', $limit = null, $offset = null)
     {
         if ($table != '')
         $this->from($table);
@@ -640,10 +693,9 @@ Class OB_DB_active_record extends PDO
         if ( ! is_null($limit))
         $this->limit($limit, $offset);
             
-        // WARNING !!! bunu exec() içine koymaya çalış... 
         $this->sql = $this->_compile_select();
 
-        echo $this->sql; exit;
+        //echo $this->sql; exit;
         
         if($this->prepare == FALSE)
         {
@@ -653,23 +705,24 @@ Class OB_DB_active_record extends PDO
         
         } elseif($this->prepare)
         {
+            //$this->last_sql = $this->sql;
             $this->query($this->sql);  
         }
  
-    } 
+    }    
     
     
     // --------------------------------------------------------------------
 
     /**
-     * Compile the SELECT statement
-     *
-     * Generates a query string based on which functions were used.
-     * Should not be called directly.  The get() function calls it.
-     *
-     * @access    private
-     * @return    string
-     */
+    * Compile the SELECT statement
+    *
+    * Generates a query string based on which functions were used.
+    * Should not be called directly.  The get() function calls it.
+    *
+    * @access    private
+    * @return    string
+    */
     function _compile_select($select_override = FALSE)
     {
         // Combine any cached components with the current statements
@@ -698,7 +751,7 @@ Class OB_DB_active_record extends PDO
                 // is because until the user calls the from() function we don't know if there are aliases
                 foreach ($this->ar_select as $key => $val)
                 {
-                    $this->ar_select[$key] = $this->_protect_identifiers($val);
+                    $this->ar_select[$key] = $val;
                 }
                 
                 $sql .= implode(', ', $this->ar_select);
@@ -755,7 +808,7 @@ Class OB_DB_active_record extends PDO
         }
 
         // ----------------------------------------------------------------
-        
+                             
         // Write the "GROUP BY" portion of the query
     
         if (count($this->ar_groupby) > 0)
@@ -800,11 +853,184 @@ Class OB_DB_active_record extends PDO
             $sql = $this->_limit($sql, $this->ar_limit, $this->ar_offset);
         }
 
-        $this->last_sql = $sql; 
-        
         return $sql;
     }
 
+    /**
+    * From Tables
+    *
+    * This function implicitly groups FROM tables so there is no confusion
+    * about operator precedence in harmony with SQL standards
+    *
+    * @access   public
+    * @param    type
+    * @return   type
+    */
+    function _from_tables($tables)
+    {
+        if ( ! is_array($tables))
+        $tables = array($tables);
+        
+        return $this->left.implode(', ', $tables).$this->right;
+    }
+    
+    // --------------------------------------------------------------------
+
+    /**
+    * Start Cache
+    *
+    * Starts AR caching
+    *
+    * @access    public
+    * @return    void
+    */        
+    function start_cache()
+    {
+        $this->ar_caching = TRUE;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+    * Stop Cache
+    *
+    * Stops AR caching
+    *
+    * @access    public
+    * @return    void
+    */        
+    function stop_cache()
+    {
+        $this->ar_caching = FALSE;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+    * Flush Cache
+    *
+    * Empties the AR cache
+    *
+    * @access    public
+    * @return    void
+    */    
+    function flush_cache()
+    {    
+        $this->_reset_run(
+                            array(
+                                    'ar_cache_select'   => array(), 
+                                    'ar_cache_from'     => array(), 
+                                    'ar_cache_join'     => array(),
+                                    'ar_cache_where'    => array(), 
+                                    'ar_cache_like'     => array(), 
+                                    'ar_cache_groupby'  => array(), 
+                                    'ar_cache_having'   => array(), 
+                                    'ar_cache_orderby'  => array(), 
+                                    'ar_cache_set'      => array(),
+                                    'ar_cache_exists'   => array()
+                                )
+                            );    
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+    * Merge Cache
+    *
+    * When called, this function merges any cached AR arrays with 
+    * locally called ones.
+    *
+    * @access    private
+    * @return    void
+    */
+    function _merge_cache()
+    {
+        if (count($this->ar_cache_exists) == 0)
+        return;
+
+        foreach ($this->ar_cache_exists as $val)
+        {
+            $ar_variable    = 'ar_'.$val;
+            $ar_cache_var   = 'ar_cache_'.$val;
+
+            if (count($this->$ar_cache_var) == 0)
+            continue;
+    
+            $this->$ar_variable = array_unique(array_merge($this->$ar_cache_var, $this->$ar_variable));
+        }
+    }
+
+    // --------------------------------------------------------------------
+        
+    /**
+    * Resets the active record values.  Called by the get() function
+    *
+    * @access    private
+    * @param    array    An array of fields to reset
+    * @return    void
+    */
+    function _reset_run($ar_reset_items)
+    {
+        foreach ($ar_reset_items as $item => $default_value)
+        {
+            if ( ! in_array($item, $this->ar_store_array))
+            $this->$item = $default_value;
+        }
+    }
+ 
+   // --------------------------------------------------------------------
+
+    /**
+    * Resets the active record values.  Called by the get() function
+    *
+    * @access    private
+    * @return    void
+    */
+    private function _reset_select()
+    {
+        $ar_reset_items = array(
+                                'ar_select'         => array(), 
+                                'ar_from'           => array(), 
+                                'ar_join'           => array(), 
+                                'ar_where'          => array(), 
+                                'ar_like'           => array(), 
+                                'ar_groupby'        => array(), 
+                                'ar_having'         => array(), 
+                                'ar_orderby'        => array(), 
+                                'ar_wherein'        => array(), 
+                                //'ar_aliased_tables' => array(),
+                                'ar_distinct'       => FALSE, 
+                                'ar_limit'          => FALSE, 
+                                'ar_offset'         => FALSE, 
+                                'ar_order'          => FALSE,
+                            );
+        
+        $this->_reset_run($ar_reset_items);
+    }
+    
+    /**
+    * Resets the active record "write" values.
+    *
+    * Called by the insert() update() and delete() functions
+    *
+    * @access    private
+    * @return    void
+    */
+    function _reset_write()
+    {    
+        $ar_reset_items = array(
+                                'ar_set'        => array(), 
+                                'ar_from'       => array(), 
+                                'ar_where'      => array(), 
+                                'ar_like'       => array(),
+                                'ar_orderby'    => array(), 
+                                'ar_limit'      => FALSE, 
+                                'ar_order'      => FALSE
+                                );
+
+        $this->_reset_run($ar_reset_items);
+    }
+    
     
     /**
     * Tests whether the string has an SQL operator
@@ -834,11 +1060,11 @@ Class OB_DB_active_record extends PDO
     * @param     string
     * @return    mixed        
     */    
-    public static function escape($str)
+    public function escape($str)
     {
         if (is_string($str))
         {                    
-            $str = "'".self::quote($str, PDO::PARAM_STR)."'";
+            $str = $this->quote($str, PDO::PARAM_STR);
         }
         elseif (is_bool($str))
         {
@@ -959,9 +1185,12 @@ Class DB extends DB_Adapter
             $this->query($this->last_sql);
         }
     
+        if(is_array($array))
+        $this->_bindValues($array);
+        
         // if no query builded by active record
         // switch to pdo::statement
-        $this->PQ->execute($array);
+        $this->PQ->execute();
         
         // $this->prepared_last_query; preg_replace ':fields'
         // we implement it later
@@ -974,11 +1203,51 @@ Class DB extends DB_Adapter
         return NULL;
     }
         
-    // fetch last_query
+    // automatically secure bind values..
+    function _bindValues($array)
+    {
+        foreach($array as $key=>$val)
+        {                                          
+            switch (gettype($val))
+            {
+               case 'string': 
+                 $this->bval($key, $val, PDO::PARAM_STR);
+                 break;
+                 
+               case 'integer':
+                 $this->bval($key, $val, PDO::PARAM_INT);
+                 break;
+                 
+               case 'boolean':
+                 $this->bval($key, $val, PDO::PARAM_BOOL);
+                 break;
+               
+               case 'null':
+                 $this->bval($key, $val, PDO::PARAM_NULL);
+                 break;
+                 
+               default:
+                 $this->bval($key, $val, PDO::PARAM_STR);
+            }
+        }
+    }
+        
+        
+    // fetch pdo prepared last_query
     function last_query()
     {
         return $this->last_sql;
     }
+    
+    
+    function unprep_last_query()
+    {
+        //$val = '';
+        //$sql = str_replace(':id',$val,$this->last_sql);
+        //return $sql;
+        //str_replace($this->last_sql,'');
+    }
+     
         
     // Alias of PDO_Statement::bindVal()
     function bval($param,$val,$type='')

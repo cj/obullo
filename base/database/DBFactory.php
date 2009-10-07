@@ -39,7 +39,9 @@ Class OB_DBFactory
         if(empty($dbdriver))
         throw new DBFactoryException('Please set a valid DB driver from config database file!');
     
-        switch (strtoupper($dbdriver)) {
+        $dbdriver = strtoupper($dbdriver);
+    
+        switch ($dbdriver) {
            
            // FreeTDS / Microsoft SQL Server / Sybase
            case 'DBLIB':  
@@ -72,6 +74,7 @@ Class OB_DBFactory
              // array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES $char_set")
              $dbh = new DB("mysql:host=$hostname;dbname=$database","$username","$password");
              $dbh->query("SET NAMES utf8");
+             $dbh->left  = '('; $dbh->right = ')';
              break;
            
            // Oracle Call Interface  
@@ -84,6 +87,7 @@ Class OB_DBFactory
            case 'ODBC': 
              
              $dbh = new DB("odbc:Driver={SQL Native Client};Server=$hostname;Database=$database;Uid=$username;Pwd=$password;");
+             $dbh->left  = '('; $dbh->right = ')'; 
              break;
              
            // PostgreSQL  
@@ -96,6 +100,7 @@ Class OB_DBFactory
            case 'SQLITE':
              
              $dbh = new DB("sqlite:$database");
+             $dbh->left  = '('; $dbh->right = ')'; 
              break;
              
            // 4D
@@ -111,6 +116,8 @@ Class OB_DBFactory
     
         // We set exception attribute for showing the pdo exceptions errors 
         $dbh->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+        $dbh->set_driver($dbdriver);
+        
         return $dbh;
     
     } //end function.

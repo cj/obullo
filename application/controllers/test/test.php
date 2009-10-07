@@ -40,7 +40,7 @@ Class Test extends Controller
         
         echo "<br /><br />";
         echo "<b>Directory:</b> test/ &nbsp;<b>Controller:</b> test2/ &nbsp;<b>Method:</b> /run  &nbsp;<b>Params:</b> /hello/3 <br /><br />";
-        echo "Click and run test2 contoller  <a href='http://localhost/obullo/index.php/test/test2/run/hello/3'>  /test/test2/run/hello/3 </a>";
+        echo "Click and run test2 contoller  <a href='http://localhost/obullo/index.php/test/test_2/run/hello/3'>  /test/test_2/run/hello/3 </a>";
         echo "<br /><br />";
     }
     
