@@ -88,7 +88,8 @@ $config['charset']                 = "UTF-8";
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */
-$config['enable_hooks']            = FALSE;
+// We add this feature at the future..
+//$config['enable_hooks']            = FALSE;
 
 
 /*
@@ -228,7 +229,7 @@ $config['encryption_key']         = "";
 | 'encrypt_sess_cookie' = TRUE/FALSE (boolean).  Whether to encrypt the cookie
 | 'session_expiration'  = the number of SECONDS you want the session to last.
 |  by default sessions last 7200 seconds (two hours).  Set to zero for no expiration.
-| 'time_to_update'        = how many seconds between CI refreshing Session Information
+| 'time_to_update'        = how many seconds between Obullo refreshing Session Information
 |
 */
 $config['sess_cookie_name']      = 'ob_session';
@@ -303,7 +304,7 @@ $config['time_reference']        = 'local';
 | Rewrite PHP Short Tags
 |--------------------------------------------------------------------------
 |
-| If your PHP installation does not have short tag support enabled CI
+| If your PHP installation does not have short tag support enabled Obullo
 | can rewrite the tags on-the-fly, enabling you to utilize that syntax
 | in your view files.  Options are TRUE or FALSE (boolean)
 |

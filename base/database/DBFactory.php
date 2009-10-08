@@ -45,67 +45,54 @@ Class OB_DBFactory
            
            // FreeTDS / Microsoft SQL Server / Sybase
            case 'DBLIB':  
-             
              $dbh = new DB("dblib:host=$hostname:$dbh_port;dbname=$database;charset=$char_set","$username","$password");
              break;
              
            // Firebird/Interbase 6   
            case 'FIREBIRD':
-           
              $dbh = new DB("firebird:dbname=$database","$username", "$password");
              break;
            
            // IBM DB2  
            case 'IBM': 
-             
              $dbh = new DB("ibm:DRIVER={IBM DB2 ODBC DRIVER};DATABASE=$database;"."HOSTNAME=$hostname;PORT=$dbh_port;PROTOCOL=TCPIP;", "$username", "$password");
              break;
            
            // IBM Informix Dynamic Server  
            case 'INFORMIX':    
-             
              $dbh = new DB("informix:host=$hostname; service=9800;
              database=$database; server=ids_server; protocol=onsoctcp;EnableScrollableCursors=1", "$username", "$password");
              break; 
            
            // MySQL 3.x/4.x/5.x  
            case 'MYSQL':
-           
              // array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES $char_set")
              $dbh = new DB("mysql:host=$hostname;dbname=$database","$username","$password");
              $dbh->query("SET NAMES utf8");
-             $dbh->left  = '('; $dbh->right = ')';
              break;
            
            // Oracle Call Interface  
            case 'OCI':
-            
              $dbh = new DB("oci:dbname=$hostname/$database;charset=$char_set", "$username", "$password");
              break;
            
            // ODBC v3 (IBM DB2, unixODBC and win32 ODBC) 
            case 'ODBC': 
-             
              $dbh = new DB("odbc:Driver={SQL Native Client};Server=$hostname;Database=$database;Uid=$username;Pwd=$password;");
-             $dbh->left  = '('; $dbh->right = ')'; 
              break;
              
            // PostgreSQL  
            case 'PGSQL':
-           
              $dbh = new DB("pgsql:dbname=$database;user=$username;password=$password;host=$hostname");
              break;
              
            // SQLite 3 and SQLite 2
            case 'SQLITE':
-             
-             $dbh = new DB("sqlite:$database");
-             $dbh->left  = '('; $dbh->right = ')'; 
+             $dbh = new DB("sqlite:$database"); 
              break;
              
            // 4D
            case '4D':
-             
              $dbh = new DB("4D:host=$hostname;charset=$char_set","$username","$password");
              break;
            

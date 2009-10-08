@@ -189,6 +189,23 @@ Class OB_DB_active_record extends PDO
     function set_driver($db_driver)
     {
         $this->db_driver = $db_driver;
+        
+        // factory for sql differences..
+        switch ($db_driver)
+        { 
+           case 'MYSQL':
+           // FROM portions brackets...
+           $this->left  = '('; $this->right = ')';
+             break;
+           
+           case 'ODBC':
+           $this->left  = '('; $this->right = ')'; 
+             break;
+           
+           case 'SQLITE':
+           $this->left  = '('; $this->right = ')'; 
+             break;
+        }
     }
     
     // get current db driver.
@@ -204,7 +221,6 @@ Class OB_DB_active_record extends PDO
         $this->p_opt   = &$options;
         $this->prepare = TRUE;
     }
-    
     
     function select($select = '*', $escape = NULL)
     {

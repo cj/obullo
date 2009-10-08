@@ -51,6 +51,34 @@
           echo 'Header functions here!<br />';
       }
       
+      // get update form post variables
+      function form_values($formfields, $db_data)
+      {
+            $value = array();
+          
+            if ($_SERVER['REQUEST_METHOD'] == 'POST')
+            {
+                foreach ($formfields as $formfield)
+                $value[$formfield] = $this->input->post($formfield);
+
+            } elseif ($_SERVER['REQUEST_METHOD'] != 'POST' AND ! empty($db_data) )
+            {
+                $dbrow = $db_data->row();
+                
+                foreach ($formfields as $formfield)
+                $value[$formfield] = $dbrow->$formfield;
+                
+            } else {
+
+                // blank values for adding a new user
+                foreach ($formfields as $formfield)
+                $value[$formfield] = '';
+            }
+            
+            if(empty($dbrow)) $dbrow = '';
+            
+            return array('formfields' => $value, 'row' => $dbrow);
+      }
       
       // SSC Pattern (c) 2009 Ersin Güvenç
       // We use super static controllers 
