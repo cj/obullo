@@ -20,17 +20,49 @@ ini_set('display_errors', 1);
 
 
 /**
+* Check file exist and load it
+* 
+* @access   public
+* @author   Ersin Güvenç
+* @param    string $class
+* @version  0.1
+* @return   boolean
+*/
+function lib_factory($class)
+{
+    $file_exists = FALSE;
+    
+    if(file_exists(APP.'libraries'.DS.$class.EXT)) 
+    {   
+        $file_exists = TRUE;
+        
+        require(APP.'libraries'.DS.$class.EXT);
+        
+    } elseif(file_exists(BASE.'libraries'.DS.ucfirst($class).EXT))
+    {
+        $file_exists = TRUE;
+        
+        require(BASE.'libraries'.DS.ucfirst($class).EXT);
+    }
+    
+    return $file_exists;
+}
+
+
+/**
 * register();
 * Registry Controller Function
 * 
-* @access public
-* @author Ersin Güvenç
-* @param string $class name of the class.
-* @version 0.1
-* @version 0.2 added $file_exists var
-* @version 0.3 moved into ob class
-* @version 0.4 added __construct(params=array()) support
-* @return object | NULL
+* @access   public
+* @author   Ersin Güvenç
+* @param    string $class name of the class.
+* @version  0.1
+* @version  0.2 added $file_exists var
+* @version  0.3 moved into ob class
+* @version  0.4 added __construct(params=array()) support
+* @version  0.5 removed OB_Library::factory()
+*               added lib_factory() function
+* @return   object | NULL
 */
 function register($class, $params = NULL)
 {
@@ -45,7 +77,7 @@ function register($class, $params = NULL)
     if ($getObject !== NULL)
     return $getObject;
     
-    $file_exists = OB_Library::factory($Class);
+    $file_exists = lib_factory($Class);
     
     if($file_exists)
     {
@@ -86,9 +118,11 @@ function register($class, $params = NULL)
 * Like CI load class
 * 
 * @access   public
-* @param    string  the class name being requested
-* @param    bool    optional flag that lets classes get loaded but not instantiated
-* @version  1.0
+* @param    string the class name being requested
+* @param    bool optional flag that lets classes get loaded but not instantiated
+* @version  0.1
+* @version  0.5 removed OB_Library::factory()
+*               added lib_factory() function
 * @return   object  | NULL
 */
 function base_register($class, $instantiate = TRUE)
@@ -100,7 +134,7 @@ function base_register($class, $instantiate = TRUE)
     if ($getObject !== NULL)
     return $getObject;
     
-    $file_exists = OB_Library::factory($class);
+    $file_exists = lib_factory($class);
     
     if($file_exists)
     {                           
@@ -148,16 +182,16 @@ function register_static($real_name, $base = FALSE)
         $Path  = BASE; 
     }
     
-    if(file_exists($Path.'libraries'.DIRECTORY_SEPARATOR.$Class.EXT))
+    if(file_exists($Path.'libraries'.DS.$Class.EXT))
     {
-        require($Path.'libraries'.DIRECTORY_SEPARATOR.$Class.EXT);
+        require($Path.'libraries'.DS.$Class.EXT);
         
         return TRUE;
     }
     
     return NULL;  // if register func return to null 
                   // we will show a loader exception inside from
-                  // which file will use ob::register_static func.
+                  // which file used ob::register_static func.
 } 
 
 /**

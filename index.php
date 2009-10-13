@@ -69,7 +69,6 @@ define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 
 require (BASE.'libraries'.DS.'Errors'.EXT); 
 require (BASE.'libraries'.DS.'Registry'.EXT); 
-require (BASE.'libraries'.DS.'Library_factory'.EXT); 
 require (BASE.'Common'.EXT);    
 
 
