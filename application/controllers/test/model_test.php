@@ -52,13 +52,13 @@ Class Model_test extends Model
         //$this->db->param(':colour', $colour, PDO::PARAM_STR); 
         //alias of pdo::bindParam() 
         
-        $this->db->exec();
+        $this->db->execute();
         $a = $this->db->all(assoc);  // or obj
         print_r($a);
         
         $this->db->bval(':id', $id=2, p_int); //INTEGER
         
-        $this->db->exec();
+        $this->db->execute();
         $a = $this->db->row();  // or obj
         echo '<br />'.$a->title;
         
@@ -71,12 +71,12 @@ Class Model_test extends Model
         $this->db->prep();   // tell to db class use pdo prepare
         $this->db->query("SELECT * FROM articles WHERE article_id = :id"); 
 
-        $this->db->exec(array(':id'=>1));           
+        $this->db->execute(array(':id'=>1));           
         $a = $this->db->assoc();
         print_r($a).'<br />';
         
         // change the value
-        $this->db->exec(array(':id'=>2));
+        $this->db->execute(array(':id'=>2));
         $b = $this->db->row();   
         echo '<br />'.$b->article;
         

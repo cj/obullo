@@ -40,6 +40,7 @@ define('num','num');
 define('p_int','int');
 define('p_str','str');
 define('p_bool','bool');
+define('p_null','null');
 
 Class DB_Results
 {
@@ -128,7 +129,7 @@ Class OB_DB_active_record extends PDO
     public $ar_orderby             = array();
     public $ar_set                 = array();    
     public $ar_wherein             = array();
-    //public $ar_aliased_tables      = array();
+    public $ar_aliased_tables      = array();
     public $ar_store_array         = array();
     
     // Active Record Caching variables
@@ -148,6 +149,9 @@ Class OB_DB_active_record extends PDO
     public $left  = ''; 
     public $right = '';
     
+    // Multiple insert array Values()
+    public $ar_insert_val          = array();
+    
     /**
     * Store Curent PDO driver
     * 
@@ -162,27 +166,6 @@ Class OB_DB_active_record extends PDO
     * @var string
     */
     public $sql;
-    
-    /**
-    * Store last queried sql
-    * 
-    * @var string
-    */
-    public $last_sql = '';
-
-    /**
-    * prepare switch
-    * 
-    * @var boolean
-    */
-    public $prepare = FALSE;
-    
-    /**
-    * Prepare options
-    * 
-    * @var mixed
-    */
-    public $p_opt = array();
     
     
     // set db_driver
@@ -214,13 +197,6 @@ Class OB_DB_active_record extends PDO
          return $this->db_driver;
     }
     
-    
-    // PDO prepare function.
-    function prep($options = array())
-    {
-        $this->p_opt   = &$options;
-        $this->prepare = TRUE;
-    }
     
     function select($select = '*', $escape = NULL)
     {
@@ -260,8 +236,8 @@ Class OB_DB_active_record extends PDO
     function distinct($val = TRUE)
     {
         $this->ar_distinct = (is_bool($val)) ? $val : TRUE;
-        //return $this;
     }
+    
     
     function from($from)
     {
@@ -457,20 +433,30 @@ Class OB_DB_active_record extends PDO
         {
             $prefix = (count($this->ar_like) == 0) ? '' : $type;
             
-            // escape LIKE condition wildcards
-            $v = str_replace(array('%', '_'), array('\\%', '\\_'), $v); 
-            
-            if ($side == 'before')
+            // if pdo prepare used remove % operators..
+            if($this->prepare) 
             {
-                $like_statement = $prefix." $k $not LIKE ".$this->quote('%'."{$v}");
-            }
-            elseif ($side == 'after')
+                $like_statement = $prefix." $k $not LIKE ".$v;
+            } 
+            else 
             {
-                $like_statement = $prefix." $k $not LIKE ".$this->quote("{$v}".'%');
-            }
-            else
-            {
-                $like_statement = $prefix." $k $not LIKE ".$this->quote('%'."{$v}".'%');
+                // escape LIKE condition wildcards
+                $v = str_replace(array('%', '_'), array('\\%', '\\_'), $v);
+                
+                switch ($side)
+                {
+                   case 'before':
+                     $like_statement = $prefix." $k $not LIKE ".$this->quote('%'."{$v}");
+                     break;
+                     
+                   case 'after':
+                     $like_statement = $prefix." $k $not LIKE ".$this->quote("{$v}".'%');
+                     break;
+                     
+                   default:
+                     $like_statement = $prefix." $k $not LIKE ".$this->quote('%'."{$v}".'%'); 
+                }
+                
             }
             
             $this->ar_like[] = $like_statement;
@@ -615,7 +601,7 @@ Class OB_DB_active_record extends PDO
                 $direction = ' ASC';
             }
         }
-    
+                            
         if (strpos($orderby, ',') !== FALSE)
         {
             $temp = array();
@@ -652,42 +638,39 @@ Class OB_DB_active_record extends PDO
         if ($offset != '')
         $this->ar_offset = $offset;
     }
-    
+                                          
     // --------------------------------------------------------------------
 
     function offset($offset)
     {
         $this->ar_offset = $offset;
     }
-    
+ 
     /**
-    * The "set" function.  Allows key/value pairs to be set for inserting or updating
+    * Limit string
     *
-    * @access   public
-    * @param    mixed
-    * @param    string
-    * @param    boolean
-    * @return   void
+    * Generates a platform-specific LIMIT clause
+    *
+    * @access    public
+    * @param    string    the sql query string
+    * @param    integer    the number of rows to limit the query to
+    * @param    integer    the offset value
+    * @return    string
     */
-    function set($key, $value = '', $escape = TRUE)
-    {
-        $key = $this->_object_to_array($key);
-    
-        if ( ! is_array($key))
-        $key = array($key => $value);    
-
-        foreach ($key as $k => $v)
+    function _limit($sql, $limit, $offset)
+    {    
+        if ($offset == 0)
         {
-            if ($escape === FALSE)
-            {
-                $this->ar_set[$k] = $v;
-            }
-            else
-            {
-                $this->ar_set[$k] = $this->escape($v);
-            }
+            $offset = '';
         }
+        else
+        {
+            $offset .= ", ";
+        }
+        
+        return $sql."LIMIT ".$offset.$limit;
     }
+    
     
     /**
     * Get
@@ -703,8 +686,11 @@ Class OB_DB_active_record extends PDO
     */
     function get($table = '', $limit = null, $offset = null)
     {
-        if ($table != '')
-        $this->from($table);
+        if ($table != '') 
+        {   
+            $this->_track_aliases($table);
+            $this->from($table);
+        }
         
         if ( ! is_null($limit))
         $this->limit($limit, $offset);
@@ -727,6 +713,50 @@ Class OB_DB_active_record extends PDO
  
     }    
     
+    /**
+    * Track Aliases
+    *
+    * Used to track SQL statements written with aliased tables.
+    *
+    * @author    Code Igniter
+    * @access    private
+    * @param     string    The table to inspect
+    * @return    string
+    */    
+    function _track_aliases($table)
+    {
+        if (is_array($table))
+        {
+            foreach ($table as $t)
+            {
+                $this->_track_aliases($t);
+            }
+            return;
+        }
+        
+        // Does the string contain a comma?  If so, we need to separate
+        // the string into discreet statements
+        if (strpos($table, ',') !== FALSE)
+        {
+            return $this->_track_aliases(explode(',', $table));
+        }
+    
+        // if a table alias is used we can recognize it by a space
+        if (strpos($table, " ") !== FALSE)
+        {
+            // if the alias is written with the AS keyword, remove it
+            $table = preg_replace('/ AS /i', ' ', $table);
+            
+            // Grab the alias
+            $table = trim(strrchr($table, " "));
+            
+            // Store the alias, if it doesn't already exist
+            if ( ! in_array($table, $this->ar_aliased_tables))
+            {
+                $this->ar_aliased_tables[] = $table;
+            }
+        }
+    }
     
     // --------------------------------------------------------------------
 
@@ -981,9 +1011,9 @@ Class OB_DB_active_record extends PDO
     /**
     * Resets the active record values.  Called by the get() function
     *
-    * @access    private
+    * @access   private
     * @param    array    An array of fields to reset
-    * @return    void
+    * @return   void
     */
     function _reset_run($ar_reset_items)
     {
@@ -1014,7 +1044,7 @@ Class OB_DB_active_record extends PDO
                                 'ar_having'         => array(), 
                                 'ar_orderby'        => array(), 
                                 'ar_wherein'        => array(), 
-                                //'ar_aliased_tables' => array(),
+                                'ar_aliased_tables' => array(),
                                 'ar_distinct'       => FALSE, 
                                 'ar_limit'          => FALSE, 
                                 'ar_offset'         => FALSE, 
@@ -1041,7 +1071,8 @@ Class OB_DB_active_record extends PDO
                                 'ar_like'       => array(),
                                 'ar_orderby'    => array(), 
                                 'ar_limit'      => FALSE, 
-                                'ar_order'      => FALSE
+                                'ar_order'      => FALSE,
+                                'ar_insert_val' => array()
                                 );
 
         $this->_reset_run($ar_reset_items);
@@ -1078,18 +1109,27 @@ Class OB_DB_active_record extends PDO
     */    
     public function escape($str)
     {
-        if (is_string($str))
-        {                    
-            $str = $this->quote($str, PDO::PARAM_STR);
-        }
-        elseif (is_bool($str))
-        {
-            $str = ($str === FALSE) ? 0 : 1;
-        }
-        elseif (is_null($str))
-        {
-            $str = 'NULL';
-        }
+        switch (gettype($str))              
+            {
+               case 'string':
+                 $str = $this->quote($str, PDO::PARAM_STR); 
+                 break;
+                 
+               case 'integer':
+                 $str = $this->quote($str, PDO::PARAM_INT);  
+                 break;
+                 
+               case 'boolean':
+                 $str = ($str === FALSE) ? 0 : 1;
+                 break;
+               
+               case 'null':
+                 $str = 'NULL';
+                 break;
+                 
+               default:
+                 $str = $this->quote($str, PDO::PARAM_STR);
+            }
 
         return $str;
     }
@@ -1110,53 +1150,355 @@ Class OB_DB_active_record extends PDO
     
     function output()
     {
-        $this->_compile_select();
-        return $this->last_sql;
-    }
-                                                        
-    // update insert func ları için DB_driver.php ye ebak
-    // ÖNEMLİ !! : pdo::quote kullan $this->escape yerine
-    // pdo::quote default filter string
-    function update_string($table, $data, $where)
-    {
+        //$this->_compile_select();
         
+        echo $this->last_sql;
+        exit;
     }
     
-}
+    /**
+    * The "set" function.  Allows key/value pairs to be set for inserting or updating
+    *
+    * @access   public
+    * @param    mixed
+    * @param    string
+    * @param    boolean
+    * @return   void
+    */
+    function set($key, $value = '', $escape = TRUE)
+    {
+        if ( ! is_array($key))
+        $key = array($key => $value);    
+
+        foreach ($key as $k => $v)
+        {
+            if ($escape === FALSE)
+            {
+                $this->ar_set[$k] = "'".$v."'";
+            }
+            else
+            {
+                $this->ar_set[$k] = $this->escape($v);
+            }
+        }
+        
+    } 
+    
+    /**
+    * Update
+    *
+    * Compiles an update string and runs the query
+    *
+    * @author   Code Igniter
+    * @author   Ersin Güvenç
+    * @access   public
+    * @param    string   the table to retrieve the results from
+    * @param    array    an associative array of update values
+    * @param    mixed    the where clause
+    * @return   object
+    */
+    function update($table = '', $set = NULL, $where = NULL, $limit = NULL)
+    {
+        // Combine any cached components with the current statements
+        $this->_merge_cache();
+        
+        if ( ! is_null($set))
+        $this->set($set);
+    
+        if (count($this->ar_set) == 0)
+        {
+            if ($this->db_debug)
+            throw new DBException('Please set values for update operation !');
+            
+            return FALSE;
+        }
+                                         
+        if ($table == '')
+        {
+            if ( ! isset($this->ar_from[0]))
+            {
+                if ($this->db_debug)
+                throw new DBException('Please set table for update operation !'); 
+                
+                return FALSE;
+            }
+            
+            $table = $this->ar_from[0];
+        }
+        
+        if ($where != NULL)
+        $this->where($where);
+        
+        if ($limit != NULL)
+        $this->limit($limit);       
+        
+        $sql = $this->_update($table, $this->ar_set, $this->ar_where, $this->ar_orderby, $this->ar_limit);
+        
+        echo $sql; exit;
+                                   
+        $this->_reset_write();
+        
+        return $this->query($sql);    
+    }
+    
+                     
+    /**
+    * Update standart statement (none PDO)
+    *
+    * Generates a platform-specific update string from the supplied data
+    *
+    * @author   Code Igniter
+    * @author   Ersin Güvenç
+    * @access   private
+    * @param    string   the table name
+    * @param    array    the update data
+    * @param    array    the where clause
+    * @param    array    the orderby clause
+    * @param    array    the limit clause
+    * @return   string
+    */
+    private function _update($table, $values, $where, $orderby = array(), $limit = FALSE)
+    {
+        foreach($values as $key => $val)
+        $valstr[] = $key." = ".$val;
+        
+        $_limit = '';
+        if($limit != FALSE)
+        $_limit = ' LIMIT '.$limit;
+        
+        $_orderby = '';
+        if(count($orderby) >= 1)
+        $_orderby = ' ORDER BY '.implode(", ", $orderby);
+     
+        $sql = "UPDATE ".$table." SET ".implode(', ', $valstr);
+
+        if($where != '' AND count($where) >=1)
+        $sql .= " WHERE ".implode(" ", $where); 
+     
+        $sql .= $_orderby.$_limit;
+        
+        return $sql;
+    }
+                                                 
+    /**
+    * Insert
+    *
+    * Compiles an insert string and runs the query
+    *
+    * @access   public
+    * @param    string   the table to retrieve the results from
+    * @param    array    an associative array of insert values
+    * @return   object
+    */
+    function insert($table = '', $set = NULL)
+    {    
+        if ( ! is_null($set))
+        $this->set($set);
+        
+        if (count($this->ar_set) == 0 AND count($this->ar_insert_val) == 0)
+        {
+            if ($this->db_debug)
+            throw new DBException('Please set value for insert operation !');
+            
+            return FALSE;
+        }
+
+        if ($table == '')
+        {
+            if ( ! isset($this->ar_from[0]))
+            {
+                if ($this->db_debug)
+                throw new DBException('Please set table for insert operation !');
+                
+                return FALSE;
+            }
+            
+            $table = $this->ar_from[0];
+        }
+
+        $sql = $this->_insert($table, array_keys($this->ar_set), array_values($this->ar_set));
+                       
+        echo $sql; exit;
+        
+        $this->_reset_write();
+        
+        $this->prepare = FALSE;
+        
+        return $this->query($sql);        
+    }
+    
+    // --------------------------------------------------------------------
+ 
+    // Mysql multiple insert support
+    public function insert_values($data = array())
+    {
+        $this->ar_insert_val[] = &$data;
+    }
+ 
+    /**
+    * Insert statement
+    *
+    * Generates a platform-specific insert string from the supplied data
+    *
+    * @access   private
+    * @param    string   the table name
+    * @param    array    the insert keys
+    * @param    array    the insert values
+    * @return   string
+    */
+    private function _insert($table, $keys, $values)
+    {   
+        $insert_val = $this->ar_insert_val;
+         
+        if(count($insert_val) > 0) 
+        {
+            $sql = "INSERT INTO ".$table." (".implode(', ', array_keys($insert_val[0])).") ";
+            
+            foreach(array_values($insert_val) as $i_val)
+            $sql.= "VALUES (".implode(', ', $i_val)."),\n";
+            
+            // remove last comma.
+            return substr($sql,0,-2); 
+        }
+        
+        return "INSERT INTO ".$table." (".implode(', ', $keys).") VALUES (".implode(', ', $values).")";
+    }
+    
+    /**
+    * Delete
+    *
+    * Compiles a delete string and runs the query
+    *
+    * @access   public
+    * @param    mixed    the table(s) to delete from. String or array
+    * @param    mixed    the where clause
+    * @param    mixed    the limit clause
+    * @param    boolean
+    * @return   object
+    */
+    function delete($table = '', $where = '', $limit = NULL, $reset_data = TRUE)
+    {
+        // Combine any cached components with the current statements
+        $this->_merge_cache();
+
+        if ($table == '')
+        {
+            if ( ! isset($this->ar_from[0]))
+            {
+                if ($this->db_debug)
+                throw new DBException('Please set table for insert operation !');
+                
+                return FALSE;
+            }
+
+            $table = $this->ar_from[0];
+        }
+        elseif (is_array($table))
+        {
+            foreach($table as $single_table)
+            $this->delete($single_table, $where, $limit, FALSE);
+        
+            $this->_reset_write();
+            return;
+        }
+
+        if ($where != '')
+        $this->where($where);
+        
+        if ($limit != NULL)
+        $this->limit($limit);
+        
+        if (count($this->ar_where) == 0 && count($this->ar_wherein) == 0 && count($this->ar_like) == 0)
+        {
+            if ($this->db_debug)
+            throw new DBException('Deletes are not allowed unless they contain a 
+             \'where\' or \'like\' clause.');
+            
+            return FALSE;
+        }        
+
+        $sql = $this->_delete($table, $this->ar_where, $this->ar_like, $this->ar_limit);
+        
+        echo $sql; exit;
+        
+        if ($reset_data)
+        $this->_reset_write();
+        
+        return $this->query($sql);
+    
+    }  //end func.
+    
+    /**
+    * Delete statement
+    *
+    * Generates a platform-specific delete string from the supplied data
+    *
+    * @access    public
+    * @param    string    the table name
+    * @param    array    the where clause
+    * @param    string    the limit clause
+    * @return    string
+    */    
+    function _delete($table, $where = array(), $like = array(), $limit = FALSE)
+    {
+        $conditions = '';
+
+        if (count($where) > 0 OR count($like) > 0)
+        {
+            $conditions  = "\nWHERE ";
+            $conditions .= implode("\n", $this->ar_where);
+
+            if (count($where) > 0 && count($like) > 0)
+            $conditions .= " AND ";
+            
+            $conditions .= implode("\n", $like);
+        }
+
+        $limit = ( ! $limit) ? '' : ' LIMIT '.$limit;
+    
+        return "DELETE FROM ".$table.$conditions.$limit;
+    }
+    
+                                  
+} // end active record class.
 
 Class DB_Adapter extends OB_DB_active_record {}
 
-//Class DB_Adapter extends PDO {
-    
+//Class DB_Adapter extends PDO {}
+
+Class DB extends DB_Adapter
+{
     /**
     * prepare switch
     * 
     * @var boolean
     */
-//    private $prepare = FALSE;
+    public $prepare = FALSE;
     
     /**
     * Prepare options
     * 
     * @var mixed
     */
-//    private $p_opt = array();
-    
-    
-    // PDO prepare function.
-//    function prep($options = array())
-//    {
-//        $this->p_opt   = $options;
-//        $this->prepare = TRUE;
-//    }
-    
-//}
-
-Class DB extends DB_Adapter
-{
+    public $p_opt = array();
     
     /**
-    * Parent Query pdo query result
+    * Store last queried sql
+    * 
+    * @var string
+    */
+    public $last_sql = '';
+    
+    /**
+    * Store last PDO execute 
+    * values
+    * 
+    * @var array
+    */
+    private $last_values;
+    
+    /**
+    * Parent Query - PDOStatement Object
     * 
     * @var object
     */
@@ -1177,7 +1519,21 @@ Class DB extends DB_Adapter
         //throw new DBException('SQLSTATE: test error!');
     } 
     
-    // Direct or prepared query         
+    // PDO prepare function.
+    function prep($options = array())
+    {
+        $this->p_opt   = &$options;
+        $this->prepare = TRUE;
+    }
+    
+    /**
+    * Flexible Prepared or Direct Query
+    *         
+    * @author  Ersin Güvenç
+    * @param   string $sql
+    * @version 1.0
+    * @return  PDOStatement
+    */
     function query($sql = NULL)
     {   
         $this->last_sql = $sql;
@@ -1193,23 +1549,85 @@ Class DB extends DB_Adapter
         return $this;
     }                    
         
-    // Execute prepared query
-    function exec($array = NULL)
+    // escape like
+    private static function escape_like($str)
+    {
+        $str = str_replace(array('%', '_'), array('\\%', '\\_'), $str); 
+        return $str;
+    }
+        
+    /**
+    * Execute prepared query
+    * 
+    * @author  Ersin Güvenç
+    * @version 0.1
+    * @param   array $array bindValue or bindParam arrays
+    * @param   boolean $bindParam switch Default bindValue 
+    * @return  void | NULL 
+    */
+    function execute($array = NULL, $bindParam = FALSE)
     { 
         if($this->last_sql != NULL AND $this->exec_count == 0)
+        $this->query($this->last_sql);
+    
+        //exit($this->last_sql);
+    
+        // If like used this is a security reason
+        // add % % operators from inside 
+        if(count($this->ar_like) > 0)
         {
-            $this->query($this->last_sql);
+            $new_array = $array;
+            $array = array();
+            foreach($new_array as $key=>$val)
+            {                                   
+                if(strpos($key,':like_both') === 0)
+                {
+                    $val = self::escape_like($val);
+                    $val = '%'."{$val}".'%';
+                    //$val = $this->escape("%".$val."%");
+                }
+                
+                if(strpos($key,':like_before') === 0)
+                {
+                    $val = self::escape_like($val);
+                    $val = '%'."{$val}"; 
+                    //$val = $this->escape('%'."{$val}");
+                }
+                
+                if(strpos($key,':like_after') === 0)
+                {
+                    $val = self::escape_like($val);
+                    $val = "{$val}".'%'; 
+                    //$val = $this->escape("{$val}".'%');
+                }
+                
+                $array[$key] = $val;
+                
+                //if(strpos(':like_after',$key));
+                //if(strpos(':like_before',$key));
+            }
         }
+        
+        //print_r($array); exit;
     
         if(is_array($array))
-        $this->_bindValues($array);
+        {
+            switch ($bindParam)
+            {
+               case TRUE:
+                $this->_bindParams($array);
+                $this->last_values = $array;
+                 break;
+                 
+               default:
+               $this->_bindValues($array);
+               $this->last_values = $array;
+            }
+        }
         
         // if no query builded by active record
         // switch to pdo::statement
         $this->PQ->execute();
-        
-        // $this->prepared_last_query; preg_replace ':fields'
-        // we implement it later
         
         // reset prepare variable 
         $this->prepare = FALSE;
@@ -1219,6 +1637,7 @@ Class DB extends DB_Adapter
         return NULL;
     }
         
+        
     // automatically secure bind values..
     function _bindValues($array)
     {
@@ -1226,7 +1645,8 @@ Class DB extends DB_Adapter
         {                                          
             switch (gettype($val))
             {
-               case 'string': 
+               case 'string':
+               //echo 'string'; 
                  $this->bval($key, $val, PDO::PARAM_STR);
                  break;
                  
@@ -1235,6 +1655,7 @@ Class DB extends DB_Adapter
                  break;
                  
                case 'boolean':
+               //echo 'BOOL';
                  $this->bval($key, $val, PDO::PARAM_BOOL);
                  break;
                
@@ -1247,103 +1668,131 @@ Class DB extends DB_Adapter
             }
         }
     }
-        
-        
-    // fetch pdo prepared last_query
-    function last_query()
+    
+    
+    // automatically secure bind params..
+    function _bindParams($array)
     {
+        foreach($array as $key=>$val)
+        {                                          
+            switch (gettype($val))              
+            {
+               case 'string':
+                 $this->bparam($key, $val, PDO::PARAM_STR);
+                 break;
+                 
+               case 'integer':
+                 $this->bparam($key, $val, PDO::PARAM_INT);
+                 break;
+                 
+               case 'boolean':
+                 $this->bparam($key, $val, PDO::PARAM_BOOL);
+                 break;
+               
+               case 'null':
+                 $this->bparam($key, $val, PDO::PARAM_NULL);
+                 break;
+                 
+               default:
+                 $this->bparam($key, $val, PDO::PARAM_STR);
+            }
+        }
+    }
+        
+    
+    /**                               
+    * Fetch prepared or none prepared last_query
+    * 
+    * @author  Ersin Güvenç
+    * @version 0.1
+    * @version 0.2 added prepared param
+    * @param   boolean $prepared
+    * @return  string
+    */
+    function last_query($prepared = FALSE)
+    {
+        if($prepared)
+        {                                                         
+            $vals = $this->last_values;
+            
+            $quote_added_vals = array();
+            foreach(array_values($vals) as $q)
+            $quote_added_vals[] = "'".$q."'"; 
+        
+            return str_replace(array_keys($vals),$quote_added_vals,$this->last_sql);
+        }
+            
         return $this->last_sql;
-    }
+    }                 
     
     
-    function unprep_last_query()
+    // get PDO::lastInsertId()
+    function insert_id()
     {
-        //$val = '';
-        //$sql = str_replace(':id',$val,$this->last_sql);
-        //return $sql;
-        //str_replace($this->last_sql,'');
+        return parent::lastInsertId();
     }
-     
         
-    // Alias of PDO_Statement::bindVal()
-    function bval($param,$val,$type='')
+    // Alias of PDO_Statement::bindValue()
+    function bval($param, $val, $type)
     {
-        $this->PQ->bindValue($param,$val,DB_Results::type($type));  
-    }    
+        $this->PQ->bindValue($param, $val, DB_Results::type($type));  
+    }
+    
+    // Alias of PDO_Statement::bindParam()
+    function bparam($param, $val, $type, $length = NULL, $driver_options = NULL)
+    {
+        $this->PQ->bindParam($param, $val, DB_Results::type($type), $length, $driver_options);  
+    }        
         
     // Get available drivers on your host
     function drivers()
     {
+        echo '<br />';
         foreach(PDO::getAvailableDrivers() as $driver)
-        {
-            echo $driver.'<br />';
-        }  
+        echo $driver.'<br />'; 
     }
     
     // Get results as associative array
     function assoc()
     {
-        $assoc = $this->PQ->fetch(PDO::FETCH_ASSOC);
-        return $assoc;
+        return $this->PQ->fetch(PDO::FETCH_ASSOC);
     }
     
     // Get result as object
     function obj()
     {                                  
-        $object = $this->PQ->fetch(PDO::FETCH_OBJ);
-        return $object;
+        return $this->PQ->fetch(PDO::FETCH_OBJ);
     }
     
     // Same as object
     function row()
     {                                  
-        $object = $this->PQ->fetch(PDO::FETCH_OBJ);
-        return $object;
+        return $this->PQ->fetch(PDO::FETCH_OBJ);  
     }
     
     // Get all results by assoc, object or what u want
     function all($type = NULL)
     {    
-        $constant = DB_Results::fetch($type);
-        $all = $this->PQ->fetchAll($constant);
-        
-        return $all;
+        return $this->PQ->fetchAll(DB_Results::fetch($type));
     } 
     
     // Get column numbers, results in assoc
     function num()
     {    
-        $num = $this->PQ->fetch(PDO::FETCH_NUM);
-        return $num;
+        return $this->PQ->fetch(PDO::FETCH_NUM);
     } 
     
     // Number of rows
     function num_rows()
     {    
-        $num = $this->PQ->rowCount();
-        return $num;
+        return $this->PQ->rowCount();
     }     
     
     // Get column names and numbers (both)
     function both()
     {
-        $both = $this->PQ->fetch(PDO::FETCH_BOTH);
-        return $both; 
+        return $this->PQ->fetch(PDO::FETCH_BOTH);
     } 
-
-    // CRUD OPERATIONS not implemented YET.
-    function update()
-    {
-        
-    }
-    
-    // http://tr.php.net/manual/en/pdostatement.bindvalue.php
-    function insert(){}
-    
-    // PDO exec() functionuna bak affected rows a otomatik dönüyor.
-    function delete(){}
-    
-    function last_id(){}
 
  
 } //end class.

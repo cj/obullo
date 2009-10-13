@@ -77,7 +77,6 @@ Class loader extends user {
     *                      Booelan or Array (provide __CONSTRUCT params)
     * @version 0.1
     * @version 0.2  added register_static functions
-    *               added OB_Library
     * @return void
     */
     public static function library($class, $static_or_params = NULL)
@@ -106,15 +105,17 @@ Class loader extends user {
         if($OB->$class === NULL)
         throw new LoaderException('Unable to locate the library file: '.$class);
     
+        if($OB->$class instanceof Library)
         $OB->$class->_asn_lib();   // __construct load db support.
         
         // assign all libraries to all models
         // support for loader::libray() func. inside from
         // public model functions
-        OB_Library::asn_to_models();
+        self::asn_to_models();
         
         // assign all base libraries to all libraries
-        OB_Library::asn_to_libraries();
+        if($OB->$class instanceof Library)  
+        self::asn_to_libraries();
         
         $OB->libs[] = $class;
     }
@@ -271,10 +272,10 @@ Class loader extends user {
         $OB->db = ob::dbconnect();
 
         // assign db object to all models
-        OB_Library::asn_to_models(); 
+        self::asn_to_models(); 
         
         // assign db object to all libraries
-        OB_Library::asn_to_libraries();    // function load db support.
+        self::asn_to_libraries();    // function load db support.
         // echo 'DB class initalized one time!';
 
     }        
@@ -397,6 +398,37 @@ Class loader extends user {
     public static function script(){}
     public static function form(){}
     public static function extend(){}
+    
+    // @ Support for loader::libray() inside from public model functions 
+    // If you declare a library like this loader::library(); 
+    // inside from model __construct() it works good this ok
+    // because loader::model() function already loads it via $OB->$model_name->_asn_lib();
+    // but when u declare it inside a model function it will not work
+    // so you will get an error: Undefined property: Model_test::$myclass
+    // This function fix the problem, assigns all library files to model 
+
+    static function asn_to_models()
+    {
+        $OB = ob::instance();
+        
+        if (count($OB->mods) == 0)
+        return;
+        
+        foreach ($OB->mods as $model_name)
+        $OB->$model_name->_asn_lib();
+    }
+    
+    
+    static function asn_to_libraries()
+    {
+        $OB = ob::instance();
+        
+        if (count($OB->libs) == 0)
+        return;
+        
+        foreach ($OB->libs as $lib_name)
+        $OB->$lib_name->_asn_lib();
+    }
    
     
 } //end class.

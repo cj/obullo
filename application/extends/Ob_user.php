@@ -48,7 +48,9 @@
       
       function __header()
       {
-          echo 'Header functions here!<br />';
+          echo 'Controller Header functions here!<br />';
+          $data['head_tag'] = '';
+          $data['head_tag'].= '';
       }
       
       // get update form post variables

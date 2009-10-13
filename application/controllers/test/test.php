@@ -15,7 +15,7 @@ Class Test extends Controller
         parent::__user();
         
         // load helper file
-        loader::helper('helper_test');
+        //loader::helper('helper_test');
         // or you can load another controller's helper
         // like this loader::helper('blog/helper_blog');
         
@@ -23,10 +23,10 @@ Class Test extends Controller
         //loader::dir();
     
         // model from another folder
-        loader::model('blog/model_blog');
+        //loader::model('blog/model_blog');
         
         // model from current folder                       
-        loader::model('model_test');  
+        //loader::model('model_test');  
         loader::library('mylibrary');
         //loader::library('input'); 
     }                               
