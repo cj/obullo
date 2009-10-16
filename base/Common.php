@@ -18,6 +18,15 @@ if( !defined('BASE') ) exit('Access Denied!');
 error_reporting(E_ALL | E_STRICT);
 ini_set('display_errors', 1);
 
+/**
+* Common.php
+* 
+* @version 1.0
+* @version 1.1 added removed OB_Library:factory added
+*              lib_factory function
+* 
+*/
+
 
 /**
 * Check file exist and load it

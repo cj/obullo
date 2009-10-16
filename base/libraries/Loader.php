@@ -70,14 +70,14 @@ Class loader extends user {
     * from application/libraries or base/libraries
     * directories.
     * 
-    * @author Ersin Güvenç
-    * @author you..
-    * @param string $class class name
-    * @param mixed $static instantiate switch load class not declare it 
+    * @author   Ersin Güvenç
+    * @author   you..
+    * @param    string $class class name
+    * @param    mixed $static instantiate switch load class not declare it 
     *                      Booelan or Array (provide __CONSTRUCT params)
-    * @version 0.1
-    * @version 0.2  added register_static functions
-    * @return void
+    * @version  0.1
+    * @version  0.2  added register_static functions
+    * @return   void
     */
     public static function library($class, $static_or_params = NULL)
     {
@@ -105,7 +105,7 @@ Class loader extends user {
         if($OB->$class === NULL)
         throw new LoaderException('Unable to locate the library file: '.$class);
     
-        if($OB->$class instanceof Library)
+        if($OB->$class instanceof Library) // if user want to use 'extends Library' way 
         $OB->$class->_asn_lib();   // __construct load db support.
         
         // assign all libraries to all models
@@ -113,12 +113,16 @@ Class loader extends user {
         // public model functions
         self::asn_to_models();
         
-        // assign all base libraries to all libraries
-        if($OB->$class instanceof Library)  
-        self::asn_to_libraries();
+        
+        if($OB->$class instanceof Library) // if user want to use 'extends Library' way  
+        self::asn_to_libraries();  // assign all base libraries to all libraries 
         
         $OB->libs[] = $class;
     }
+    
+    
+    public static function base_library(){}
+    
     
     /**
     * loader::view();
@@ -127,19 +131,34 @@ Class loader extends user {
     * Don't declare this func as static
     * because of ability to use $this
     *  
-    * @author Ersin Güvenç
-    * @author you..
-    * @param string $view filename
-    * @param array $data view data
-    * @param boolean $string fetch as string
-    * @version 0.1
-    * @version 0.2 Changed $GLOBALS['c'] as $GLOBALS['d']
-    * @return void
+    * @author   Ersin Güvenç
+    * @author   you..
+    * @param    string $view filename
+    * @param    array $data view data
+    * @param    boolean $string fetch as string
+    * @version  0.1
+    * @version  0.2 Changed $GLOBALS['c'] as $GLOBALS['d']
+    * @return   $this->_view()
     */
     public function view($view, $data = array(), $string = FALSE)
     {            
-        $file = VIEW . $GLOBALS['d']. DS . $view . EXT;
-        
+        $file = VIEW . $GLOBALS['d']. DS . 'views' . DS . $view . EXT;
+                     
+        return $this->_view($file, $data, $string);
+    }
+    
+    /**
+    * Main view function
+    * 
+    * @author   Ersin Güvenç
+    * @author   you..
+    * @param    string $file path
+    * @param    array $data template vars
+    * @param    boolen $string
+    * @return   void
+    */
+    public function _view($file, $data = array(), $string = FALSE)
+    {
         if(sizeof($data) > 0)
         extract($data, EXTR_SKIP);
 
@@ -167,21 +186,42 @@ Class loader extends user {
             
             throw new LoaderException('Unable to locate the view: '.$file);
         }
-
     }
+    
+    
+    /**
+    * loader::base_view();
+    * 
+    * load top html page for every views 
+    * Base view file comes from 
+    * application/views directory
+    * 
+    * @param    string $view
+    * @param    array $data
+    * @return   $this->_view()
+    */
+    public function base_view($view, $data = array())
+    {
+        $file = APP . 'views' . DS . $view . EXT;
+        
+        return $this->_view($file, $data, FALSE); 
+    }
+    
     
     /**
     * loader::model();
     * Obullo Model Pattern
     * 
-    * @author Ersin Güvenç
-    * @author you..
-    * @copyright obullo.com
-    * @param string $model
-    * @version 0.1
-    * @version 0.2 added directory support
-    * @version 0.3 changed $GLOBALS['c'] as $GLOBALS['d']
-    * @return void
+    * @author       Ersin Güvenç
+    * @author       you..
+    * @copyright    obullo.com
+    * @param        string $model
+    * @version      0.1
+    * @version      0.2 added directory support
+    * @version      0.3 changed $GLOBALS['c'] as $GLOBALS['d']
+    * @version      0.4 removed old current path support added
+    *                   new model directory structure support 
+    * @return       void
     */
     public static function model($model)
     {        
@@ -199,23 +239,13 @@ Class loader extends user {
             $model_name = array_pop($paths);
             $path = implode('/',$paths).'/';
             
-            // if requested path in same controller
-            if($path[0] == $GLOBALS['d'])
-            {
-                // Load user called current path like current_controller/model_test
-                $MODEL_PATH = MODEL.$GLOBALS['d'].DS.$path.$model_name.EXT;  
-            
-            // if requested path from another controller
-            } else {
-                
-                // Load user called another_controller/model_test
-                $MODEL_PATH = CONTROLLER.$path.$model_name.EXT;
-            }
-
-             
-        } else {
-                // Load current controller model
-                $MODEL_PATH = MODEL.$GLOBALS['d'].DS.$model_name.EXT;
+            // Load user called another_controller/model_test
+            $MODEL_PATH = CONTROLLER.$path.$model_name.EXT;
+        } 
+        else
+        {
+            // Load current controller model
+            $MODEL_PATH = MODEL.$GLOBALS['d'].DS.'models'.DS.$model_name.EXT;
         }
         
         if ( ! file_exists($MODEL_PATH))
@@ -249,14 +279,14 @@ Class loader extends user {
     * Database load.
     * This function just load database to $OB
     * 
-    * @author Ersin Güvenç
-    * @author you..
-    * @copyright obullo.com
-    * @version 0.1
-    * @version 0.2 multiple models load::database func. support
-    *              loading model inside again model bug fixed.
-    * @version 0.3 Deprecated debug_backtrace();
-    * @return void
+    * @author       Ersin Güvenç
+    * @author       you..
+    * @copyright    obullo.com
+    * @version      0.1
+    * @version      0.2 multiple models load::database function support.
+    *               Loading model inside again model bug fixed.
+    * @version      0.3 Deprecated debug_backtrace(); function
+    * @return       void
     */
     public static function database()
     {
@@ -286,21 +316,22 @@ Class loader extends user {
     * We have three helper directory unlike CI
     *   o Base/helpers  : system helpers
     *   o App/helpers   : common application helpers
-    *   o Controllers/helper_$controller : controller helpers
+    *   o Controllers/directory/helpers: controller helpers
     * 
-    * @author Ersin Güvenç
-    * @author you..
-    * @param string $helper
-    * @version 0.1
-    * @version 0.2 Changed $GLOBALS['c'] as $GLOBALS['d']
-    * @return void
+    * @author   Ersin Güvenç
+    * @author   you..
+    * @param    string $helper
+    * @version  0.1
+    * @version  0.2 changed $GLOBALS['c'] as $GLOBALS['d']
+    * @version  0.3 changed base helper functionality as base_helper()
+    * @return   void
     */
     public static function helper($helper)
     { 
         // if user provide path separator like this loader::helper(blog/helper_blog)
         if (strpos($helper, '/') == TRUE)
         {
-            $paths = explode('/',$helper); // path[0] = controller name
+            $paths = explode('/',$helper);  // path[0] = controller name
             $helper_name = array_pop($paths);
             $path = implode('/',$paths).'/';
             
@@ -309,44 +340,59 @@ Class loader extends user {
             if(file_exists(CONTROLLER.$path.$helper_name))
             {
                 include(CONTROLLER.$path.$helper_name);
-    
-            } else
-            {
-                throw new LoaderException('Unable to locate the helper: '.$helper_name);
-            }
-            return;
+                return;
+            } 
+            
+            throw new LoaderException('Unable to locate the helper: '.$helper_name);    
         }
         
         $helper = strtolower('helper_'.str_replace('helper_', '', $helper)).EXT;
         
-        if(file_exists(BASE.'helpers'.DS.$helper)) 
-        {
-            include(BASE.'helpers'.DS.$helper);
-
-        } elseif(file_exists(APP.'helpers'.DS.$helper))
+        if(file_exists(APP.'helpers'.DS.$helper))
         {
             include(APP.'helpers'.DS.$helper);
+            return;
    
-        } elseif(file_exists(CONTROLLER.$GLOBALS['d'].DS.$helper))
+        } elseif(file_exists(CONTROLLER.$GLOBALS['d'].DS.'helpers'.DS.$helper))
         {
-            include(CONTROLLER.$GLOBALS['d'].DS.$helper);
-
-        } else
-        {
-            throw new LoaderException('Unable to locate the helper: '.$helper);
-        }
-
+            include(CONTROLLER.$GLOBALS['d'].DS.'helpers'.DS.$helper);
+            return;
+        } 
+        
+        throw new LoaderException('Unable to locate the application helper: '.$helper);
+        
     }   
     
     /**
+    * loader::base_helper();
+    * 
+    * load helper from /base directory
+    * @author   Ersin Güvenç
+    * @author   you..
+    * @param    string $helper
+    */
+    public static function base_helper($helper)
+    {
+        if(file_exists(BASE.'helpers'.DS.$helper)) 
+        {
+            include(BASE.'helpers'.DS.$helper);
+            return;
+        } 
+        
+        throw new LoaderException('Unable to locate the base helper: '.$helper);    
+    }
+    
+    
+    /**
     * loader::dir();
+    * 
     * Show directory list of current controller
     * 
-    * @author Ersin Güvenç
-    * @author you..
-    * @version 0.1
-    * @version 0.2 Changed $GLOBALS['c'] as $GLOBALS['d']
-    * @return booelan
+    * @author   Ersin Güvenç
+    * @author   you..
+    * @version  0.1
+    * @version  0.2 Changed $GLOBALS['c'] as $GLOBALS['d']
+    * @return   booelan
     */
     public static function dir()
     {
@@ -373,12 +419,12 @@ Class loader extends user {
     
     /**
     * Load directly PEAR libraries.
-    *    
-    * @param string e.g. 'Class', 'Mail/mime', 'Spreadsheet/Excel/Writer'
-    * @author Ersin Güvenç
-    * @author you..
-    * @version 0.1
-    * @return boolean
+    * 
+    * @author   Ersin Güvenç
+    * @author   you..    
+    * @param    string e.g. 'Class', 'Mail/mime', 'Spreadsheet/Excel/Writer'
+    * @version  0.1
+    * @return   boolean
     */
     public static function pear($class)
     {
@@ -396,7 +442,7 @@ Class loader extends user {
     
     public static function js(){}
     public static function script(){}
-    public static function form(){}
+    //public static function form(){}
     public static function extend(){}
     
     // @ Support for loader::libray() inside from public model functions 
@@ -405,7 +451,7 @@ Class loader extends user {
     // because loader::model() function already loads it via $OB->$model_name->_asn_lib();
     // but when u declare it inside a model function it will not work
     // so you will get an error: Undefined property: Model_test::$myclass
-    // This function fix the problem, assigns all library files to model 
+    // This function fix the problem, assigns all library files to model. (Ersin) 
 
     static function asn_to_models()
     {

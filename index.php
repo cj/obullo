@@ -33,7 +33,7 @@ $start = memory_get_usage();
  * @filesource      index.php        
  * @author          obullo.com
  * @copyright       Ersin Güvenç (c) 2009.
- * @since           Version 1.0 @alpha
+ * @since           Version 1.0 @alpha 3
  * @license         http://www.opensource.org/licenses/gpl-3.0.html GPL 
  */
                               
@@ -45,9 +45,10 @@ $start = memory_get_usage();
 * @version 1.0
 * @version 1.1 added router and uri classes
 * @version 1.2 added router and uri classes
-* @version 1.3 changed directory structure completely
+* @version 1.3 changed directory structure completely changed
 *              like /directory/class/method/arguments...
-*              added FCPATH constant
+*              added FCPATH and SELF constants
+* @version 1.4 removed Library_factory.php
 * 
 */
 
@@ -76,9 +77,9 @@ $Config = base_register('Config');
 $Uri    = base_register('URI');
 $Router = base_register('Router');
 
-echo 'directory: '.$Router->fetch_directory().'<br />'; 
-echo 'class: '.$Router->fetch_class().'<br />';
-echo 'method: '.$Router->fetch_method(); 
+//echo 'directory: '.$Router->fetch_directory().'<br />'; 
+//echo 'class: '.$Router->fetch_class().'<br />';
+//echo 'method: '.$Router->fetch_method(); 
 
 // directory    
 $GLOBALS['d']   = $Router->fetch_directory();  

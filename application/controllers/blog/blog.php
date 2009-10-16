@@ -16,7 +16,7 @@ public $sample_var = "you can use variable from view";
         parent::ob_user();
         
         //load your class.
-        $this->load->library('myclass');
+        loader::library('myclass');
         
         //next version implemantations..
         //$this->load->helper();  //default blog_helper
@@ -38,11 +38,11 @@ public $sample_var = "you can use variable from view";
         echo "<br />";
         
         //example a system/library class: session.
-        $this->session->set("test","Session variable succesfully works!");
-        echo $this->session->get("test");
+        //$this->session->set("test","Session variable succesfully works!");
+        //echo $this->session->get("test");
         
         //example view.
-        $this->load->view("view_blog",$data);
+        laoder::view("view_blog",$data);
         //fetch as string  $this->view("run",$data,true);   
     }
     

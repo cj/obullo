@@ -25,6 +25,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @subpackage      Base.database     
  * @category        Database
  * @version         0.1
+ * @version         0.2 added active record class
  */
  
 Class DBException extends CommonException {}  
@@ -1324,6 +1325,7 @@ Class OB_DB_active_record extends PDO
         
         $this->prepare = FALSE;
         
+        // this sould be $this->exec($sql);
         return $this->query($sql);        
     }
     
@@ -1602,9 +1604,7 @@ Class DB extends DB_Adapter
                 }
                 
                 $array[$key] = $val;
-                
-                //if(strpos(':like_after',$key));
-                //if(strpos(':like_before',$key));
+        
             }
         }
         
@@ -1635,6 +1635,24 @@ Class DB extends DB_Adapter
         ++$this->exec_count; 
         
         return NULL;
+    }
+    
+    /**
+    * Exec just for INSERT and 
+    * UPDATE operations it returns to
+    * number of affected rows after the write
+    * operations.
+    * 
+    * @author   Ersin Güvenç
+    * @param    string $sql
+    * @version  0.1
+    * @return   boolean
+    */
+    public function exec($sql)
+    {
+        $this->last_sql = $sql;
+        
+        return parent::exec($sql);
     }
         
         

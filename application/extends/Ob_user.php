@@ -17,7 +17,7 @@
   *       o site navigation menu func.,
   *       o authentication functions
   *       o module functions
-  *       o 
+  *       o and for your other special libraries..
   * 
   * it will work like this ob_user::yourfunction
   */
@@ -26,8 +26,8 @@
   {
       
       public $base_url = 'http://localhost/obullo/';
-      public $base_img;
-      public $base_css;
+      public $base_img = 'application/resources/images/';
+      public $base_css = 'application/resources/css/';
                    
       /**
       * parent::__user();
@@ -46,41 +46,20 @@
           echo 'this my top __Constructor for all controllers ! It comes from /application/extends/Ob_user.php<br />';
       }
       
-      function __header()
+      function header()
       {
-          echo 'Controller Header functions here!<br />';
+          //echo 'Controller Header functions here!<br />';
+          
+          $data['title_tag'] = 'Common title for every page !';
+          
           $data['head_tag'] = '';
           $data['head_tag'].= '';
+          
+          return $data;
       }
       
       // get update form post variables
-      function form_values($formfields, $db_data)
-      {
-            $value = array();
-          
-            if ($_SERVER['REQUEST_METHOD'] == 'POST')
-            {
-                foreach ($formfields as $formfield)
-                $value[$formfield] = $this->input->post($formfield);
-
-            } elseif ($_SERVER['REQUEST_METHOD'] != 'POST' AND ! empty($db_data) )
-            {
-                $dbrow = $db_data->row();
-                
-                foreach ($formfields as $formfield)
-                $value[$formfield] = $dbrow->$formfield;
-                
-            } else {
-
-                // blank values for adding a new user
-                foreach ($formfields as $formfield)
-                $value[$formfield] = '';
-            }
-            
-            if(empty($dbrow)) $dbrow = '';
-            
-            return array('formfields' => $value, 'row' => $dbrow);
-      }
+      function form_db_values($formfields, $db_data){}
       
       // SSC Pattern (c) 2009 Ersin Güvenç
       // We use super static controllers 

@@ -26,7 +26,7 @@ Class Test_2 extends Controller
     */
     function run($param1, $param2)
     {
-        parent::__header();
+        parent::header();
     
         echo '<br />Test2 Controller Run function succesfully works.<br /><br />';
         
