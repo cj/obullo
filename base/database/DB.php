@@ -150,9 +150,6 @@ Class OB_DB_active_record extends PDO
     public $left  = ''; 
     public $right = '';
     
-    // Multiple insert array Values()
-    public $ar_insert_val          = array();
-    
     /**
     * Store Curent PDO driver
     * 
@@ -1072,8 +1069,7 @@ Class OB_DB_active_record extends PDO
                                 'ar_like'       => array(),
                                 'ar_orderby'    => array(), 
                                 'ar_limit'      => FALSE, 
-                                'ar_order'      => FALSE,
-                                'ar_insert_val' => array()
+                                'ar_order'      => FALSE
                                 );
 
         $this->_reset_run($ar_reset_items);
@@ -1196,7 +1192,7 @@ Class OB_DB_active_record extends PDO
     * @param    string   the table to retrieve the results from
     * @param    array    an associative array of update values
     * @param    mixed    the where clause
-    * @return   object
+    * @return   PDO exec number of affected rows
     */
     function update($table = '', $set = NULL, $where = NULL, $limit = NULL)
     {
@@ -1239,7 +1235,7 @@ Class OB_DB_active_record extends PDO
                                    
         $this->_reset_write();
         
-        return $this->query($sql);    
+        return $this->exec($sql);  // return number of affected rows.  
     }
     
                      
@@ -1289,14 +1285,14 @@ Class OB_DB_active_record extends PDO
     * @access   public
     * @param    string   the table to retrieve the results from
     * @param    array    an associative array of insert values
-    * @return   object
+    * @return   PDO exec number of affected rows.
     */
     function insert($table = '', $set = NULL)
     {    
         if ( ! is_null($set))
         $this->set($set);
         
-        if (count($this->ar_set) == 0 AND count($this->ar_insert_val) == 0)
+        if (count($this->ar_set) == 0)
         {
             if ($this->db_debug)
             throw new DBException('Please set value for insert operation !');
@@ -1326,16 +1322,10 @@ Class OB_DB_active_record extends PDO
         $this->prepare = FALSE;
         
         // this sould be $this->exec($sql);
-        return $this->query($sql);        
+        return $this->exec($sql);  // return affected rows.      
     }
     
     // --------------------------------------------------------------------
- 
-    // Mysql multiple insert support
-    public function insert_values($data = array())
-    {
-        $this->ar_insert_val[] = &$data;
-    }
  
     /**
     * Insert statement
@@ -1350,19 +1340,6 @@ Class OB_DB_active_record extends PDO
     */
     private function _insert($table, $keys, $values)
     {   
-        $insert_val = $this->ar_insert_val;
-         
-        if(count($insert_val) > 0) 
-        {
-            $sql = "INSERT INTO ".$table." (".implode(', ', array_keys($insert_val[0])).") ";
-            
-            foreach(array_values($insert_val) as $i_val)
-            $sql.= "VALUES (".implode(', ', $i_val)."),\n";
-            
-            // remove last comma.
-            return substr($sql,0,-2); 
-        }
-        
         return "INSERT INTO ".$table." (".implode(', ', $keys).") VALUES (".implode(', ', $values).")";
     }
     
@@ -1388,7 +1365,7 @@ Class OB_DB_active_record extends PDO
             if ( ! isset($this->ar_from[0]))
             {
                 if ($this->db_debug)
-                throw new DBException('Please set table for insert operation !');
+                throw new DBException('Please set table for delete operation !');
                 
                 return FALSE;
             }
@@ -1421,12 +1398,10 @@ Class OB_DB_active_record extends PDO
 
         $sql = $this->_delete($table, $this->ar_where, $this->ar_like, $this->ar_limit);
         
-        echo $sql; exit;
-        
         if ($reset_data)
         $this->_reset_write();
         
-        return $this->query($sql);
+        return $this->exec($sql); // return number of  affected rows
     
     }  //end func.
     

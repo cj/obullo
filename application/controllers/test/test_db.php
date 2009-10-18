@@ -12,6 +12,10 @@ Class Test_db extends Controller
         loader::database();
         loader::model('model_test_db'); 
         
+        loader::library('myclass');
+        //loader::base_library('session');
+        
+        
         // i guess every Code Igniter developers sometime
         // don't understand that the 'application' and 'system'
         // library files where does come from !
@@ -41,16 +45,19 @@ Class Test_db extends Controller
                
         loader::base_view('view_base',$data);
     
-    
         echo '<p></p>';
      
-        // Without bind value kullanacağız her zaman
-        // bind Value ve bindParams sadece direct query ler için.
-              
-        $this->db->where('article_id',1); 
-        $this->db->delete('articles'); 
-              
-        exit;      
+        $data = array();
+        $data['title']      = 'first title';
+        $data['article']    = 'first description';
+        $data['link']       = 'first link';        
+        
+        $affected_rows = $this->db->insert('articles',$data); 
+        echo 'Affected Rows: ' . $affected_rows;  
+        
+        //print_r($data);
+
+        /*
                          
        
         $this->db->prep();   // tell to db class use pdo prepare
@@ -64,19 +71,19 @@ Class Test_db extends Controller
         //print_r($res);
         //echo $this->db->last_query();  
         
-       # http://stackoverflow.com/questions/583336/how-do-i-create-a-pdo-parameterized-query-with-a-like-statement-in-php
+        # http://stackoverflow.com/questions/583336/how-do-i-create-a-pdo-parameterized-query-with-a-like-statement-in-php
        
-        
         $exec = array(
         ':id' => '2',
         ':like_both' => 'see',
         ); 
         $this->db->execute($exec);
-                     
+
         $a = $this->db->all(assoc);
         print_r($a).'<br />';
         
-        echo 'last query: ' . $this->db->last_query(true);
+        echo '<p></p>';
+        echo '<b>last query:</b> ' . $this->db->last_query(true); // false
         
         echo "<hr size='1' />";
         
@@ -92,31 +99,14 @@ Class Test_db extends Controller
         print_r($res);
         
         echo '<p></p>';
-        
-        echo '<b>Last Query:</b> '.$this->db->last_query();
+        echo '<b>last query:</b> '.$this->db->last_query();
         
         //echo $this->db->get();
      
     
         echo '<hr size="1">';   
         
-        
-        // shorcut functions for filters 
-        /*
-        ob::like_filter('location');
-        output:
-        if($this->input->post('location'))
-        $this->db->like('location', $this->input->post('location'));
-        
-        
-        ob::where_filter('location');
-        output:
-        if($this->input->post('location'))
-        $this->db->where('location', $this->input->post('location'));
-        */
-        
-
-        
+       */   
     }
     
         

@@ -27,37 +27,6 @@ ini_set('display_errors', 1);
 * 
 */
 
-
-/**
-* Check file exist and load it
-* 
-* @access   public
-* @author   Ersin Güvenç
-* @param    string $class
-* @version  0.1
-* @return   boolean
-*/
-function lib_factory($class)
-{
-    $file_exists = FALSE;
-    
-    if(file_exists(APP.'libraries'.DS.$class.EXT)) 
-    {   
-        $file_exists = TRUE;
-        
-        require(APP.'libraries'.DS.$class.EXT);
-        
-    } elseif(file_exists(BASE.'libraries'.DS.ucfirst($class).EXT))
-    {
-        $file_exists = TRUE;
-        
-        require(BASE.'libraries'.DS.ucfirst($class).EXT);
-    }
-    
-    return $file_exists;
-}
-
-
 /**
 * register();
 * Registry Controller Function
@@ -86,14 +55,13 @@ function register($class, $params = NULL)
     if ($getObject !== NULL)
     return $getObject;
     
-    $file_exists = lib_factory($Class);
+    //$file_exists = lib_factory($Class);
     
-    if($file_exists)
+    if(file_exists(APP.'libraries'.DS.$class.EXT))
     {
-        $classname = ucfirst($class);
+        require(APP.'libraries'.DS.$class.EXT);
         
-        if (class_exists('OB_'.$class))
-        $classname = 'OB_'.$classname;
+        $classname = ucfirst($class);
         
         // construct support.
         if(is_array($params))
@@ -134,30 +102,42 @@ function register($class, $params = NULL)
 *               added lib_factory() function
 * @return   object  | NULL
 */
-function base_register($class, $instantiate = TRUE)
+function base_register($class, $params = NULL, $instantiate = TRUE)
 {
     $registry = OB_Registry::singleton();
-
-    $getObject = $registry->getObject($class);
+    
+    $Class = ucfirst($class);
+    
+    $getObject = $registry->getObject($Class);
 
     if ($getObject !== NULL)
     return $getObject;
     
-    $file_exists = lib_factory($class);
+    //$file_exists = lib_factory($class);
     
-    if($file_exists)
-    {                           
-        $classname = 'OB_'.$class;
+    if(file_exists(BASE.'libraries'.DS.$Class.EXT))
+    {
+        require(BASE.'libraries'.DS.$Class.EXT);
         
-        $registry->storeObject($class, new $classname());
+        $classname = 'OB_'.$Class;
+        
+        // construct support.
+        if(is_array($params))
+        {
+            $registry->storeObject($Class, new $classname($params));
+            
+        } else 
+        {
+            $registry->storeObject($Class, new $classname());
+        }
     
         //return singleton object.
-        $Object = $registry->getObject($class);
+        $Object = $registry->getObject($Class);
 
         if(is_object($Object))
         return $Object;
     }
-    
+
     return NULL;  // if register func return to null 
                   // we will show a loader exception
 }
@@ -216,20 +196,20 @@ function get_config()
     if ( ! isset($main_conf))
     {
         if ( ! file_exists(APP.'config'.DS.'config'.EXT))
-        {
-            throw new CommonException('The configuration file config'.EXT.' does not exist.');
-        }
-
+        throw new CommonException('The configuration file config'.EXT.' does not exist.');
+        
+        
         require(APP.'config'.DS.'config'.EXT);
 
+        
         if ( ! isset($config) OR ! is_array($config))
-        {
-            throw new CommonException('Your config file does not appear to be formatted correctly.');
-        }
-
+        throw new CommonException('Your config file does not appear to be formatted correctly.');
+    
         $main_conf[0] =& $config;
     }
+    
     return $main_conf[0];
+
 }
  
 ?>

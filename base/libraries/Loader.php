@@ -1,7 +1,7 @@
 <?php                      
 if( !defined('BASE') ) exit('Access Denied!');
 
-/* SVN FILE: $Id: Loader.php $Rev: 15 27-09-2009 22:31 develturk $ */
+/* SVN FILE: $Id: Loader.php $Rev: 32 18-10-2009 17:31 develturk $ */
 
 /**
  * Obullo Framework (c) 2009.
@@ -65,6 +65,32 @@ Class loader extends user {
     
     /**
     * loader::library();
+    * load app libraries from /app folder.
+    * 
+    * @param    string $class
+    * @param    mixed $static_or_params
+    * @return   self::_library()
+    */
+    public static function library($class, $static_or_params = NULL)
+    {
+        return self::_library($class, $static_or_params);
+    }
+    
+    /**
+    * loader::base_library();
+    * load base libraries from /base folder.
+    * 
+    * @param    string $class
+    * @param    mixed $static_or_params
+    * @return   self::_library()
+    */
+    public static function base_library($class, $static_or_params = NULL)
+    {
+        return self::_library($class, $static_or_params, TRUE);
+    }
+    
+    /**
+    * Obullo Library Pattern
     * 
     * Load user or system classes
     * from application/libraries or base/libraries
@@ -79,7 +105,7 @@ Class loader extends user {
     * @version  0.2  added register_static functions
     * @return   void
     */
-    public static function library($class, $static_or_params = NULL)
+    private static function _library($class, $static_or_params = NULL, $base = FALSE)
     {
         if ($class == '')
         return FALSE;
@@ -99,8 +125,16 @@ Class loader extends user {
         if (class_exists($class) AND isset($OB->$class) AND is_object($OB->$class))
         return FALSE;  
         
-        $params = $static_or_params;
-        $OB->$class = register($class,$params);
+        switch ($base)
+        {
+           case FALSE:
+             $OB->$class = register($class, $static_or_params); 
+             break;
+             
+           case TRUE:
+             $OB->$class = base_register($class, $static_or_params); 
+             break;
+        }
         
         if($OB->$class === NULL)
         throw new LoaderException('Unable to locate the library file: '.$class);
@@ -113,15 +147,11 @@ Class loader extends user {
         // public model functions
         self::asn_to_models();
         
-        
         if($OB->$class instanceof Library) // if user want to use 'extends Library' way  
         self::asn_to_libraries();  // assign all base libraries to all libraries 
         
         $OB->libs[] = $class;
     }
-    
-    
-    public static function base_library(){}
     
     
     /**
@@ -157,15 +187,15 @@ Class loader extends user {
     * @param    boolen $string
     * @return   void
     */
-    public function _view($file, $data = array(), $string = FALSE)
+    private function _view($file, $data = array(), $string = FALSE)
     {
         if(sizeof($data) > 0)
         extract($data, EXTR_SKIP);
 
         if (file_exists($file))
         {
-                if($string) {
-
+            if($string)
+            {
                 //get file as a srtring.
                 ob_start();
 
@@ -176,16 +206,15 @@ Class loader extends user {
 
                 return $content;
 
-                } else {
-
+            } else {
                 // just include file.
                 include($file);
-                }
+            }
 
-        } else {
-            
-            throw new LoaderException('Unable to locate the view: '.$file);
-        }
+            return;
+        } 
+        
+        throw new LoaderException('Unable to locate the view: '.$file);
     }
     
     
@@ -202,7 +231,7 @@ Class loader extends user {
     */
     public function base_view($view, $data = array())
     {
-        $file = APP . 'views' . DS . $view . EXT;
+        $file = BASE . 'views' . DS . $view . EXT;
         
         return $this->_view($file, $data, FALSE); 
     }
@@ -411,7 +440,7 @@ Class loader extends user {
             // close dir
             closedir($handle);
             
-            return TRUE;              
+            return;              
         } 
         
         throw new LoaderException($GLOBALS['d']. DS . ' directory is not readable! ');
@@ -432,7 +461,7 @@ Class loader extends user {
         {
             require($class.EXT);
             
-            return TRUE;
+            return;
         }
         
         throw new LoaderException('Unable to locate the pear library:'. $class.EXT);
@@ -447,13 +476,13 @@ Class loader extends user {
     
     // @ Support for loader::libray() inside from public model functions 
     // If you declare a library like this loader::library(); 
-    // inside from model __construct() it works good this ok
+    // from model __construct() function, it works this is ok
     // because loader::model() function already loads it via $OB->$model_name->_asn_lib();
     // but when u declare it inside a model function it will not work
     // so you will get an error: Undefined property: Model_test::$myclass
     // This function fix the problem, assigns all library files to model. (Ersin) 
 
-    static function asn_to_models()
+    private static function asn_to_models()
     {
         $OB = ob::instance();
         
@@ -464,8 +493,8 @@ Class loader extends user {
         $OB->$model_name->_asn_lib();
     }
     
-    
-    static function asn_to_libraries()
+    // assign all variables to library class
+    private static function asn_to_libraries()
     {
         $OB = ob::instance();
         
