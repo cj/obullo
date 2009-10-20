@@ -16,7 +16,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  */ 
 
  
- 
+ //just simulation we implement it later...
 Class OB_Input 
 {
     

@@ -4,10 +4,10 @@
 //write here your special blog helper functions not classes.
 
 
-function date_format_blog()
+function helper_test()
 {
-    
-    
+    echo '<p></p>';
+    echo 'helper test function succesfullt works !';
 }
 
 

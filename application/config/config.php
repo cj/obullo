@@ -104,7 +104,8 @@ $config['charset']                 = "UTF-8";
 | http://codeigniter.com/user_guide/general/creating_libraries.html
 |
 */
-$config['subclass_prefix']        = 'MY_';
+// We implement it later...
+//$config['subclass_prefix']        = 'MY_';
 
 
 /*
@@ -207,7 +208,8 @@ $config['log_date_format']        = 'Y-m-d H:i:s';
 | system/cache/ folder.  Use a full server path with trailing slash.
 |
 */
-$config['cache_path']             = '';
+// we implement it later..
+//$config['cache_path']             = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -264,7 +266,8 @@ $config['cookie_path']           = "/";
 | COOKIE data is encountered
 |
 */
-$config['global_xss_filtering']  = FALSE;
+// we implement it later...
+//$config['global_xss_filtering']  = FALSE;
 
 /*
 |--------------------------------------------------------------------------
@@ -283,7 +286,8 @@ $config['global_xss_filtering']  = FALSE;
 | by the output class.  Do not "echo" any values with compression enabled.
 |
 */
-$config['compress_output']       = FALSE;
+// we implement it later..
+//$config['compress_output']       = FALSE;
 
 /*
 |--------------------------------------------------------------------------
@@ -309,7 +313,7 @@ $config['time_reference']        = 'local';
 | in your view files.  Options are TRUE or FALSE (boolean)
 |
 */
-$config['rewrite_short_tags']    = FALSE;
+//$config['rewrite_short_tags']    = FALSE;
 
 
 

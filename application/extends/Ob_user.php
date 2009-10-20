@@ -19,7 +19,11 @@
   *       o module functions
   *       o and for your other special libraries..
   * 
-  * it will work like this ob_user::yourfunction
+  * WARNING !: it will work for everywhere like this "user::yourfunction()",
+  * if a function global (if you use it for every controllers) you should put
+  * it here, if its not a global function don't put it here because of your app 
+  * speed can go down..
+  *  
   */
 
   Class user

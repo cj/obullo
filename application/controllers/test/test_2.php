@@ -17,28 +17,29 @@ Class Test_2 extends Controller
     
     function index()
     {
-        echo 'Im the test2 controller !';
+        //echo 'Im the test2 controller !';
     }
 
-    /**
-    * @param string $param1 - hello (my string param)
-    * @param int $param2  - 3 (my integer param)
-    */
+
     function run($param1, $param2)
     {
-        parent::header();
+        $data = user::header();
     
-        echo '<br />Test2 Controller Run function succesfully works.<br /><br />';
+        $data['title_tag'] = 'Im the Test_2 Controller !';
         
-        echo '<b>this is my param 1 :</b> '. $param1.'<br />';
-        echo '<b>this is my param 2 :</b> '. $param2.'<br />';
+        $data['body_content'] = '<br />Test2 Controller Run function succesfully works.<br /><br />';
+        $data['body_content'].= '<b>this is my param 1 :</b> '. $param1.'<br />';
+        $data['body_content'].= '<b>this is my param 2 :</b> '. $param2.'<br />';
         
         $data['sample_array'] = array('1','2','3','4','5');
         $data['example_var']  = 'Hello World!';
      
-        echo '<br />';
+        echo '<br />';          
+        
                                     
-        loader::view('view_test',$data);
+        $data['body_content'].= loader::view('view_test',$data, true);
+        loader::base_view('view_base',$data);
+        
         //fetch as string  loader::view("run",$data,true);   
     }
     

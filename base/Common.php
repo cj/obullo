@@ -24,6 +24,7 @@ ini_set('display_errors', 1);
 * @version 1.0
 * @version 1.1 added removed OB_Library:factory added
 *              lib_factory function
+* @version 1.2 removed lib_factory function
 * 
 */
 

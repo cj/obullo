@@ -15,7 +15,7 @@
 <meta name="revisit-after" content="15 days">
 
 <title><?php echo $title_tag; ?></title>
-<link rel="stylesheet" type="text/css" href="<?= $this->base_url.''.$this->base_css ?>my.css">
+<link rel="stylesheet" type="text/css" href="<?php echo $this->base_url.$this->base_css ?>my.css">
 
 </head>
 

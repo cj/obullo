@@ -1,5 +1,5 @@
 
-<h3> Test View DB </h3>
+<h3> <?php echo $GLOBALS['d']?>/views/view_test_db.php </h3>
 
 <div>
 

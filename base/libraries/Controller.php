@@ -39,7 +39,7 @@ Class Controller extends ob
 
     function ob_init()
     {
-      // Load Automatically None Static Classes.
+      // Load Automatically None Base Static Classes.
 
         $Classes = array(
                             'config'  => 'Config',

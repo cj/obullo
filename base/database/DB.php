@@ -43,6 +43,9 @@ define('p_str','str');
 define('p_bool','bool');
 define('p_null','null');
 
+// active record pdo secure like constant 
+define('p_like','like');
+
 Class DB_Results
 {
     // Factory fetch type
@@ -107,7 +110,7 @@ Class DB_Results
 
 /**
  * Active Record Class.
- * Derived from Code Igniter.
+ * Derived from Code Igniter *
  *
  * @package         Obullo 
  * @subpackage      Base.database     
@@ -190,13 +193,13 @@ Class OB_DB_active_record extends PDO
     }
     
     // get current db driver.
-    function get_driver()
+    public function get_driver()
     {
          return $this->db_driver;
     }
     
     
-    function select($select = '*', $escape = NULL)
+    public function select($select = '*', $escape = NULL)
     {
         // Set the global value if this was sepecified    
         //if (is_bool($escape))
@@ -227,9 +230,9 @@ Class OB_DB_active_record extends PDO
     *
     * Sets a flag which tells the query string compiler to add DISTINCT
     *
-    * @access    public
+    * @access   public
     * @param    bool
-    * @return    object
+    * @return   object
     */
     function distinct($val = TRUE)
     {
@@ -342,7 +345,7 @@ Class OB_DB_active_record extends PDO
     * @param    string    
     * @return   object
     */
-    function _where_in($key = NULL, $values = NULL, $not = FALSE, $type = 'AND ')
+    public function _where_in($key = NULL, $values = NULL, $not = FALSE, $type = 'AND ')
     {
         if ($key === NULL OR $values === NULL)
         return;
@@ -469,9 +472,9 @@ Class OB_DB_active_record extends PDO
     /**
     * GROUP BY
     *
-    * @access    public
+    * @access   public
     * @param    string
-    * @return    object
+    * @return   object
     */
     function group_by($by)
     {
@@ -534,12 +537,12 @@ Class OB_DB_active_record extends PDO
     *
     * Called by having() or or_having()
     *
-    * @access    private
+    * @access   private
     * @param    string
     * @param    string
-    * @return    object
+    * @return   object
     */
-    function _having($key, $value = '', $type = 'AND ', $escape = TRUE)
+    private function _having($key, $value = '', $type = 'AND ', $escape = TRUE)
     {
         if ( ! is_array($key))
         $key = array($key => $value);
@@ -649,13 +652,13 @@ Class OB_DB_active_record extends PDO
     *
     * Generates a platform-specific LIMIT clause
     *
-    * @access    public
+    * @access   public
     * @param    string    the sql query string
     * @param    integer    the number of rows to limit the query to
     * @param    integer    the offset value
-    * @return    string
+    * @return   string
     */
-    function _limit($sql, $limit, $offset)
+    public function _limit($sql, $limit, $offset)
     {    
         if ($offset == 0)
         {
@@ -682,7 +685,7 @@ Class OB_DB_active_record extends PDO
     * @param    string    the offset clause
     * @return   object | void
     */
-    function get($table = '', $limit = null, $offset = null)
+    public function get($table = '', $limit = null, $offset = null)
     {
         if ($table != '') 
         {   
@@ -721,7 +724,7 @@ Class OB_DB_active_record extends PDO
     * @param     string    The table to inspect
     * @return    string
     */    
-    function _track_aliases($table)
+    private function _track_aliases($table)
     {
         if (is_array($table))
         {
@@ -767,7 +770,7 @@ Class OB_DB_active_record extends PDO
     * @access    private
     * @return    string
     */
-    function _compile_select($select_override = FALSE)
+    private function _compile_select($select_override = FALSE)
     {
         // Combine any cached components with the current statements
         $this->_merge_cache();
@@ -958,7 +961,7 @@ Class OB_DB_active_record extends PDO
     * @access    public
     * @return    void
     */    
-    function flush_cache()
+    public function flush_cache()
     {    
         $this->_reset_run(
                             array(
@@ -987,7 +990,7 @@ Class OB_DB_active_record extends PDO
     * @access    private
     * @return    void
     */
-    function _merge_cache()
+    private function _merge_cache()
     {
         if (count($this->ar_cache_exists) == 0)
         return;
@@ -1147,10 +1150,7 @@ Class OB_DB_active_record extends PDO
     
     function output()
     {
-        //$this->_compile_select();
-        
-        echo $this->last_sql;
-        exit;
+        return $this->last_sql;
     }
     
     /**
@@ -1235,7 +1235,7 @@ Class OB_DB_active_record extends PDO
                                    
         $this->_reset_write();
         
-        return $this->exec($sql);  // return number of affected rows.  
+        return $this->_exec($sql);  // return number of affected rows.  
     }
     
                      
@@ -1321,8 +1321,7 @@ Class OB_DB_active_record extends PDO
         
         $this->prepare = FALSE;
         
-        // this sould be $this->exec($sql);
-        return $this->exec($sql);  // return affected rows.      
+        return $this->_exec($sql);  // return affected rows.      
     }
     
     // --------------------------------------------------------------------
@@ -1401,7 +1400,7 @@ Class OB_DB_active_record extends PDO
         if ($reset_data)
         $this->_reset_write();
         
-        return $this->exec($sql); // return number of  affected rows
+        return $this->_exec($sql); // return number of  affected rows
     
     }  //end func.
     
@@ -1497,7 +1496,7 @@ Class DB extends DB_Adapter
     } 
     
     // PDO prepare function.
-    function prep($options = array())
+    public function prep($options = array())
     {
         $this->p_opt   = &$options;
         $this->prepare = TRUE;
@@ -1511,7 +1510,7 @@ Class DB extends DB_Adapter
     * @version 1.0
     * @return  PDOStatement
     */
-    function query($sql = NULL)
+    public function query($sql = NULL)
     {   
         $this->last_sql = $sql;
         
@@ -1536,46 +1535,45 @@ Class DB extends DB_Adapter
     /**
     * Execute prepared query
     * 
-    * @author  Ersin Güvenç
-    * @version 0.1
-    * @param   array $array bindValue or bindParam arrays
-    * @param   boolean $bindParam switch Default bindValue 
-    * @return  void | NULL 
+    * @author   Ersin Güvenç
+    * @author   you..
+    * @version  0.1
+    * @version  0.2 added secure like conditions support
+    * @param    array $array bindValue or bindParam arrays
+    * @param    boolean $bindParam switch Default bindValue 
+    * @return   void | NULL 
     */
-    function execute($array = NULL, $bindParam = FALSE)
+    public function exec($array = NULL, $bindParam = FALSE)
     { 
         if($this->last_sql != NULL AND $this->exec_count == 0)
         $this->query($this->last_sql);
-    
-        //exit($this->last_sql);
-    
-        // If like used this is a security reason
-        // add % % operators from inside 
+
+        // if(class_exists('OB_DB_active_record'))
+        
+        // this is a security reason, if developer use like operator,
+        // add % % operators inside of exec func.
         if(count($this->ar_like) > 0)
         {
             $new_array = $array;
             $array = array();
             foreach($new_array as $key=>$val)
             {                                   
-                if(strpos($key,':like_both') === 0)
+                if(strpos($val,'both|') === 0)
                 {
-                    $val = self::escape_like($val);
+                    $val = substr(self::escape_like($val),5); 
                     $val = '%'."{$val}".'%';
-                    //$val = $this->escape("%".$val."%");
                 }
                 
-                if(strpos($key,':like_before') === 0)
+                if(strpos($val,'before|') === 0)
                 {
-                    $val = self::escape_like($val);
+                    $val = substr(self::escape_like($val),7);
                     $val = '%'."{$val}"; 
-                    //$val = $this->escape('%'."{$val}");
                 }
                 
-                if(strpos($key,':like_after') === 0)
+                if(strpos($val,'after|') === 0)
                 {
-                    $val = self::escape_like($val);
-                    $val = "{$val}".'%'; 
-                    //$val = $this->escape("{$val}".'%');
+                    $val = substr(self::escape_like($val),6);
+                    $val = "{$val}".'%';
                 }
                 
                 $array[$key] = $val;
@@ -1619,11 +1617,12 @@ Class DB extends DB_Adapter
     * operations.
     * 
     * @author   Ersin Güvenç
+    * @author   you..
     * @param    string $sql
     * @version  0.1
     * @return   boolean
     */
-    public function exec($sql)
+    private function _exec($sql)
     {
         $this->last_sql = $sql;
         
@@ -1632,7 +1631,7 @@ Class DB extends DB_Adapter
         
         
     // automatically secure bind values..
-    function _bindValues($array)
+    private function _bindValues($array)
     {
         foreach($array as $key=>$val)
         {                                          
@@ -1664,7 +1663,7 @@ Class DB extends DB_Adapter
     
     
     // automatically secure bind params..
-    function _bindParams($array)
+    private function _bindParams($array)
     {
         foreach($array as $key=>$val)
         {                                          
@@ -1702,7 +1701,7 @@ Class DB extends DB_Adapter
     * @param   boolean $prepared
     * @return  string
     */
-    function last_query($prepared = FALSE)
+    public function last_query($prepared = FALSE)
     {
         if($prepared)
         {                                                         
@@ -1720,25 +1719,25 @@ Class DB extends DB_Adapter
     
     
     // get PDO::lastInsertId()
-    function insert_id()
+    public function insert_id()
     {
         return parent::lastInsertId();
     }
         
     // Alias of PDO_Statement::bindValue()
-    function bval($param, $val, $type)
+    public function bval($param, $val, $type)
     {
         $this->PQ->bindValue($param, $val, DB_Results::type($type));  
     }
     
     // Alias of PDO_Statement::bindParam()
-    function bparam($param, $val, $type, $length = NULL, $driver_options = NULL)
+    public function bparam($param, $val, $type, $length = NULL, $driver_options = NULL)
     {
         $this->PQ->bindParam($param, $val, DB_Results::type($type), $length, $driver_options);  
     }        
         
     // Get available drivers on your host
-    function drivers()
+    public function drivers()
     {
         echo '<br />';
         foreach(PDO::getAvailableDrivers() as $driver)
@@ -1746,43 +1745,43 @@ Class DB extends DB_Adapter
     }
     
     // Get results as associative array
-    function assoc()
+    public function assoc()
     {
         return $this->PQ->fetch(PDO::FETCH_ASSOC);
     }
     
     // Get result as object
-    function obj()
+    public function obj()
     {                                  
         return $this->PQ->fetch(PDO::FETCH_OBJ);
     }
     
     // Same as object
-    function row()
+    public function row()
     {                                  
         return $this->PQ->fetch(PDO::FETCH_OBJ);  
     }
     
     // Get all results by assoc, object or what u want
-    function all($type = NULL)
+    public function all($type = NULL)
     {    
         return $this->PQ->fetchAll(DB_Results::fetch($type));
     } 
     
     // Get column numbers, results in assoc
-    function num()
+    public function num()
     {    
         return $this->PQ->fetch(PDO::FETCH_NUM);
     } 
     
     // Number of rows
-    function num_rows()
+    public function num_rows()
     {    
         return $this->PQ->rowCount();
     }     
     
     // Get column names and numbers (both)
-    function both()
+    public function both()
     {
         return $this->PQ->fetch(PDO::FETCH_BOTH);
     } 

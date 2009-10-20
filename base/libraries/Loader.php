@@ -402,8 +402,10 @@ Class loader extends user {
     */
     public static function base_helper($helper)
     {
+        $helper = strtolower('helper_'.str_replace('helper_', '', $helper)).EXT;
+        
         if(file_exists(BASE.'helpers'.DS.$helper)) 
-        {
+        {                  
             include(BASE.'helpers'.DS.$helper);
             return;
         } 

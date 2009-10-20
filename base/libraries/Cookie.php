@@ -15,7 +15,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @license
  */ 
  
-Class Cookie 
+Class OB_Cookie 
 {
 
 private $time;
