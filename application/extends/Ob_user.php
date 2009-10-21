@@ -30,8 +30,8 @@
   {
       
       public $base_url = 'http://localhost/obullo/';
-      public $base_img = 'application/resources/images/';
-      public $base_css = 'application/resources/css/';
+      public $base_img = 'base/views/images/';
+      public $base_css = 'base/views/css/';
                    
       /**
       * parent::__user();
