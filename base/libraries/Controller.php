@@ -43,7 +43,7 @@ Class Controller extends ob
 
         $Classes = array(
                             'config'  => 'Config',
-                            'input'   => 'Input',
+                            //'input'   => 'Input',
                             'uri'     => 'URI',
                             );
         

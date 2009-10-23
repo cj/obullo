@@ -1,7 +1,8 @@
 <?php
   
-  Class Navigation extends Library
+  Class Navigation 
   {
+
       
       function nav_level1()
       {

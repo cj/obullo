@@ -8,7 +8,12 @@
 
 Class Myclass extends Library
 {
-  
+    function __construct()
+    {
+        loader::database();   
+    }
+    
+    
     function testMe($a,$b)
     {
         echo "<br /><br /><b> Myclass::testMe ".$a."-".$b."</b> 
@@ -18,13 +23,14 @@ Class Myclass extends Library
     // test for Can use db object from library or not ?
     function testDB()
     {
-        loader::database();
-        
-        $ob = ob::instance();
-        $ob->db->drivers();
+        //$ob = ob::instance();
+        echo $this->db->drivers(); 
+    
+        echo ob::ip();
     }
     
-    function tester(){
+    function tester()
+    {
         echo 'tester ok!!!!!!!!!!!!!!!!!!!!!!!!!';
     }
   

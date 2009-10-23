@@ -1,7 +1,7 @@
 <?php                      
 if( !defined('BASE') ) exit('Access Denied!');
 
-/* SVN FILE: $Id: Loader.php $Rev: 32 18-10-2009 17:31 develturk $ */
+/* SVN FILE: $Id: Loader.php $Rev: 37 24-10-2009 01:03 develturk $ */
 
 /**
  * Obullo Framework (c) 2009.
@@ -32,14 +32,15 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @version         0.4 renamed static functions ob::instance(),ob::register()..
  *                  added static param to library func.Added __construct support
  *                  to library.
- * @version         0.5 Changed direcory structure added $GLOBALS['d'] (directory)
+ * @version         0.5 changed directory structure added $GLOBALS['d'] (directory)
+ * @version         0.6 loader::database() and libraries _asn_lib() instanceof problem fixed.
  */
 
 
  
 Class LoaderException extends CommonException {}
 
-require(APP.'extends'.DS.'Ob_user'.EXT);
+require(APP.'extends'.DS.'User'.EXT);
                 
 Class loader extends user {  
 
@@ -90,7 +91,7 @@ Class loader extends user {
     }
     
     /**
-    * Obullo Library Pattern
+    * Obullo Library Pattern (c) 2009
     * 
     * Load user or system classes
     * from application/libraries or base/libraries
@@ -139,18 +140,27 @@ Class loader extends user {
         if($OB->$class === NULL)
         throw new LoaderException('Unable to locate the library file: '.$class);
     
-        if($OB->$class instanceof Library) // if user want to use 'extends Library' way 
-        $OB->$class->_asn_lib();   // __construct load db support.
-        
         // assign all libraries to all models
         // support for loader::libray() func. inside from
         // public model functions
         self::asn_to_models();
+    
+        if($base) { $OB->libs[] = $class; return; }
+
+        //----- below the operations for user libraries -----//
         
-        if($OB->$class instanceof Library) // if user want to use 'extends Library' way  
-        self::asn_to_libraries();  // assign all base libraries to all libraries 
+        if($OB->$class instanceof Library)  // if user want to use 'extends Library' way 
+        $OB->$class->_asn_lib();   // __construct load db support.
+        
+    
+        if($OB->$class instanceof Library)  // if user want to use 'extends Library' way  
+        self::asn_to_libraries();  // assign all User libraries to all libraries
+                                   // base libraries already assigned because of Library
+                                   // extends to ob class..
         
         $OB->libs[] = $class;
+        
+        //return $OB; // $ob = loader::library('class');
     }
     
     
@@ -315,6 +325,7 @@ Class loader extends user {
     * @version      0.2 multiple models load::database function support.
     *               Loading model inside again model bug fixed.
     * @version      0.3 Deprecated debug_backtrace(); function
+    *               added asn_to_libraries();
     * @return       void
     */
     public static function database()
@@ -334,8 +345,11 @@ Class loader extends user {
         self::asn_to_models(); 
         
         // assign db object to all libraries
+        
         self::asn_to_libraries();    // function load db support.
         // echo 'DB class initalized one time!';
+        
+        //return $OB; // $ob = loader::database();
 
     }        
 
@@ -364,7 +378,7 @@ Class loader extends user {
             $helper_name = array_pop($paths);
             $path = implode('/',$paths).'/';
             
-            $helper_name = strtolower('helper_'.str_replace('helper_', '', $helper_name)).EXT;
+            $helper_name = strtolower(str_replace('_helper', '', $helper_name).'_helper').EXT;
             
             if(file_exists(CONTROLLER.$path.$helper_name))
             {
@@ -375,7 +389,7 @@ Class loader extends user {
             throw new LoaderException('Unable to locate the helper: '.$helper_name);    
         }
         
-        $helper = strtolower('helper_'.str_replace('helper_', '', $helper)).EXT;
+        $helper = strtolower(str_replace('_helper', '', $helper).'_helper').EXT;
         
         if(file_exists(APP.'helpers'.DS.$helper))
         {
@@ -402,7 +416,7 @@ Class loader extends user {
     */
     public static function base_helper($helper)
     {
-        $helper = strtolower('helper_'.str_replace('helper_', '', $helper)).EXT;
+        $helper = strtolower(str_replace('_helper', '', $helper).'_helper').EXT;
         
         if(file_exists(BASE.'helpers'.DS.$helper)) 
         {                  
@@ -462,7 +476,6 @@ Class loader extends user {
         if(file_exists($class))
         {
             require($class.EXT);
-            
             return;
         }
         
@@ -504,7 +517,11 @@ Class loader extends user {
         return;
         
         foreach ($OB->libs as $lib_name)
-        $OB->$lib_name->_asn_lib();
+        {
+            if($OB->$lib_name instanceof Library) 
+            $OB->$lib_name->_asn_lib(); 
+        }
+        
     }
    
     

@@ -27,10 +27,10 @@ if( !defined('BASE') ) exit('Access Denied!');
  * Obullo Super Static Controller (SSC)
  * 
  * We put all static main codes here
- * Like cookie , session, register
+ * Like cookie , session..
  * Goal of the SSC to get all static functions
  * like this ob::instance(), ob::session_set(), 
- * ob::cookie_get(),ob::dbconnect() you can 
+ * ob::cookie_get()  you can 
  * also use $this var inside from static
  * functions.
  * 
@@ -48,13 +48,13 @@ Class SSC extends loader
     * @access    public
     * @return    mixed
     */
-    public function config_item($item)
+    public function config($item)
     {
         static $config_item = array();
 
         if ( ! isset($config_item[$item]))
         {
-            $config =& get_config();
+            $config = get_config();
 
             if ( ! isset($config[$item]))
             {
@@ -67,7 +67,7 @@ Class SSC extends loader
     }
    
     // get current database settings
-    static function config_db_item(){}
+    static function config_db(){}
     
     static function config_set(){}
     // $this->config->site_url();
@@ -109,7 +109,7 @@ Class SSC extends loader
     */
     public function ip()
     {
-        return $this->input->ip();
+        return $this->input->ip_address();
     }
     
     public function input_server($key){}
@@ -117,24 +117,24 @@ Class SSC extends loader
 
     public function user_agent(){echo 'ok';} 
     
-    // sessions
-    public function session_set($key,$array = NULL)
+    // ob::set_session();
+    public function set_session($key_or_array, $val = '')
     {
-        // kullanıcı ilan edicek 
-        // OB_Session::session_set sadece bunu yaz.
-        
+        return $this->session->set_userdata($key_or_array, $val);
     }
     
-    public function session_set_userdata($array = NULL){}
+    // ob::session();
+    public function session($key)
+    {
+        return $this->session->userdata($key);
+    }
     
-    public function session_userdata($array = NULL){}
-    
-    public function session_flashdata($array = NULL){}
+    public function flashdata(){}
     
     // cookies..
-    public function cookie_get(){}
+    public function cookie(){}
     
-    public function cookie_set(){}
+    public function set_cookie(){}
    
     
     // language class

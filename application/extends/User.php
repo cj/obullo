@@ -25,13 +25,41 @@
   * speed can go down..
   *  
   */
-
-  Class user
+  
+  Class UserException extends CommonException{}
+  // you also use exception errors like --> throw new UserException('error');
+  
+  Interface Ob_User_Interface 
+  {
+      //---------  Default functions. --------//
+      
+      // Top __construct() function for every controllers
+      public function __user();
+      
+      // Header function for every controller's method
+      public function __header();
+      
+      // parent index for all controller index() methods..
+      public function __index();
+      
+      // set a back url
+      public function set_back_url();
+      
+      // get the back url
+      public function back_url();
+      
+  }
+  
+  Class user implements Ob_User_Interface
   {
       
       public $base_url = 'http://localhost/obullo/';
       public $base_img = 'base/views/images/';
       public $base_css = 'base/views/css/';
+      
+      // Build html content
+      public $title_tag = '';
+      public $body_tag  = '';
                    
       /**
       * parent::__user();
@@ -43,24 +71,41 @@
           // loader::library('mystatic_class',true);
           // loader::library('mystatic_class2',true);
           
-          loader::library('navigation');
-          //loader::library('session');
+          //loader::library('navigation');
+          //loader::base_library('session');
 
           
           echo 'this my top __Constructor for all controllers ! It comes from /application/extends/Ob_user.php<br />';
       }
       
-      function header()
+      function __header()
       {
+          // this is header for every function
           //echo 'Controller Header functions here!<br />';
           
-          $data['title_tag'] = 'Common title for every page !';
-          
-          $data['head_tag'] = '';
-          $data['head_tag'].= '';
-          
-          return $data;
+          $this->title_tag = 'Default common title for every page !';
+          $this->body_tag  = 'Default body tag for every page !';
+      } 
+      
+      // parent index for all controller index() methods...
+      function __index(){}
+                                     
+      
+      // set a back url user::set_back_url();
+      // session class must be loaded
+      function set_back_url()
+      {
+          // set back url for $_GET urls..
+          return $this->session->set_userdata('back_url', $_SERVER['QUERY_STRING']);
       }
+      
+      // get a back url user::back_url();
+      // session class must be loaded
+      function back_url()
+      {
+          return $this->session->userdata('back_url');
+      }
+      
       
       // get update form post variables
       function form_db_values($formfields, $db_data){}

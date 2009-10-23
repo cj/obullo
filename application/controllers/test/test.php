@@ -9,43 +9,51 @@ Class Test extends Controller
     public $sample_var2 = 'you can use $this->variable from model';    
 
     function __construct()
-    {
+    {   
         parent::__construct();
-        
+    
         // top constructor for every controllers.
         parent::__user();
         
-        loader::helper('test');      // load helper from /application/ directory
+        loader::base_library('input');
+        
+       // loader::helper('test');      // load helper from /application/ directory
         loader::base_helper('text'); // load helper from /base directory
         
-        loader::library('mylibrary');
-        loader::base_library('cookie'); 
+        //loader::library('mylibrary');
+        loader::base_library('cookie');
+       
     }                               
     
     function index()
-    {
-        $data = user::header();
+    {                        
+        parent::__index();
+        parent::__header();
+    
+        $this->title_tag = 'Im the Test Controller !';
     
         // change the title
-        $data['title_tag'] = 'Im the Test Controller !';
+        //$data['title_tag'] = 'Im the Test Controller !';
         
-        $data['body_content'] = "<br /><br />";
-        $data['body_content'].= "<b>Directory:</b> test/ &nbsp;<b>Controller:</b> test/ &nbsp;<b>Method:</b> /run &nbsp;<br /><br />";
-        $data['body_content'].= "Click and run test contoller  <a href='".$this->base_url."index.php/test/test/run'>  /test/test/run </a>";
-        $data['body_content'].= "<br /><br />";
+        $this->body_tag = "<br /><br />";
+        $this->body_tag.= "<b>Directory:</b> test/ &nbsp;<b>Controller:</b> test/ &nbsp;<b>Method:</b> /run &nbsp;<br /><br />";
+        $this->body_tag.= "Click and run test contoller  <a href='".$this->base_url."index.php/test/test/run'>  /test/test/run </a>";
+        $this->body_tag.= "<br /><br />";
         
-        $data['body_content'].= "<br /><br />";
-        $data['body_content'].= "<b>Directory:</b> test/ &nbsp;<b>Controller:</b> test2/ &nbsp;<b>Method:</b> /run  &nbsp;<b>Params:</b> /hello/3 <br /><br />";
-        $data['body_content'].= "Click and run test2 contoller  <a href='".$this->base_url."index.php/test/test_2/run/hello/3'>  /test/test_2/run/hello/3 </a>";
-        $data['body_content'].= "<br /><br />";
+        $this->body_tag.= "<br /><br />";
+        $this->body_tag.= "<b>Directory:</b> test/ &nbsp;<b>Controller:</b> test2/ &nbsp;<b>Method:</b> /run  &nbsp;<b>Params:</b> /hello/3 <br /><br />";
+        $this->body_tag.= "Click and run test2 contoller  <a href='".$this->base_url."index.php/test/test_2/run/hello/3'>  /test/test_2/run/hello/3 </a>";
+        $this->body_tag.= "<br /><br />";
         
         
-        $data['body_content'].= "<br /><br />";
-        $data['body_content'].= "Active Record Test:<br />";
-        $data['body_content'].= "<b>Directory:</b> test/ &nbsp;<b>Controller:</b> test_db/  &nbsp;&nbsp;";        
-        $data['body_content'].= "<a href='".$this->base_url."index.php/test/test_db'>Click and run test_db contoller</a>";        
-        $data['body_content'].= "<br /><br />";
+        $this->body_tag.= "<br /><br />";
+        $this->body_tag.= "Active Record Test:<br />";
+        $this->body_tag.= "<b>Directory:</b> test/ &nbsp;<b>Controller:</b> test_db/  &nbsp;&nbsp;";        
+        $this->body_tag.= "<a href='".$this->base_url."index.php/test/test_db'>Click and run test_db contoller</a>";        
+        $this->body_tag.= "<br /><br />";
         
+        $data['title_tag'] = $this->title_tag;
+        $data['body_content'] = $this->body_tag;
         
         loader::base_view('view_base',$data);
     }
@@ -53,22 +61,27 @@ Class Test extends Controller
     
     function run()
     {
-        $data = user::header();  
-        $data['title_tag'] = 'Im the Test2 Controller !';  
+        parent::__header();
+          
+        $this->title_tag = 'Im the Test2 Controller !';  
         
-        $this->mylibrary->test_ssc();
+        loader::library('myclass'); 
+        $this->myclass->testDB();
+        
+        //$this->mylibrary->test_ssc();
         //$this->model_test->test();
     
         // System static function
-        echo ob::ip();  
+        //echo ob::ip();  
 
         echo '<br />Run function succesfully works.<br /><br />';
         
         $data['sample_array'] = array('1','2','3','4','5');
         $data['example_var']  = 'Hello World!';
 
-        $data['body_content'] = loader::view('view_test',$data,true);
-        loader::base_view('view_base',$data);
+        $this->body_tag = loader::view('view_test',$data,true);
+        
+        loader::base_view('view_base');
     }
     
         

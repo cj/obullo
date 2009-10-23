@@ -14,14 +14,14 @@
 <meta name="creation-date" content="01/01/2009">
 <meta name="revisit-after" content="15 days">
 
-<title><?php echo $title_tag; ?></title>
+<title><?php echo $this->title_tag; ?></title>
 <link rel="stylesheet" type="text/css" href="<?php echo $this->base_url.$this->base_css ?>my.css">
 
 </head>
 
 <body>
 
-<?php echo $body_content; ?>
+<?php echo $this->body_tag; ?>
 
 </body>
 

@@ -212,5 +212,30 @@ function get_config()
     return $main_conf[0];
 
 }
+
+
+/**
+* Gets a config item
+*
+* @access    public
+* @return    mixed
+*/
+function config_item($item)
+{
+    static $config_item = array();
+
+    if ( ! isset($config_item[$item]))
+    {
+        $config = get_config();
+
+        if ( ! isset($config[$item]))
+        {
+            return FALSE;
+        }
+        $config_item[$item] = $config[$item];
+    }
+
+    return $config_item[$item];
+}
  
 ?>
