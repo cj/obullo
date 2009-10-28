@@ -78,14 +78,14 @@ Class loader extends user {
     }
     
     /**
-    * loader::base_library();
+    * loader::base();
     * load base libraries from /base folder.
     * 
     * @param    string $class
     * @param    mixed $static_or_params
     * @return   self::_library()
     */
-    public static function base_library($class, $static_or_params = NULL)
+    public static function base($class, $static_or_params = NULL)
     {
         return self::_library($class, $static_or_params, TRUE);
     }
@@ -180,11 +180,11 @@ Class loader extends user {
     * @version  0.2 Changed $GLOBALS['c'] as $GLOBALS['d']
     * @return   $this->_view()
     */
-    public function view($view, $data = array(), $string = FALSE)
+    public function view($view, $string = FALSE, $data = array())
     {            
         $file = VIEW . $GLOBALS['d']. DS . 'views' . DS . $view . EXT;
                      
-        return $this->_view($file, $data, $string);
+        return $this->_view($file, $string, $data);
     }
     
     /**
@@ -193,14 +193,19 @@ Class loader extends user {
     * @author   Ersin Güvenç
     * @author   you..
     * @param    string $file path
+    * @param    boolen $string  
     * @param    array $data template vars
-    * @param    boolen $string
+    * @version  0.1
+    * @version  0.2 added $this->data container
     * @return   void
     */
-    private function _view($file, $data = array(), $string = FALSE)
+    private function _view($file, $string = FALSE, $data = array())
     {
         if(sizeof($data) > 0)
         extract($data, EXTR_SKIP);
+        
+        if(sizeof($this->data) > 0)
+        extract($this->data, EXTR_SKIP);
 
         if (file_exists($file))
         {
@@ -243,7 +248,7 @@ Class loader extends user {
     {
         $file = BASE . 'views' . DS . $view . EXT;
         
-        return $this->_view($file, $data, FALSE); 
+        return $this->_view($file, FALSE, $data); 
     }
     
     
@@ -328,7 +333,7 @@ Class loader extends user {
     *               added asn_to_libraries();
     * @return       void
     */
-    public static function database()
+    public function database()
     {
         $OB = ob::instance();
         
@@ -345,12 +350,7 @@ Class loader extends user {
         self::asn_to_models(); 
         
         // assign db object to all libraries
-        
         self::asn_to_libraries();    // function load db support.
-        // echo 'DB class initalized one time!';
-        
-        //return $OB; // $ob = loader::database();
-
     }        
 
     /**
@@ -426,7 +426,90 @@ Class loader extends user {
         
         throw new LoaderException('Unable to locate the base helper: '.$helper);    
     }
-    
+                       
+    /**
+    * Autoloader
+    *
+    * The config/autoload.php file contains an array that permits sub-systems,
+    * libraries, plugins, and helpers to be loaded automatically.
+    *
+    * @access   private
+    * @param    array
+    * @return   void
+    */
+    public function __autoloader()
+    {            
+        include_once(APPPATH.'config/autoload'.EXT);
+        
+        if ( ! isset($autoload)) { return FALSE; }
+        
+        // Load any custom config file
+        if (count($autoload['config']) > 0)
+        {            
+            foreach ($autoload['config'] as $key => $val)
+            $this->config->load($val);
+        }        
+
+        // Autoload plugins, helpers and languages
+        foreach (array('helper', 'plugin', 'language') as $type)
+        {            
+            if (isset($autoload[$type]) AND count($autoload[$type]) > 0)
+            {
+                switch ($type) {
+                   case 'helper':
+                   loader::helper($autoload[$type]);
+                     break;
+                   case 'plugin':
+                
+                     break;
+                   case 'language':
+                   $this->language($autoload[$type]);
+                     break;
+                }            
+                //$this->$type($autoload[$type]);
+            }        
+        }
+
+        if ( ! isset($autoload['libraries']))
+        $autoload['libraries'] = $autoload['core'];
+        
+        // Load libraries
+        if (isset($autoload['libraries']) AND count($autoload['libraries']) > 0)
+        {
+            // Load the database driver.
+            if (in_array('database', $autoload['libraries']))
+            {
+                loader::database();
+                $autoload['libraries'] = array_diff($autoload['libraries'], array('database'));
+            }
+        
+            // Load all other libraries
+            foreach ($autoload['libraries'] as $item)
+            $this->library($item);
+        }        
+
+        // Autoload models
+        if (isset($autoload['model']))
+        loader::model($autoload['model']);
+
+    }
+            
+    /**
+    * Loads a language file
+    *
+    * @access   public
+    * @param    array
+    * @param    string
+    * @return   void
+    */
+    public function language($file = array(), $lang = '')
+    {
+        if ( ! is_array($file))
+        $file = array($file);
+
+        foreach ($file as $langfile)
+        $this->lang->load($langfile, $lang);
+    }
     
     /**
     * loader::dir();
@@ -508,7 +591,7 @@ Class loader extends user {
         $OB->$model_name->_asn_lib();
     }
     
-    // assign all variables to library class
+    // assign all variables to library class 
     private static function asn_to_libraries()
     {
         $OB = ob::instance();

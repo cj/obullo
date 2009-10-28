@@ -18,7 +18,7 @@ if( !defined('BASE') ) exit('Access Denied!');
 |
 | Please see the user guide for complete details:
 |
-|    http://codeigniter.com/user_guide/general/routing.html
+| # url of the route detail #
 |
 | -------------------------------------------------------------------------
 | RESERVED ROUTES
@@ -26,7 +26,7 @@ if( !defined('BASE') ) exit('Access Denied!');
 |
 | There are two reserved routes:
 |
-|    $route['default_controller'] = 'welcome';
+|    $route['default_controller'] = 'welcome/welcome';
 |
 | This route indicates which controller class should be loaded if the
 | URI contains no data. In the above example, the "welcome" class
@@ -47,6 +47,6 @@ $route['default_controller'] = "test/test";
 
 
 /* End of file routes.php */
-/* Location: ./system/application/config/routes.php */
+/* Location: .application/config/routes.php */
 
 ?>

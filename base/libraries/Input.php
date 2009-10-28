@@ -305,26 +305,6 @@ class OB_Input
             return $this->post($index, $xss_clean);
         }
     }
-    
-    /**
-    * Fetch an item from either the GET array or the POST
-    *
-    * @access   public
-    * @param    string  The index key
-    * @param    bool    XSS cleaning
-    * @return   string
-    */
-    public function both($index = '', $xss_clean = FALSE)
-    {
-        if ( ! isset($_POST[$index]) )
-        {
-            return $this->get($index, $xss_clean);
-        }
-        else
-        {
-            return $this->post($index, $xss_clean);
-        }
-    }
 
     // --------------------------------------------------------------------
 
@@ -371,9 +351,9 @@ class OB_Input
             return $this->ip_address;
         }
         
-        if (ob::config('proxy_ips') != '' && $this->server('HTTP_X_FORWARDED_FOR') && $this->server('REMOTE_ADDR'))
+        if (config_item('proxy_ips') != '' && $this->server('HTTP_X_FORWARDED_FOR') && $this->server('REMOTE_ADDR'))
         {
-            $proxies = preg_split('/[\s,]/', ob::config('proxy_ips'), -1, PREG_SPLIT_NO_EMPTY);
+            $proxies = preg_split('/[\s,]/', config_item('proxy_ips'), -1, PREG_SPLIT_NO_EMPTY);
             $proxies = is_array($proxies) ? $proxies : array($proxies);
 
             $this->ip_address = in_array($_SERVER['REMOTE_ADDR'], $proxies) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];

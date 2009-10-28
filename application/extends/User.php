@@ -29,28 +29,7 @@
   Class UserException extends CommonException{}
   // you also use exception errors like --> throw new UserException('error');
   
-  Interface Ob_User_Interface 
-  {
-      //---------  Default functions. --------//
-      
-      // Top __construct() function for every controllers
-      public function __user();
-      
-      // Header function for every controller's method
-      public function __header();
-      
-      // parent index for all controller index() methods..
-      public function __index();
-      
-      // set a back url
-      public function set_back_url();
-      
-      // get the back url
-      public function back_url();
-      
-  }
-  
-  Class user implements Ob_User_Interface
+  Class user
   {
       
       public $base_url = 'http://localhost/obullo/';
@@ -59,7 +38,13 @@
       
       // Build html content
       public $title_tag = '';
+      public $head_tag  = '';
       public $body_tag  = '';
+      public $h1  = '';
+      public $h2  = '';
+      public $h3  = '';
+      
+      public $data = array(); // view data
                    
       /**
       * parent::__user();
@@ -67,23 +52,25 @@
       */
       function __user()
       {
-          // ALSO YOU CAN load your static classes like this !
+          $this->base_url = ob::base_url();
+          
+          // also you load your static classes like this !
+          
           // loader::library('mystatic_class',true);
           // loader::library('mystatic_class2',true);
           
-          //loader::library('navigation');
-          //loader::base_library('session');
+          // loader::library('navigation');
+          // loader::base('session');
 
           
-          echo 'this my top __Constructor for all controllers ! It comes from /application/extends/Ob_user.php<br />';
+          //echo 'this my top __Constructor for all controllers ! It comes from /application/extends/Ob_user.php<br />';
       }
       
       function __header()
       {
           // this is header for every function
-          //echo 'Controller Header functions here!<br />';
-          
-          $this->title_tag = 'Default common title for every page !';
+          $this->data = array(); // data container for view files
+          $this->title_tag = 'Default common title tag for every page !';
           $this->body_tag  = 'Default body tag for every page !';
       } 
       

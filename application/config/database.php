@@ -7,8 +7,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  * PHP5 MVC-Min Software for PHP 5.2.4 or newer 
  * Derived from Code Igniter
  * 
- * @package         obullo
- * @filename        base/database/DatabaseFactory.php        
+ * @package         obullo      
  * @author          obullo.com
  * @copyright       Ersin Güvenç (c) 2009.
  * @since           Version 1.0

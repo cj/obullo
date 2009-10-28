@@ -1,3 +1,12 @@
+<?php
+
+// head tagları view de oluşturmak daha mantıklı..
+//$this->head_tag.= loader::script('autosearch');
+//$this->head_tag.= loader::script('calendar',$data);
+
+?>
+
+
 
 <h3> <?php echo $GLOBALS['d']?>/views/view_test.php </h3>
 

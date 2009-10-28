@@ -48,7 +48,7 @@ $start = memory_get_usage();
 * @version 1.3 changed directory structure completely changed
 *              like /directory/class/method/arguments...
 *              added FCPATH and SELF constants
-* @version 1.4 removed Library_factory.php
+* @version 1.4 removed Library_factory.php, added pdo close conn
 * 
 */
 
@@ -132,6 +132,10 @@ if ( ! in_array(strtolower($GLOBALS['m']), array_map('strtolower', get_class_met
 // Any URI segments present (besides the directory/class/function) will be passed to the method for convenience
 call_user_func_array(array($OB, $GLOBALS['m']), array_slice($Uri->rsegments, 3));
 
+
+// Close the pdo connection ..
+if (class_exists('DB') AND isset($OB->db))
+$OB->db = NULL;
 
 //$end = OB_memory_usage();
 $end = memory_get_usage();

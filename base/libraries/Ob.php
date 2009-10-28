@@ -7,8 +7,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  * PHP5 MVC-min Framework software for PHP 5.2.4 or newer
  * Derived from Code Igniter
  *
- * @package         obullo
- * @filename        base/libraries/Controller.php        
+ * @package         obullo        
  * @author          obullo.com
  * @copyright       Ersin Güvenç (c) 2009.
  * @since           Version 1.0
@@ -19,8 +18,8 @@ if( !defined('BASE') ) exit('Access Denied!');
 /**
 *  o SSC Pattern (c) 2009 Ersin Güvenç
 *  o We use Super Static Controllers  
-*  o for prevent long writing ($this->navigation->nav_level1())
-*  o we just write like this user::nav_level1();
+*  o for prevent long writing ($this->input->post())
+*  o we just write like this ob::post(); ob::lang();
 */
  
 /**
@@ -37,119 +36,50 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @version 0.1
  * @version 0.2 added core functions like ob::register
  * @version 0.3 moved some func to common.php like 
- *              ob::register functions
+ *              ob::register
  */
  
 Class SSC extends loader 
 {
-    /**
-    * Gets a config item
-    *
-    * @access    public
-    * @return    mixed
-    */
-    public function config($item)
-    {
-        static $config_item = array();
+    //------------- Input Class Shortcut Functions -------------------//
+    
+    public function xss($str,$is_image = FALSE) { return $this->input->xss_clean($str, $is_image); }  
+    public function post($key = '',$xss_clean = FALSE) { return $this->input->post($key, $xss_clean); }
+    public function get($key = '',$xss_clean = FALSE) { return $this->input->get($key, $xss_clean); }
+    public function both($index = '',$xss_clean = FALSE) { return $this->input->get_post($index, $xss_clean); }
+    public function get_post($index = '',$xss_clean = FALSE) { return $this->input->get_post($index, $xss_clean); }
+    public function server($index = '',$xss_clean = FALSE) { return $this->input->server($index, $xss_clean); }  
+    public function cookie($index = '',$xss_clean = FALSE) { return $this->input->cookie($index, $xss_clean); } 
+    public function ip() { return $this->input->ip_address(); } 
+    public function valid_ip($ip) { return $this->input->valid_ip($ip); }
+    public function user_agent(){ return $this->input->user_agent(); }   
 
-        if ( ! isset($config_item[$item]))
-        {
-            $config = get_config();
+    //------------- Session Class Shortcut Functions -------------------//
+    
+    public function set_session($newdata = array(),$newval = '') { return $this->session->set_userdata($newdata, $newval); } 
+    public function session($item) { return $this->session->userdata($item); } 
+    public function unset_session($newdata) { return $this->session->unset_userdata($newdata); } 
+    public function set_flash($newdata = array(), $newval = '') { return $this->session->set_flashdata($newdata,$newval); } 
+    public function flash($key) { return $this->session->flashdata($key); }
+    public function keep_flash($key) { return $this->session->keep_flashdata($key); }
+    public function kill_session($key) { return $this->session->sess_destroy(); }
 
-            if ( ! isset($config[$item]))
-            {
-                return FALSE;
-            }
-            $config_item[$item] = $config[$item];
-        }
-
-        return $config_item[$item];
-    }
-   
-    // get current database settings
-    static function config_db(){}
+    //------------- Language Class Shortcut Functions -------------------//
     
-    static function config_set(){}
-    // $this->config->site_url();
-    static function config_url(){}
-    static function config_baseurl(){}
-    // $this->config->system_url();
-    static function config_system(){}
-   
-
-    /**
-    * ob::input_post();
-    * 
-    * @author Ersin Güvenç
-    * @param mixed $key form field
-    * @version 1.0
-    * @return void
-    */
-    public function post($key)
-    {
-        return $this->input->post($key);    
-    }
-    public function get($key)
-    {
-        return $this->input->get($key); 
-    }
-   
-    // identical CI $this->input->get_both
-    static function both($key,$bool){}
+    public function lang_load($langfile = '', $idiom = '', $return = FALSE){ return $this->lang->load($langfile, $idiom, $return); }
+    public function lang($item){ return $this->lang->line($item); }
     
-    // identical CI $this->input->get_post
-    static function xss(){}
+    //------------- Url Helper Shortcut Functions -------------------//  
     
-    /**
-    * ob::input_ip();
-    * Validate ip address
-    * @param mixed $key ip addres
-    * @version 1.0
-    * @return void
-    */
-    public function ip()
-    {
-        return $this->input->ip_address();
-    }
+    public function base_url() { return $this->config->slash_item('base_url'); }
+    public function current_url() { return $this->config->site_url($this->uri->uri_string()); }
+    public function uri_string() { return $this->uri->uri_string(); }
+    public function index_page() { return $this->config->item('index_page');  }
     
-    public function input_server($key){}
-    
-
-    public function user_agent(){echo 'ok';} 
-    
-    // ob::set_session();
-    public function set_session($key_or_array, $val = '')
-    {
-        return $this->session->set_userdata($key_or_array, $val);
-    }
-    
-    // ob::session();
-    public function session($key)
-    {
-        return $this->session->userdata($key);
-    }
-    
-    public function flashdata(){}
-    
-    // cookies..
-    public function cookie(){}
-    
-    public function set_cookie(){}
-   
-    
-    // language class
-    // otomatik yada kullanıcı tarafından yukleniyor.
-    // load library ile
-    public function lang(){}
-
-    
-    // redirect function
-    public function redirect(){}
+    public function config($item) { return config_item($item); } 
     
 }  // end ssc class.
- 
- 
-Class OBException extends CommonException {}  
+
 
  /**
  * Obullo Super Object (c) 2009
@@ -190,7 +120,7 @@ Class ob extends SSC
     * @version 1.1 getInstance renamed and moved into ob class
     * @return object
     */
-    static function instance()
+    public static function instance()
     {
         return self::$instance;
     } 
@@ -206,7 +136,7 @@ Class ob extends SSC
     * @version 1.1 moved into ob class
     * @return object - pdo database handle
     */
-    static function dbconnect()
+    public static function dbconnect()
     {
         return OB_DBFactory::Connect();
     }

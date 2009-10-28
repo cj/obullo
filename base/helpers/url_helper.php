@@ -32,16 +32,8 @@ if( !defined('BASE') ) exit('Access Denied!');
 
 // ------------------------------------------------------------------------
 
-/**
-* Site URL
-*
-* Create a local URL based on your basepath. Segments can be passed via the
-* first parameter either as a string or an array.
-*
-* @access	public
-* @param	string
-* @return	string
-*/
+// we use SSC instead of these functions forexample ob::site_url() , ob::base_url()  .. 
+/*
 if ( ! function_exists('site_url'))
 {
 	function site_url($uri = '')
@@ -50,17 +42,6 @@ if ( ! function_exists('site_url'))
 		return $OB->config->site_url($uri);
 	}
 }
-
-// ------------------------------------------------------------------------
-
-/**
- * Base URL
- *
- * Returns the "base_url" item from your config file
- *
- * @access	public
- * @return	string
- */
 if ( ! function_exists('base_url'))
 {
 	function base_url()
@@ -69,18 +50,6 @@ if ( ! function_exists('base_url'))
 		return $OB->config->slash_item('base_url');
 	}
 }
-
-// ------------------------------------------------------------------------
-
-/**
- * Current URL
- *
- * Returns the full URL (including segments) of the page where this 
- * function is placed
- *
- * @access	public
- * @return	string
- */
 if ( ! function_exists('current_url'))
 {
 	function current_url()
@@ -90,15 +59,6 @@ if ( ! function_exists('current_url'))
 	}
 }
 
-// ------------------------------------------------------------------------
-/**
- * URL String
- *
- * Returns the URI segments.
- *
- * @access	public
- * @return	string
- */
 if ( ! function_exists('uri_string'))
 {
 	function uri_string()
@@ -107,17 +67,6 @@ if ( ! function_exists('uri_string'))
 		return $OB->uri->uri_string();
 	}
 }
-
-// ------------------------------------------------------------------------
-
-/**
- * Index page
- *
- * Returns the "index_page" from your config file
- *
- * @access	public
- * @return	string
- */
 if ( ! function_exists('index_page'))
 {
 	function index_page()
@@ -126,6 +75,7 @@ if ( ! function_exists('index_page'))
 		return $OB->config->item('index_page');
 	}
 }
+*/
 
 // ------------------------------------------------------------------------
 

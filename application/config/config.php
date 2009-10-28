@@ -231,7 +231,7 @@ $config['encryption_key']         = "";
 | 'encrypt_sess_cookie' = TRUE/FALSE (boolean).  Whether to encrypt the cookie
 | 'session_expiration'  = the number of SECONDS you want the session to last.
 |  by default sessions last 7200 seconds (two hours).  Set to zero for no expiration.
-| 'time_to_update'        = how many seconds between Obullo refreshing Session Information
+| 'time_to_update'      = how many seconds between Obullo refreshing Session Information
 |
 */
 $config['sess_cookie_name']      = 'ob_session';

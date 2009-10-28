@@ -15,13 +15,13 @@ Class Test extends Controller
         // top constructor for every controllers.
         parent::__user();
         
-        loader::base_library('input');
+        loader::base('input');
         
        // loader::helper('test');      // load helper from /application/ directory
         loader::base_helper('text'); // load helper from /base directory
         
         //loader::library('mylibrary');
-        loader::base_library('cookie');
+        loader::base('cookie');
        
     }                               
     
@@ -52,9 +52,6 @@ Class Test extends Controller
         $this->body_tag.= "<a href='".$this->base_url."index.php/test/test_db'>Click and run test_db contoller</a>";        
         $this->body_tag.= "<br /><br />";
         
-        $data['title_tag'] = $this->title_tag;
-        $data['body_content'] = $this->body_tag;
-        
         loader::base_view('view_base',$data);
     }
     
@@ -64,6 +61,7 @@ Class Test extends Controller
         parent::__header();
           
         $this->title_tag = 'Im the Test2 Controller !';  
+        //$this->head_tag  = loader::base_js('jquery');  head tagları view da oluşturmak daha mantıklı..
         
         loader::library('myclass'); 
         $this->myclass->testDB();
@@ -79,8 +77,7 @@ Class Test extends Controller
         $data['sample_array'] = array('1','2','3','4','5');
         $data['example_var']  = 'Hello World!';
 
-        $this->body_tag = loader::view('view_test',$data,true);
-        
+        $this->body_tag = loader::view('view_test',true);
         loader::base_view('view_base');
     }
     

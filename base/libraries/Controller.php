@@ -41,17 +41,24 @@ Class Controller extends ob
     {
       // Load Automatically None Base Static Classes.
 
-        $Classes = array(
-                            'config'  => 'Config',
-                            //'input'   => 'Input',
-                            'uri'     => 'URI',
+        $Classes = array(                          
+                            'config'    => 'Config',
+                            'input'     => 'Input',
+                            //'benchmark' => 'Benchmark',
+                            'uri'       => 'URI',
+                            //'output'    => 'Output',
+                            'lang'      => 'Language',
+                            'router'    => 'Router'
                             );
         
         foreach ($Classes as $public_var => $Class)
         {
             $this->$public_var = base_register($Class);
         }
-      
+        
+        // autload files
+        //loader::__autoloader();
+        
       // from now on we can none static classes like this
       // like this $this->class->function(); 
     

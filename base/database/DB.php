@@ -1660,8 +1660,7 @@ Class DB extends DB_Adapter
             }
         }
     }
-    
-    
+
     // automatically secure bind params..
     private function _bindParams($array)
     {

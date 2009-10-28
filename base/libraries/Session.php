@@ -6,8 +6,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  *
  * PHP5 MVC Framework software for PHP 5.2.4 or newer
  *
- * @package         obullo
- * @filename        base/libraries/Session.php        
+ * @package         obullo      
  * @author          obullo.com
  * @copyright       Ersin Güvenç (c) 2009.
  * @since           Version 1.0
@@ -64,24 +63,20 @@ class OB_Session {
         // Set all the session preferences, which can either be set 
         // manually via the $params array above or via the config file
         foreach (array('sess_encrypt_cookie', 'sess_use_database', 'sess_table_name', 'sess_expiration', 'sess_match_ip', 'sess_match_useragent', 'sess_cookie_name', 'cookie_path', 'cookie_domain', 'sess_time_to_update', 'time_reference', 'cookie_prefix', 'encryption_key') as $key)
-        {
-            $this->$key = (isset($params[$key])) ? $params[$key] : $this->OB->config->item($key);
-        }        
-    
+        $this->$key = (isset($params[$key])) ? $params[$key] : $this->OB->config->item($key);
+                
         // Load the string helper so we can use the strip_slashes() function
-        loader::helper('string');
+        loader::base_helper('string');
 
         // Do we need encryption? If so, load the encryption class
         if ($this->sess_encrypt_cookie == TRUE)
-        {
-            loader::library('encrypt');
-        }
+        loader::base_library('encrypt');
+        
 
         // Are we using a database?  If so, load it
         if ($this->sess_use_database === TRUE AND $this->sess_table_name != '')
-        {
-            loader::database();
-        }
+        loader::database();
+        
 
         // Set the "now" time.  Can either be GMT or server time, based on the
         // config prefs.  We use this to set the "last activity" time
@@ -90,9 +85,7 @@ class OB_Session {
         // Set the session length. If the session expiration is
         // set to zero we'll set the expiration two years from now.
         if ($this->sess_expiration == 0)
-        {
-            $this->sess_expiration = (60*60*24*365*2);
-        }
+        $this->sess_expiration = (60*60*24*365*2);
                          
         // Set the cookie name
         $this->sess_cookie_name = $this->cookie_prefix.$this->sess_cookie_name;
@@ -109,10 +102,10 @@ class OB_Session {
         }
         
         // Delete 'old' flashdata (from last request)
-           $this->_flashdata_sweep();
+        $this->_flashdata_sweep();
         
         // Mark all new flashdata as old (data will be deleted before next request)
-           $this->_flashdata_mark();
+        $this->_flashdata_mark();
 
         // Delete expired sessions if necessary
         $this->_sess_gc();
@@ -128,7 +121,7 @@ class OB_Session {
     * @access    public
     * @return    void
     */
-    function sess_read()
+    public function sess_read()
     {    
         // Fetch the cookie
         $session = $this->OB->input->cookie($this->sess_cookie_name);
@@ -148,7 +141,7 @@ class OB_Session {
         else
         {    
             // encryption was not used, so we need to check the md5 hash
-            $hash     = substr($session, strlen($session)-32); // get last 32 chars
+            $hash    = substr($session, strlen($session)-32); // get last 32 chars
             $session = substr($session, 0, strlen($session)-32);
 
             // Does the md5 hash match?  This is to prevent manipulation of session data in userspace
@@ -246,7 +239,7 @@ class OB_Session {
      * @access    public
      * @return    void
      */
-    function sess_write()
+    public function sess_write()
     {
         // Are we saving custom data to the DB?  If not, all we do is update the cookie
         if ($this->sess_use_database === FALSE)
@@ -293,12 +286,12 @@ class OB_Session {
     // --------------------------------------------------------------------
     
     /**
-     * Create a new session
-     *
-     * @access    public
-     * @return    void
-     */
-    function sess_create()
+    * Create a new session
+    *
+    * @access    public
+    * @return    void
+    */
+    public function sess_create()
     {    
         $sessid = '';
         while (strlen($sessid) < 32)
@@ -327,18 +320,17 @@ class OB_Session {
             // Write the cookie
             $this->_set_cookie();
         
-        /*-- Ersin modify for prevent to insert PEAR Http Request Class requests --*/
     }
     
     // --------------------------------------------------------------------
     
     /**
-     * Update an existing session
-     *
-     * @access    public
-     * @return    void
-     */
-    function sess_update()
+    * Update an existing session
+    *
+    * @access    public
+    * @return    void
+    */
+    public function sess_update()
     {
         // We only update the session every five minutes by default
         if (($this->userdata['last_activity'] + $this->sess_time_to_update) >= $this->now)
@@ -378,16 +370,10 @@ class OB_Session {
             {
                 $cookie_data[$val] = $this->userdata[$val];
             }
-            
-            $this->OB->db->query(
-                $this->OB->db->update_string(
-                $this->sess_table_name, 
-                array(
-                'last_activity' => $this->now,
-                'session_id' => $new_sessid), 
-                array('session_id' => $old_sessid)
-                )
-            );
+        
+            $this->OB->db->where('session_id',$old_sessid);
+            $this->OB->db->update($this->sess_table_name, 
+            array('last_activity' => $this->now,'session_id' => $new_sessid));
         }
         
         // Write the cookie
@@ -397,12 +383,12 @@ class OB_Session {
     // --------------------------------------------------------------------
     
     /**
-     * Destroy the current session
-     *
-     * @access    public
-     * @return    void
-     */
-    function sess_destroy()
+    * Destroy the current session
+    *
+    * @access    public
+    * @return    void
+    */
+    public function sess_destroy()
     {    
         // Kill the session DB row
         if ($this->sess_use_database === TRUE AND isset($this->userdata['session_id']))
@@ -425,13 +411,13 @@ class OB_Session {
     // --------------------------------------------------------------------
     
     /**
-     * Fetch a specific item from the session array
-     *
-     * @access    public
-     * @param    string
-     * @return    string
-     */        
-    function userdata($item)
+    * Fetch a specific item from the session array
+    *
+    * @access   public
+    * @param    string
+    * @return   string
+    */        
+    public function userdata($item)
     {
         return ( ! isset($this->userdata[$item])) ? FALSE : $this->userdata[$item];
     }
@@ -439,12 +425,12 @@ class OB_Session {
     // --------------------------------------------------------------------
     
     /**
-     * Fetch all session data
-     *
-     * @access    public
-     * @return    mixed
-     */    
-    function all_userdata()
+    * Fetch all session data
+    *
+    * @access    public
+    * @return    mixed
+    */    
+    public function all_userdata()
     {
         return ( ! isset($this->userdata)) ? FALSE : $this->userdata;
     }
@@ -454,12 +440,12 @@ class OB_Session {
     /**
     * Add or change data in the "userdata" array
     *
-    * @access    public
+    * @access   public
     * @param    mixed
     * @param    string
-    * @return    void
+    * @return   void
     */        
-    function set_userdata($newdata = array(), $newval = '')
+    public function set_userdata($newdata = array(), $newval = '')
     {
         if (is_string($newdata))
         {
@@ -480,12 +466,12 @@ class OB_Session {
     // --------------------------------------------------------------------
     
     /**
-     * Delete a session variable from the "userdata" array
-     *
-     * @access    array
-     * @return    void
-     */        
-    function unset_userdata($newdata = array())
+    * Delete a session variable from the "userdata" array
+    *
+    * @access    array
+    * @return    void
+    */        
+    public function unset_userdata($newdata = array())
     {
         if (is_string($newdata))
         {
@@ -506,15 +492,15 @@ class OB_Session {
     // ------------------------------------------------------------------------
 
     /**
-     * Add or change flashdata, only available
-     * until the next request
-     *
-     * @access    public
-     * @param    mixed
-     * @param    string
-     * @return    void
-     */
-    function set_flashdata($newdata = array(), $newval = '')
+    * Add or change flashdata, only available
+    * until the next request
+    *
+    * @access   public
+    * @param    mixed
+    * @param    string
+    * @return   void
+    */
+    public function set_flashdata($newdata = array(), $newval = '')
     {
         if (is_string($newdata))
         {
@@ -534,13 +520,13 @@ class OB_Session {
     // ------------------------------------------------------------------------
 
     /**
-     * Keeps existing flashdata available to next request.
-     *
-     * @access    public
-     * @param    string
-     * @return    void
-     */
-    function keep_flashdata($key)
+    * Keeps existing flashdata available to next request.
+    *
+    * @access   public
+    * @param    string
+    * @return   void
+    */
+    public function keep_flashdata($key)
     {
         // 'old' flashdata gets removed.  Here we mark all 
         // flashdata as 'new' to preserve it from _flashdata_sweep()
@@ -556,13 +542,13 @@ class OB_Session {
     // ------------------------------------------------------------------------
 
     /**
-     * Fetch a specific flashdata item from the session array
-     *
-     * @access    public
-     * @param    string
-     * @return    string
-     */    
-    function flashdata($key)
+    * Fetch a specific flashdata item from the session array
+    *
+    * @access   public
+    * @param    string
+    * @return   string
+    */    
+    public function flashdata($key)
     {
         $flashdata_key = $this->flashdata_key.':old:'.$key;
         return $this->userdata($flashdata_key);
@@ -571,13 +557,13 @@ class OB_Session {
     // ------------------------------------------------------------------------
 
     /**
-     * Identifies flashdata as 'old' for removal
-     * when _flashdata_sweep() runs.
-     *
-     * @access    private
-     * @return    void
-     */
-    function _flashdata_mark()
+    * Identifies flashdata as 'old' for removal
+    * when _flashdata_sweep() runs.
+    *
+    * @access    private
+    * @return    void
+    */
+    private function _flashdata_mark()
     {
         $userdata = $this->all_userdata();
         foreach ($userdata as $name => $value)
@@ -595,13 +581,12 @@ class OB_Session {
     // ------------------------------------------------------------------------
 
     /**
-     * Removes all flashdata marked as 'old'
-     *
-     * @access    private
-     * @return    void
-     */
-
-    function _flashdata_sweep()
+    * Removes all flashdata marked as 'old'
+    *
+    * @access    private
+    * @return    void
+    */
+    private function _flashdata_sweep()
     {
         $userdata = $this->all_userdata();
         foreach ($userdata as $key => $value)
@@ -617,12 +602,12 @@ class OB_Session {
     // --------------------------------------------------------------------
     
     /**
-     * Get the "now" time
-     *
-     * @access    private
-     * @return    string
-     */
-    function _get_time()
+    * Get the "now" time
+    *
+    * @access    private
+    * @return    string
+    */
+    private function _get_time()
     {
         if (strtolower($this->time_reference) == 'gmt')
         {
@@ -640,12 +625,12 @@ class OB_Session {
     // --------------------------------------------------------------------
     
     /**
-     * Write the session cookie
-     *
-     * @access    public
-     * @return    void
-     */
-    function _set_cookie($cookie_data = NULL)
+    * Write the session cookie
+    *
+    * @access    public
+    * @return    void
+    */
+    public function _set_cookie($cookie_data = NULL)
     {
         if (is_null($cookie_data))
         {
@@ -679,16 +664,16 @@ class OB_Session {
     // --------------------------------------------------------------------
     
     /**
-     * Serialize an array
-     *
-     * This function first converts any slashes found in the array to a temporary
-     * marker, so when it gets unserialized the slashes will be preserved
-     *
-     * @access    private
-     * @param    array
-     * @return    string
-     */    
-    function _serialize($data)
+    * Serialize an array
+    *
+    * This function first converts any slashes found in the array to a temporary
+    * marker, so when it gets unserialized the slashes will be preserved
+    *
+    * @access   private
+    * @param    array
+    * @return   string
+    */    
+    private function _serialize($data)
     {
         if (is_array($data))
         {
@@ -708,16 +693,16 @@ class OB_Session {
     // --------------------------------------------------------------------
     
     /**
-     * Unserialize
-     *
-     * This function unserializes a data string, then converts any
-     * temporary slash markers back to actual slashes
-     *
-     * @access    private
-     * @param    array
-     * @return    string
-     */        
-    function _unserialize($data)
+    * Unserialize
+    *
+    * This function unserializes a data string, then converts any
+    * temporary slash markers back to actual slashes
+    *
+    * @access    private
+    * @param    array
+    * @return    string
+    */        
+    public function _unserialize($data)
     {
         $data = @unserialize(strip_slashes($data));
         
@@ -737,15 +722,15 @@ class OB_Session {
     // --------------------------------------------------------------------
     
     /**
-     * Garbage collection
-     *
-     * This deletes expired session rows from database
-     * if the probability percentage is met
-     *
-     * @access    public
-     * @return    void
-     */
-    function _sess_gc()
+    * Garbage collection
+    *
+    * This deletes expired session rows from database
+    * if the probability percentage is met
+    *
+    * @access    public
+    * @return    void
+    */
+    public function _sess_gc()
     {
         if ($this->sess_use_database != TRUE)
         {
@@ -769,4 +754,4 @@ class OB_Session {
 // END Session Class
 
 /* End of file Session.php */
-/* Location: ./system/libraries/Session.php */
+/* Location: ./base/libraries/Session.php */

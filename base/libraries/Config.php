@@ -5,9 +5,9 @@ if( !defined('BASE') ) exit('Access Denied!');
  * Obullo Framework (c) 2009.
  *
  * PHP5 MVC-min Framework software for PHP 5.2.4 or newer
- *
- * @package         obullo
- * @filename        base/Common.php        
+ * Derived from Code Igniter 
+ * 
+ * @package         obullo       
  * @author          obullo.com
  * @copyright       Ersin Güvenç (c) 2009.
  * @filesource
@@ -29,18 +29,18 @@ Class ConfigException extends CommonException {}
  * @author      Ersin Güvenç
  * @link        
  */
- class OB_Config {
-
-    var $config = array();
-    var $is_loaded = array();
+ class OB_Config
+ {
+    public $config    = array();
+    public $is_loaded = array();
 
     /**
      * Constructor
      *
      * Sets the $config data from the primary config.php file as a class variable
      *
-     * @access   public
-     * @param   string    the config file name
+     * @access  public
+     * @param   string   the config file name
      * @param   boolean  if configuration values should be loaded into their own section
      * @param   boolean  true if errors should just return false, false if an error message should be displayed
      * @return  boolean  if the file was successfully loaded or not
@@ -54,13 +54,13 @@ Class ConfigException extends CommonException {}
     // --------------------------------------------------------------------
 
     /**
-     * Load Config File
-     *
-     * @access    public
-     * @param    string    the config file name
-     * @return    boolean    if the file was loaded correctly
-     */    
-    function load($file = '', $use_sections = FALSE, $fail_gracefully = FALSE)
+    * Load Config File
+    *
+    * @access   public
+    * @param    string    the config file name
+    * @return   boolean   if the file was loaded correctly
+    */    
+    public function load($file = '', $use_sections = FALSE, $fail_gracefully = FALSE)
     {
         $file = ($file == '') ? 'config' : str_replace(EXT, '', $file);
     
@@ -117,16 +117,16 @@ Class ConfigException extends CommonException {}
     // --------------------------------------------------------------------
 
     /**
-     * Fetch a config file item
-     *
-     *
-     * @access    public
-     * @param    string    the config item name
-     * @param    string    the index name
-     * @param    bool
-     * @return    string
-     */
-    function item($item, $index = '')
+    * Fetch a config file item
+    *
+    *
+    * @access   public
+    * @param    string    the config item name
+    * @param    string    the index name
+    * @param    bool
+    * @return   string
+    */
+    public function item($item, $index = '')
     {    
         if ($index == '')
         {    
@@ -155,20 +155,20 @@ Class ConfigException extends CommonException {}
         return $pref;
     }
       
-      // --------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     /**
-     * Fetch a config file item - adds slash after item
-     *
-     * The second parameter allows a slash to be added to the end of
-     * the item, in the case of a path.
-     *
-     * @access    public
-     * @param    string    the config item name
-     * @param    bool
-     * @return    string
-     */
-    function slash_item($item)
+    * Fetch a config file item - adds slash after item
+    *
+    * The second parameter allows a slash to be added to the end of
+    * the item, in the case of a path.
+    *
+    * @access   public
+    * @param    string    the config item name
+    * @param    bool
+    * @return   string
+    */
+    public function slash_item($item)
     {
         if ( ! isset($this->config[$item]))
         {
@@ -188,13 +188,13 @@ Class ConfigException extends CommonException {}
     // --------------------------------------------------------------------
 
     /**
-     * Site URL
-     *
-     * @access    public
-     * @param    string    the URI string
-     * @return    string
-     */
-    function site_url($uri = '')
+    * Site URL
+    *
+    * @access   public
+    * @param    string    the URI string
+    * @return   string
+    */
+    public function site_url($uri = '')
     {
         if (is_array($uri))
         {
@@ -215,12 +215,12 @@ Class ConfigException extends CommonException {}
     // --------------------------------------------------------------------
 
     /**
-     * System URL
-     *
-     * @access    public
-     * @return    string
-     */
-    function system_url()
+    * System URL
+    *
+    * @access    public
+    * @return    string
+    */
+    public function system_url()
     {
         $x = explode("/", preg_replace("|/*(.+?)/*$|", "\\1", BASE));
         return $this->slash_item('base_url').end($x).'/';
@@ -229,14 +229,14 @@ Class ConfigException extends CommonException {}
     // --------------------------------------------------------------------
 
     /**
-     * Set a config file item
-     *
-     * @access    public
-     * @param    string    the config item key
-     * @param    string    the config item value
-     * @return    void
-     */
-    function set_item($item, $value)
+    * Set a config file item
+    *
+    * @access   public
+    * @param    string    the config item key
+    * @param    string    the config item value
+    * @return   void
+    */
+    public function set_item($item, $value)
     {
         $this->config[$item] = $value;
     }

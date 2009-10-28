@@ -20,6 +20,12 @@ Class Model_test extends Model
         //loader::library('myclass');
     }
 
+    
+    function platform()
+    {
+        $this->db->drivers();
+    }
+    
     /**
     * Test Function
     * @link http://tr.php.net/manual/en/pdostatement.fetch.php  

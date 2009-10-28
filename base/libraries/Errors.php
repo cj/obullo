@@ -5,9 +5,9 @@ if( !defined('BASE') ) exit('Access Denied!');
  * Obullo Framework (c) 2009.
  *
  * PHP5 MVC Framework software for PHP 5.2.4 or newer
- *
- * @package         obullo
- * @filename        base/libraries/Errors.php        
+ * Derived from Code Igniter
+ * 
+ * @package         obullo    
  * @author          obullo.com
  * @copyright       Ersin Güvenç (c) 2009.
  * @since           Version 1.0
@@ -54,28 +54,33 @@ function Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, $type)
 // Obullo error template for exceptions.
 function Obullo_ExceptionHandler($e)
 {   
-    $type = 'General';
-    
-    if(substr($e->getMessage(),0,3) == 'SQL')
-    $type = 'Database';
+    $type = 'Exception';
+    $sql_string  = '';
+    if(substr($e->getMessage(),0,3) == 'SQL') 
+    {
+        $type = 'Database';
+        $ob = ob::instance();
+        $sql_string = '<br /><b>SQL: </b> &nbsp;'.$ob->db->last_query($ob->db->prepare);
+    }
    
     $msg = '<div style=\'width:50%;padding:5px;background-color:#eee;\'>';
     $msg.= '<b>['. $type .' Error]: </b>'.$e->getMessage().'<br />';
     $msg.= '<b>Code:</b> &nbsp;'.$e->getCode()."<br />";  
     $msg.= '<b>File:</b> &nbsp;'.$e->getFile()."<br />";
     $msg.= '<b>Line:</b> &nbsp;'.$e->getLine();
+    $msg.= $sql_string;
     $msg.= '</div>';
     
     echo $msg;
 }       
  
- /**
- * 404 Page Not Found Handler
- *
- * @access    private
- * @param    string
- * @return    string
- */
+/**
+* 404 Page Not Found Handler
+*
+* @access    private
+* @param    string
+* @return    string
+*/
 function show_404($page = '')
 {    
     $heading = "404 Page Not Found";
