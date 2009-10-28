@@ -316,6 +316,17 @@ $config['time_reference']        = 'local';
 //$config['rewrite_short_tags']    = FALSE;
 
 
+/*
+|--------------------------------------------------------------------------
+| Loader::script('') javascript template file extension
+|--------------------------------------------------------------------------
+|
+| Please define script template extension, when you call loader::script(); 
+| you can get your javascript files as a string.Like views.
+|
+*/
+$config['script_view_extension']    = '.php';
+
 
 /* End of file config.php */
 /* Location: ./system/application/config/config.php */

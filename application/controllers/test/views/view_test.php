@@ -1,14 +1,15 @@
 <?php
 
-// head tagları view de oluşturmak daha mantıklı..
-//$this->head_tag.= loader::script('autosearch');
-//$this->head_tag.= loader::script('calendar',$data);
+// load script and js files
+$this->head_tag.= loader::base_js('jquery');
+$this->head_tag.= loader::script('test');
 
+loader::base_helper('form');
 ?>
 
+<!-- body_tag start -->
 
-
-<h3> <?php echo $GLOBALS['d']?>/views/view_test.php </h3>
+<h3> <?php echo ob::directory(); ?>/views/view_test.php </h3>
 
 <div>
 
@@ -24,4 +25,11 @@
 
 <?php } ?>
 
+
+<b>Test loader::script('test');  </b><br /> 
+<?php echo form_button('js_test_button','Alert Me!'," onclick='alertMe();'") ?>
+
+<p></p>
 </div>
+
+<!-- body_tag end -->

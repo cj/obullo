@@ -17,6 +17,8 @@
 <title><?php echo $this->title_tag; ?></title>
 <link rel="stylesheet" type="text/css" href="<?php echo $this->base_url.$this->base_css ?>my.css">
 
+<?php echo $this->head_tag; ?>
+
 </head>
 
 <body>

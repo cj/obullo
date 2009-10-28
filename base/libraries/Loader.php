@@ -34,6 +34,8 @@ if( !defined('BASE') ) exit('Access Denied!');
  *                  to library.
  * @version         0.5 changed directory structure added $GLOBALS['d'] (directory)
  * @version         0.6 loader::database() and libraries _asn_lib() instanceof problem fixed.
+ * @version         0.7 added base(), _library(), base_helper(), base_view() functions. 
+ * @version         0.8 added js(), base_js(), script(), base_script() functions.Removed dir() function.
  */
 
 
@@ -163,7 +165,6 @@ Class loader extends user {
         //return $OB; // $ob = loader::library('class');
     }
     
-    
     /**
     * loader::view();
     * 
@@ -173,38 +174,60 @@ Class loader extends user {
     *  
     * @author   Ersin Güvenç
     * @author   you..
-    * @param    string $view filename
+    * @param    string $filename filename
     * @param    array $data view data
     * @param    boolean $string fetch as string
     * @version  0.1
     * @version  0.2 Changed $GLOBALS['c'] as $GLOBALS['d']
-    * @return   $this->_view()
+    * @return   self::_view()
     */
-    public function view($view, $string = FALSE, $data = array())
+    public function view($filename, $data = array(), $string = FALSE)
     {            
-        $file = VIEW . $GLOBALS['d']. DS . 'views' . DS . $view . EXT;
+        $path = VIEW . $GLOBALS['d']. DS . 'views' . DS;
                      
-        return $this->_view($file, $string, $data);
+        return $this->_view($path, $filename, $data, $string);
+    }
+    
+    /**
+    * loader::base_view();
+    * 
+    * load top html page for every views 
+    * Base view file comes from 
+    * base/views directory
+    * 
+    * @param    string $filename                   
+    * @param    array $data
+    * @param    boolean $string
+    * @return   self::_view()
+    */
+    public function base_view($filename, $data = array(), $string = FALSE)
+    {
+        $path = BASE . 'views'. DS;
+        
+        return $this->_view($path, $filename, $data, $string); 
     }
     
     /**
     * Main view function
     * 
     * @author   Ersin Güvenç
-    * @author   you..
-    * @param    string $file path
-    * @param    boolen $string  
+    * @author   you..            
+    * @param    string $path file path 
+    * @param    string $filename 
     * @param    array $data template vars
+    * @param    boolen $string 
     * @version  0.1
     * @version  0.2 added $this->data container
     * @return   void
     */
-    private function _view($file, $string = FALSE, $data = array())
+    private function _view($path, $filename, $data = array(), $string = FALSE)
     {
+        $file = $path . $filename . EXT;
+        
         if(sizeof($data) > 0)
         extract($data, EXTR_SKIP);
         
-        if(sizeof($this->data) > 0)
+        if(sizeof($this->data) > 0)   // user hidden data
         extract($this->data, EXTR_SKIP);
 
         if (file_exists($file))
@@ -229,29 +252,10 @@ Class loader extends user {
             return;
         } 
         
-        throw new LoaderException('Unable to locate the view: '.$file);
+        throw new LoaderException('Unable to locate the view: '.$filename);
     }
-    
-    
-    /**
-    * loader::base_view();
-    * 
-    * load top html page for every views 
-    * Base view file comes from 
-    * application/views directory
-    * 
-    * @param    string $view
-    * @param    array $data
-    * @return   $this->_view()
-    */
-    public function base_view($view, $data = array())
-    {
-        $file = BASE . 'views' . DS . $view . EXT;
-        
-        return $this->_view($file, FALSE, $data); 
-    }
-    
-    
+   
+       
     /**
     * loader::model();
     * Obullo Model Pattern
@@ -321,17 +325,17 @@ Class loader extends user {
     * loader::database();
     * 
     * Database load.
-    * This function just load database to $OB
+    * This function just loads the database for current
+    * Controller, not models, libraries etc.. 
     * 
-    * @author       Ersin Güvenç
-    * @author       you..
-    * @copyright    obullo.com
-    * @version      0.1
-    * @version      0.2 multiple models load::database function support.
+    * @author   Ersin Güvenç
+    * @author   you..
+    * @version  0.1
+    * @version  0.2 multiple models load::database function support.
     *               Loading model inside again model bug fixed.
-    * @version      0.3 Deprecated debug_backtrace(); function
+    * @version  0.3 Deprecated debug_backtrace(); function
     *               added asn_to_libraries();
-    * @return       void
+    * @return   void
     */
     public function database()
     {
@@ -512,40 +516,6 @@ Class loader extends user {
     }
     
     /**
-    * loader::dir();
-    * 
-    * Show directory list of current controller
-    * 
-    * @author   Ersin Güvenç
-    * @author   you..
-    * @version  0.1
-    * @version  0.2 Changed $GLOBALS['c'] as $GLOBALS['d']
-    * @return   booelan
-    */
-    public static function dir()
-    {
-        $dir = CONTROLLER.$GLOBALS['d'].DS;
-        
-        if(is_readable($dir))
-        {
-            // opendir function
-            $handle = opendir($dir);
-            echo '<br />Directory Listing of <b>'.$dir.'</b><br/>';
-
-            // running the while loop
-            while ($file = readdir($handle)) 
-            echo $file.'<br/>';
-
-            // close dir
-            closedir($handle);
-            
-            return;              
-        } 
-        
-        throw new LoaderException($GLOBALS['d']. DS . ' directory is not readable! ');
-    }
-    
-    /**
     * Load directly PEAR libraries.
     * 
     * @author   Ersin Güvenç
@@ -567,10 +537,116 @@ Class loader extends user {
     } //end func.
     
     
-    public static function js(){}
-    public static function script(){}
-    //public static function form(){}
-    public static function extend(){}
+    /**
+    * loader::js();
+    * 
+    * load application .js files
+    * 
+    * @param    string $filename
+    * @param    string $arguments
+    */
+    public function js($filename, $arguments = '')
+    {
+        $path = 'application/controllers/'. $GLOBALS['d'] . '/views/js/';
+         
+        return $this->_js($path, $filename, $arguments);
+    }
+    
+    /**
+    * loader::base_js();
+    * 
+    * load base .js files
+    * 
+    * @param    string $filename
+    * @param    string $arguments
+    */
+    public function base_js($filename, $arguments = '')
+    {
+        $path = 'base/views/js/';
+        
+        return $this->_js($path, $filename, $arguments);
+    }
+    
+    /**
+    * Build js files in <head> tags
+    * 
+    * @author   Ersin Güvenç
+    * @param    string $path
+    * @param    string $filename
+    * @param    string $arguments add argument ?arg=1&arg2=2
+    * @return   string
+    */
+    private function _js($path, $filename, $arguments = '')
+    {
+         $src  = $this->config->item('base_url'). $path . $filename . '.js' . $arguments;
+         $file = $path . $filename . '.js';
+         
+         if(file_exists($file))
+         return "\n".'<script type="text/javascript" src="'.$src.'"></script>'."\n";  
+         
+         throw new LoaderException('Unable locate the js file: '. $filename); 
+    }
+    
+    /**
+    * loader::base_script();
+    * 
+    * load base java script files
+    * 
+    * @param    string $filename
+    * @param    array $data
+    */
+    public function script($filename, $data = array())
+    {
+        $path = CONTROLLER . $GLOBALS['d'] . DS . 'views' . DS . 'scripts' . DS;
+         
+        return $this->_script($path, $filename, $data);
+    }
+    
+    /**
+    * loader::base_script();
+    * 
+    * load base java script files
+    * 
+    * @param    string $filename
+    * @param    array $data
+    */
+    public function base_script($filename, $data = array())
+    {
+        $path = BASE . 'views' . DS . 'scripts' . DS;
+        
+        return $this->_script($path, $filename, $data);
+    }
+    
+    /**                     
+    * Load Java script files externally
+    * 
+    * @author   Ersin Güvenç
+    * @param    string $script_file
+    * @param    array $data
+    */
+    private function _script($path, $filename, $data = array())
+    {  
+        $filename = strtolower(str_replace('_script', '', $filename).'_script');
+        $file = $path . $filename . $this->config->item('script_view_extension');
+         
+        if(sizeof($data) > 0) { extract($data, EXTR_SKIP); }
+        
+        if (file_exists($file))
+        {  
+             //get file as a string.
+             ob_start();
+
+             include($file);
+
+             $content = ob_get_contents();
+             ob_end_clean();
+
+             return "\n".$content."\n";
+        }
+
+        throw new LoaderException('Unable locate the script file: '. $filename);
+        
+    }
     
     // @ Support for loader::libray() inside from public model functions 
     // If you declare a library like this loader::library(); 
@@ -591,6 +667,7 @@ Class loader extends user {
         $OB->$model_name->_asn_lib();
     }
     
+    
     // assign all variables to library class 
     private static function asn_to_libraries()
     {
@@ -604,7 +681,6 @@ Class loader extends user {
             if($OB->$lib_name instanceof Library) 
             $OB->$lib_name->_asn_lib(); 
         }
-        
     }
    
     

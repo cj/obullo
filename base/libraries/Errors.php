@@ -43,8 +43,8 @@ function Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, $type)
 {   
     $msg = '<div style=\'width:50%;padding:5px;background-color:#eee;\'>';
     $msg.= '<b>[Obullo]['. ucwords(strtolower($type)).']:</b>'.$errstr.'<br />';
-    $msg.= '<b>File:</b> &nbsp;'.$errfile."<br />";
-    $msg.= '<b>Line:</b> &nbsp;'.$errline;
+    $msg.= '<b>File:</b> '.$errfile."<br />";
+    $msg.= '<b>Line:</b> '.$errline;
     $msg.= '</div>';
     
     echo $msg;
@@ -65,9 +65,10 @@ function Obullo_ExceptionHandler($e)
    
     $msg = '<div style=\'width:50%;padding:5px;background-color:#eee;\'>';
     $msg.= '<b>['. $type .' Error]: </b>'.$e->getMessage().'<br />';
-    $msg.= '<b>Code:</b> &nbsp;'.$e->getCode()."<br />";  
-    $msg.= '<b>File:</b> &nbsp;'.$e->getFile()."<br />";
-    $msg.= '<b>Line:</b> &nbsp;'.$e->getLine();
+    if($e->getCode() != 0)
+    $msg.= '<b>Code:</b> '.$e->getCode()."<br />";  
+    $msg.= '<b>File:</b> '.$e->getFile()."<br />";
+    $msg.= '<b>Line:</b> '.$e->getLine();
     $msg.= $sql_string;
     $msg.= '</div>';
     

@@ -43,7 +43,7 @@ Class Test_2 extends Controller
         //$data['example_var']  = 'Hello World!';
         echo '<br />';          
                     
-        $this->body_tag.= loader::view('view_test',true);
+        $this->body_tag.= loader::view('view_test',null,true);
         loader::base_view('view_base');
         
         //fetch as string  loader::view("run",$data,true);   

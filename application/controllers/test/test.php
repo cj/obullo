@@ -15,13 +15,13 @@ Class Test extends Controller
         // top constructor for every controllers.
         parent::__user();
         
-        loader::base('input');
+        //loader::base('input');
         
        // loader::helper('test');      // load helper from /application/ directory
-        loader::base_helper('text'); // load helper from /base directory
+       // loader::base_helper('text'); // load helper from /base directory
         
         //loader::library('mylibrary');
-        loader::base('cookie');
+        //loader::base('cookie');
        
     }                               
     
@@ -52,6 +52,7 @@ Class Test extends Controller
         $this->body_tag.= "<a href='".$this->base_url."index.php/test/test_db'>Click and run test_db contoller</a>";        
         $this->body_tag.= "<br /><br />";
         
+        $data = array();
         loader::base_view('view_base',$data);
     }
     
@@ -74,10 +75,13 @@ Class Test extends Controller
 
         echo '<br />Run function succesfully works.<br /><br />';
         
+        //$this->data['sample_array'] = array('1','2','3','4','5'); 
+        //$this->data['example_var']  = 'Hello World!';
+        
         $data['sample_array'] = array('1','2','3','4','5');
         $data['example_var']  = 'Hello World!';
 
-        $this->body_tag = loader::view('view_test',true);
+        $this->body_tag = loader::view('view_test',$data,true);
         loader::base_view('view_base');
     }
     

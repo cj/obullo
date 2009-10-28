@@ -124,8 +124,7 @@ Class ob extends SSC
     {
         return self::$instance;
     } 
-    
-    
+          
     /**
     * ob::dbconnect();
     * Factory and Connect to database driver
@@ -140,6 +139,37 @@ Class ob extends SSC
     {
         return OB_DBFactory::Connect();
     }
+    
+    /**
+    * Get current directory
+    * 
+    * @return string
+    */
+    public static function directory()
+    {
+        return $GLOBALS['d'];
+    }
+    
+    /**
+    * Get current controller
+    * 
+    * @return string
+    */
+    public static function controller()
+    {
+        return $GLOBALS['c'];
+    }
+    
+    /**
+    * Get current method
+    * 
+    * @return string
+    */
+    public static function method()
+    {
+        return $GLOBALS['m'];
+    }
+    
     
 } // end class.
 
