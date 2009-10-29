@@ -4,19 +4,19 @@
   {
       function __construct()
       {
-          parent::__construct();
+          //parent::__construct();
                   
           loader::database();
           
           // you don't need it if you declare it before in test controller
-          // parent::__user();  
+          //parent::__user();  
           
       }
    
       function test_ssc()
       {
           
-          echo '<br />'.$this->base_url.' <-- this comes from ob_user.php<br />';
+          echo '<br />'.$this->base_url.' <-- this comes from extends/User.php<br />';
           
           // I can use db class directly from my lib.
           // WITHOUT ci = &get_instance() func unlike CI

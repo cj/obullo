@@ -5,7 +5,8 @@ if( !defined('BASE') ) exit('Access Denied!');
  * Obullo Framework (c) 2009.
  *
  * PHP5 Minimalist software for PHP 5.2.4 or newer
- *
+ * Derived From Code Igniter
+ * 
  * @package         Obullo
  * @author          Obullo.com  
  * @subpackage      Base.libraries        
@@ -47,7 +48,7 @@ public $myself = '';
 
         foreach ($dec_ob as $key)                                 
         {   
-            if( ! isset($this->$key) AND $key != $this->myself) // this is wrong 
+            if( ! isset($this->$key) AND $key != $this->myself)
             {
                 $this->$key = $OB->$key;
             }

@@ -36,6 +36,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @version         0.6 loader::database() and libraries _asn_lib() instanceof problem fixed.
  * @version         0.7 added base(), _library(), base_helper(), base_view() functions. 
  * @version         0.8 added js(), base_js(), script(), base_script() functions.Removed dir() function.
+ * @version         0.9 added __autoloader() functionality
  */
 
 
@@ -68,28 +69,46 @@ Class loader extends user {
     
     /**
     * loader::library();
+    * 
     * load app libraries from /app folder.
     * 
-    * @param    string $class
+    * @param    mixed $class
     * @param    mixed $static_or_params
     * @return   self::_library()
     */
-    public static function library($class, $static_or_params = NULL)
-    {
-        return self::_library($class, $static_or_params);
+    public function library($class, $static_or_params = NULL)
+    {          
+        if(is_array($class))
+        {
+            foreach($class as $c)
+            $this->_library($c, NULL);
+        }
+         else
+        {
+            $this->_library($class, $static_or_params); 
+        }    
     }
     
     /**
     * loader::base();
+    * 
     * load base libraries from /base folder.
     * 
-    * @param    string $class
+    * @param    mixed $class
     * @param    mixed $static_or_params
     * @return   self::_library()
     */
-    public static function base($class, $static_or_params = NULL)
-    {
-        return self::_library($class, $static_or_params, TRUE);
+    public function base($class, $static_or_params = NULL)
+    {             
+        if(is_array($class))
+        {
+            foreach($class as $c)
+            $this->_library($c, NULL,TRUE);
+        } 
+         else 
+        {
+            $this->_library($class, $static_or_params, TRUE); 
+        }
     }
     
     /**
@@ -108,7 +127,7 @@ Class loader extends user {
     * @version  0.2  added register_static functions
     * @return   void
     */
-    private static function _library($class, $static_or_params = NULL, $base = FALSE)
+    private function _library($class, $static_or_params = NULL, $base = FALSE)
     {
         if ($class == '')
         return FALSE;
@@ -224,12 +243,9 @@ Class loader extends user {
     {
         $file = $path . $filename . EXT;
         
-        if(sizeof($data) > 0)
-        extract($data, EXTR_SKIP);
+        if(sizeof($data) > 0) { extract($data, EXTR_SKIP); }
+        if(sizeof($this->data) > 0) { extract($this->data, EXTR_SKIP); } // user hidden data
         
-        if(sizeof($this->data) > 0)   // user hidden data
-        extract($this->data, EXTR_SKIP);
-
         if (file_exists($file))
         {
             if($string)
@@ -243,12 +259,10 @@ Class loader extends user {
                 ob_end_clean();
 
                 return $content;
-
-            } else {
-                // just include file.
-                include($file);
-            }
-
+            } 
+            
+            // just include file.
+            include($file);
             return;
         } 
         
@@ -269,56 +283,60 @@ Class loader extends user {
     * @version      0.3 changed $GLOBALS['c'] as $GLOBALS['d']
     * @version      0.4 removed old current path support added
     *                   new model directory structure support 
+    * @version      0.5 added multiple load support
     * @return       void
     */
-    public static function model($model)
+    public function model($models = array())
     {        
-        if ($model == '')
-        return;
+        if ( ! is_array($models))
+        $models = array($models);
         
-        $model_name = strtolower($model);
-        
-        // Controller directory support for model
-        // if user provide path separator like this  loader::model(blog/model_blog)
-        
-        if (strpos($model_name, '/') == TRUE)
-        {
-            $paths = explode('/',$model_name); // path[0] = controller name
-            $model_name = array_pop($paths);
-            $path = implode('/',$paths).'/';
+        foreach($models as $model)
+        { 
+            $model_name = strtolower($model);
             
-            // Load user called another_controller/model_test
-            $MODEL_PATH = CONTROLLER.$path.$model_name.EXT;
-        } 
-        else
-        {
-            // Load current controller model
-            $MODEL_PATH = MODEL.$GLOBALS['d'].DS.'models'.DS.$model_name.EXT;
-        }
-        
-        if ( ! file_exists($MODEL_PATH))
-        throw new LoaderException('Unable to locate the model: '.$model_name);
-        
-        $OB = ob::instance();  
-        
-        if (isset($OB->$model_name))
-        throw new LoaderException('This model already loaded before: '.$model_name);
-        
-        require($MODEL_PATH);
-        $model = ucfirst($model_name);   
+            // Controller directory support for model
+            // if user provide path separator like this  loader::model(blog/model_blog)
+            if (strpos($model_name, '/') == TRUE)
+            {
+                $paths = explode('/',$model_name); // path[0] = controller name
+                $model_name = array_pop($paths);
+                $path = implode('/',$paths).'/';
+                
+                // Load user called another_controller/model_test
+                $MODEL_PATH = CONTROLLER.$path.$model_name.EXT;
+            } 
+            else
+            {
+                // Load current controller model
+                $MODEL_PATH = MODEL.$GLOBALS['d'].DS.'models'.DS.$model_name.EXT;
+            }
+            
+            if ( ! file_exists($MODEL_PATH))
+            throw new LoaderException('Unable to locate the model: '.$model_name);
+            
+            $OB = ob::instance();  
+            
+            if (isset($OB->$model_name) AND is_object($OB->$model_name))
+            throw new LoaderException('This model already loaded before: '.$model_name);
+            
+            require($MODEL_PATH);
+            $model = ucfirst($model_name);   
 
-        if( ! class_exists($model_name))
-        throw new LoaderException('Model name is not correct in file: '.$model_name);
-        
-        $OB->$model_name = new $model();    //register($class); we don't need it   
+            if( ! class_exists($model_name))
+            throw new LoaderException('Model name is not correct in file: '.$model_name);
+            
+            $OB->$model_name = new $model();    //register($class); we don't need it   
 
-        // assign all loaded libraries inside to current model
-        // loader::library() support for Model_x { function __construct() { loader::library() }}
-        $OB->$model_name->_asn_lib();
+            // assign all loaded libraries inside to current model
+            // loader::library() support for Model_x { function __construct() { loader::library() }}
+            $OB->$model_name->_asn_lib();
+            
+            // store loaded obullo models
+            $OB->mods[] = $model_name;
         
-        // store loaded obullo models
-        $OB->mods[] = $model_name;
-        
+        } // end foreach
+          
     }
     
     /**
@@ -337,7 +355,7 @@ Class loader extends user {
     *               added asn_to_libraries();
     * @return   void
     */
-    public function database()
+    public static function database()
     {
         $OB = ob::instance();
         
@@ -371,42 +389,51 @@ Class loader extends user {
     * @version  0.1
     * @version  0.2 changed $GLOBALS['c'] as $GLOBALS['d']
     * @version  0.3 changed base helper functionality as base_helper()
+    * @version  0.4 added multiple helper load functionality
     * @return   void
     */
-    public static function helper($helper)
+    public static function helper($helpers = array())
     { 
-        // if user provide path separator like this loader::helper(blog/helper_blog)
-        if (strpos($helper, '/') == TRUE)
+        if ( ! is_array($helpers))
+        $helpers = array($helpers);
+        
+        foreach($helpers as $helper)
         {
-            $paths = explode('/',$helper);  // path[0] = controller name
-            $helper_name = array_pop($paths);
-            $path = implode('/',$paths).'/';
-            
-            $helper_name = strtolower(str_replace('_helper', '', $helper_name).'_helper').EXT;
-            
-            if(file_exists(CONTROLLER.$path.$helper_name))
+            // if user provide path separator like this loader::helper(blog/helper_blog)
+            if (strpos($helper, '/') == TRUE)
             {
-                include(CONTROLLER.$path.$helper_name);
-                return;
-            } 
+                $paths = explode('/',$helper);  // path[0] = controller name
+                $helper_name = array_pop($paths);
+                $path = implode('/',$paths).'/';
+                
+                $helper_name = strtolower(str_replace('_helper', '', $helper_name).'_helper').EXT;
+                
+                if(file_exists(CONTROLLER.$path.$helper_name))
+                {
+                    include(CONTROLLER.$path.$helper_name);
+                } 
+                else 
+                {
+                    throw new LoaderException('Unable to locate the user helper: '.$helper_name);   
+                } 
+            }
             
-            throw new LoaderException('Unable to locate the helper: '.$helper_name);    
-        }
+            $helper = strtolower(str_replace('_helper', '', $helper).'_helper').EXT;
+            
+            if(file_exists(APP.'helpers'.DS.$helper))
+            {
+                include(APP.'helpers'.DS.$helper);
+       
+            } elseif(file_exists(CONTROLLER.$GLOBALS['d'].DS.'helpers'.DS.$helper))
+            {
+                include(CONTROLLER.$GLOBALS['d'].DS.'helpers'.DS.$helper);
+            
+            } else 
+            { 
+                throw new LoaderException('Unable to locate the application helper: '.$helper); 
+            }
         
-        $helper = strtolower(str_replace('_helper', '', $helper).'_helper').EXT;
-        
-        if(file_exists(APP.'helpers'.DS.$helper))
-        {
-            include(APP.'helpers'.DS.$helper);
-            return;
-   
-        } elseif(file_exists(CONTROLLER.$GLOBALS['d'].DS.'helpers'.DS.$helper))
-        {
-            include(CONTROLLER.$GLOBALS['d'].DS.'helpers'.DS.$helper);
-            return;
-        } 
-        
-        throw new LoaderException('Unable to locate the application helper: '.$helper);
+        } // end foreach.
         
     }   
     
@@ -416,86 +443,30 @@ Class loader extends user {
     * load helper from /base directory
     * @author   Ersin Güvenç
     * @author   you..
-    * @param    string $helper
-    */
-    public static function base_helper($helper)
-    {
-        $helper = strtolower(str_replace('_helper', '', $helper).'_helper').EXT;
-        
-        if(file_exists(BASE.'helpers'.DS.$helper)) 
-        {                  
-            include(BASE.'helpers'.DS.$helper);
-            return;
-        } 
-        
-        throw new LoaderException('Unable to locate the base helper: '.$helper);    
-    }
-                       
-    /**
-    * Autoloader
-    *
-    * The config/autoload.php file contains an array that permits sub-systems,
-    * libraries, plugins, and helpers to be loaded automatically.
-    *
-    * @access   private
-    * @param    array
+    * @version  0.1
+    * @version  0.2 added multiple load support
+    * @param    mixed $helpers
     * @return   void
     */
-    public function __autoloader()
-    {            
-        include_once(APPPATH.'config/autoload'.EXT);
+    public static function base_helper($helpers = array())
+    {
+        if ( ! is_array($helpers))
+        $helpers = array($helpers);
         
-        if ( ! isset($autoload)) { return FALSE; }
-        
-        // Load any custom config file
-        if (count($autoload['config']) > 0)
-        {            
-            foreach ($autoload['config'] as $key => $val)
-            $this->config->load($val);
-        }        
-
-        // Autoload plugins, helpers and languages
-        foreach (array('helper', 'plugin', 'language') as $type)
-        {            
-            if (isset($autoload[$type]) AND count($autoload[$type]) > 0)
-            {
-                switch ($type) {
-                   case 'helper':
-                   loader::helper($autoload[$type]);
-                     break;
-                   case 'plugin':
-                
-                     break;
-                   case 'language':
-                   $this->language($autoload[$type]);
-                     break;
-                }            
-                //$this->$type($autoload[$type]);
-            }        
-        }
-
-        if ( ! isset($autoload['libraries']))
-        $autoload['libraries'] = $autoload['core'];
-        
-        // Load libraries
-        if (isset($autoload['libraries']) AND count($autoload['libraries']) > 0)
+        foreach($helpers as $helper)
         {
-            // Load the database driver.
-            if (in_array('database', $autoload['libraries']))
+            $helper = strtolower(str_replace('_helper', '', $helper).'_helper').EXT;
+            
+            if(file_exists(BASE.'helpers'.DS.$helper)) 
+            {                  
+                include(BASE.'helpers'.DS.$helper);
+            } 
+            else 
             {
-                loader::database();
-                $autoload['libraries'] = array_diff($autoload['libraries'], array('database'));
+                throw new LoaderException('Unable to locate the base helper: '.$helper);
             }
+        }
         
-            // Load all other libraries
-            foreach ($autoload['libraries'] as $item)
-            $this->library($item);
-        }        
-
-        // Autoload models
-        if (isset($autoload['model']))
-        loader::model($autoload['model']);
-
     }
             
     /**
@@ -515,6 +486,22 @@ Class loader extends user {
         $this->lang->load($langfile, $lang);
     }
     
+    /**
+    * Loads a config file
+    *
+    * @access   public
+    * @param    array
+    * @return   void
+    */                                 
+    public function config($file = array())    
+    {
+        if( ! is_array($file))
+        $file = array($file);
+        
+        foreach ($file as $configfile)
+        $this->config->load($configfile);
+    }
+                          
     /**
     * Load directly PEAR libraries.
     * 

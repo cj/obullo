@@ -41,6 +41,9 @@ if( !defined('BASE') ) exit('Access Denied!');
  
 Class SSC extends loader 
 {
+    
+    //function __construct() { parent::__construct(); }
+    
     //------------- Input Class Shortcut Functions -------------------//
     
     public function xss($str,$is_image = FALSE) { return $this->input->xss_clean($str, $is_image); }  
@@ -62,7 +65,7 @@ Class SSC extends loader
     public function set_flash($newdata = array(), $newval = '') { return $this->session->set_flashdata($newdata,$newval); } 
     public function flash($key) { return $this->session->flashdata($key); }
     public function keep_flash($key) { return $this->session->keep_flashdata($key); }
-    public function kill_session($key) { return $this->session->sess_destroy(); }
+    public function kill_session() { return $this->session->sess_destroy(); }
 
     //------------- Language Class Shortcut Functions -------------------//
     
@@ -76,7 +79,7 @@ Class SSC extends loader
     public function uri_string() { return $this->uri->uri_string(); }
     public function index_page() { return $this->config->item('index_page');  }
     
-    public function config($item) { return config_item($item); } 
+    public function config_item($item) { return config_item($item); } 
     
 }  // end ssc class.
 
@@ -104,10 +107,11 @@ Class ob extends SSC
     * @return void
     */
     public function __construct()
-    {
+    {   
         self::$instance = $this;
         
         parent::__construct();
+
     }
 
     /**

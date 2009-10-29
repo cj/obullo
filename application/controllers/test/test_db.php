@@ -8,7 +8,7 @@ Class Test_db extends Controller
     {
         parent::__construct();
         
-        //parent::__user();
+        parent::__user();
         loader::database();
         loader::model('model_test_db'); 
         
@@ -18,13 +18,12 @@ Class Test_db extends Controller
     
     function index()
     {
-        $data = user::header();
+        parent::__header();
     
         // change the title
-        $data['title_tag'] = 'Mypage Test Title';  
-        $data['body_content'] = loader::view('view_test_db',$data, true);  
-               
-        loader::base_view('view_base',$data);  // base view comes from  /base/views directory
+        $this->title_tag = 'Mypage Test Title';  
+        $this->body_tag  = loader::view('view_test_db',null,true);  
+        loader::base_view('view_base');  // base view comes from  /base/views directory
     
         echo '<p><b>Prepared Query:</b></p>';
         /*

@@ -7,8 +7,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  * PHP5 MVC-min Framework software for PHP 5.2.4 or newer
  * Derived from Code Igniter
  *
- * @package         obullo
- * @filename        base/libraries/Controller.php        
+ * @package         obullo    
  * @author          obullo.com
  * @copyright       Ersin Güvenç (c) 2009.
  * @since           Version 1.0
@@ -24,7 +23,8 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @category        Libraries
  * @version         1.0
  * @version         1.1 renamed Register as base_register
- * @version         1.2 added extend to ob
+ * @version         1.2 added 'extends to ob'
+ * @version         1.3 added __autoloader()
  */   
  
 Class Controller extends ob
@@ -32,14 +32,17 @@ Class Controller extends ob
     
     function __construct()       
     {   
-        $this->ob_init();
-        
+        // WARNING ! parent::__construct()
+        // must be at the top otherwise
+        // __autoloader functionality does not work !
         parent::__construct();
+        
+        $this->ob_init();
     }
 
     function ob_init()
     {
-      // Load Automatically None Base Static Classes.
+       // Load Automatically Base None Static Classes.
 
         $Classes = array(                          
                             'config'    => 'Config',
@@ -55,11 +58,12 @@ Class Controller extends ob
         {
             $this->$public_var = base_register($Class);
         }
+               
         
-        // autload files
-        //loader::__autoloader();
-        
-      // from now on we can none static classes like this
+      // deprecated autload files
+      //$this->__autoloader();
+               
+      // from now on we can use none static classes like this
       // like this $this->class->function(); 
     
     } //end function.

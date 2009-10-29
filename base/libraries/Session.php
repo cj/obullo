@@ -44,7 +44,7 @@ class OB_Session {
     public $time_reference             = 'time';
     public $gc_probability             = 5;
     public $userdata                   = array();
-    public $OB;
+    public $OB                         = NULL;
     public $now;
 
     /**
@@ -63,7 +63,9 @@ class OB_Session {
         // Set all the session preferences, which can either be set 
         // manually via the $params array above or via the config file
         foreach (array('sess_encrypt_cookie', 'sess_use_database', 'sess_table_name', 'sess_expiration', 'sess_match_ip', 'sess_match_useragent', 'sess_cookie_name', 'cookie_path', 'cookie_domain', 'sess_time_to_update', 'time_reference', 'cookie_prefix', 'encryption_key') as $key)
-        $this->$key = (isset($params[$key])) ? $params[$key] : $this->OB->config->item($key);
+        {
+            $this->$key = (isset($params[$key])) ? $params[$key] : $this->OB->config->item($key);
+        }
                 
         // Load the string helper so we can use the strip_slashes() function
         loader::base_helper('string');

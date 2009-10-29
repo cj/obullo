@@ -19,18 +19,18 @@ Class Test extends Controller
         
        // loader::helper('test');      // load helper from /application/ directory
        // loader::base_helper('text'); // load helper from /base directory
-        
-        //loader::library('mylibrary');
-        //loader::base('cookie');
        
+        //loader::base('cookie');
+        loader::library('mylibrary');
     }                               
     
     function index()
     {                        
         parent::__index();
         parent::__header();
-    
-        $this->title_tag = 'Im the Test Controller !';
+        
+        //$this->mylibrary->test_ssc();
+        //$this->title_tag = 'Im the Test Controller !';
     
         // change the title
         //$data['title_tag'] = 'Im the Test Controller !';
@@ -67,7 +67,7 @@ Class Test extends Controller
         loader::library('myclass'); 
         $this->myclass->testDB();
         
-        //$this->mylibrary->test_ssc();
+        $this->mylibrary->test_ssc();
         //$this->model_test->test();
     
         // System static function
