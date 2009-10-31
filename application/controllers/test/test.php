@@ -13,14 +13,11 @@ Class Test extends Controller
         parent::__construct();
     
         // top constructor for every controllers.
-        parent::__user();
-        
-        //loader::base('input');
-        
-       // loader::helper('test');      // load helper from /application/ directory
-       // loader::base_helper('text'); // load helper from /base directory
-       
-        //loader::base('cookie');
+        parent::__user();                  
+                                            
+        //loader::base('session');    
+        loader::helper('dropdown');      // load helper from /application/ directory
+        loader::base_helper('form');    // load helper from /base directory
         loader::library('mylibrary');
     }                               
     
@@ -29,6 +26,8 @@ Class Test extends Controller
         parent::__index();
         parent::__header();
         
+        $options = test_dropdown();
+        echo form_dropdown('test_dropdown',$options,1);
         //$this->mylibrary->test_ssc();
         //$this->title_tag = 'Im the Test Controller !';
     

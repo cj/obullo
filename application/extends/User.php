@@ -61,7 +61,7 @@
       {
           parent::__construct();
           
-          $this->base_url = ob::base_url();
+          $this->base_url = $this->config->item('base_url');
       }
                                                      
       function __header()

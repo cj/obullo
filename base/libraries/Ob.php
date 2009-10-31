@@ -91,10 +91,20 @@ Class SSC extends loader
  * @version 0.2 added core functions like ob::register
  * @version 0.3 added extending to SSC, moved register
  *              functions to common.php
+ * @version 0.4 added $loader variable for loader support
+ *              helpers, functions..
  */
  
 Class ob extends SSC
 {
+    /**
+    * Load files just from
+    * helpers..
+    * 
+    * @var object
+    */
+    public $load;
+    
     /**
     * Obullo instance
     * 
@@ -110,8 +120,9 @@ Class ob extends SSC
     {   
         self::$instance = $this;
         
+        $this->load = $this;
+        
         parent::__construct();
-
     }
 
     /**

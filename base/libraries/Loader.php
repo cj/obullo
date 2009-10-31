@@ -53,7 +53,7 @@ Class loader extends user {
     * 
     * @var array
     */
-    public $mods = array();
+    public $_mods = array();
     
     /**
     * Obullo Libraries
@@ -61,7 +61,7 @@ Class loader extends user {
     * 
     * @var array
     */
-    public $libs = array();
+    public $_libs = array();
     
     
     // Allow user access to SSC Pattern.
@@ -166,7 +166,7 @@ Class loader extends user {
         // public model functions
         self::asn_to_models();
     
-        if($base) { $OB->libs[] = $class; return; }
+        if($base) { $OB->_libs[] = $class; return; }  // exit;
 
         //----- below the operations for user libraries -----//
         
@@ -179,7 +179,7 @@ Class loader extends user {
                                    // base libraries already assigned because of Library
                                    // extends to ob class..
         
-        $OB->libs[] = $class;
+        $OB->_libs[] = $class;
         
         //return $OB; // $ob = loader::library('class');
     }
@@ -333,7 +333,7 @@ Class loader extends user {
             $OB->$model_name->_asn_lib();
             
             // store loaded obullo models
-            $OB->mods[] = $model_name;
+            $OB->_mods[] = $model_name;
         
         } // end foreach
           
@@ -481,9 +481,9 @@ Class loader extends user {
     {
         if ( ! is_array($file))
         $file = array($file);
-
+                 
         foreach ($file as $langfile)
-        $this->lang->load($langfile, $lang);
+        $this->lang->load($langfile, $lang);  // this is wrong we cant use it inside mono function
     }
     
     /**
@@ -499,7 +499,7 @@ Class loader extends user {
         $file = array($file);
         
         foreach ($file as $configfile)
-        $this->config->load($configfile);
+        $this->config->load($configfile);  // this is wrong we cant use it inside mono function 
     }
                           
     /**
@@ -647,10 +647,10 @@ Class loader extends user {
     {
         $OB = ob::instance();
         
-        if (count($OB->mods) == 0)
+        if (count($OB->_mods) == 0)
         return;
         
-        foreach ($OB->mods as $model_name)
+        foreach ($OB->_mods as $model_name)
         $OB->$model_name->_asn_lib();
     }
     
@@ -660,10 +660,10 @@ Class loader extends user {
     {
         $OB = ob::instance();
         
-        if (count($OB->libs) == 0)
+        if (count($OB->_libs) == 0)
         return;
         
-        foreach ($OB->libs as $lib_name)
+        foreach ($OB->_libs as $lib_name)
         {
             if($OB->$lib_name instanceof Library) 
             $OB->$lib_name->_asn_lib(); 

@@ -25,6 +25,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @version         1.1 renamed Register as base_register
  * @version         1.2 added 'extends to ob'
  * @version         1.3 added __autoloader()
+ * @deprecated      self::__autoloader()
  */   
  
 Class Controller extends ob
@@ -60,7 +61,7 @@ Class Controller extends ob
         }
                
         
-      // deprecated autload files
+      // deprecated autloader
       //$this->__autoloader();
                
       // from now on we can use none static classes like this

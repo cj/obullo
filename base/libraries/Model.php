@@ -49,7 +49,7 @@ public $myself;   // called model
        
         foreach ($dec_ob as $key)                                
         {   
-            if( ! isset($this->$key) AND $key != $this->myself) // this is wrong 
+            if( ! isset($this->$key) AND $key != $this->myself) 
             {
                 $this->$key = $OB->$key;
             }
