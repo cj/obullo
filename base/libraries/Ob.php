@@ -41,7 +41,6 @@ if( !defined('BASE') ) exit('Access Denied!');
  
 Class SSC extends loader 
 {
-    
     //function __construct() { parent::__construct(); }
     
     //------------- Input Class Shortcut Functions -------------------//
@@ -91,7 +90,7 @@ Class SSC extends loader
  * @version 0.2 added core functions like ob::register
  * @version 0.3 added extending to SSC, moved register
  *              functions to common.php
- * @version 0.4 added $loader variable for loader support
+ * @version 0.4 added $load variable for loader support
  *              helpers, functions..
  */
  
@@ -132,12 +131,12 @@ Class ob extends SSC
     *  
     * @author Ersin Güvenç
     * @version 1.0 
-    * @version 1.1 getInstance renamed and moved into ob class
+    * @version 1.1 get_instance renamed and moved into here
     * @return object
     */
     public static function instance()
-    {
-        return self::$instance;
+    {       
+       return self::$instance;
     } 
           
     /**
@@ -185,6 +184,15 @@ Class ob extends SSC
         return $GLOBALS['m'];
     }
     
+    /**
+    * Path of the current controller
+    * 
+    * @return string
+    */
+    public static function path()
+    {
+        return CONTROLLER.$GLOBALS['d'].DS.'controllers'.DS;
+    }
     
 } // end class.
 

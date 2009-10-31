@@ -33,7 +33,7 @@ $start = memory_get_usage();
  * @filesource      index.php        
  * @author          obullo.com
  * @copyright       Ersin Güvenç (c) 2009.
- * @since           Version 1.0 @alpha 3
+ * @since           Version 1.0 @alpha 4
  * @license         http://www.opensource.org/licenses/gpl-3.0.html GPL 
  */
                               
@@ -85,12 +85,12 @@ $Router = base_register('Router');
 $GLOBALS['d']   = $Router->fetch_directory();  
 $GLOBALS['c']   = $Router->fetch_class();  // Get requested controller
 $GLOBALS['m']   = $Router->fetch_method(); // Get requested method
-
+                           
 // Check the controller exists or not
-if ( ! file_exists(APP.'controllers'.DS.$GLOBALS['d'].DS.$GLOBALS['c'].EXT))
+if ( ! file_exists(CONTROLLER.$GLOBALS['d'].DS.'controllers'.DS.$GLOBALS['c'].EXT))
 {
     if($Router->query_string)
-    show_404("{$GLOBALS['c']}/{$GLOBALS['m']}"); //throw new CommonException('Controller Not Found!');
+    show_404("{$GLOBALS['c']}/{$GLOBALS['m']}");
     
     throw new CommonException('Unable to load your default controller.
     Please make sure the controller specified in your Routes.php file is valid.');
@@ -103,7 +103,7 @@ require (BASE.'libraries'.DS.'Library'.EXT);
 require (BASE.'libraries'.DS.'Model'.EXT);
 
 // call the controller.
-require (CONTROLLER.$GLOBALS['d'].DS.$GLOBALS['c'].EXT);
+require (CONTROLLER.$GLOBALS['d'].DS.'controllers'.DS.$GLOBALS['c'].EXT);
 
 
 if ( ! class_exists($GLOBALS['c'])

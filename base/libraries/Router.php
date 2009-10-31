@@ -1,7 +1,7 @@
 <?php                                       
 if( !defined('BASE') ) exit('Access Denied!');
 
-/* SVN FILE: $Id: Router.php $Rev: 15 27-09-2009 22:32 develturk $ */
+/* SVN FILE: $Id: Router.php $Rev: 17 31-10-2009 11:39 develturk $ */
 
 /**
  * Obullo Framework (c) 2009.
@@ -209,25 +209,27 @@ class OB_Router {
     */    
     private function _validate_request($segments)
     {
-        //---------- OBULLO validate request changes ----------//
+          //---------- OBULLO validate request changes ----------//
+        $directory  = ''; //$segments[0];
+        $controller = ''; //$segments[1];
         
-        //print_r($segments);
+        if(isset($segments[0])) { $directory  = $segments[0]; }
+        if(isset($segments[1])) { $controller = $segments[1]; }
+        
+        //print_r($segments); exit;
         
         // Check directory
-        if (is_dir(APP.'controllers'.DS.$segments[0]))
+        if (is_dir(CONTROLLER.$directory))
         {  
-            $this->set_directory($segments[0]);
+            $this->set_directory($directory);
             
-            if(isset($segments[1]))
+            if( ! empty($controller) )
             {
-                if (file_exists(APP.'controllers'.DS.$segments[0].DS.$segments[1].EXT))
-                {
-                    return $segments;
-                }   
+                if (file_exists(CONTROLLER.$directory.DS.'controllers'.DS.$controller.EXT))
+                return $segments;  
             }
             
         }
-        
         //---------- OBULLO validate request changes ----------//
         /*
         // Is the controller in a sub-folder?
@@ -262,8 +264,9 @@ class OB_Router {
             return $segments;
         }
         */
-        // Can't find the requested controller...
-        show_404($segments[0]);
+    
+        // Can't find the requested controller..
+        show_404($directory.' / '.$controller);
     }
 
     // --------------------------------------------------------------------

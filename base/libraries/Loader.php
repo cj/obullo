@@ -36,7 +36,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @version         0.6 loader::database() and libraries _asn_lib() instanceof problem fixed.
  * @version         0.7 added base(), _library(), base_helper(), base_view() functions. 
  * @version         0.8 added js(), base_js(), script(), base_script() functions.Removed dir() function.
- * @version         0.9 added __autoloader() functionality
+ * @version         0.9 added __autoloader() functionality, moved __autoloader to User.php
  */
 
 
@@ -406,7 +406,7 @@ Class loader extends user {
                 $helper_name = array_pop($paths);
                 $path = implode('/',$paths).'/';
                 
-                $helper_name = strtolower(str_replace('_helper', '', $helper_name).'_helper').EXT;
+                $helper_name = $helper_name.EXT;
                 
                 if(file_exists(CONTROLLER.$path.$helper_name))
                 {
@@ -418,7 +418,7 @@ Class loader extends user {
                 } 
             }
             
-            $helper = strtolower(str_replace('_helper', '', $helper).'_helper').EXT;
+            $helper = $helper.EXT;
             
             if(file_exists(APP.'helpers'.DS.$helper))
             {
@@ -455,7 +455,7 @@ Class loader extends user {
         
         foreach($helpers as $helper)
         {
-            $helper = strtolower(str_replace('_helper', '', $helper).'_helper').EXT;
+            $helper = $helper.EXT;
             
             if(file_exists(BASE.'helpers'.DS.$helper)) 
             {                  
@@ -612,9 +612,11 @@ Class loader extends user {
     * @param    array $data
     */
     private function _script($path, $filename, $data = array())
-    {  
-        $filename = strtolower(str_replace('_script', '', $filename).'_script');
-        $file = $path . $filename . $this->config->item('script_view_extension');
+    {                                    
+        $filename = $filename . $this->config->item('script_view_extension');
+        $file = $path . $filename; 
+         
+        echo $file;
          
         if(sizeof($data) > 0) { extract($data, EXTR_SKIP); }
         
