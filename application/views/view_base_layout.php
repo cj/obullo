@@ -1,0 +1,21 @@
+<?php echo config_item('html4-trans', 'doctypes')."\n"; ?>
+<html>
+<head>
+
+<?php echo this()->meta_tag; ?>
+
+<title><?php echo this()->title_tag; ?></title>
+
+<base href="<?php echo this()->base; ?>" />
+
+<?php echo this()->head_tag; ?>
+
+</head>
+
+<body <?php echo this()->body_attributes; ?>>
+
+<?php echo this()->body_tag; ?>
+
+</body>
+
+</html>
