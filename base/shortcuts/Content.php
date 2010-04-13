@@ -22,13 +22,19 @@ defined('BASE') or exit('Access Denied!');
  
 Class content {
 
+    public static function set_view_folder($func = 'view', $folder = '')
+    {   
+        return ob::instance()->content->set_view_folder($func, $folder);
+    }
     
+    // ------------------------------------------------------------------------  
+
     public static function script($filename, $data = array())
     {   
         return ob::instance()->content->script($filename, $data);
     }
     
-    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------  
     
     public static function app_script($filename, $data = array())
     {   

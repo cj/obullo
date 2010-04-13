@@ -62,11 +62,14 @@ function Obullo_ExceptionHandler($e)
         
     if(substr($e->getMessage(),0,3) == 'SQL') 
     {
-        $OB   = ob::instance();
-        
+        $ob   = ob::instance();
         $type = 'Database';
-        if(is_object($OB->db))
-        $sql  = $OB->db->last_query($OB->db->prepare);
+        
+        foreach($ob->_dbs as $key => $val)
+        {
+           if(is_object($ob->$key))
+           $sql  = $ob->{$key}->last_query($ob->{$key}->prepare);   
+        }        
     }
     
     include(APP.'system'.DS.'errors'.DS.'ob_exception'.EXT);

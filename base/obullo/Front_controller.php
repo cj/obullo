@@ -43,6 +43,7 @@ class OB_Front_controller
     public function __construct()
     {        
         require (BASE .'constants'. DS .'file'. EXT);
+        require (APP  .'config'. DS .'constants'. EXT); 
         require (BASE .'obullo'. DS .'Errors'. EXT);       
         require (BASE .'obullo'. DS .'Registry'. EXT); 
         require (BASE .'obullo'. DS .'Common'. EXT);
@@ -102,10 +103,8 @@ class OB_Front_controller
         // call the controller.
         require (DIR .$GLOBALS['d']. DS .'controllers'. DS .$GLOBALS['c']. EXT);
 
-        if ( ! class_exists($GLOBALS['c'])
-            OR $GLOBALS['m'] == 'controller'
-            OR strncmp($GLOBALS['m'], '_', 1) == 0
-            OR in_array(strtolower($GLOBALS['m']), array_map('strtolower', get_class_methods('Controller')))
+        if ( ! class_exists($GLOBALS['c']) OR $GLOBALS['m'] == 'controller'
+              OR in_array(strtolower($GLOBALS['m']), array_map('strtolower', get_class_methods('Controller')))
             )
         {
             show_404("{$GLOBALS['c']}/{$GLOBALS['m']}");

@@ -1,20 +1,6 @@
 <?php
 defined('BASE') or exit('Access Denied!');
 
-/**
-|--------------------------------------------------------------------------
-| Php error reporting
-|--------------------------------------------------------------------------
-|
-| Predefined error constants
-| @see http://usphp.com/manual/en/errorfunc.constants.php
-
-| For security
-| reasons you are encouraged to change this when your site goes live.
-|
-*/
-error_reporting(E_ALL | E_STRICT); 
-
 /*
 |--------------------------------------------------------------------------
 | On/Off error reporting.
@@ -24,7 +10,7 @@ error_reporting(E_ALL | E_STRICT);
 | set display errors to '0' for security reason.
 |
 */
-$config['display_errors'] = 1; 
+$config['display_errors']        = 1; 
 
 /**
 |--------------------------------------------------------------------------
@@ -36,7 +22,7 @@ $config['display_errors'] = 1;
 | @see http://www.php.net/manual/en/timezones.php
 |
 */
-$config['timezone_set'] = 'Europe/Istanbul';
+$config['timezone_set']          = 'Europe/Istanbul';
 
 /*
 |--------------------------------------------------------------------------
@@ -49,7 +35,7 @@ $config['timezone_set'] = 'Europe/Istanbul';
 |    http://example.com/
 |
 */
-$config['base_url']     = "http://localhost/obullo/";
+$config['base_url']              = "http://localhost/obullo/";
 
 /*
 |--------------------------------------------------------------------------
@@ -64,7 +50,7 @@ $config['base_url']     = "http://localhost/obullo/";
 |    /sources/images
 |
 */
-$config['source_url']   = "http://localhost/obullo/sources/";
+$config['source_url']            = "http://localhost/obullo/sources/";
 
 /*
 |--------------------------------------------------------------------------
@@ -76,7 +62,7 @@ $config['source_url']   = "http://localhost/obullo/sources/";
 |  any other files.)
 |
 */
-$config['obullo_style_writing'] = TRUE; 
+$config['obullo_style_writing']  = TRUE; 
 
 /*
 |--------------------------------------------------------------------------
@@ -88,7 +74,7 @@ $config['obullo_style_writing'] = TRUE;
 | variable so that it is blank.
 |
 */
-$config['index_page']              = "index.php";
+$config['index_page']            = "index.php";
 
 /*
 |--------------------------------------------------------------------------
@@ -106,7 +92,7 @@ $config['index_page']              = "index.php";
 | 'ORIG_PATH_INFO'  Uses the ORIG_PATH_INFO
 |
 */
-$config['uri_protocol']            = "AUTO";
+$config['uri_protocol']          = "AUTO";
 
 /*
 |--------------------------------------------------------------------------
@@ -119,7 +105,7 @@ $config['uri_protocol']            = "AUTO";
 | Chapters / General Topics / Obullo Urls
 |
 */
-$config['url_suffix']              = "";
+$config['url_suffix']            = "";
 
 /*
 |--------------------------------------------------------------------------
@@ -131,7 +117,7 @@ $config['url_suffix']              = "";
 | than english.
 |
 */
-$config['language']                = "english";
+$config['language']              = "english";
 
 /*
 |--------------------------------------------------------------------------
@@ -142,7 +128,7 @@ $config['language']                = "english";
 | that require a character set to be provided.
 |
 */
-$config['charset']                 = "UTF-8";
+$config['charset']               = "UTF-8";
 
 /*
 |--------------------------------------------------------------------------
@@ -153,7 +139,7 @@ $config['charset']                 = "UTF-8";
 | native libraries.  For more information please see the user guide.
 |
 */
-$config['subclass_prefix']        = 'MY_';
+$config['subclass_prefix']       = 'MY_';
 
 /*
 |--------------------------------------------------------------------------
@@ -172,7 +158,7 @@ $config['subclass_prefix']        = 'MY_';
 | DO NOT CHANGE THIS UNLESS YOU FULLY UNDERSTAND THE REPERCUSSIONS!!
 |
 */
-$config['permitted_uri_chars']    = 'a-z 0-9~%.:_\-';
+$config['permitted_uri_chars']   = 'a-z 0-9~%.:_\-';
 
 
 /*
@@ -197,10 +183,10 @@ $config['permitted_uri_chars']    = 'a-z 0-9~%.:_\-';
 | use segment based URLs.
 |
 */
-$config['enable_query_strings']   = TRUE;
-$config['controller_trigger']     = 'c';
-$config['function_trigger']       = 'm';
-$config['directory_trigger']      = 'd'; // we currently use it in Obullo :)
+$config['enable_query_strings']  = TRUE;
+$config['directory_trigger']     = 'd'; // we currently use it in Obullo :)  
+$config['controller_trigger']    = 'c';
+$config['function_trigger']      = 'm';
 
 /*
 |--------------------------------------------------------------------------
@@ -222,7 +208,7 @@ $config['directory_trigger']      = 'd'; // we currently use it in Obullo :)
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold']          = 0;
+$config['log_threshold']         = 0;
 
 /*
 |--------------------------------------------------------------------------
@@ -233,7 +219,7 @@ $config['log_threshold']          = 0;
 | base/logs/ folder.  Use a full server path with trailing slash.
 |
 */
-$config['log_path']               = '';
+$config['log_path']              = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -244,7 +230,7 @@ $config['log_path']               = '';
 | codes to set your own date formatting
 |
 */
-$config['log_date_format']        = 'Y-m-d H:i:s';
+$config['log_date_format']       = 'Y-m-d H:i:s';
 
 /*
 |--------------------------------------------------------------------------
@@ -255,7 +241,7 @@ $config['log_date_format']        = 'Y-m-d H:i:s';
 | enabled you MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key']         = "";
+$config['encryption_key']        = "";
 
 /*
 |--------------------------------------------------------------------------
@@ -273,6 +259,7 @@ $config['sess_cookie_name']      = 'ob_session';
 $config['sess_expiration']       = 7200;
 $config['sess_encrypt_cookie']   = FALSE;
 $config['sess_use_database']     = FALSE;
+//$config['sess_database_object']  = 'db';   
 $config['sess_table_name']       = 'ob_sessions';
 $config['sess_match_ip']         = FALSE;
 $config['sess_match_useragent']  = TRUE;
@@ -328,7 +315,7 @@ $config['time_reference']        = 'local';
 | Comma-delimited, e.g. '10.0.1.200,10.0.1.201'
 |
 */
-$config['proxy_ips'] = '';
+$config['proxy_ips']             = '';
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */

@@ -73,7 +73,7 @@ class OB_Session {
 
         // Do we need encryption? If so, load the encryption class
         if ($this->sess_encrypt_cookie == TRUE)
-        loader::base_library('encrypt');
+        loader::base_lib('encrypt');
         
 
         // Are we using a database?  If so, load it

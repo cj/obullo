@@ -1,8 +1,7 @@
 <?php
-
 /**
 |--------------------------------------------------------------------------
-| Obullo Framework (c) 2009 - 2010. 
+| Obullo Framework (c) 2010. 
 |--------------------------------------------------------------------------
 |
 | @version beta 1.0
@@ -11,7 +10,22 @@
 | @see     license.txt
 */ 
 
-define('DS',   DIRECTORY_SEPARATOR); 
+define('DS',   DIRECTORY_SEPARATOR);  
+
+/**
+|--------------------------------------------------------------------------
+| Php error reporting
+|--------------------------------------------------------------------------
+|
+| Predefined error constants
+| @see http://usphp.com/manual/en/errorfunc.constants.php
+
+| For security
+| reasons you are encouraged to change this when your site goes live.
+|
+*/
+error_reporting(E_ALL | E_STRICT); 
+
 /*
 |---------------------------------------------------------------
 | APPLICATION FOLDER NAME
@@ -24,8 +38,8 @@ define('DS',   DIRECTORY_SEPARATOR);
 | User Guide: Chapters / General Topics / Managing Your Applications
 |
 */
-$application_folder = "application" .DS;
 $base_folder        = "base" .DS;
+$application_folder = "application" .DS;
                                                        
 // --------------------------------------------------------------------                               
 
@@ -55,7 +69,7 @@ $application->run();
 // --------------------------------------------------------------------
 
 
-/* Beta 1.0 Version Release Date: 01-01-2010 17:12:38 */
-/* SVN $Id: Index.php 159 01-01-2010 17:12:38 develturk $ */
+/* Beta 1.0 Version Release Date: 01-04-2010 17:12:38 */
+/* SVN $Id: Index.php 159 01-04-2010 17:12:38 develturk $ */
 
 ?>

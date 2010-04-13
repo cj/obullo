@@ -18,18 +18,18 @@ defined('BASE') or exit('Access Denied!');
 |
 | Please see the user guide for complete details:
 |
-| # url of the route detail #
+| Chapters / General Topics / URI Routing 
 |
 | -------------------------------------------------------------------------
 | RESERVED ROUTES
 | -------------------------------------------------------------------------
 |
-| There are two reserved routes:
+| There are one reserved route:
 |
 |    $route['default_controller'] = 'welcome/start';
 |
 | This route indicates which controller class should be loaded if the
-| URI contains no data. In the above example, the "welcome" class
+| URI contains no data. In the above example, the "start" class
 | would be loaded.
 |
 */

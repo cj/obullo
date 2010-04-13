@@ -1,15 +1,12 @@
 <?php
 defined('BASE') or exit('Access Denied!');
 
-/**
-* @see User_Guide :
-* Chapters / General Topics / Global Controllers
-*/
+
 Class __autoloader {
     
     function __construct()
     {         
-        loader::base_helper('html');  // autoload function. 
+        loader::base_helper('html'); 
         loader::base_lib('content');
     } 
 }
@@ -42,6 +39,11 @@ Class Global_controller extends __autoloader
       }
       
 } // end.
-  
-  
+
+
+
+
+/**
+* @see User Guide: Chapters / General Topics / Global Controllers
+*/  
 ?>

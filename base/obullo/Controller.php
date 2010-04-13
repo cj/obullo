@@ -26,11 +26,25 @@ defined('BASE') or exit('Access Denied!');
  * @version         1.3 added __autoloader()
  * @version         1.4 removed __autoloader()
  * @version         1.5 added loader::shortcut()
+ * @version         1.6 added base class public variables
  * @deprecated      self::__autoloader()
  */   
  
 Class Controller extends ob
 {
+    /**
+    * Base class public
+    * variables
+    * @var mixed
+    */
+    public $config;
+    public $input;
+    public $benchmark;
+    public $lang;
+    public $router;
+    public $uri;
+    public $output;
+    
     public function __construct()       
     {   
         // Be carefull. parent::__construct() must be at the top otherwise
@@ -77,7 +91,7 @@ Class Controller extends ob
              loader::base_shortcut('uri');
         }
 
-    } //end function.
+    } //end.
     
 } //end class.
   
