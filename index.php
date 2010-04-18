@@ -38,16 +38,14 @@ error_reporting(E_ALL | E_STRICT);
 | User Guide: Chapters / General Topics / Managing Your Applications
 |
 */
-$base_folder        = "base" .DS;
-$application_folder = "application" .DS;
+define('BASE', 'base'. DS);
+define('APP',  'application'. DS);  
                                                        
 // --------------------------------------------------------------------                               
 
 define('EXT',  '.php'); 
-define('BASE', $base_folder);
 define('FCPATH', __FILE__);
 define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
-define('APP',  $application_folder);   
 define('DIR',  APP .'directories'. DS);
  
 require(BASE .'obullo'. DS .'Front_controller.php');

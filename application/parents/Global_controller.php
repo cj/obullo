@@ -40,10 +40,5 @@ Class Global_controller extends __autoloader
       
 } // end.
 
-
-
-
-/**
-* @see User Guide: Chapters / General Topics / Global Controllers
-*/  
+ 
 ?>

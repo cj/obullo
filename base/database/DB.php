@@ -14,41 +14,26 @@ defined('BASE') or exit('Access Denied!');
  * @license         public
  * @since           Version 1.0
  * @filesource
- */ 
+ */
+ // ------------------------------------------------------------------------
+ 
+define('use_bind_value', 'bind_value'); // Bind Value
+define('use_bind_param', 'bind_param'); // Bind Param
+define('use_bind_column','bind_column'); // Bind Column  
  
 /**
  * DB Class.
  *
- * Extending PDO Class.
+ * Extending to PDO Class.
  *
  * @package         Obullo 
  * @subpackage      Base.database     
  * @category        Database
  * @version         0.1
  * @version         0.2 added active record class
+ * @version         0.3 beta 1.0 rc1 changes ( direct query bug fixed ), added contant use_bindcolumn
  */
-
-define('use_bind_value', 'bind_value'); // Bind Value
-define('use_bind_param', 'bind_param'); // Bind Param
  
-// --------------------  DB Classes load schema ----------------------
-/*  
- include DBAC_Adapter.php
- 
- DBAC_Adapter::AC($active_record = true); 
-      o include DBResults.php
-      o include DBac_record.php
-      o include DBac_sw_on.php
-
- DBAC_Adapter::AC($active_record = false);
-      o include DBResults.php
-      o include DBac_sw_off.php
-
- include DB.php
- include DBFactory.php
-*/
-// --------------------------------------------------------------------
-
 Class DB extends DBAC_Switch
 {
     /**
@@ -81,11 +66,11 @@ Class DB extends DBAC_Switch
     public $last_values;
     
     /**
-    * Parent Query - PDOStatement Object
+    * PDOStatement Object
     * 
     * @var object
     */
-    private $PQ = '';
+    private $Stmt = NULL;
 
     /**
     * Count execute func.
@@ -119,6 +104,10 @@ Class DB extends DBAC_Switch
     public $last_bind_values = array();
     public $last_bind_params = array();
     
+    // Private variables
+    var $_protect_identifiers    = TRUE;
+    var $_reserved_identifiers   = array('*'); // Identifiers that should NOT be escaped
+    
     // --------------------------------------------------------------------
     
     /**
@@ -131,12 +120,13 @@ Class DB extends DBAC_Switch
     * @param    array  $options Db Driver options
     * @return   void
     */
-    public function __construct($dsn, $user = NULL, $pass = NULL, $options = NULL)
+    public function pdo_connect($dsn, $user = NULL, $pass = NULL, $options = NULL)
     {
+        //echo 'connected!'.$dsn;
         parent::__construct($dsn, $user, $pass, $options);
-    } 
-    
-    // --------------------------------------------------------------------
+        
+        return $this;
+    }  
     
     /**
     * Set PDO native Prepare() function
@@ -147,6 +137,7 @@ Class DB extends DBAC_Switch
     public function prep($options = array())
     {
         $this->p_opt   = &$options;
+        
         $this->prepare = TRUE;
     }
     
@@ -167,14 +158,14 @@ Class DB extends DBAC_Switch
         
         if($this->prepare)
         {
-            $this->PQ = parent::prepare($sql, $this->p_opt);
+            $this->Stmt = parent::prepare($sql, $this->p_opt);
             
             ++$this->exec_count;
             
-            return NULL;
+            return $this;   // beta 1.0 rc1 changes ( direct query bug fixed )
         }
         
-        $this->PQ = parent::query($sql);
+        $this->Stmt = parent::query($sql);
 
         ++$this->exec_count;
         
@@ -184,16 +175,56 @@ Class DB extends DBAC_Switch
     // --------------------------------------------------------------------
         
     /**
-    * Escape 'like' strings for security
-    * 
-    * @access private
-    * @param  mixed $str
-    * @return mixed
-    */
-    public function escape_like($str)
+     * Escape LIKE String
+     *
+     * Calls the individual driver for platform
+     * specific escaping for LIKE conditions
+     * 
+     * @access   public
+     * @param    string
+     * @return   mixed
+     */
+    function escape_like_str($str)    
+    {    
+        return $this->escape_str($str, TRUE);
+    }
+    
+    // --------------------------------------------------------------------
+
+    /**
+    * "Smart" Escape String via PDO
+    *
+    * Escapes data based on type
+    * Sets boolean and null types
+    *
+    * @access    public
+    * @param     string
+    * @return    mixed        
+    */    
+    public function escape($str)
     {
-        $str = str_replace(array('%', '_'), array('\\%', '\\_'), $str); 
-        
+        switch (gettype($str))              
+            {
+               case 'string':
+                 $str = $this->escape_str($str); 
+                 break;
+                 
+               case 'integer':
+                 $str = $this->quote($str, PDO::PARAM_INT);  
+                 break;
+                 
+               case 'boolean':
+                 $str = ($str === FALSE) ? 0 : 1;
+                 break;
+               
+               case 'null':
+                 $str = 'NULL';
+                 break;
+                 
+               default:
+                 $str = $this->escape_str($str);
+            }
+
         return $str;
     }
     
@@ -233,7 +264,7 @@ Class DB extends DBAC_Switch
     
         if(is_array($array) AND $bval_or_bparam != '')
         {
-            if( ! self::isAssoc($array))
+            if( ! self::_is_assoc($array))
             throw new DBException('PDO binds data must be associative array !');
             
             switch ($bval_or_bparam)
@@ -250,11 +281,11 @@ Class DB extends DBAC_Switch
             $array = NULL;
         }
         
-        // if( ! self::isAssoc($array)) $array = NULL;
+        // if( ! self::_is_assoc($array)) $array = NULL;
         
         // if no query builded by active record
         // switch to pdo::statement
-        $this->PQ->execute($array);
+        $this->Stmt->execute($array);
         
         // reset prepare variable 
         $this->prepare = FALSE;
@@ -371,7 +402,7 @@ Class DB extends DBAC_Switch
     */
     public function last_query($prepared = FALSE)
     {   
-        if($prepared == TRUE AND self::isAssoc($this->last_values))
+        if($prepared == TRUE AND self::_is_assoc($this->last_values))
         {                                  
             $quote_added_vals = array();
             foreach(array_values($this->last_values) as $q)
@@ -408,7 +439,7 @@ Class DB extends DBAC_Switch
     */
     public function bind_value($param, $val, $type)
     {
-        $this->PQ->bindValue($param, $val, $type);
+        $this->Stmt->bindValue($param, $val, $type);
         
         $this->use_bind_values = TRUE;
         $this->last_bind_values[$param] = $val;
@@ -427,7 +458,7 @@ Class DB extends DBAC_Switch
     */
     public function bind_param($param, $val, $type, $length = NULL, $driver_options = NULL)
     {
-        $this->PQ->bindParam($param, $val, $type, $length, $driver_options);  
+        $this->Stmt->bindParam($param, $val, $type, $length, $driver_options);  
         
         $this->use_bind_params = TRUE;
         $this->last_bind_params[$param] = $val;
@@ -454,7 +485,7 @@ Class DB extends DBAC_Switch
     */
     public function assoc()
     {
-        return $this->PQ->fetch(PDO::FETCH_ASSOC);
+        return $this->Stmt->fetch(PDO::FETCH_ASSOC);
     }
     
     // --------------------------------------------------------------------
@@ -466,7 +497,7 @@ Class DB extends DBAC_Switch
     */
     public function obj()
     {                                  
-        return $this->PQ->fetch(PDO::FETCH_OBJ);
+        return $this->Stmt->fetch(PDO::FETCH_OBJ);
     }
     
     // --------------------------------------------------------------------
@@ -478,7 +509,7 @@ Class DB extends DBAC_Switch
     */
     public function row()
     {                                  
-        return $this->PQ->fetch(PDO::FETCH_OBJ);  
+        return $this->Stmt->fetch(PDO::FETCH_OBJ);  
     }
     
     // --------------------------------------------------------------------
@@ -490,7 +521,7 @@ Class DB extends DBAC_Switch
     */
     public function num_rows()
     {    
-        return $this->PQ->rowCount();
+        return $this->Stmt->rowCount();
     }     
     
     // --------------------------------------------------------------------
@@ -502,7 +533,7 @@ Class DB extends DBAC_Switch
     */
     public function both()
     {
-        return $this->PQ->fetch(PDO::FETCH_BOTH);
+        return $this->Stmt->fetch(PDO::FETCH_BOTH);
     } 
     
     // --------------------------------------------------------------------
@@ -515,7 +546,7 @@ Class DB extends DBAC_Switch
     */
     public function fetch($type = NULL)
     {
-        return $this->PQ->fetch($type);
+        return $this->Stmt->fetch($type);
     } 
     
     // --------------------------------------------------------------------
@@ -529,10 +560,11 @@ Class DB extends DBAC_Switch
     */
     public function fetch_all($type = NULL)
     {    
-        return $this->PQ->fetchAll($type);
+        return $this->Stmt->fetchAll($type);
     } 
     
     // --------------------------------------------------------------------
+
     
     /**
     * Check array associative or not 
@@ -540,13 +572,205 @@ Class DB extends DBAC_Switch
     * @access  private
     * @param   array $arr
     */
-    private static function isAssoc($arr)
+    private static function _is_assoc($arr)
     {
         if( ! is_array($arr)) return FALSE;
         
         return array_keys($arr) !== range(0, count($arr) - 1);
     }
     
+    // --------------------------------------------------------------------
+
+    /**
+    * Protect Identifiers
+    *
+    * This function adds backticks if appropriate based on db type
+    *
+    * @access   private
+    * @param    mixed    the item to escape
+    * @return   mixed    the item with backticks
+    */
+    private function protect_identifiers($item, $prefix_single = FALSE)
+    {
+        return $this->_protect_identifiers($item, $prefix_single);
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+    * Protect Identifiers
+    *
+    * This function is used extensively by the Active Record class, and by
+    * a couple functions in this class. 
+    * It takes a column or table name (optionally with an alias) and inserts
+    * the table prefix onto it.  Some logic is necessary in order to deal with
+    * column names that include the path.  Consider a query like this:
+    *
+    * SELECT * FROM hostname.database.table.column AS c FROM hostname.database.table
+    *
+    * Or a query with aliasing:
+    *
+    * SELECT m.member_id, m.member_name FROM members AS m
+    *
+    * Since the column name can include up to four segments (host, DB, table, column)
+    * or also have an alias prefix, we need to do a bit of work to figure this out and
+    * insert the table prefix (if it exists) in the proper position, and escape only
+    * the correct identifiers.
+    *
+    * @access   private
+    * @param    string
+    * @param    bool
+    * @param    mixed
+    * @param    bool
+    * @return   string
+    */    
+    function _protect_identifiers($item, $prefix_single = FALSE, $protect_identifiers = NULL, $field_exists = TRUE)
+    {
+        // echo 'ok';
+        
+        if ( ! is_bool($protect_identifiers))
+        {
+            $protect_identifiers = $this->_protect_identifiers;
+        }
+
+        if (is_array($item))
+        {
+            $escaped_array = array();
+
+            foreach($item as $k => $v)
+            {
+                $escaped_array[$this->_protect_identifiers($k)] = $this->_protect_identifiers($v);
+            }
+
+            return $escaped_array;
+        }
+
+        // Convert tabs or multiple spaces into single spaces
+        $item = preg_replace('/[\t ]+/', ' ', $item);
+    
+        // If the item has an alias declaration we remove it and set it aside.
+        // Basically we remove everything to the right of the first space
+        $alias = '';
+        if (strpos($item, ' ') !== FALSE)
+        {
+            $alias = strstr($item, " ");
+            $item = substr($item, 0, - strlen($alias));
+        }
+
+        // This is basically a bug fix for queries that use MAX, MIN, etc.
+        // If a parenthesis is found we know that we do not need to 
+        // escape the data or add a prefix.  There's probably a more graceful
+        // way to deal with this, but I'm not thinking of it -- Rick
+        if (strpos($item, '(') !== FALSE)
+        {
+            return $item.$alias;
+        }
+
+        // Break the string apart if it contains periods, then insert the table prefix
+        // in the correct location, assuming the period doesn't indicate that we're dealing
+        // with an alias. While we're at it, we will escape the components
+        if (strpos($item, '.') !== FALSE)
+        {
+            $parts    = explode('.', $item);
+            
+            // Does the first segment of the exploded item match
+            // one of the aliases previously identified?  If so,
+            // we have nothing more to do other than escape the item
+            if (in_array($parts[0], $this->ar_aliased_tables))
+            {
+                if ($protect_identifiers === TRUE)
+                {
+                    foreach ($parts as $key => $val)
+                    {
+                        if ( ! in_array($val, $this->_reserved_identifiers))
+                        {
+                            $parts[$key] = $this->_escape_identifiers($val);
+                        }
+                    }
+                
+                    $item = implode('.', $parts);
+                }            
+                return $item.$alias;
+            }
+            
+            // Is there a table prefix defined in the config file?  If not, no need to do anything
+            if ($this->dbprefix != '')
+            {
+                // We now add the table prefix based on some logic.
+                // Do we have 4 segments (hostname.database.table.column)?
+                // If so, we add the table prefix to the column name in the 3rd segment.
+                if (isset($parts[3]))
+                {
+                    $i = 2;
+                }
+                // Do we have 3 segments (database.table.column)?
+                // If so, we add the table prefix to the column name in 2nd position
+                elseif (isset($parts[2]))
+                {
+                    $i = 1;
+                }
+                // Do we have 2 segments (table.column)?
+                // If so, we add the table prefix to the column name in 1st segment
+                else
+                {
+                    $i = 0;
+                }
+                
+                // This flag is set when the supplied $item does not contain a field name.
+                // This can happen when this function is being called from a JOIN.
+                if ($field_exists == FALSE)
+                {
+                    $i++;
+                }
+
+                // Verify table prefix and replace if necessary
+                if ($this->swap_pre != '' && strncmp($parts[$i], $this->swap_pre, strlen($this->swap_pre)) === 0)
+                {
+                    $parts[$i] = preg_replace("/^".$this->swap_pre."(\S+?)/", $this->dbprefix."\\1", $parts[$i]);
+                }
+                                
+                // We only add the table prefix if it does not already exist
+                if (substr($parts[$i], 0, strlen($this->dbprefix)) != $this->dbprefix)
+                {
+                    $parts[$i] = $this->dbprefix.$parts[$i];
+                }
+                
+                // Put the parts back together
+                $item = implode('.', $parts);
+            }
+            
+            if ($protect_identifiers === TRUE)
+            {
+                $item = $this->_escape_identifiers($item);
+            }
+            
+            return $item.$alias;
+        }
+
+        // Is there a table prefix?  If not, no need to insert it
+        if ($this->dbprefix != '')
+        {
+            // Verify table prefix and replace if necessary
+            if ($this->swap_pre != '' && strncmp($item, $this->swap_pre, strlen($this->swap_pre)) === 0)
+            {
+                $item = preg_replace("/^".$this->swap_pre."(\S+?)/", $this->dbprefix."\\1", $item);
+            }
+
+            // Do we prefix an item with no segments?
+            if ($prefix_single == TRUE AND substr($item, 0, strlen($this->dbprefix)) != $this->dbprefix)
+            {
+                $item = $this->dbprefix.$item;
+            }        
+        }
+
+        if ($protect_identifiers === TRUE AND ! in_array($item, $this->_reserved_identifiers))
+        {
+            $item = $this->_escape_identifiers($item);
+        }
+        
+        return $item.$alias;
+    }
+
  
 } //end class.
 

@@ -28,6 +28,6 @@
 
 <p><b>Note:</b> This is the first Beta version of Obullo Framework so it is not stable version. And documentation not yet ready. <br />When the Obullo web site go to live you can reach to user guide.</p>
 
-<p><br />Page rendered in {elapsed_time} seconds</p>
+<p><br />Page rendered in {elapsed_time} seconds , using {memory_usage} of memory.</p>
 
 <!-- body tag content -->

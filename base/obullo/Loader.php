@@ -255,17 +255,17 @@ Class loader {
        if(class_exists($class)) return;  
       
        // Load shortcuts for most used base libraries.
-       $shortcuts = array(
-                           'config' => 'Config',
-                           'input'  => 'Input',
-                           'lang'   => 'Lang',
-                           'uri'    => 'Uri',
-                           'benchmark'  => 'Benchmark',
+       $shortcuts = array(                            
+                           'agent'   => 'Agent',
+                           'session' => 'Session', 
+                           'config'  => 'Config',
+                           'input'   => 'Input',
+                           'lang'    => 'Lang',
+                           'uri'     => 'Uri',
                            'output'  => 'Output',
                            'content' => 'Content',
+                           'benchmark'  => 'Benchmark',
                            'form_validation' => 'Form_validation',
-                           'session' => 'Session',
-                           'agent'   => 'Agent'
                             );
                             
        if(isset($shortcuts[$class]))
@@ -382,6 +382,7 @@ Class loader {
     * 
     * @author   Ersin Güvenç
     * @param    mixed $db_name for manual connection
+    * @param    boolean $instantiate switch
     * @param    boolean $ac active record switch
     * @version  0.1
     * @version  0.2 multiple models load::database function support.
@@ -395,9 +396,10 @@ Class loader {
     * @version  0.6 @deprecated asn_to_models();, removed unecessarry functions.
     *               added self::_assign_db_objects() func. 
     * @version  0.7 changed DBFactory, moved db_var into DBFactory
+    * @version  0.8 changed DBFactory class as static, added $instantiate param
     * @return   void
     */
-    public static function database($db_name = 'db', $ac = TRUE)
+    public static function database($db_name = 'db', $instantiate = TRUE, $ac_record = TRUE)
     {
         $OB = ob::instance();
 
@@ -414,8 +416,17 @@ Class loader {
         if( ! class_exists('DBFactory'))
         require(BASE .'database'. DS .'DBFactory'. EXT);
 
-        // Connect to PDO
-        new DBFactory($db_name, $db_var, $ac);
+        if($instantiate == FALSE)
+        {
+            // Store db variables .. 
+            $OB->_dbs[$db_var] = $db_var;
+            
+            // Return to database object ..
+            return DBFactory::init($db_name, $db_var, $ac_record);
+        }
+        
+        // Connect to Database
+        ob::instance()->{$db_var} = DBFactory::init($db_name, $db_var, $ac_record);
     
         // Store db variables  
         $OB->_dbs[$db_var] = $db_var; 
