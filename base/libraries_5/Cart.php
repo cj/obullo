@@ -26,23 +26,36 @@ Class CartException extends CommonException {}
  * @author        Ersin Güvenç
  * @link
  */
-class OB_Cart {
+Class cart implements PHP5_Library {
 
     // These are the regular expression rules that we use to validate the product ID and product name
     public $product_id_rules    = '\.a-z0-9_-'; // alpha-numeric, dashes, underscores, or periods
-    public $product_name_rules    = '\.\:\-_ a-z0-9'; // alpha-numeric, dashes, underscores, colons or periods
+    public $product_name_rules  = '\.\:\-_ a-z0-9'; // alpha-numeric, dashes, underscores, colons or periods
     
     // Private variables.  Do not change!
     public $OB;
     public $_cart_contents    = array();
 
-
+    static $instance;
+    
+    public static function instance()
+    {
+       if(! (self::$instance instanceof self))
+       {
+            self::$instance = new self();
+       } 
+       
+       return self::$instance;
+    }
+    
+    // --------------------------------------------------------------------
+    
     /**
      * Shopping Class Constructor
      *
      * The constructor loads the Session class, used to store the shopping cart contents.
      */        
-    function __construct($params = array())
+    function init($params = array())
     {    
         // Set the super object to a local variable for use later
         $this->OB = ob::instance();
@@ -80,9 +93,9 @@ class OB_Cart {
     /**
      * Insert items into the cart and save it to the session table
      *
-     * @access    public
+     * @access   public
      * @param    array
-     * @return    bool
+     * @return   bool
      */
     public function insert($items = array())
     {
@@ -549,4 +562,4 @@ class OB_Cart {
 // END Cart Class
 
 /* End of file Cart.php */
-/* Location: ./base/libraries/Cart.php */
+/* Location: ./base/libraries_5/Cart.php */

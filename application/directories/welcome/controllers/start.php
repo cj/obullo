@@ -8,7 +8,6 @@ Class Start extends Controller
         parent::__global();
 
         loader::base_helper('form');
-    
     }                               
 
     public function index()

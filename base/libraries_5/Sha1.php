@@ -42,12 +42,25 @@ defined('BASE') or exit('Access Denied!');
  * @author        Ersin Güvenç
  * @link          
  */
-class OB_SHA {
+Class sha implements PHP5_Library {
 
-    public function __construct()
+    static $instance;
+    
+    public static function instance()
     {
-        log_message('debug', "SHA1 Class Initialized");
+       if(! (self::$instance instanceof self))
+       {
+            self::$instance = new self();
+       } 
+       
+       log_message('debug', "SHA1 Class Initialized");
+       
+       return self::$instance;
     }
+    
+    // --------------------------------------------------------------------
+    
+    public function init() {}
 
     /**
      * Generate the Hash
@@ -245,7 +258,7 @@ class OB_SHA {
         return bindec($bin);
     }
 }
-// END OB_SHA
+// END SHA
 
 /* End of file Sha1.php */
-/* Location: ./base/libraries/Sha1.php */
+/* Location: ./base/libraries_5/Sha1.php */

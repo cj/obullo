@@ -37,6 +37,20 @@ Class form_validation implements PHP5_Library {
     public $error_string        = '';
     public $_safe_form_data     = FALSE;
     
+    static $instance;
+    
+    public static function instance()
+    {
+       if(! (self::$instance instanceof self))
+       {
+            self::$instance = new self();
+       } 
+       
+       return self::$instance;
+    }
+    
+    // --------------------------------------------------------------------
+    
     
     public function init($rules = array())
     {    
