@@ -12,7 +12,7 @@ Class Start extends Controller
     }                               
 
     public function index()
-    {     
+    {           
         $this->title_tag = 'Welcome to Obullo Framework !';
     
         $this->head_tag  = css('welcome');

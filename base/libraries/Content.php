@@ -26,11 +26,8 @@ Class ContentException extends CommonException {}
  * @version     0.2 added empty $data string support
  * @link        
  */
-class OB_Content
+Class OB_Content
 {
-
-    public $_ob_level;
-    
     public $view_folder      = '';
     public $app_view_folder  = '';
     
@@ -41,8 +38,6 @@ class OB_Content
     */
     public function __construct()
     {    
-        $this->_ob_level  = ob_get_level();
-        
         $this->view_folder     = DS. '';
         $this->app_view_folder = DS. '';
         
@@ -214,22 +209,13 @@ class OB_Content
             return $content;
         }
         
-        if (ob_get_level() > $this->_ob_level + 1)
-        {
-            ob_end_flush();
-            
-            return; // it prevents exceptional error
-        }
-        else
-        {
-            // Set Global views inside to Output Class for caching functionality..
-            base_register('Output')->append_output(ob_get_contents());
-            
-            @ob_end_clean();
-            
-            return;
-        }
-    
+        // Set Global views inside to Output Class for caching functionality..
+        base_register('Output')->append_output(ob_get_contents());
+        
+        @ob_end_clean();
+        
+        return;
+        
         throw new LoaderException('Unable to locate the view: ' . $filename . EXT);
     }
     

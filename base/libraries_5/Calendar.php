@@ -16,7 +16,7 @@ defined('BASE') or exit('Access Denied!');
 // ------------------------------------------------------------------------
 
 /**
- * Obullo Calendar Class
+ * Obullo PHP5 Calendar Class
  *
  * This class enables the creation of calendars
  *
@@ -26,7 +26,7 @@ defined('BASE') or exit('Access Denied!');
  * @author        Ersin Güvenç
  * @link          
  */
-class OB_Calendar {
+Class calendar implements PHP5_Library {
 
     public $OB;
     public $lang;
@@ -38,6 +38,20 @@ class OB_Calendar {
     public $show_next_prev  = FALSE;
     public $next_prev_url   = '';
 
+    static $instance;
+    
+    public static function instance()
+    {
+       if(! (self::$instance instanceof self))
+       {
+            self::$instance = new self();
+       } 
+       
+       return self::$instance;
+    }
+    
+    // --------------------------------------------------------------------
+    
     /**
      * Constructor
      *
@@ -45,7 +59,7 @@ class OB_Calendar {
      *
      * @access    public
      */
-    public function __construct($config = array())
+    public function init($config = array())
     {        
         $this->OB = ob::instance();
         
@@ -58,7 +72,13 @@ class OB_Calendar {
         
         if (count($config) > 0)
         {
-            $this->init($config);
+            foreach ($config as $key => $val)
+            {
+                if (isset($this->$key))
+                {
+                    $this->$key = $val;
+                }
+            }
         }
         
         log_message('debug', "Calendar Class Initialized");
@@ -66,28 +86,6 @@ class OB_Calendar {
     
     // --------------------------------------------------------------------
     
-    /**
-     * Initialize the user preferences
-     *
-     * Accepts an associative array as input, containing display preferences
-     *
-     * @access    public
-     * @param    array    config preferences
-     * @return    void
-     */    
-    public function init($config = array())
-    {
-        foreach ($config as $key => $val)
-        {
-            if (isset($this->$key))
-            {
-                $this->$key = $val;
-            }
-        }
-    }
-    
-    // --------------------------------------------------------------------
-
     /**
      * Generate the calendar
      *
@@ -139,8 +137,8 @@ class OB_Calendar {
         
         // Set the current month/year/day
         // We use this to determine the "today" date
-        $cur_year    = date("Y", $this->local_time);
-        $cur_month    = date("m", $this->local_time);
+        $cur_year   = date("Y", $this->local_time);
+        $cur_month  = date("m", $this->local_time);
         $cur_day    = date("j", $this->local_time);
         
         $is_current_month = ($cur_year == $year AND $cur_month == $month) ? TRUE : FALSE;
@@ -471,9 +469,9 @@ class OB_Calendar {
 
 }
 
-// END OB_Calendar class
+// END calendar class
 
 /* End of file Calendar.php */
-/* Location: ./base/libraries/Calendar.php */
+/* Location: ./base/libraries_5/Calendar.php */
 
 ?>

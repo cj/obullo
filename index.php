@@ -68,6 +68,8 @@ $application->run();
 
 
 /* Beta 1.0 Version Release Date: 01-04-2010 17:12:38 */
-/* SVN $Id: Index.php 159 01-04-2010 17:12:38 develturk $ */
+/* Beta 1.0 Rc1 Version Release Date: ? - ?  */
+
+/* SVN $Id: Index.php 165 18-04-2010 15:24:38 develturk $ */
 
 ?>

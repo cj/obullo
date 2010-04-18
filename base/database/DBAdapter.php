@@ -131,6 +131,10 @@ Abstract Class Obullo_Db_Adapter_Abstract extends DB
     
     // --------------------------------------------------------------------
 
+    /**
+    * Get PDO Instance
+    * for DBFactory Class ..
+    */
     public function get_connection()
     {
        return $this->_conn;

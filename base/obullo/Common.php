@@ -23,8 +23,14 @@ defined('BASE') or exit('Access Denied!');
 * @version 1.2 removed lib_factory function
 * @version 1.3 renamed base "libraries" folder as "base"
 * @version 1.4 added $var  and confi_name vars for get_config()
-* 
+* @version 1.5 added PHP5 library interface class
 */
+
+interface PHP5_Library 
+{
+    public static function instance();
+    public function init($params = '');
+}
 
 /**
 * register();
@@ -37,7 +43,7 @@ defined('BASE') or exit('Access Denied!');
 * @version  0.1
 * @version  0.2 added $file_exists var
 * @version  0.3 moved into ob class
-* @version  0.4 added __construct(params=array()) support
+* @version  0.4 added __construct(params = array()) support
 * @version  0.5 removed OB_Library::factory(), lib_factory()
 * @version  0.6 added $dir param
 * @return   object | NULL
@@ -119,17 +125,17 @@ function base_register($class, $params = NULL, $instantiate = TRUE)
     if ($getObject !== NULL)
     return $getObject;
     
-    if(file_exists(BASE.'libraries'.DS.$Class.EXT))
+    if(file_exists(BASE .'libraries'. DS .$Class. EXT))
     {
-        require(BASE.'libraries'.DS.$Class.EXT);
+        require(BASE .'libraries'. DS .$Class. EXT);
         
         $classname = 'OB_'.$Class;
         
         $prefix = config_item('subclass_prefix');  // MY_
                                              
-        if(file_exists(APP.'libraries'.DS.$prefix.$Class.EXT)) // extend support.
+        if(file_exists(APP .'libraries'. DS .$prefix.$Class. EXT)) // extend support.
         {
-            require(APP.'libraries'.DS.$prefix.$Class.EXT);
+            require(APP .'libraries'. DS .$prefix.$Class. EXT);
             
             $classname = $prefix.$Class;
         }
@@ -177,17 +183,17 @@ function register_static($real_name, $base = FALSE)
     return TRUE;
 
     $Class = strtolower($real_name); //lowercase classname.
-    $Path  = APP.'libraries';
-    
+    $Path  = APP .'libraries';
+
     if($base)
     {
         $Class = ucfirst($Class); //lowercase classname.
-        $Path  = BASE.'libraries'; 
+        $Path  = BASE .'libraries_5'; 
     }
     
-    if(file_exists($Path.DS.$Class.EXT))
+    if(file_exists($Path. DS .$Class. EXT))
     {
-        require($Path.DS.$Class.EXT);
+        require($Path. DS .$Class. EXT);
         
         return TRUE;
     }

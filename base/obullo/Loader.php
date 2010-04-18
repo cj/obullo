@@ -162,8 +162,8 @@ Class loader {
         
         if($no_ins_params === FALSE)
         {   
-            // if someone don't want to instantiate class not instantiate
-            register_static($class);
+            // if someone want to use PHP5 Library ..
+            register_static($class, $base);
             return;
         }
         
@@ -176,7 +176,7 @@ Class loader {
         switch ($base)
         {
            case FALSE:
-             $type = '';
+             $type = 'application';
              $OB->$class_var = register($class, $no_ins_params, $lib_dir); 
              break;
              
@@ -264,8 +264,7 @@ Class loader {
                            'uri'     => 'Uri',
                            'output'  => 'Output',
                            'content' => 'Content',
-                           'benchmark'  => 'Benchmark',
-                           'form_validation' => 'Form_validation',
+                           'benchmark'  => 'Benchmark'
                             );
                             
        if(isset($shortcuts[$class]))

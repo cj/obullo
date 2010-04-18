@@ -27,7 +27,7 @@ Class EmailException extends CommonException {}
  * @author        Ersin Güvenç
  * @link          
  */
-class OB_Email {
+class email implements PHP5_Library {
 
     public    $useragent       = "Obullo";
     public    $mailpath        = "/usr/sbin/sendmail";    // Sendmail path
@@ -77,17 +77,47 @@ class OB_Email {
     public    $_bit_depths    = array('7bit', '8bit');
     public    $_priorities    = array('1 (Highest)', '2 (High)', '3 (Normal)', '4 (Low)', '5 (Lowest)');
 
-
+    static $instance;
+    
+    public static function instance()
+    {
+       if(! (self::$instance instanceof self))
+       {
+            self::$instance = new self();
+       } 
+       
+       return self::$instance;
+    }
+    
     /**
-     * Constructor - Sets Email Preferences
-     *
-     * The constructor can be passed an array of config values
-     */
-    public function __construct($config = array())
+    * Constructor - Sets Email Preferences
+    *
+    * The constructor can be passed an array of config values
+    */
+    public function init($config = array())
     {
         if (count($config) > 0)
         {
-            $this->init($config);
+            $this->clear();
+            foreach ($config as $key => $val)
+            {
+                if (isset($this->$key))
+                {
+                    $method = 'set_'.$key;
+
+                    if (method_exists($this, $method))
+                    {
+                        $this->$method($val);
+                    }
+                    else
+                    {
+                        $this->$key = $val;
+                    }
+                }
+            }
+
+            $this->_smtp_auth = ($this->smtp_user == '' AND $this->smtp_pass == '') ? FALSE : TRUE;
+            $this->_safe_mode = ((boolean)@ini_get("safe_mode") === FALSE) ? FALSE : TRUE;
         }
         else
         {
@@ -97,40 +127,7 @@ class OB_Email {
 
         log_message('debug', "Email Class Initialized");
     }
-
-    // --------------------------------------------------------------------
-
-    /**
-     * Initialize preferences
-     *
-     * @access    public
-     * @param     array
-     * @return    void
-     */
-    public function init($config = array())
-    {
-        $this->clear();
-        foreach ($config as $key => $val)
-        {
-            if (isset($this->$key))
-            {
-                $method = 'set_'.$key;
-
-                if (method_exists($this, $method))
-                {
-                    $this->$method($val);
-                }
-                else
-                {
-                    $this->$key = $val;
-                }
-            }
-        }
-
-        $this->_smtp_auth = ($this->smtp_user == '' AND $this->smtp_pass == '') ? FALSE : TRUE;
-        $this->_safe_mode = ((boolean)@ini_get("safe_mode") === FALSE) ? FALSE : TRUE;
-    }
-  
+      
     // --------------------------------------------------------------------
 
     /**
@@ -2036,7 +2033,7 @@ class OB_Email {
     }
 
 }
-// END OB_Email class
+// END email class
 
 /* End of file Email.php */
-/* Location: ./base/libraries/Email.php */
+/* Location: ./base/libraries_5/Email.php */

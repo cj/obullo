@@ -37,7 +37,7 @@ class OB_Log {
      *
      * @access    public
      */
-    function __construct()
+    public function __construct()
     {
         $config = get_config();
         
@@ -66,13 +66,13 @@ class OB_Log {
      *
      * Generally this function will be called using the global log_message() function
      *
-     * @access    public
+     * @access   public
      * @param    string    the error level
      * @param    string    the error message
      * @param    bool    whether the error is a native PHP error
-     * @return    bool
+     * @return   bool
      */        
-    function write_log($level = 'error', $msg, $php_error = FALSE)
+    public function write_log($level = 'error', $msg, $php_error = FALSE)
     {        
         if ($this->_enabled === FALSE)
         {
