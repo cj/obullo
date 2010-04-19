@@ -42,9 +42,9 @@ defined('BASE') or exit('Access Denied!');
  * @author        Ersin Güvenç
  * @link          
  */
-Class sha implements PHP5_Library {
+Class sha1 implements PHP5_Library {
 
-    static $instance;
+    private static $instance;
     
     public static function instance()
     {
@@ -261,4 +261,4 @@ Class sha implements PHP5_Library {
 // END SHA
 
 /* End of file Sha1.php */
-/* Location: ./base/libraries_5/Sha1.php */
+/* Location: ./base/libraries/php5/Sha1.php */

@@ -24,7 +24,7 @@ Class TableException extends CommonException {}
  * @author      Ersin Güvenç
  * @link        
  */
-class OB_Table {
+Class table implements PHP5_Library {
 
     public $rows               = array();
     public $heading            = array();
@@ -33,9 +33,22 @@ class OB_Table {
     public $template           = NULL;
     public $newline            = "\n";
     public $empty_cells        = "";
+
+    private static $instance;
     
+    public static function instance()
+    {
+       if(! (self::$instance instanceof self))
+       {
+            self::$instance = new self();
+       } 
+       
+       return self::$instance;
+    }
     
-    public function __construct()
+    // --------------------------------------------------------------------
+    
+    public function init()
     {
         log_message('debug', "Table Class Initialized");
     }
@@ -435,4 +448,6 @@ class OB_Table {
 
 
 /* End of file Table.php */
-/* Location: ./base/libraries/Table.php */
+/* Location: ./base/libraries/php5/Table.php */
+
+?>

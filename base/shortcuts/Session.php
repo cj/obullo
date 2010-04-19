@@ -24,49 +24,49 @@ Class session {
    
     public static function set($newdata = array(),$newval = '')
     { 
-        return ob::instance()->session->set_userdata($newdata, $newval); 
+        return ob::instance()->session->set($newdata, $newval); 
     }
     
     // ------------------------------------------------------------------------
      
     public static function get($item) 
     { 
-        return ob::instance()->session->userdata($item); 
+        return ob::instance()->session->get($item); 
     } 
     
     // ------------------------------------------------------------------------
 
     public static function un_set($newdata) 
     { 
-        return ob::instance()->session->unset_userdata($newdata); 
+        return ob::instance()->session->un_set($newdata); 
     } 
     
     // ------------------------------------------------------------------------
     
     public static function set_flash($newdata = array(), $newval = '')
     { 
-        return ob::instance()->session->set_flashdata($newdata,$newval); 
+        return ob::instance()->session->set_flash($newdata,$newval); 
     } 
     
     // ------------------------------------------------------------------------
     
     public static function get_flash($key) 
     { 
-        return ob::instance()->session->flashdata($key); 
+        return ob::instance()->session->get_flash($key); 
     }
     
     // ------------------------------------------------------------------------
     
     public static function keep_flash($key)
     { 
-        return ob::instance()->session->keep_flashdata($key); 
+        return ob::instance()->session->keep_flash($key); 
     }
     
     // ------------------------------------------------------------------------
     
     public static function destroy()
     { 
-        return ob::instance()->session->sess_destroy(); 
+        return ob::instance()->session->destroy(); 
     }
     
 } // end of the class. 

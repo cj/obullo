@@ -26,7 +26,7 @@ Class ImagelibException extends CommonException {}
  * @author        Ersin Güvenç
  * @link          
  */
-class OB_Image_lib {
+Class image_lib implements PHP5_Library {
 
     public $image_library       = 'gd2';      // Can be:  imagemagick, netpbm, gd, gd2
     public $library_path        = '';
@@ -77,19 +77,33 @@ class OB_Image_lib {
     public $error_msg           = array();
     public $wm_use_drop_shadow  = FALSE;
     public $wm_use_truetype     = FALSE;
-
+    
+    private static $instance;
+    
+    public static function instance()
+    {
+       if(! (self::$instance instanceof self))
+       {
+            self::$instance = new self();
+       } 
+       
+       return self::$instance;
+    }
+    
+    // --------------------------------------------------------------------
+    
     /**
      * Constructor
      *
-     * @access    public
+     * @access   public
      * @param    string
-     * @return    void
+     * @return   void
      */
-    public function __construct($props = array())
+    public function init($props = array())
     {
         if (count($props) > 0)
         {
-            $this->initialize($props);
+            $this->_initialize($props);
         }
 
         log_message('debug', "Image Lib Class Initialized");
@@ -123,11 +137,11 @@ class OB_Image_lib {
     /**
      * initialize image preferences
      *
-     * @access    public
+     * @access   private
      * @param    array
-     * @return    bool
+     * @return   bool
      */
-    public function initialize($props = array())
+    private function _initialize($props = array())
     {
         /*
          * Convert array elements into class variables
@@ -1542,4 +1556,4 @@ class OB_Image_lib {
 // END Image_lib Class
 
 /* End of file Image_lib.php */
-/* Location: ./base/libraries/Image_lib.php */
+/* Location: ./base/libraries/php5/Image_lib.php */

@@ -50,7 +50,7 @@ class OB_Parser {
         
         loader::base_lib('content');
         
-        $template = content::view($template, $data);
+        $template = $this->content->view($template, $data);
         
         if ($template == '')
         {

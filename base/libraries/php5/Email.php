@@ -77,7 +77,7 @@ class email implements PHP5_Library {
     public    $_bit_depths    = array('7bit', '8bit');
     public    $_priorities    = array('1 (Highest)', '2 (High)', '3 (Normal)', '4 (Low)', '5 (Lowest)');
 
-    static $instance;
+    private static $instance;
     
     public static function instance()
     {
@@ -2036,4 +2036,4 @@ class email implements PHP5_Library {
 // END email class
 
 /* End of file Email.php */
-/* Location: ./base/libraries_5/Email.php */
+/* Location: ./base/libraries/php5/Email.php */

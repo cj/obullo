@@ -26,7 +26,7 @@ Class FtpException extends CommonException {}
  * @author        Ersin Güvenç
  * @link        
  */
-class OB_FTP {
+Class ftp implements PHP5_Library {
 
     public $hostname    = '';
     public $username    = '';
@@ -36,45 +36,44 @@ class OB_FTP {
     public $debug       = FALSE;
     public $conn_id     = FALSE;
 
+    private static $instance;
+    
+    public static function instance()
+    {
+       if(! (self::$instance instanceof self))
+       {
+            self::$instance = new self();
+       } 
+       
+       return self::$instance;
+    }
 
+    // --------------------------------------------------------------------
+    
     /**
      * Constructor - Sets Preferences
      *
      * The constructor can be passed an array of config values
      */
-    public function __construct($config = array())
+    public function init($config = array())
     {
         if (count($config) > 0)
         {
-            $this->init($config);
+            foreach ($config as $key => $val)
+            {
+                if (isset($this->$key))
+                {
+                    $this->$key = $val;
+                }
+            }
+
+            // Prep the hostname
+            $this->hostname = preg_replace('|.+?://|', '', $this->hostname);
         }
 
         log_message('debug', "FTP Class Initialized");
     }
-
-    // --------------------------------------------------------------------
-
-    /**
-     * Initialize preferences
-     *
-     * @access    public
-     * @param    array
-     * @return    void
-     */
-    public function init($config = array())
-    {
-        foreach ($config as $key => $val)
-        {
-            if (isset($this->$key))
-            {
-                $this->$key = $val;
-            }
-        }
-
-        // Prep the hostname
-        $this->hostname = preg_replace('|.+?://|', '', $this->hostname);
-    }
-
+    
     // --------------------------------------------------------------------
 
     /**
@@ -609,4 +608,4 @@ class OB_FTP {
 // END FTP Class
 
 /* End of file Ftp.php */
-/* Location: ./base/libraries/Ftp.php */
+/* Location: ./base/libraries/php5/Ftp.php */

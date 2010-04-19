@@ -25,7 +25,7 @@ Class UploadException extends CommonException {}
  * @author        Obullo
  * @link          
  */
-class OB_Upload {
+Class upload implements PHP5_Library {
     
     public $max_size         = 0;
     public $max_width        = 0;
@@ -51,82 +51,83 @@ class OB_Upload {
     public $remove_spaces    = TRUE;
     public $xss_clean        = FALSE;
     public $temp_prefix      = "temp_file_";
+       
+    private static $instance;
+    
+    public static function instance()
+    {
+       if(! (self::$instance instanceof self))
+       {
+            self::$instance = new self();
+       } 
+       
+       return self::$instance;
+    }
+    
+    // --------------------------------------------------------------------
         
     /**
      * Constructor
      *
      * @access    public
      */
-    public function __construct($props = array())
+    public function init($props = array())
     {
         if (count($props) > 0)
         {
-            $this->init($props);
-        }
+            $defaults = array(
+                    'max_size'            => 0,
+                    'max_width'           => 0,
+                    'max_height'          => 0,
+                    'max_filename'        => 0,
+                    'allowed_types'       => "",
+                    'file_temp'           => "",
+                    'file_name'           => "",
+                    'orig_name'           => "",
+                    'file_type'           => "",
+                    'file_size'           => "",
+                    'file_ext'            => "",
+                    'upload_path'         => "",
+                    'overwrite'           => FALSE,
+                    'encrypt_name'        => FALSE,
+                    'is_image'            => FALSE,
+                    'image_width'         => '',
+                    'image_height'        => '',
+                    'image_type'          => '',
+                    'image_size_str'      => '',
+                    'error_msg'           => array(),
+                    'mimes'               => array(),
+                    'remove_spaces'       => TRUE,
+                    'xss_clean'           => FALSE,
+                    'temp_prefix'         => "temp_file_"
+                );    
         
-        log_message('debug', "Upload Class Initialized");
-    }
-    
-    // --------------------------------------------------------------------
-    
-    /**
-     * Initialize preferences
-     *
-     * @access    public
-     * @param     array
-     * @return    void
-     */    
-    public function init($config = array())
-    {
-        $defaults = array(
-                            'max_size'            => 0,
-                            'max_width'           => 0,
-                            'max_height'          => 0,
-                            'max_filename'        => 0,
-                            'allowed_types'       => "",
-                            'file_temp'           => "",
-                            'file_name'           => "",
-                            'orig_name'           => "",
-                            'file_type'           => "",
-                            'file_size'           => "",
-                            'file_ext'            => "",
-                            'upload_path'         => "",
-                            'overwrite'           => FALSE,
-                            'encrypt_name'        => FALSE,
-                            'is_image'            => FALSE,
-                            'image_width'         => '',
-                            'image_height'        => '',
-                            'image_type'          => '',
-                            'image_size_str'      => '',
-                            'error_msg'           => array(),
-                            'mimes'               => array(),
-                            'remove_spaces'       => TRUE,
-                            'xss_clean'           => FALSE,
-                            'temp_prefix'         => "temp_file_"
-                        );    
-    
-    
-        foreach ($defaults as $key => $val)
-        {
-            if (isset($config[$key]))
+        
+            foreach ($defaults as $key => $val)
             {
-                $method = 'set_'.$key;
-                if (method_exists($this, $method))
+                if (isset($config[$key]))
                 {
-                    $this->$method($config[$key]);
+                    $method = 'set_'.$key;
+                    if (method_exists($this, $method))
+                    {
+                        $this->$method($config[$key]);
+                    }
+                    else
+                    {
+                        $this->$key = $config[$key];
+                    }            
                 }
                 else
                 {
-                    $this->$key = $config[$key];
-                }            
+                    $this->$key = $val;
+                }
             }
-            else
-            {
-                $this->$key = $val;
-            }
-        }
+            
+        } // end if.
+        
+        log_message('debug', "Upload Class Initialized");
     }
-    
+
     // --------------------------------------------------------------------
     
     /**
@@ -192,7 +193,7 @@ class OB_Upload {
         $this->file_size = $_FILES[$field]['size'];        
         $this->file_type = preg_replace("/^(.+?);.*$/", "\\1", $_FILES[$field]['type']);
         $this->file_type = strtolower($this->file_type);
-        $this->file_ext     = $this->get_extension($_FILES[$field]['name']);
+        $this->file_ext  = $this->get_extension($_FILES[$field]['name']);
         
         // Convert the file size to kilobytes
         if ($this->file_size > 0)
@@ -906,7 +907,7 @@ class OB_Upload {
      * @param    string
      * @return   string
      */
-    public function _prep_filename($filename)
+    private function _prep_filename($filename)
     {
         if (strpos($filename, '.') === FALSE)
         {
@@ -947,4 +948,4 @@ class OB_Upload {
 // END Upload Class
 
 /* End of file Upload.php */
-/* Location: ./base/libraries/Upload.php */
+/* Location: ./base/libraries/php5/Upload.php */

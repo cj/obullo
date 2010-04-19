@@ -37,7 +37,7 @@ Class form_validation implements PHP5_Library {
     public $error_string        = '';
     public $_safe_form_data     = FALSE;
     
-    static $instance;
+    private static $instance;
     
     public static function instance()
     {
@@ -1265,4 +1265,4 @@ Class form_validation implements PHP5_Library {
 // END Form Validation Class
 
 /* End of file Form_validation.php */
-/* Location: ./base/libraries_5/Form_validation.php */
+/* Location: ./base/libraries/php5/Form_validation.php */

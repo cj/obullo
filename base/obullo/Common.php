@@ -29,7 +29,7 @@ defined('BASE') or exit('Access Denied!');
 interface PHP5_Library 
 {
     public static function instance();
-    public function init($params = '');
+    public function init();
 }
 
 /**
@@ -169,7 +169,7 @@ function base_register($class, $params = NULL, $instantiate = TRUE)
 * @access   public
 * @author   Ersin Güvenç
 * @param    string $class name of the class.
-*           You must provide real class name.
+*           You must provide real class name. (lowercase)
 * @param    boolean $base base class or not
 * @version  0.1
 * @version  0.2 added base param
@@ -181,14 +181,16 @@ function register_static($real_name, $base = FALSE)
 {   
     if(class_exists($real_name))
     return TRUE;
+    
+    echo $real_name;
 
     $Class = strtolower($real_name); //lowercase classname.
-    $Path  = APP .'libraries';
+    $Path  = APP .'libraries'. DS .'php5';
 
     if($base)
     {
-        $Class = ucfirst($Class); //lowercase classname.
-        $Path  = BASE .'libraries_5'; 
+        $Class = ucfirst($Class);
+        $Path  = BASE .'libraries'. DS .'php5'; 
     }
     
     if(file_exists($Path. DS .$Class. EXT))

@@ -13,7 +13,7 @@ defined('BASE') or exit('Access Denied!');
  * @license
  */
 
- Class ZipException extends CommonException {} 
+Class ZipException extends CommonException {} 
  
 // ------------------------------------------------------------------------
 
@@ -32,7 +32,7 @@ defined('BASE') or exit('Access Denied!');
  * @author        Ersin Güvenç
  * @link          
  */
-class OB_Zip  {
+Class zip implements PHP5_Library {
 
     public $zipdata     = '';
     public $directory   = '';
@@ -40,7 +40,21 @@ class OB_Zip  {
     public $file_num    = 0;
     public $offset      = 0;
 
-    public function __construct()
+    private static $instance;
+    
+    public static function instance()
+    {
+       if(! (self::$instance instanceof self))
+       {
+            self::$instance = new self();
+       } 
+       
+       return self::$instance;
+    }
+    
+    // --------------------------------------------------------------------
+    
+    public function init()
     {
         log_message('debug', "Zip Compression Class Initialized");
     }
@@ -357,4 +371,4 @@ class OB_Zip  {
 }
 
 /* End of file Zip.php */
-/* Location: ./base/libraries/Zip.php */
+/* Location: ./base/libraries/php5/Zip.php */

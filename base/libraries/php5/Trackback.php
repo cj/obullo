@@ -28,7 +28,7 @@ Class TrackbackException extends CommonException {}
  * @author        Ersin Güvenç
  * @link          
  */
-class OB_Trackback {
+Class trackback implements PHP5_Library {
         
     public $time_format    = 'local';
     public $charset        = 'UTF-8';
@@ -37,12 +37,26 @@ class OB_Trackback {
     public $response       = '';
     public $error_msg      = array();
 
+    private static $instance;
+    
+    public static function instance()
+    {
+       if(! (self::$instance instanceof self))
+       {
+            self::$instance = new self();
+       } 
+       
+       return self::$instance;
+    }
+    
+    // --------------------------------------------------------------------
+    
     /**
      * Constructor
      *
      * @access    public
      */
-    public function __construct()
+    public function init()
     {
         log_message('debug', "Trackback Class Initialized");
     }
@@ -547,4 +561,4 @@ class OB_Trackback {
 // END Trackback Class
 
 /* End of file Trackback.php */
-/* Location: ./base/libraries/Trackback.php */
+/* Location: ./base/libraries/php5/Trackback.php */

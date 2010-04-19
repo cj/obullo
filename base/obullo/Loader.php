@@ -163,7 +163,11 @@ Class loader {
         if($no_ins_params === FALSE)
         {   
             // if someone want to use PHP5 Library ..
-            register_static($class, $base);
+            $php5_lib = register_static($class, $base);
+            
+            if($php5_lib === NULL)
+            throw new LoaderException('Unable to locate the Php5 library file: '. strtolower($class));
+            
             return;
         }
         
@@ -191,55 +195,7 @@ Class loader {
     
         $OB->_libs[$class_var] = $class_var;    
     }
-    
-    // --------------------------------------------------------------------
-    
-    /**
-    * loader::shortcut();
-    * 
-    * @author   Ersin Güvenç  
-    * @access   public
-    * @version  0.1
-    * @param    mixed $class app library name
-    * @return   void
-    */
-    public static function shortcut($class)
-    {
-       if(class_exists($class)) return;
-       
-       if(file_exists(DIR .$GLOBALS['d']. DS .'shortcuts'. DS .$class. EXT))
-       {
-           include(DIR .$GLOBALS['d']. DS .'shortcuts'. DS .$class. EXT);
-           return;
-       }         
-       
-       throw new LoaderException('Unable to locate the shortcut: '.$class. EXT); 
-    }
-    
-    // --------------------------------------------------------------------
-    
-    /**
-    * loader::app_shortcut();
-    * 
-    * @author   Ersin Güvenç  
-    * @access   public
-    * @version  0.1
-    * @param    mixed $class app library name
-    * @return   void
-    */
-    public static function app_shortcut($class)
-    {
-       if(class_exists($class)) return;
-       
-       if(file_exists(APP .'shortcuts'. DS .strtolower($class). EXT))
-       {
-           include(APP .'shortcuts'. DS .strtolower($class). EXT);
-           return;
-       }         
-       
-       throw new LoaderException('Unable to locate the application shortcut: '.$class. EXT); 
-    }
-    
+   
     // --------------------------------------------------------------------
     
     /**

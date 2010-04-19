@@ -73,7 +73,7 @@ class OB_Session {
 
         // Do we need encryption? If so, load the encryption class
         if ($this->sess_encrypt_cookie == TRUE)
-        loader::base_lib('encrypt');
+        loader::base_lib('encrypt',false);
         
 
         // Are we using a database?  If so, load it
@@ -139,7 +139,10 @@ class OB_Session {
         // Decrypt the cookie data
         if ($this->sess_encrypt_cookie == TRUE)
         {
-            $session = $this->OB->encrypt->decode($session);
+            $encrypt = encrypt::instance();
+            $encrypt->init();
+            
+            $session = $encrypt->decode($session);
         }
         else
         {    
@@ -151,7 +154,8 @@ class OB_Session {
             if ($hash !==  md5($session.$this->encryption_key))
             {
                 log_message('error', 'The session cookie data did not match what was expected. This could be a possible hacking attempt.');
-                $this->sess_destroy();
+                
+                $this->destroy();
                 return FALSE;
             }
         }
@@ -162,28 +166,28 @@ class OB_Session {
         // Is the session data we unserialized an array with the correct format?
         if ( ! is_array($session) OR ! isset($session['session_id']) OR ! isset($session['ip_address']) OR ! isset($session['user_agent']) OR ! isset($session['last_activity']))
         {
-            $this->sess_destroy();
+            $this->destroy();
             return FALSE;
         }
         
         // Is the session current?
         if (($session['last_activity'] + $this->sess_expiration) < $this->now)
         {
-            $this->sess_destroy();
+            $this->destroy();
             return FALSE;
         }
 
         // Does the IP Match?
         if ($this->sess_match_ip == TRUE AND $session['ip_address'] != $this->OB->input->ip_address())
         {
-            $this->sess_destroy();
+            $this->destroy();
             return FALSE;
         }
         
         // Does the User Agent Match?
         if ($this->sess_match_useragent == TRUE AND trim($session['user_agent']) != trim(substr($this->OB->input->user_agent(), 0, 50)))
         {
-            $this->sess_destroy();
+            $this->destroy();
             return FALSE;
         }
         
@@ -207,7 +211,7 @@ class OB_Session {
             // No result?  Kill it!
             if ($query->num_rows() == 0)
             {
-                $this->sess_destroy();
+                $this->destroy();
                 return FALSE;
             }
 
@@ -391,7 +395,7 @@ class OB_Session {
     * @access    public
     * @return    void
     */
-    public function sess_destroy()
+    public function destroy()
     {    
         // Kill the session DB row
         if ($this->sess_use_database === TRUE AND isset($this->userdata['session_id']))
@@ -420,7 +424,7 @@ class OB_Session {
     * @param    string
     * @return   string
     */        
-    public function userdata($item)
+    public function get($item)
     {
         return ( ! isset($this->userdata[$item])) ? FALSE : $this->userdata[$item];
     }
@@ -448,7 +452,7 @@ class OB_Session {
     * @param    string
     * @return   void
     */        
-    public function set_userdata($newdata = array(), $newval = '')
+    public function set($newdata = array(), $newval = '')
     {
         if (is_string($newdata))
         {
@@ -474,7 +478,7 @@ class OB_Session {
     * @access    array
     * @return    void
     */        
-    public function unset_userdata($newdata = array())
+    public function un_set($newdata = array())
     {
         if (is_string($newdata))
         {
@@ -503,7 +507,7 @@ class OB_Session {
     * @param    string
     * @return   void
     */
-    public function set_flashdata($newdata = array(), $newval = '')
+    public function set_flash($newdata = array(), $newval = '')
     {
         if (is_string($newdata))
         {
@@ -515,7 +519,7 @@ class OB_Session {
             foreach ($newdata as $key => $val)
             {
                 $flashdata_key = $this->flashdata_key.':new:'.$key;
-                $this->set_userdata($flashdata_key, $val);
+                $this->set($flashdata_key, $val);
             }
         }
     } 
@@ -529,17 +533,17 @@ class OB_Session {
     * @param    string
     * @return   void
     */
-    public function keep_flashdata($key)
+    public function keep_flash($key)
     {
         // 'old' flashdata gets removed.  Here we mark all 
         // flashdata as 'new' to preserve it from _flashdata_sweep()
         // Note the function will return FALSE if the $key 
         // provided cannot be found
         $old_flashdata_key = $this->flashdata_key.':old:'.$key;
-        $value = $this->userdata($old_flashdata_key);
+        $value = $this->get($old_flashdata_key);
 
         $new_flashdata_key = $this->flashdata_key.':new:'.$key;
-        $this->set_userdata($new_flashdata_key, $value);
+        $this->set($new_flashdata_key, $value);
     }
     
     // ------------------------------------------------------------------------
@@ -551,10 +555,10 @@ class OB_Session {
     * @param    string
     * @return   string
     */    
-    public function flashdata($key)
+    public function get_flash($key)
     {
         $flashdata_key = $this->flashdata_key.':old:'.$key;
-        return $this->userdata($flashdata_key);
+        return $this->get($flashdata_key);
     }
 
     // ------------------------------------------------------------------------
@@ -575,8 +579,8 @@ class OB_Session {
             if (is_array($parts) && count($parts) === 2)
             {
                 $new_name = $this->flashdata_key.':old:'.$parts[1];
-                $this->set_userdata($new_name, $value);
-                $this->unset_userdata($name);
+                $this->set($new_name, $value);
+                $this->un_set($name);
             }
         }
     }
@@ -596,7 +600,7 @@ class OB_Session {
         {
             if (strpos($key, ':old:'))
             {
-                $this->unset_userdata($key);
+                $this->un_set($key);
             }
         }
 
@@ -645,7 +649,10 @@ class OB_Session {
         
         if ($this->sess_encrypt_cookie == TRUE)
         {
-            $cookie_data = $this->OB->encrypt->encode($cookie_data);
+            $encrypt = encrypt::instance();
+            $encrypt->init();
+        
+            $cookie_data = $encrypt->encode($cookie_data);
         }
         else
         {
@@ -757,4 +764,4 @@ class OB_Session {
 // END Session Class
 
 /* End of file Session.php */
-/* Location: ./base/base/Session.php */
+/* Location: ./base/libraries/Session.php */

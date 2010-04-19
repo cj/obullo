@@ -27,7 +27,7 @@ Class PagerException extends CommonException {}
  * @author        Ersin Güvenç
  * @link          
  */
-class OB_Pager {
+Class pager implements PHP5_Library {
 
     public $base_url            = ''; // The page we are linking to
     public $total_rows          = ''; // Total number of items (database results)
@@ -56,30 +56,25 @@ class OB_Pager {
     public $page_query_string   = FALSE;
     public $query_string_segment = 'per_page';
 
+    private static $instance;
+    
+    public static function instance()
+    {
+       if(! (self::$instance instanceof self))
+       {
+            self::$instance = new self();
+       } 
+       
+       return self::$instance;
+    }
+    
+    // --------------------------------------------------------------------
+    
     /**
      * Constructor
      *
      * @access    public
      * @param    array    initialization parameters
-     */
-    public function __construct($params = array())
-    {
-        if (count($params) > 0)
-        {
-            $this->init($params);
-        }
-
-        log_message('debug', "Pagination Class Initialized");
-    }
-
-    // --------------------------------------------------------------------
-
-    /**
-     * Initialize Preferences
-     *
-     * @access    public
-     * @param    array    initialization parameters
-     * @return    void
      */
     public function init($params = array())
     {
@@ -93,10 +88,12 @@ class OB_Pager {
                 }
             }
         }
+
+        log_message('debug', "Pagination Class Initialized");
     }
 
     // --------------------------------------------------------------------
-
+    
     /**
      * Generate the pagination links
      *
@@ -241,7 +238,7 @@ class OB_Pager {
         return $output;
     }
 }
-// END Pagination Class
+// END Pager Class
 
-/* End of file Pagination.php */
-/* Location: ./base/libraries/Pagination.php */
+/* End of file Pager.php */
+/* Location: ./base/libraries/php5/Pager.php */

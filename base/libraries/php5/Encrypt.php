@@ -37,7 +37,7 @@ Class encrypt implements PHP5_Library {
     public $_mcrypt_cipher;
     public $_mcrypt_mode;
 
-    static $instance;
+    private static $instance;
     
     public static function instance()
     {
@@ -480,7 +480,7 @@ Class encrypt implements PHP5_Library {
             {
                 loader::base_lib('sha1', false);
                 
-                $SH = sha::instance();
+                $SH = sha1::instance();
                 
                 return $SH->generate($str);
             }
@@ -500,4 +500,4 @@ Class encrypt implements PHP5_Library {
 // END Encrypt class
 
 /* End of file Encrypt.php */
-/* Location: ./base/libraries_5/Encrypt.php */
+/* Location: ./base/libraries/php5/Encrypt.php */

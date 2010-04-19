@@ -36,7 +36,7 @@ Class cart implements PHP5_Library {
     public $OB;
     public $_cart_contents    = array();
 
-    static $instance;
+    private static $instance;
     
     public static function instance()
     {
@@ -562,4 +562,4 @@ Class cart implements PHP5_Library {
 // END Cart Class
 
 /* End of file Cart.php */
-/* Location: ./base/libraries_5/Cart.php */
+/* Location: ./base/libraries/php5/Cart.php */

@@ -12,6 +12,13 @@ Class Start extends Controller
 
     public function index()
     {           
+        loader::base_lib('calendar',false);
+        
+        $cal = calendar::instance();
+        $cal->init();
+        
+        echo $cal->generate(2010, 10);    
+        
         $this->title_tag = 'Welcome to Obullo Framework !';
     
         $this->head_tag  = css('welcome');

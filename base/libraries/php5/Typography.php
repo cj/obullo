@@ -27,7 +27,7 @@ Class TypoException extends CommonException {}
  * @link        
  */
  
-class OB_Typography {
+Class typography implements PHP5_Library {
 
     // Block level elements that should not be wrapped inside <p> tags
     public $block_elements = 'address|blockquote|div|dl|fieldset|form|h\d|hr|noscript|object|ol|p|pre|script|table|ul';
@@ -47,13 +47,25 @@ class OB_Typography {
     // whether or not to protect quotes within { curly braces }
     public $protect_braced_quotes = FALSE;
     
+    private static $instance;
+    
+    public static function instance()
+    {
+       if(! (self::$instance instanceof self))
+       {
+            self::$instance = new self();
+       } 
+       
+       return self::$instance;
+    }
+    
+    // --------------------------------------------------------------------
+    
     /**
      * Nothing to do here...
      *
      */
-    public function __construct()
-    {
-    }
+    public function init() {}
 
     /**
      * Auto Typography
@@ -66,10 +78,10 @@ class OB_Typography {
      *     - Converts double dashes into em-dashes.
      *  - Converts two spaces into entities
      *
-     * @access    public
+     * @access   public
      * @param    string
      * @param    bool    whether to reduce more then two consecutive newlines to two
-     * @return    string
+     * @return   string
      */
     public function auto_typography($str, $reduce_linebreaks = FALSE)
     {
@@ -406,4 +418,4 @@ class OB_Typography {
 // END Typography Class
 
 /* End of file Typography.php */
-/* Location: ./base/libraries/Typography.php */
+/* Location: ./base/libraries/php5/Typography.php */

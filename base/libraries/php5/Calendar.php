@@ -38,7 +38,7 @@ Class calendar implements PHP5_Library {
     public $show_next_prev  = FALSE;
     public $next_prev_url   = '';
 
-    static $instance;
+    private static $instance;
     
     public static function instance()
     {
@@ -472,6 +472,6 @@ Class calendar implements PHP5_Library {
 // END calendar class
 
 /* End of file Calendar.php */
-/* Location: ./base/libraries_5/Calendar.php */
+/* Location: ./base/libraries/php5/Calendar.php */
 
 ?>
