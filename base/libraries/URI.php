@@ -42,7 +42,7 @@ class OB_URI
      *
      * @access    public
      */        
-    function __construct()
+    public function __construct()
     {
         log_message('debug', "URI Class Initialized");
     }
@@ -56,7 +56,7 @@ class OB_URI
      * @access    private
      * @return    string                            
      */    
-    function _fetch_uri_string()
+    public function _fetch_uri_string()
     {
         if (strtoupper(config_item('uri_protocol')) == 'AUTO')
         {
@@ -131,7 +131,7 @@ class OB_URI
      * @access    private
      * @return    string
      */    
-    function _parse_request_uri()
+    public function _parse_request_uri()
     {
         if ( ! isset($_SERVER['REQUEST_URI']) OR $_SERVER['REQUEST_URI'] == '')
         {
@@ -177,11 +177,11 @@ class OB_URI
     /**
      * Filter segments for malicious characters
      *
-     * @access    private
+     * @access   private
      * @param    string
-     * @return    string
+     * @return   string
      */    
-    function _filter_uri($str)
+    public function _filter_uri($str)
     {
         if ($str != '' && config_item('permitted_uri_chars') != '' && config_item('enable_query_strings') == FALSE)
         {
@@ -206,7 +206,7 @@ class OB_URI
      * @access    private
      * @return    void
      */    
-    function _remove_url_suffix()
+    public function _remove_url_suffix()
     {
         if  (config_item('url_suffix') != "")
         {
@@ -223,7 +223,7 @@ class OB_URI
      * @access    private
      * @return    void
      */        
-    function _explode_segments()
+    public function _explode_segments()
     {
         foreach(explode("/", preg_replace("|/*(.+?)/*$|", "\\1", $this->uri_string)) as $val)
         {
@@ -249,7 +249,7 @@ class OB_URI
      * @access    private
      * @return    void
      */    
-    function _reindex_segments()
+    public function _reindex_segments()
     {
         array_unshift($this->segments, NULL);
         array_unshift($this->rsegments, NULL);
@@ -264,12 +264,12 @@ class OB_URI
      *
      * This function returns the URI segment based on the number provided.
      *
-     * @access    public
+     * @access   public
      * @param    integer
      * @param    bool
-     * @return    string
+     * @return   string
      */
-    function segment($n, $no_result = FALSE)
+    public function segment($n, $no_result = FALSE)
     {
         return ( ! isset($this->segments[$n])) ? $no_result : $this->segments[$n];
     }
@@ -283,12 +283,12 @@ class OB_URI
      * based on the number provided.  If there is no routing this function returns the
      * same result as $this->segment()
      *
-     * @access    public
+     * @access   public
      * @param    integer
      * @param    bool
-     * @return    string
+     * @return   string
      */
-    function rsegment($n, $no_result = FALSE)
+    public function rsegment($n, $no_result = FALSE)
     {
         return ( ! isset($this->rsegments[$n])) ? $no_result : $this->rsegments[$n];
     }
@@ -311,20 +311,21 @@ class OB_URI
      *            gender => male
      *         )
      *
-     * @access    public
+     * @access   public
      * @param    integer    the starting segment number
      * @param    array    an array of default values
-     * @return    array
+     * @return   array
      */
-    function uri_to_assoc($n = 3, $default = array())
+    public function uri_to_assoc($n = 3, $default = array())
     {
          return $this->_uri_to_assoc($n, $default, 'segment');
     }
+    
     /**
      * Identical to above only it uses the re-routed segment array
      *
      */
-    function ruri_to_assoc($n = 3, $default = array())
+    public function ruri_to_assoc($n = 3, $default = array())
     {
          return $this->_uri_to_assoc($n, $default, 'rsegment');
     }
@@ -334,13 +335,13 @@ class OB_URI
     /**
      * Generate a key value pair from the URI string or Re-routed URI string
      *
-     * @access    private
+     * @access   private
      * @param    integer    the starting segment number
      * @param    array    an array of default values
      * @param    string    which array we should use
-     * @return    array
+     * @return   array
      */
-    function _uri_to_assoc($n = 3, $default = array(), $which = 'segment')
+    public function _uri_to_assoc($n = 3, $default = array(), $which = 'segment')
     {
         if ($which == 'segment')
         {
@@ -420,11 +421,11 @@ class OB_URI
      * Generate a URI string from an associative array
      *
      *
-     * @access    public
+     * @access   public
      * @param    array    an associative array of key/values
-     * @return    array
+     * @return   array
      */    
-    function assoc_to_uri($array)
+    public function assoc_to_uri($array)
     {    
         $temp = array();
         foreach ((array)$array as $key => $val)
@@ -441,12 +442,12 @@ class OB_URI
     /**
      * Fetch a URI Segment and add a trailing slash
      *
-     * @access    public
+     * @access   public
      * @param    integer
      * @param    string
-     * @return    string
+     * @return   string
      */
-    function slash_segment($n, $where = 'trailing')
+    public function slash_segment($n, $where = 'trailing')
     {
         return $this->_slash_segment($n, $where, 'segment');
     }
@@ -456,12 +457,12 @@ class OB_URI
     /**
      * Fetch a URI Segment and add a trailing slash
      *
-     * @access    public
+     * @access   public
      * @param    integer
      * @param    string
-     * @return    string
+     * @return   string
      */
-    function slash_rsegment($n, $where = 'trailing')
+    public function slash_rsegment($n, $where = 'trailing')
     {
         return $this->_slash_segment($n, $where, 'rsegment');
     }
@@ -471,13 +472,13 @@ class OB_URI
     /**
      * Fetch a URI Segment and add a trailing slash - helper function
      *
-     * @access    private
+     * @access   private
      * @param    integer
      * @param    string
      * @param    string
-     * @return    string
+     * @return   string
      */
-    function _slash_segment($n, $where = 'trailing', $which = 'segment')
+    public function _slash_segment($n, $where = 'trailing', $which = 'segment')
     {    
         if ($where == 'trailing')
         {
@@ -505,7 +506,7 @@ class OB_URI
      * @access    public
      * @return    array
      */
-    function segment_array()
+    public function segment_array()
     {
         return $this->segments;
     }
@@ -518,7 +519,7 @@ class OB_URI
      * @access    public
      * @return    array
      */
-    function rsegment_array()
+    public function rsegment_array()
     {
         return $this->rsegments;
     }
@@ -531,7 +532,7 @@ class OB_URI
      * @access    public
      * @return    integer
      */
-    function total_segments()
+    public function total_segments()
     {
         return count($this->segments);
     }
@@ -544,7 +545,7 @@ class OB_URI
      * @access    public
      * @return    integer
      */
-    function total_rsegments()
+    public function total_rsegments()
     {
         return count($this->rsegments);
     }
@@ -557,7 +558,7 @@ class OB_URI
      * @access    public
      * @return    string
      */
-    function uri_string()
+    public function uri_string()
     {
         return $this->uri_string;
     }
@@ -571,7 +572,7 @@ class OB_URI
      * @access    public
      * @return    string
      */
-    function ruri_string()
+    public function ruri_string()
     {
         return '/'.implode('/', $this->rsegment_array()).'/';
     }

@@ -181,8 +181,6 @@ function register_static($real_name, $base = FALSE)
 {   
     if(class_exists($real_name))
     return TRUE;
-    
-    echo $real_name;
 
     $Class = strtolower($real_name); //lowercase classname.
     $Path  = APP .'libraries'. DS .'php5';

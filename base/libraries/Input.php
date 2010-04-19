@@ -65,7 +65,7 @@ class OB_Input
     *
     * @access    public
     */
-    function __construct()
+    public function __construct()
     {
         log_message('debug', "Input Class Initialized");
 

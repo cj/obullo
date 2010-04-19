@@ -587,7 +587,7 @@ function form_prep($str = '', $field_name = '')
  */
 function set_value($field = '', $default = '')
 {
-	if (FALSE === ($OBJ =& _get_validation_object()))
+	if (FALSE === ($OBJ = _get_validation_object()))
 	{
 		if ( ! isset($_POST[$field]))
 		{
@@ -616,7 +616,7 @@ function set_value($field = '', $default = '')
  */
 function set_select($field = '', $value = '', $default = FALSE)
 {
-	$OBJ =& _get_validation_object();
+	$OBJ = _get_validation_object();
 
 	if ($OBJ === FALSE)
 	{
@@ -668,7 +668,7 @@ function set_select($field = '', $value = '', $default = FALSE)
  */
 function set_checkbox($field = '', $value = '', $default = FALSE)
 {
-	$OBJ =& _get_validation_object();
+	$OBJ = _get_validation_object();
 
 	if ($OBJ === FALSE)
 	{ 
@@ -720,7 +720,7 @@ function set_checkbox($field = '', $value = '', $default = FALSE)
  */
 function set_radio($field = '', $value = '', $default = FALSE)
 {
-	$OBJ =& _get_validation_object();
+	$OBJ = _get_validation_object();
 
 	if ($OBJ === FALSE)
 	{
@@ -772,7 +772,7 @@ function set_radio($field = '', $value = '', $default = FALSE)
  */
 function form_error($field = '', $prefix = '', $suffix = '')
 {
-	if (FALSE === ($OBJ =& _get_validation_object()))
+	if (FALSE === ($OBJ = _get_validation_object()))
 	{
 		return '';
 	}
@@ -795,11 +795,11 @@ function form_error($field = '', $prefix = '', $suffix = '')
  */
 function validation_errors($prefix = '', $suffix = '')
 {
-	if (FALSE === ($OBJ =& _get_validation_object()))
+	if (FALSE === ($OBJ = _get_validation_object()))
 	{
 		return '';
 	}
-
+    
 	return $OBJ->error_string($prefix, $suffix);
 }
 
@@ -907,26 +907,14 @@ function _attributes_to_string($attributes, $formtag = FALSE)
  * @access	private
  * @return	mixed
  */
-function &_get_validation_object()
+function _get_validation_object()
 {
-	$OB = ob::instance();
-
-	// We set this as a variable since we're returning by reference
-	$return = FALSE;              
-    
-    if ( ! isset($OB->_libs) OR  ! isset($OB->_libs['form_validation']))
+    if ( ! class_exists('form_validate'))
     {
-        return $return;
+        return FALSE;
     }
-
-    $object_name = $OB->_libs['form_validation'];
     
-	if ( ! isset($OB->$object_name) OR ! is_object($OB->$object_name))
-	{
-		return $return;
-	}
-
-	return $OB->$object_name;
+    return form_validate::instance();
 }
 
 

@@ -17,7 +17,7 @@ Class Start extends Controller
         $cal = calendar::instance();
         $cal->init();
         
-        echo $cal->generate(2010, 10);    
+        echo $cal->generate(2010, 10);
         
         $this->title_tag = 'Welcome to Obullo Framework !';
     

@@ -31,82 +31,29 @@ define('use_bind_column','bind_column'); // Bind Column
  * @category        Database
  * @version         0.1
  * @version         0.2 added active record class
- * @version         0.3 beta 1.0 rc1 changes ( direct query bug fixed ), added contant use_bindcolumn
+ * @version         0.3 beta 1.0 rc1 changes ( direct query bug fixed ), added use_bindcolumn constant 
  */
  
-Class DB extends DBAC_Switch
-{
-    /**
-    * prepare switch
-    * 
-    * @var boolean
-    */
-    public $prepare = FALSE;
+Class DB extends DBAC_Switch {
     
-    /**
-    * Prepare options
-    * 
-    * @var mixed
-    */
-    public $p_opt = array();
+    public $prepare = FALSE;  // prepare switch
+    public $p_opt = array();  // prepare options
+    public $last_sql = '';    // store last queried sql 
+    public $last_values;      // store last executed PDO values
+    public $exec_count = 0;   // count executed func.
     
-    /**
-    * Store last queried sql
-    * 
-    * @var string
-    */
-    public $last_sql = '';
+    public $use_bind_values = FALSE;    // bind value usage switch
+    public $use_bind_params = FALSE;    // bind param usage switch
     
-    /**
-    * Store last PDO execute 
-    * values
-    * 
-    * @var array
-    */
-    public $last_values;
-    
-    /**
-    * PDOStatement Object
-    * 
-    * @var object
-    */
-    private $Stmt = NULL;
+    private $Stmt = NULL;     // PDOStatement Object
 
-    /**
-    * Count execute func.
-    * 
-    * @var int
-    */
-    public $exec_count = 0;
-    
-    /**
-    * Bind value usage switch
-    * 
-    * @var boolean
-    */
-    public $use_bind_values = FALSE;
-    
-    /**
-    * Bind params usage switch
-    * 
-    * @var boolean
-    */
-    public $use_bind_params = FALSE;
-    
-    /**
-    * Last bindValues and bindParams
-    * We store binds values to array()
-    * because of we need it in last_query() 
-    * function.
-    * 
-    * @var array
-    */
-    public $last_bind_values = array();
-    public $last_bind_params = array();
-    
+    public $last_bind_values = array(); // Last bindValues and bindParams
+    public $last_bind_params = array(); // We store binds values to array() 
+                                        // because of we need it in last_query() function
+
     // Private variables
-    var $_protect_identifiers    = TRUE;
-    var $_reserved_identifiers   = array('*'); // Identifiers that should NOT be escaped
+    public $_protect_identifiers    = TRUE;
+    public $_reserved_identifiers   = array('*'); // Identifiers that should NOT be escaped
     
     // --------------------------------------------------------------------
     

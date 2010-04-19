@@ -38,9 +38,12 @@ defined('BASE') or exit('Access Denied!');
 */	
 function nl2br_except_pre($str)
 {
-	loader::base_lib('typography');
+    loader::base_lib('typography',false);
+    
+    $typo = typography::instance();
+    $typo->init();
 	
-	return this()->typography->nl2br_except_pre($str);
+	return $typo->nl2br_except_pre($str);
 }
 	
 // ------------------------------------------------------------------------
@@ -56,9 +59,12 @@ function nl2br_except_pre($str)
  */
 function auto_typography($str, $reduce_linebreaks = FALSE)
 {
-	loader::base_lib('typography');
+	loader::base_lib('typography',false);
 	
-    return this()->typography->auto_typography($str, $reduce_linebreaks);
+    $typo = typography::instance();
+    $typo->init();
+    
+    $typo->auto_typography($str, $reduce_linebreaks);
 }
 
 /* End of file typography_helper.php */

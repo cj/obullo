@@ -42,9 +42,10 @@ Class ConfigException extends CommonException {}
      * @param   boolean  true if errors should just return false, false if an error message should be displayed
      * @return  boolean  if the file was successfully loaded or not
      */
-    function __construct()
+    public function __construct()
     {
         $this->config = get_config();
+        
         log_message('debug', "Config Class Initialized");
     }
       

@@ -45,13 +45,11 @@ class OB_Router
     * Constructor
     * Runs the route mapping function.
     * 
-    * @author   ExpressionEngine Dev Team
     * @author   Ersin Güvenç
     * @version  0.1
     * @version  0.2 added config index method and include route
-    * 
     */
-    function __construct()
+    public function __construct()
     {
         include(APP.'config'.DS.'routes'.EXT);
         
@@ -74,7 +72,6 @@ class OB_Router
     * as well as any "routes" that have been set in the routing config file.
     *
     * @access    private
-    * @author    Code Igniter - ExpressionEngine Dev Team
     * @author    Ersin Güvenç
     * @version   0.1
     * @version   0.2 added query_sting = true var

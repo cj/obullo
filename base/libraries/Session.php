@@ -54,7 +54,7 @@ class OB_Session {
     * The constructor runs the session routines automatically
     * whenever the class is instantiated.
     */        
-    function __construct($params = array())
+    public function __construct($params = array())
     {
         log_message('debug', "Session Class Initialized");
 

@@ -61,8 +61,11 @@ function dohash($str, $type = 'sha1')
 		{
 			if ( ! function_exists('mhash'))
 			{	
-				require_once(BASE.'libraries'.DIRECTORY_SEPARATOR.'Sha1'.EXT);
-				$SH = new OB_SHA;
+                loader::base_lib('sha1',false);
+                
+                $SH = sha1::instance();
+                $SH->init();
+            
 				return $SH->generate($str);
 			}
 			else

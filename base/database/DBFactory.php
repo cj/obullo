@@ -28,7 +28,7 @@ Class DBFactoryException extends CommonException {}
  * @version         0.1
  * @version         0.2 added construct(), active_record() functions
  * @version         0.3 added multiple database connection, dsn connection.
- * @version         0.4 added __sleep and __wakeup magic functions.added required , optional variables.
+ * @version         0.4 added driver file support.
  */                 
 
 Class DBFactory

@@ -26,7 +26,7 @@ Class FormException extends CommonException {}
  * @author        Ersin Güvenç
  * @link        
  */
-Class form_validation implements PHP5_Library {
+Class form_validate implements PHP5_Library {
     
     public $_field_data         = array();    
     public $_config_rules       = array();
@@ -1264,5 +1264,5 @@ Class form_validation implements PHP5_Library {
 }
 // END Form Validation Class
 
-/* End of file Form_validation.php */
-/* Location: ./base/libraries/php5/Form_validation.php */
+/* End of file Form_validate.php */
+/* Location: ./base/libraries/php5/Form_validate.php */

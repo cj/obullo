@@ -22,7 +22,7 @@ defined('BASE') or exit('Access Denied!');
  
 Class input {
    
-    public static function xss($str,$is_image = FALSE) 
+    public static function xss_clean($str,$is_image = FALSE) 
     {   
         return ob::instance()->input->xss_clean($str, $is_image); 
     }
@@ -69,7 +69,7 @@ Class input {
     
     // ------------------------------------------------------------------------
 
-    public static function ip()
+    public static function ip_address()
     {
          return ob::instance()->input->ip_address(); 
     }

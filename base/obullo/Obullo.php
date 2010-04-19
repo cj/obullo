@@ -15,7 +15,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  */
  
  /**
- * Obullo MVC2 (Two controller, model and view) (c) 2010  
+ * Obullo MVC2 (Dual Controller, Model and View) (c) 2010  
  * 
  * @package         Obullo   
  * @subpackage      Base.obullo  
@@ -25,13 +25,13 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @version 0.2 added core functions like ob::register
  * @version 0.3 added extending to SSC, moved register
  *              functions to common.php
- * @version 0.4 added $load variable for loader support
+ * @version 0.4 @deprecated SSC, added $load variable for loader support
  *              helpers, functions..
- * @version 0.5 added Obullo MVC2 Global controller functionality
+ * @version 0.5 added 'Obullo MVC2 Global controller' functionality
  * @version 0.6 added this() shortcut function, added get_config();
  */
 
-define('OBULLO_VERSION', 'Obullo Beta 1.0 (Not Stable)');
+define('OBULLO_VERSION', 'Obullo Beta 1.0 rc1');
 
 //------------- Global Controller Extend Switch --------------//
 

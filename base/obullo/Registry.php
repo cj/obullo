@@ -16,7 +16,7 @@ defined('BASE') or exit('Access Denied!');
  * @license 
  */
  
-abstract class Obullo_Registry
+Abstract Class Obullo_Registry
 {
     abstract protected function get($key);
     //get stored object.

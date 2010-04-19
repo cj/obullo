@@ -102,7 +102,7 @@ Abstract Class Obullo_Db_Adapter_Abstract extends DB
     }
                           
     /**
-    * Connect to PDO
+    * Connect to PDO (default Mysql)
     * 
     * @author   Ersin Güvenç 
     * @param    string $dsn  Dsn

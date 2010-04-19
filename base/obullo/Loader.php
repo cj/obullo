@@ -168,6 +168,8 @@ Class loader {
             if($php5_lib === NULL)
             throw new LoaderException('Unable to locate the Php5 library file: '. strtolower($class));
             
+            $OB->_libs['php5_'.$class] = $class; 
+            
             return;
         }
         
@@ -364,9 +366,14 @@ Class loader {
         {
             $db_var = $db_name['variable'];
         }
-        
-        if (class_exists('DB') AND isset($OB->{$db_var}) AND is_object($OB->{$db_var}))    
-        return;
+    
+        if (class_exists('DB') AND isset($OB->{$db_var}) AND is_object($OB->{$db_var})) 
+        {
+            if($instantiate == FALSE)
+            return $OB->{$db_var};
+                
+            return;
+        }   
         
         if( ! class_exists('DBFactory'))
         require(BASE .'database'. DS .'DBFactory'. EXT);
