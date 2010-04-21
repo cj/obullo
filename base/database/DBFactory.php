@@ -31,7 +31,7 @@ Class DBFactoryException extends CommonException {}
  * @version         0.4 added driver file support.
  */                 
 
-Class DBFactory
+Class OB_DBFactory
 {
     /**
     * Include database file
@@ -70,7 +70,7 @@ Class DBFactory
     private static function _active_record($switch = TRUE)
     {
         if($switch) { $switch = db_item('active_record','system'); }
-        
+        /*
         if( ! class_exists('result'))
         {
             switch ($switch)
@@ -92,6 +92,7 @@ Class DBFactory
         {
             require(BASE.'database'.DS.'DB'.EXT);
         }
+     */
     }
     
     // --------------------------------------------------------------------
@@ -166,13 +167,14 @@ Class DBFactory
            
         } //end switch.
     
-        $driver_class = 'OB_'.ucfirst($driver_name).'_Driver';
-    
+        $driver_class = 'OB_'.ucfirst($driver_name).'_DB_Driver';
+         
+        /*
         if( ! class_exists($driver_class)) 
         { 
             require(BASE. 'database' .DS. 'drivers' .DS. $driver_name .'_driver' .EXT); 
         }
-
+        */
         $DB = new $driver_class($param, $db_var);
         $DB->_connect();
         

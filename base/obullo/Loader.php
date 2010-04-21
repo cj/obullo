@@ -44,6 +44,8 @@ defined('BASE') or exit('Access Denied!');
  * @version         1.6 database function changes, changed DBFactory, added loader::_model object_name var
  *                  and $params support for model files.
  * @version         1.7 added $x_helpers .. private static vars and added self::$_x_helpers static functions.
+ * @version         1.8 updated db functions, @deprecated register_static(),
+ *                      we use spl_autoload_register() func. because of performance :)
  */
 
 Class LoaderException extends CommonException {}
@@ -121,11 +123,6 @@ Class loader {
     public static function base_lib($class, $no_ins_params = NULL, $object_name = '')
     {             
         self::_library($class, $no_ins_params, TRUE, $object_name); 
-        
-        if(config_item('obullo_style_writing'))
-        {
-           self::base_shortcut($class); 
-        }
     }
     
     // --------------------------------------------------------------------
@@ -153,31 +150,14 @@ Class loader {
     {
         if($class == '')
         return FALSE;
-        
-        // Instantiate the Super Object.        
+         
+        // Instantiate the Ob Super Object.        
         $OB = ob::instance();
         
         $class_var = strtolower($class);
         if($object_name != '') $class_var = $object_name; 
         
-        if($no_ins_params === FALSE)
-        {   
-            // if someone want to use PHP5 Library ..
-            $php5_lib = register_static($class, $base);
-            
-            if($php5_lib === NULL)
-            throw new LoaderException('Unable to locate the Php5 library file: '. strtolower($class));
-            
-            $OB->_libs['php5_'.$class] = $class; 
-            
-            return;
-        }
-        
         if (isset($OB->$class_var) AND is_object($OB->$class_var)) { return; }
-   
-        // Lazy Loading not need we use registry !
-        // if (class_exists($class) AND isset($OB->$class) AND is_object($OB->$class))
-        // return FALSE;  
         
         switch ($base)
         {
@@ -197,38 +177,7 @@ Class loader {
     
         $OB->_libs[$class_var] = $class_var;    
     }
-   
-    // --------------------------------------------------------------------
-    
-    /**
-    * loader::_base_shortcut();
-    * 
-    * @author   Ersin Güvenç
-    * @version  0.1 
-    * @param    string $class base library name
-    * @return   void
-    */
-    public static function base_shortcut($class)
-    {   
-       if(class_exists($class)) return;  
-      
-       // Load shortcuts for most used base libraries.
-       $shortcuts = array(                            
-                           'agent'   => 'Agent',
-                           'session' => 'Session', 
-                           'config'  => 'Config',
-                           'input'   => 'Input',
-                           'lang'    => 'Lang',
-                           'uri'     => 'Uri',
-                           'output'  => 'Output',
-                           'content' => 'Content',
-                           'benchmark'  => 'Benchmark'
-                            );
-                            
-       if(isset($shortcuts[$class]))
-       include(BASE .'shortcuts'. DS .$shortcuts[$class]. EXT);
-    }
-                   
+        
     // --------------------------------------------------------------------
                                      
     /**
@@ -353,10 +302,10 @@ Class loader {
     * @version  0.6 @deprecated asn_to_models();, removed unecessarry functions.
     *               added self::_assign_db_objects() func. 
     * @version  0.7 changed DBFactory, moved db_var into DBFactory
-    * @version  0.8 changed DBFactory class as static, added $instantiate param
+    * @version  0.8 changed DBFactory class as static, added $return_object param
     * @return   void
     */
-    public static function database($db_name = 'db', $instantiate = TRUE, $ac_record = TRUE)
+    public static function database($db_name = 'db', $return_object = TRUE, $ac_record = TRUE)
     {
         $OB = ob::instance();
 
@@ -369,26 +318,26 @@ Class loader {
     
         if (class_exists('DB') AND isset($OB->{$db_var}) AND is_object($OB->{$db_var})) 
         {
-            if($instantiate == FALSE)
+            if($return_object == FALSE)
             return $OB->{$db_var};
                 
             return;
         }   
         
-        if( ! class_exists('DBFactory'))
-        require(BASE .'database'. DS .'DBFactory'. EXT);
+        // if( ! class_exists('DBFactory'))
+        //require(BASE .'database'. DS .'DBFactory'. EXT);
 
-        if($instantiate == FALSE)
+        if($return_object == FALSE)
         {
             // Store db variables .. 
             $OB->_dbs[$db_var] = $db_var;
             
             // Return to database object ..
-            return DBFactory::init($db_name, $db_var, $ac_record);
+            return OB_DBFactory::init($db_name, $db_var, $ac_record);
         }
         
         // Connect to Database
-        ob::instance()->{$db_var} = DBFactory::init($db_name, $db_var, $ac_record);
+        ob::instance()->{$db_var} = OB_DBFactory::init($db_name, $db_var, $ac_record);
     
         // Store db variables  
         $OB->_dbs[$db_var] = $db_var; 
@@ -577,12 +526,10 @@ Class loader {
     * 
     * @author  Ersin Güvenç
     * @param   string $db_var
-    * 
-    * when we declare loader::database(); from 
-    * loader::database() support for 
-    * Model_x { function x() { loader::database() }}   
-    * 
+    *
     * @version 0.1
+    * @version 0.2  @deprecated old functions, we assign
+    *               just db objects .. 
     * @return  void
     */
     private static function _assign_db_objects($db_var = '')

@@ -13,7 +13,7 @@ defined('BASE') or exit('Access Denied!');
  * @license
  */
 
- Class UriException extends CommonException {} 
+Class UriException extends CommonException {} 
 
  /**
  * URI Class
@@ -25,8 +25,7 @@ defined('BASE') or exit('Access Denied!');
  * @author      Ersin Güvenç
  * @link        
  */
- 
-class OB_URI
+Class OB_URI
 {
     public $keyval      = array();
     public $uri_string;

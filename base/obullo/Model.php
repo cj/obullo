@@ -40,7 +40,7 @@ Class Model {
     /**
     * Assign all db objects to all Models.
     * 
-    * Very bad idea assign all objects to model !!!
+    * Very bad idea assign all library objects to model !!!
     * We assign just db objects. -- Ersin
     * 
     * @author  Ersin Güvenç

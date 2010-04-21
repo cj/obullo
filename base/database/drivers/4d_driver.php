@@ -31,7 +31,7 @@ require(BASE.'database'.DS.'DBAdapter'.EXT);
  *                4D/4D_v11_SQL/4D_v11_SQL_Reference_r4.pdf                           
  */
 
-Class OB_4d_Driver extends Obullo_Db_Adapter_Abstract
+Class OB_4d_DB_Driver extends Obullo_Db_Adapter_Abstract
 {
     /**
     * The character used for escaping

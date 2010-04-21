@@ -29,8 +29,8 @@ Class RouterException extends CommonException {}
  * @version     0.3 added query string support d= directory & c= class & m= method
  * @link        
  */
-class OB_Router
-{
+Class OB_Router {
+    
     public $config;    
     public $routes              = array();
     public $error_routes        = array();
@@ -155,7 +155,6 @@ class OB_Router
     * input, and sets the current class/method
     *
     * @access   private
-    * @author   Code Igniter - ExpressionEngine Dev Team
     * @author   Ersin Güvenç
     * @param    array
     * @param    bool
@@ -197,7 +196,6 @@ class OB_Router
     * Validates the supplied segments.  Attempts to determine the path to
     * the controller.
     *
-    * @author   Code Igniter - ExpressionEngine Dev Team
     * @author   Ersin Güvenç
     * @access   private
     * @param    array

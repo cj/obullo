@@ -27,7 +27,7 @@ Class SessionException extends CommonException {}
  * @author       Ersin Güvenç
  * @link         
  */
-class OB_Session {
+Class OB_Session {
 
     public $sess_encrypt_cookie        = FALSE;
     public $sess_use_database          = FALSE;
@@ -70,11 +70,6 @@ class OB_Session {
                 
         // Load the string helper so we can use the strip_slashes() function
         loader::base_helper('string');
-
-        // Do we need encryption? If so, load the encryption class
-        if ($this->sess_encrypt_cookie == TRUE)
-        loader::base_lib('encrypt',false);
-        
 
         // Are we using a database?  If so, load it
         if ($this->sess_use_database === TRUE AND $this->sess_table_name != '')

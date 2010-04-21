@@ -19,11 +19,13 @@ background-color:#eee;
 <b>File:</b> <?php echo $e->getFile(); ?> <br />
 <b>Line:</b> <?php echo $e->getLine(); ?>
 
-<?php if($sql != '') { ?>
+<?php if(! empty($sql)) { ?>
 
 <br /><b>SQL: </b> <?php echo $sql; ?>
 
 <?php } ?>
+
+
     
 </div>
 

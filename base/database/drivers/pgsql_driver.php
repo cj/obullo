@@ -29,7 +29,7 @@ require(BASE.'database'.DS.'DBAdapter'.EXT);
  * @link                              
  */
 
-Class OB_Pgsql_Driver extends Obullo_Db_Adapter_Abstract
+Class OB_Pgsql_DB_Driver extends Obullo_Db_Adapter_Abstract
 {
     /**
     * The character used for escaping

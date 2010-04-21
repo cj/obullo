@@ -26,8 +26,8 @@ Class ContentException extends CommonException {}
  * @version     0.2 added empty $data string support
  * @link        
  */
-Class OB_Content
-{
+Class OB_Content {
+    
     public $view_folder      = '';
     public $app_view_folder  = '';
     

@@ -478,8 +478,6 @@ Class encrypt implements PHP5_Library {
         {
             if ( ! function_exists('mhash'))
             {
-                loader::base_lib('sha1', false);
-                
                 $SH = sha1::instance();
                 
                 return $SH->generate($str);

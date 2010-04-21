@@ -26,12 +26,13 @@ defined('BASE') or exit('Access Denied!');
  * @version         1.3 added __autoloader()
  * @version         1.4 removed __autoloader()
  * @version         1.5 added loader::shortcut()
- * @version         1.6 added base class public variables
- * @deprecated      self::__autoloader()
+ * @version         1.6 added base class public variables, @deprecated      self::__autoloader()
+ * @version         1.7 removed obullo style writing func because of we added spl_autoload_register func.
+ * 
  */   
  
-Class Controller extends ob
-{
+Class Controller extends ob {
+    
     /**
     * Base class public
     * variables
@@ -57,7 +58,7 @@ Class Controller extends ob
     }
 
     /**
-    * Initialize to default base libraires.
+    * Initialize to default base libraries.
     * 
     * @author   Ersin Güvenç
     * @return   void
@@ -78,17 +79,6 @@ Class Controller extends ob
         foreach ($Classes as $public_var => $Class)
         {
             $this->$public_var = base_register($Class);
-        }
-        
-        // Auto load base shortcuts 
-        if(config_item('obullo_style_writing'))
-        {                                  
-             loader::base_shortcut('config');
-             loader::base_shortcut('input');
-             loader::base_shortcut('benchmark');
-             loader::base_shortcut('output');
-             loader::base_shortcut('lang');
-             loader::base_shortcut('uri');
         }
 
     } //end.

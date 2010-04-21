@@ -26,8 +26,8 @@ Class ConfigException extends CommonException {}
  * @author      Ersin Güvenç
  * @link        
  */
- class OB_Config
- {
+Class OB_Config {
+    
     public $config    = array();
     public $is_loaded = array();
 

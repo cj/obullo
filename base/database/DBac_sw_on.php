@@ -27,7 +27,7 @@ defined('BASE') or exit('Access Denied!');
 * @category        Database
 * @version         0.1
 */
-Class DBAC_Switch extends DB_active_record {}
+Class OB_DBAC_Switch extends OB_DB_ac_record {}
 
 
 /* End of file DBAC_Switch_on.php */

@@ -24,7 +24,7 @@ Class LogException extends CommonException {}
  * @author      Ersin Güvenç
  * @link        
  */
-class OB_Log {
+Class OB_Log {
 
     public $log_path;
     public $_threshold  = 1;

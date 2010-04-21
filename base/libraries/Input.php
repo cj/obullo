@@ -29,8 +29,8 @@ Class InputException extends CommonException {}
  * @author        Ersin Güvenç
  * @link          
  */
-class OB_Input
-{
+Class OB_Input {
+    
     public $use_xss_clean      = FALSE;
     public $xss_hash           = '';
     public $ip_address         = FALSE;
@@ -70,6 +70,7 @@ class OB_Input
         log_message('debug', "Input Class Initialized");
 
         $config = base_register('Config');
+        
         $this->use_xss_clean        = ($config->item('global_xss_filtering') === TRUE) ? TRUE : FALSE;
         $this->allow_get_array      = ($config->item('enable_query_strings') === TRUE) ? TRUE : FALSE;
         $this->_sanitize_globals();

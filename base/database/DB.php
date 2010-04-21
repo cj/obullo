@@ -34,7 +34,7 @@ define('use_bind_column','bind_column'); // Bind Column
  * @version         0.3 beta 1.0 rc1 changes ( direct query bug fixed ), added use_bindcolumn constant 
  */
  
-Class DB extends DBAC_Switch {
+Class OB_DB extends OB_DBac_sw {
     
     public $prepare = FALSE;  // prepare switch
     public $p_opt = array();  // prepare options
@@ -131,7 +131,7 @@ Class DB extends DBAC_Switch {
      * @param    string
      * @return   mixed
      */
-    function escape_like_str($str)    
+    public function escape_like($str)    
     {    
         return $this->escape_str($str, TRUE);
     }

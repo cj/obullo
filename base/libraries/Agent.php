@@ -28,7 +28,7 @@ Class AgentException extends CommonException {}
  * @author        Ersin Güvenç
  * @link          
  */
-class OB_Agent {
+Class OB_Agent {
 
     public $agent        = NULL;
     

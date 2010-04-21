@@ -24,8 +24,8 @@ Class LangException extends CommonException {}
  * @author      Ersin Güvenç
  * @link        
  */
-class OB_Lang
-{
+Class OB_Lang {
+    
 	public $language	= array();
 	public $is_loaded	= array();
 
@@ -57,6 +57,7 @@ class OB_Lang
         if ($idiom == '')
         {
             $OB = ob::instance();
+            
             $deft_lang = $OB->config->item('language');
             $idiom = ($deft_lang == '') ? 'english' : $deft_lang;
         }

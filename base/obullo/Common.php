@@ -23,7 +23,7 @@ defined('BASE') or exit('Access Denied!');
 * @version 1.2 removed lib_factory function
 * @version 1.3 renamed base "libraries" folder as "base"
 * @version 1.4 added $var  and confi_name vars for get_config()
-* @version 1.5 added PHP5 library interface class
+* @version 1.5 added PHP5 library interface class, added spl_autoload_register()
 */
 
 interface PHP5_Library 
@@ -164,7 +164,8 @@ function base_register($class, $params = NULL, $instantiate = TRUE)
 * register_static();
 * 
 * User register static class func.
-* use class like Myclass::method
+* use class like Myclass::method this function
+* especially for php5 libraries.
 * 
 * @access   public
 * @author   Ersin Güvenç
@@ -174,34 +175,92 @@ function base_register($class, $params = NULL, $instantiate = TRUE)
 * @version  0.1
 * @version  0.2 added base param
 * @version  0.3 renamed base "libraries" folder as "base"
+* @version  0.4 added php5 library support, added spl_autoload_register() func.
 * 
 * @return TRUE | NULL
 */
-function register_static($real_name, $base = FALSE)
+function register_static($real_name)
 {   
     if(class_exists($real_name))
-    return TRUE;
-
-    $Class = strtolower($real_name); //lowercase classname.
-    $Path  = APP .'libraries'. DS .'php5';
-
-    if($base)
-    {
-        $Class = ucfirst($Class);
-        $Path  = BASE .'libraries'. DS .'php5'; 
-    }
+    return;
     
-    if(file_exists($Path. DS .$Class. EXT))
-    {
-        require($Path. DS .$Class. EXT);
+    try 
+    { // __autoload func. does not catch exceptions ...
+      // so try to catch and show user friendly errors ..
+        $prefix = $real_name{0}.$real_name{1};
+        if($prefix == 'OB_DB')
+        {
+            require(BASE .'database'. DS .$class. EXT);
+            return;
+        }
         
-        return TRUE;
+        if($real_name == 'result')
+        {
+            require(BASE .'database'. DS .'DBResults'. EXT);
+            return; 
+        }
+        
+        if($suffix == '_DB_Driver')
+        {
+            
+        }
+        
+        $OB = ob::instance();
+        
+        $class = strtolower($real_name); //lowercase classname.
+                    
+        $shortcuts = array('agent'   => 'Agent',
+                           'session' => 'Session', 
+                           'config'  => 'Config',
+                           'input'   => 'Input',
+                           'lang'    => 'Lang',
+                           'uri'     => 'Uri',
+                           'output'  => 'Output',
+                           'content' => 'Content',
+                           'benchmark'  => 'Benchmark'
+                            );
+        
+        if(isset($shortcuts[$class]))
+        {            
+            if(config_item('obullo_style_writing'))  // shortcut files ..
+            {
+                include(BASE .'shortcuts'. DS .$shortcuts[$class]. EXT);
+
+                $OB->_libs[$class] = $class;
+                return;
+            }
+            
+            throw new LoaderException($class . ' shortcut file not found, check your obullo 
+            style writing option in your config file, or use $this variable: $this->'.$class);
+        }
+                    
+        if(file_exists(APP .'libraries'. DS .'php5'. DS .$class. EXT))
+        {
+            require(APP .'libraries'. DS .'php5'. DS .$class. EXT);
+            
+            $OB->_libs['php5_'.$class] = $class;
+            return;
+        } 
+        elseif(file_exists(BASE .'libraries'. DS .'php5'. DS .ucfirst($class). EXT))
+        {
+            require(BASE .'libraries'. DS .'php5'. DS .ucfirst($class). EXT);
+            
+            $OB->_libs['php5_'.$class] = $class;
+            return;
+        } 
+        
+        throw new LoaderException('Unable locate to Php5 file: '. $class);
+        
+    } catch(LoaderException $e) 
+    {
+        Obullo_ExceptionHandler($e);
+        exit; // do not show fatal errors .. 
     }
     
-    return NULL;  // if register func return to null 
-                  // we will show a loader exception inside from
-                  // which file used ob::register_static func.
 } 
+
+spl_autoload_register('register_static',true);
+
 
 /**
 * Loads the (static) configuration or language files.

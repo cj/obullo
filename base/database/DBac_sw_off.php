@@ -13,7 +13,7 @@ defined('BASE') or exit('Access Denied!');
 * @version         0.1
 */
 
-Class DBAC_Switch extends PDO {}  
+Class OB_DBAC_Switch extends PDO {}  
 
 /* End of file DBAC_Switch_off.php */
 /* Location: ./base/database/DBAC_Switch_off.php */

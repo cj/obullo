@@ -26,7 +26,7 @@ Class ParserException extends CommonException {}
  * @author        Ersin Güvenç
  * @link          
  */
-class OB_Parser {
+Class OB_Parser {
 
     public $l_delim = '{';
     public $r_delim = '}';
@@ -48,7 +48,7 @@ class OB_Parser {
     {
         $OB = ob::instance();
         
-        loader::base_lib('content');
+        base_register('Content');
         
         $template = $this->content->view($template, $data);
         

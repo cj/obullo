@@ -28,7 +28,7 @@ Class OutputException extends CommonException {}
  * @author        Ersin Güvenç
  * @link          
  */
-class OB_Output {
+Class OB_Output {
 
     public $final_output;
     public $cache_expiration    = 0;

@@ -27,7 +27,7 @@ defined('BASE') or exit('Access Denied!');
  * @author        Ersin Güvenç
  * @link          
  */
-class OB_Benchmark {
+Class OB_Benchmark {
 
     public $marker = array();
 

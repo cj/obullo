@@ -1,7 +1,6 @@
 <?php
 defined('BASE') or exit('Access Denied!');
 
-
 Class __autoloader {
     
     function __construct()
@@ -28,6 +27,8 @@ Class Global_controller extends __autoloader
           $this->base     = config_item('base_url');
           $this->base_img = config_item('source_url').'/images/';
           
+          $this->meta_tag = '';;
+          
           $this->meta_tag  = meta('Expires', 'Fri, Jan 01 1900 00:00:00 GMT', 'equiv');
           $this->meta_tag .= meta('Pragma', 'no-cache', 'equiv');
           $this->meta_tag .= meta('Cache-Control', 'no-cache', 'equiv');
@@ -36,6 +37,7 @@ Class Global_controller extends __autoloader
           $this->meta_tag .= meta('author', '');
           $this->meta_tag .= meta('description', '');
           $this->meta_tag .= meta('keywords', '');
+          
       }
       
 } // end.

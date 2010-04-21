@@ -68,7 +68,9 @@ function Obullo_ExceptionHandler($e)
         foreach($ob->_dbs as $key => $val)
         {
            if(is_object($ob->$key))
-           $sql .= $ob->{$key}->last_query($ob->{$key}->prepare);   
+           {
+                $sql .= $ob->{$key}->last_query($ob->{$key}->prepare);
+           }
         }        
     }
     
