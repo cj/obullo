@@ -29,7 +29,7 @@ defined('BASE') or exit('Access Denied!');
  * @version         0.5 added method chaining support. 
  */
  
-Class OB_DBac_record extends PDO 
+Class OB_DBAc_record extends PDO 
 {                                         
     public $ar_select              = array();
     public $ar_distinct            = FALSE;
