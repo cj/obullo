@@ -24,8 +24,10 @@ defined('BASE') or exit('Access Denied!');
 * @version 1.3 renamed base "libraries" folder as "base"
 * @version 1.4 added $var  and confi_name vars for get_config()
 * @version 1.5 added PHP5 library interface class, added spl_autoload_register()
+*              renamed register_static() function ..
 */
 
+// A Php5 library must be contain that functions.
 interface PHP5_Library 
 {
     public static function instance();
@@ -161,11 +163,8 @@ function base_register($class, $params = NULL, $instantiate = TRUE)
 }
 
 /**
-* register_static();
-* 
-* User register static class func.
-* use class like Myclass::method this function
-* especially for php5 libraries.
+* register_autolod();
+* PHp5 __autoload function.
 * 
 * @access   public
 * @author   Ersin Güvenç
@@ -179,18 +178,26 @@ function base_register($class, $params = NULL, $instantiate = TRUE)
 * 
 * @return TRUE | NULL
 */
-function register_static($real_name)
+function register_autoload($real_name)
 {   
     if(class_exists($real_name))
     return;
-    
-    try 
-    { // __autoload func. does not catch exceptions ...
-      // so try to catch and show user friendly errors ..
-        $prefix = $real_name{0}.$real_name{1};
-        if($prefix == 'OB_DB')
+
+    try // __autoload func. does not catch exceptions ...
+    {   // try to catch and show user friendly errors ..
+      
+        if(strpos($real_name, 'OB_DB') === 0)
         {
-            require(BASE .'database'. DS .$class. EXT);
+            require(BASE .'database'. DS .substr($real_name, 3). EXT);
+            return;
+        }
+        
+        if(strpos($real_name, 'Obullo_DB_Driver_') === 0)
+        {
+            $exp = explode('_',$real_name);
+            $class = strtolower(array_pop($exp));
+            
+            require(BASE .'database'. DS .'drivers'. DS .$class.'_driver'. EXT);
             return;
         }
         
@@ -198,11 +205,6 @@ function register_static($real_name)
         {
             require(BASE .'database'. DS .'DBResults'. EXT);
             return; 
-        }
-        
-        if($suffix == '_DB_Driver')
-        {
-            
         }
         
         $OB = ob::instance();
@@ -259,7 +261,7 @@ function register_static($real_name)
     
 } 
 
-spl_autoload_register('register_static',true);
+spl_autoload_register('register_autoload',true);
 
 
 /**
@@ -421,11 +423,8 @@ function log_message($level = 'error', $message, $php_error = FALSE)
 {
     static $LOG;
     
-    $config = get_config();
-    if ($config['log_threshold'] == 0)
-    {
-        return;
-    }
+    if (config_item('log_threshold') == 0)
+    return;
 
     $LOG = base_register('Log');
     $LOG->write_log($level, $message, $php_error);

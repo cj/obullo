@@ -27,7 +27,7 @@ defined('BASE') or exit('Access Denied!');
 * @category        Database
 * @version         0.1
 */
-Class OB_DBAc_sw extends OB_DBAc_record {}
+
 //OFF Class OB_DBac_sw extends PDO {}
 
 

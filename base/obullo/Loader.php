@@ -155,7 +155,7 @@ Class loader {
         $OB = ob::instance();
         
         $class_var = strtolower($class);
-        if($object_name != '') $class_var = $object_name; 
+        if($object_name != '') $class_var = &$object_name; 
         
         if (isset($OB->$class_var) AND is_object($OB->$class_var)) { return; }
         
@@ -252,7 +252,7 @@ Class loader {
             throw new LoaderException('Unable to locate the model: '.$model_name);
         }
         
-        $model_var = $model_name;
+        $model_var = &$model_name;
         if($object_name != '') $model_var = $object_name; 
         
         $OB = ob::instance();  
@@ -305,10 +305,10 @@ Class loader {
     * @version  0.8 changed DBFactory class as static, added $return_object param
     * @return   void
     */
-    public static function database($db_name = 'db', $return_object = TRUE, $ac_record = TRUE)
+    public static function database($db_name = 'db', $return_object = FALSE, $ac_record = NULL)
     {
         $OB = ob::instance();
-
+        
         $db_var = $db_name;
          
         if(is_array($db_name) AND isset($db_name['variable']))
@@ -316,18 +316,15 @@ Class loader {
             $db_var = $db_name['variable'];
         }
     
-        if (class_exists('DB') AND isset($OB->{$db_var}) AND is_object($OB->{$db_var})) 
+        if (isset($OB->{$db_var}) AND is_object($OB->{$db_var})) 
         {
-            if($return_object == FALSE)
+            if($return_object)
             return $OB->{$db_var};
                 
             return;
         }   
         
-        // if( ! class_exists('DBFactory'))
-        //require(BASE .'database'. DS .'DBFactory'. EXT);
-
-        if($return_object == FALSE)
+        if($return_object)
         {
             // Store db variables .. 
             $OB->_dbs[$db_var] = $db_var;
@@ -341,7 +338,7 @@ Class loader {
     
         // Store db variables  
         $OB->_dbs[$db_var] = $db_var; 
-                                       
+                            
         self::_assign_db_objects($db_var);
 
     } // end db func.

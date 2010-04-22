@@ -27,8 +27,8 @@ defined('BASE') or exit('Access Denied!');
  * @link                              
  */
 
-Abstract Class OB_DBAdapter extends OB_DB 
-{
+Abstract Class OB_DBAdapter extends OB_DB {
+    
     public $hostname = '';
     public $username = '';
     public $password = '';

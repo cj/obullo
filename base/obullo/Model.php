@@ -49,7 +49,7 @@ Class Model {
     {
         foreach(ob::instance()->_dbs as $key)
         {
-            $this->$key = ob::instance()->$key;
+            $this->$key = &ob::instance()->$key;
         }
     
     } // end func.

@@ -17,6 +17,8 @@ defined('BASE') or exit('Access Denied!');
  */
  // ------------------------------------------------------------------------
  
+Class DBException extends CommonException {} 
+ 
 define('use_bind_value', 'bind_value'); // Bind Value
 define('use_bind_param', 'bind_param'); // Bind Param
 define('use_bind_column','bind_column'); // Bind Column  
@@ -34,7 +36,7 @@ define('use_bind_column','bind_column'); // Bind Column
  * @version         0.3 beta 1.0 rc1 changes ( direct query bug fixed ), added use_bindcolumn constant 
  */
  
-Class OB_DB extends OB_DBac_sw {
+Class OB_DB extends OB_DBAc_sw {
     
     public $prepare = FALSE;  // prepare switch
     public $p_opt = array();  // prepare options
@@ -257,7 +259,7 @@ Class OB_DB extends OB_DBac_sw {
     */
     public function exec_query($sql)
     {
-        $this->last_sql = $sql;
+        $this->last_sql = &$sql;
         
         return parent::exec($sql);
     }
@@ -528,6 +530,13 @@ Class OB_DB extends OB_DBac_sw {
     
     // --------------------------------------------------------------------
 
+    public function output()
+    {
+        return $this->last_sql;
+    }
+   
+    // --------------------------------------------------------------------
+    
     /**
     * Protect Identifiers
     *
@@ -573,8 +582,6 @@ Class OB_DB extends OB_DBac_sw {
     */    
     function _protect_identifiers($item, $prefix_single = FALSE, $protect_identifiers = NULL, $field_exists = TRUE)
     {
-        // echo 'ok';
-        
         if ( ! is_bool($protect_identifiers))
         {
             $protect_identifiers = $this->_protect_identifiers;

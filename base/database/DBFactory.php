@@ -30,11 +30,11 @@ Class DBFactoryException extends CommonException {}
  * @version         0.3 added multiple database connection, dsn connection.
  * @version         0.4 added driver file support.
  */                 
+ 
+Class OB_DBFactory {
 
-Class OB_DBFactory
-{
     /**
-    * Include database file
+    * Check pdo extension
     * and build database params
     * 
     * @author   Ersin Güvenç
@@ -42,7 +42,7 @@ Class OB_DBFactory
     * @version  0.2 Added dsn connection, Added optional, required variables.
     * @return   object PDO
     */
-    public static function init($param = '', $db_var = 'db', $ac = TRUE)
+    public static function init($param = '', $db_var = 'db', $ac = NULL)
     {
         // check for PDO extension
         if ( ! extension_loaded('pdo') )
@@ -50,49 +50,7 @@ Class OB_DBFactory
             throw new DBFactoryException('The PDO extension is required but extension is not loaded !');
         }
         
-        // Include active record files.
-        self::_active_record($ac);
-        
-        return self::_factory($param, $db_var);
-    }
-    
-    // --------------------------------------------------------------------
-    
-    /**
-    * Active Record Factory
-    * 
-    * @author   Ersin Güvenç
-    * @param    boolean $switch On/Off Active Record
-    * @since    0.1
-    * @since    0.2 Changed DBResults class as 'result'
-    * @return   void
-    */
-    private static function _active_record($switch = TRUE)
-    {
-        if($switch) { $switch = db_item('active_record','system'); }
-        /*
-        if( ! class_exists('result'))
-        {
-            switch ($switch)
-            {   
-                 case TRUE:
-                       require(BASE.'database'.DS.'DBResults'.EXT);
-                       require(BASE.'database'.DS.'DBac_record'.EXT);
-                       require(BASE.'database'.DS.'DBac_sw_on'.EXT);
-                   break;
-                   
-                 case FALSE:
-                       require(BASE.'database'.DS.'DBResults'.EXT);
-                       require(BASE.'database'.DS.'DBac_sw_off'.EXT);
-                   break;       
-            }
-        }
-        
-        if( ! class_exists('DB'))
-        {
-            require(BASE.'database'.DS.'DB'.EXT);
-        }
-     */
+        return self::_factory($param, $db_var, $ac);
     }
     
     // --------------------------------------------------------------------
@@ -107,9 +65,9 @@ Class OB_DBFactory
     * @version  0.3 added $param var, set db paramaters manually for
     *           dynamic connections
     * @version  0.4 removed switch, added new driver classes
-    * @return   void
+    * @return   object of PDO Instance.
     */
-    private static function _factory($param, $db_var)
+    private static function _factory($param, $db_var, $ac = NULL)
     {                          
         $dbdriver = is_array($param) ? $param['dbdriver'] : db_item('dbdriver', $db_var); 
         
@@ -166,16 +124,22 @@ Class OB_DBFactory
           throw new DBFactoryException('This Database Driver does not support: '. $dbdriver); 
            
         } //end switch.
-    
-        $driver_class = 'OB_'.ucfirst($driver_name).'_DB_Driver';
-         
-        /*
-        if( ! class_exists($driver_class)) 
-        { 
-            require(BASE. 'database' .DS. 'drivers' .DS. $driver_name .'_driver' .EXT); 
+        
+        $active_record = is_bool($ac) ? $ac : db_item('active_record','system');
+        
+        // ugly hack but we need it ..
+        if($active_record) 
+        {
+            eval('Class OB_DBAc_sw extends OB_DBAc_record {}');
+        } 
+        else 
+        {
+            eval('Class OB_DBAc_sw extends PDO {}');
         }
-        */
-        $DB = new $driver_class($param, $db_var);
+            
+        $driver_class = 'Obullo_DB_Driver_'.ucfirst($driver_name);
+        
+        $DB = new $driver_class($param, $db_var); 
         $DB->_connect();
         
         return $DB->get_connection();

@@ -17,7 +17,7 @@ defined('BASE') or exit('Access Denied!');
  */ 
 // ------------------------------------------------------------------------
 
-require(BASE.'database'.DS.'DBAdapter'.EXT); 
+//require(BASE.'database'.DS.'DBAdapter'.EXT); 
 
 /**
  * 4D Database Adapter Class
@@ -31,7 +31,7 @@ require(BASE.'database'.DS.'DBAdapter'.EXT);
  *                4D/4D_v11_SQL/4D_v11_SQL_Reference_r4.pdf                           
  */
 
-Class OB_4d_DB_Driver extends Obullo_Db_Adapter_Abstract
+Class Obullo_DB_Driver_4d extends OB_DBAdapter
 {
     /**
     * The character used for escaping

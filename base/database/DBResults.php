@@ -14,9 +14,7 @@ defined('BASE') or exit('Access Denied!');
  * @license         public
  * @since           Version 1.0
  * @filesource
- */ 
-
-Class DBException extends CommonException {}  
+ */  
 
 /**
  * DBResults Class
@@ -58,8 +56,8 @@ define('param_stmt', PDO::PARAM_STMT);  // Represents a recordset type. Not curr
 * @author  Ersin Güvenç
 * @version 0.1
 */
-Class result 
-{ 
+Class result {
+ 
     /**
     * Fetch each row as an object with variable names 
     * that correspond to the column names.

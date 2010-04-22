@@ -17,7 +17,7 @@ defined('BASE') or exit('Access Denied!');
  */ 
 // ------------------------------------------------------------------------
 
-require(BASE.'database'.DS.'DBAdapter'.EXT); 
+//require(BASE.'database'.DS.'DBAdapter'.EXT); 
 
 /**
  * MSSQL Database Adapter Class
@@ -29,7 +29,7 @@ require(BASE.'database'.DS.'DBAdapter'.EXT);
  * @link                              
  */
 
-Class OB_Mssql_DB_Driver extends Obullo_Db_Adapter_Abstract
+Class Obullo_DB_Driver_Mssql extends OB_DBAdapter
 {
     /**
     * The character used for escaping

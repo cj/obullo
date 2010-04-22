@@ -203,9 +203,8 @@ function Obullo_ErrorHandler($errno, $errstr, $errfile, $errline)
         break;
     
     }
-
-    /* Don't execute PHP internal error handler */
-    return TRUE;
+    
+    return TRUE;    // return true and Don't execute PHP internal error handler 
 }          
 
 

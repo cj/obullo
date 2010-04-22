@@ -17,7 +17,7 @@ defined('BASE') or exit('Access Denied!');
  */ 
 // ------------------------------------------------------------------------
 
-require(BASE.'database'.DS.'DBAdapter'.EXT); 
+//require(BASE.'database'.DS.'DBAdapter'.EXT); 
 
 /**
  * IBM DB2 Database Adapter Class
@@ -30,7 +30,7 @@ require(BASE.'database'.DS.'DBAdapter'.EXT);
  * @link                              
  */
 
-Class OB_Ibm_DB_Driver extends Obullo_Db_Adapter_Abstract
+Class Obullo_DB_Driver_Ibm extends OB_DBAdapter
 {
     /**
     * The character used for escaping
