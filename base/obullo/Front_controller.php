@@ -27,23 +27,24 @@ Class CommonException extends Exception {};
  * @subpackage    Base
  * @category      Front Controllers
  * @author        Ersin Güvenç
+ * @version       0.1
+ * @version       0.2 added base db and app config constants.
  * @link          
  */
-class OB_Front_controller
-{
+Class OB_Front_controller {
+    
     public $uri; 
     public $router; 
     public $output; 
     public $config; 
     public $benchmark;
     
-    /**
-    * Constructor
-    */
+    // constructor.
     public function __construct()
     {        
+        require (BASE .'constants'. DS .'db'. EXT);
         require (BASE .'constants'. DS .'file'. EXT);
-        require (APP  .'config'. DS .'constants'. EXT); 
+        require (APP  .'config'. DS .'constants'. EXT);  // Your constants .. 
         require (BASE .'obullo'. DS .'Errors'. EXT);       
         require (BASE .'obullo'. DS .'Registry'. EXT); 
         require (BASE .'obullo'. DS .'Common'. EXT);
@@ -90,11 +91,7 @@ class OB_Front_controller
         $this->benchmark->mark('loading_time_base_classes_end');
     }
     
-    /**
-    * Run the Application
-    * 
-    * @access public
-    */
+    // run application.
     public function run()
     {
         // Mark a start point so we can benchmark the controller

@@ -19,10 +19,6 @@ defined('BASE') or exit('Access Denied!');
  
 Class DBException extends CommonException {} 
  
-define('use_bind_value', 'bind_value'); // Bind Value
-define('use_bind_param', 'bind_param'); // Bind Param
-define('use_bind_column','bind_column'); // Bind Column  
- 
 /**
  * DB Class.
  *
@@ -133,9 +129,9 @@ Class OB_DB extends OB_DBAc_sw {
      * @param    string
      * @return   mixed
      */
-    public function escape_like($str)    
-    {    
-        return $this->escape_str($str, TRUE);
+    public function escape_like($str, $side = 'both')    
+    {   
+        return $this->escape_str($str, TRUE, $side);
     }
     
     // --------------------------------------------------------------------
@@ -241,7 +237,7 @@ Class OB_DB extends OB_DBAc_sw {
         
         ++$this->exec_count; 
         
-        return NULL;
+        return $this;
     }
     
     // --------------------------------------------------------------------

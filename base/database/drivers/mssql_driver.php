@@ -114,7 +114,7 @@ Class Obullo_DB_Driver_Mssql extends OB_DBAdapter
     * @param    bool    whether or not the string will be used in a LIKE condition
     * @return   string
     */
-    public function escape_str($str, $like = FALSE)    
+    public function escape_str($str, $like = FALSE, $side = 'both')    
     {    
         if (is_array($str))
         {
@@ -126,18 +126,34 @@ Class Obullo_DB_Driver_Mssql extends OB_DBAdapter
             return $str;
         }
         
-        $str = $this->quote(ob::instance()->input->_remove_invisible_characters($str), PDO::PARAM_STR);
+        $str = ob::instance()->input->_remove_invisible_characters($str);
         
-        // Escape single quotes
+        // If pdo::quote() not work Escape single quotes
         // $str = str_replace("'", "''", ob::instance()->input->_remove_invisible_characters($str));
         
         // escape LIKE condition wildcards
         if ($like === TRUE)
         {
             $str = str_replace( array('%', '_', $this->_like_escape_chr),
-                                array($this->_like_escape_chr.'%', $this->_like_escape_chr.'_', $this->_like_escape_chr.$this->_like_escape_chr),
-                                $str);
-        }
+                                array($this->_like_escape_chr.'%', $this->_like_escape_chr.'_', 
+                                $this->_like_escape_chr.$this->_like_escape_chr), $str);
+            switch ($side)
+            {
+               case 'before':
+                 $str = "%{$str}";
+                 break;
+                 
+               case 'after':
+                 $str = "{$str}%";
+                 break;
+                 
+               default:
+                 $str = "%{$str}%";
+            }
+        } 
+        
+        if( ! $this->prepare)
+        $str = $this->quote($str, PDO::PARAM_STR); 
     }
         
     // --------------------------------------------------------------------

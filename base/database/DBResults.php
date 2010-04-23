@@ -30,27 +30,6 @@ defined('BASE') or exit('Access Denied!');
  */ 
 
 /**
-* PDO CONSTANTS
-* @link http://php.net/manual/en/pdo.constants.php
-*/
-
-// paramater type constants
-// boolean
-define('param_bool', PDO::PARAM_BOOL);
-// null
-define('param_null', PDO::PARAM_NULL);
-// integer
-define('param_int' , PDO::PARAM_INT);
-// string
-define('param_str' , PDO::PARAM_STR);
-// integer
-define('param_lob' , PDO::PARAM_LOB); // Represents the SQL Large Object Data type Large Object Data (lob)
-// integer
-define('param_input_output' , PDO::PARAM_INPUT_OUTPUT); // Specifies that the parameter is an INOUT parameter for a stored procedure. You must bitwise-OR this value with an explicit PDO::PARAM_* data type.
-// integer
-define('param_stmt', PDO::PARAM_STMT);  // Represents a recordset type. Not currently supported by any drivers.
-
-/**
 * Custom query result class
 * 
 * @author  Ersin Güvenç

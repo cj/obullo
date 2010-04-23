@@ -128,7 +128,7 @@ Class Obullo_DB_Driver_Mysql extends OB_DBAdapter
     * @param    bool    whether or not the string will be used in a LIKE condition
     * @return   string
     */
-    public function escape_str($str, $like = FALSE)    
+    public function escape_str($str, $like = FALSE, $side = 'both')    
     {    
         if (is_array($str))
         {
@@ -139,14 +139,29 @@ Class Obullo_DB_Driver_Mysql extends OB_DBAdapter
 
             return $str;
         }
-
-        $str = $this->quote($str, PDO::PARAM_STR); // $str = "'".$this->escape_str($str)."'";
-        
+    
         // escape LIKE condition wildcards
         if ($like === TRUE)
         {
             $str = str_replace(array('%', '_'), array('\\%', '\\_'), $str);
-        }
+            
+            switch ($side)
+            {
+               case 'before':
+                 $str = "%{$str}";
+                 break;
+                 
+               case 'after':
+                 $str = "{$str}%";
+                 break;
+                 
+               default:
+                 $str = "%{$str}%";
+            }
+        } 
+        
+        if( ! $this->prepare)
+        $str = $this->quote($str, PDO::PARAM_STR); 
         
         return $str;
     }
