@@ -155,7 +155,7 @@ Class OB_Content {
         
         if ( ! file_exists($path . $filename . EXT) )
         {
-            throw new ContentException('Unable locate the script file: '. $filename . EXT);
+            throw new ContentException('Unable locate the script file: '. $path . $filename . EXT);
         } 
         
         if(sizeof($data) > 0) { extract($data, EXTR_SKIP); }

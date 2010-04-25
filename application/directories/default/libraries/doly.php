@@ -3,7 +3,7 @@
 /**
 * Your copy paste library.
 */
-Class doly
+Class Doly
 {
     function __construct()
     {
@@ -11,7 +11,7 @@ Class doly
     }
     
 
-    function test()
+    public function test()
     {   
         // Using libraries in library.
         

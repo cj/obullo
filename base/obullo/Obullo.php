@@ -15,7 +15,8 @@ if( !defined('BASE') ) exit('Access Denied!');
  */
  
  /**
- * Obullo MVC2 (Dual Controller, Model and View) (c) 2010  
+ * Global Controllers ("Obullo MVC2") 
+ * Dual Controller, Model and View (c) 2010  
  * 
  * @package         Obullo   
  * @subpackage      Base.obullo  

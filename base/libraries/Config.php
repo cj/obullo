@@ -67,17 +67,17 @@ Class OB_Config {
             return TRUE;
         }
 
-        if ( ! file_exists(APP.'config'.DS.$file.EXT))
+        if ( ! file_exists(APP .'config'. DS .$file. EXT))
         {
             if ($fail_gracefully === TRUE)
             {
                 return FALSE;
             }
             
-            throw new ConfigException('The configuration file '.$file.EXT.' does not exist.');
+            throw new ConfigException('The configuration file '.$file. EXT .' does not exist.');
         }
     
-        include(APP.'config'.DS.$file.EXT);
+        include(APP .'config'. DS .$file. EXT);
 
         if ( ! isset($config) OR ! is_array($config))
         {

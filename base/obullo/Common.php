@@ -24,10 +24,11 @@ defined('BASE') or exit('Access Denied!');
 * @version 1.3 renamed base "libraries" folder as "base"
 * @version 1.4 added $var  and confi_name vars for get_config()
 * @version 1.5 added PHP5 library interface class, added spl_autoload_register()
-*              renamed register_static() function ..
+*              renamed register_static() function, added replace support ..
 */
 
 // A Php5 library must be contain that functions.
+// Function body can be empty.
 interface PHP5_Library 
 {
     public static function instance();
@@ -71,9 +72,9 @@ function register($class, $params = NULL, $dir = '')
     if ($getObject !== NULL)     // if class already stored we are done.
     return $getObject;
     
-    if(file_exists($dir.'libraries'.DS.$class.EXT))
+    if(file_exists($dir .'libraries'. DS .$class. EXT))
     {
-        require($dir.'libraries'.DS.$class.EXT);
+        require($dir .'libraries'. DS .$class. EXT);
         
         $classname = ucfirst($class);
         
@@ -135,11 +136,11 @@ function base_register($class, $params = NULL, $instantiate = TRUE)
         
         $prefix = config_item('subclass_prefix');  // MY_
                                              
-        if(file_exists(APP .'libraries'. DS .$prefix.$Class. EXT)) // extend support.
+        if(file_exists(APP .'libraries'. DS .$prefix. $Class. EXT)) // extend support.
         {
-            require(APP .'libraries'. DS .$prefix.$Class. EXT);
+            require(APP .'libraries'. DS .$prefix. $Class. EXT);
             
-            $classname = $prefix.$Class;
+            $classname = $prefix. $Class;
         }
         
         if(is_array($params)) // construct support.
@@ -176,7 +177,7 @@ function base_register($class, $params = NULL, $instantiate = TRUE)
 * @version  0.3 renamed base "libraries" folder as "base"
 * @version  0.4 added php5 library support, added spl_autoload_register() func.
 * 
-* @return TRUE | NULL
+* @return NULL | Exception
 */
 function register_autoload($real_name)
 {   
@@ -235,6 +236,17 @@ function register_autoload($real_name)
             throw new LoaderException($class . ' shortcut file not found, check your obullo 
             style writing option in your config file, or use $this variable: $this->'.$class);
         }
+        
+        if(is_dir(DIR .$GLOBALS['d']. DS .'libraries'. DS .'php5'))
+        {
+            if(file_exists(DIR .$GLOBALS['d']. DS .'libraries'. DS .'php5'. DS .$class. EXT))
+            {
+                require(DIR .$GLOBALS['d']. DS .'libraries'. DS .'php5'. DS .$class. EXT);
+                
+                $OB->_libs['php5_'.$class] = $class;
+                return;
+            } 
+        }
                     
         if(file_exists(APP .'libraries'. DS .'php5'. DS .$class. EXT))
         {
@@ -243,7 +255,8 @@ function register_autoload($real_name)
             $OB->_libs['php5_'.$class] = $class;
             return;
         } 
-        elseif(file_exists(BASE .'libraries'. DS .'php5'. DS .ucfirst($class). EXT))
+        
+        if(file_exists(BASE .'libraries'. DS .'php5'. DS .ucfirst($class). EXT))
         {
             require(BASE .'libraries'. DS .'php5'. DS .ucfirst($class). EXT);
             
@@ -255,8 +268,8 @@ function register_autoload($real_name)
         
     } catch(LoaderException $e) 
     {
-        Obullo_ExceptionHandler($e);
-        exit; // do not show fatal errors .. 
+        Obullo_ExceptionHandler($e); // exception hack ..
+        exit;                        // do not show fatal errors .. 
     }
     
 } 
@@ -284,15 +297,18 @@ function get_static($filename = 'config', $var = '', $folder = '')
 
     if ( ! isset($static[$filename]))
     {
-        if ( ! file_exists($folder.DS.$filename.EXT))
-        throw new CommonException('The static file '.DS.$folder.DS.$filename.EXT.' does not exist.');
+        if ( ! file_exists($folder. DS .$filename. EXT))
+        throw new CommonException('The static file '. DS .$folder. DS .$filename. EXT .' does not exist.');
         
-        require($folder.DS.$filename.EXT);
+        require($folder. DS .$filename. EXT);
         
         if($var == '') $var = &$filename;
         
         if ( ! isset($$var) OR ! is_array($$var))
-        throw new CommonException('The static file '.DS.$folder.DS.$filename.EXT.' file does not appear to be formatted correctly.');
+        {
+            throw new CommonException('The static file '. DS .$folder. DS .$filename. EXT .' file does 
+            not appear to be formatted correctly.');
+        }
     
         $static[$filename] =& $$var;
      }
@@ -303,13 +319,14 @@ function get_static($filename = 'config', $var = '', $folder = '')
 /**
 * Get config file.
 * 
+* @access   public
 * @param    string $filename
 * @param    string $var
 * @return   array
 */
 function get_config($filename = 'config', $var = '')
 {
-    return get_static($filename, $var, 'application'.DS.'config');
+    return get_static($filename, $var, 'application'. DS .'config');
 }
 
 /**

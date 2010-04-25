@@ -136,9 +136,7 @@ Class loader {
     * 
     * @author   Ersin Güvenç
     * @param    string $class class name
-    * @param    mixed $no_ins_params
-    *           NULL  = instantiate
-    *           FALSE = no instantiate class
+    * @param    array $params
     *           Array = provide __construct() params
     *                      
     * @version  0.1
@@ -146,7 +144,7 @@ Class loader {
     * @version  0.3  removed class_exists, removed asn_to_models()
     * @return   void
     */
-    private static function _library($class, $no_ins_params = NULL, $base = FALSE, $object_name = '', $lib_dir = '')
+    private static function _library($class, $params = NULL, $base = FALSE, $object_name = '', $lib_dir = '')
     {
         if($class == '')
         return FALSE;
@@ -163,12 +161,12 @@ Class loader {
         {
            case FALSE:
              $type = 'application';
-             $OB->$class_var = register($class, $no_ins_params, $lib_dir); 
+             $OB->$class_var = register($class, $params, $lib_dir); 
              break;
              
            case TRUE:
              $type = 'base';
-             $OB->$class_var = base_register($class, $no_ins_params); 
+             $OB->$class_var = base_register($class, $params); 
              break;
         }
         

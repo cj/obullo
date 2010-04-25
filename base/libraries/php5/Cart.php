@@ -32,8 +32,6 @@ Class cart implements PHP5_Library {
     public $product_id_rules    = '\.a-z0-9_-'; // alpha-numeric, dashes, underscores, or periods
     public $product_name_rules  = '\.\:\-_ a-z0-9'; // alpha-numeric, dashes, underscores, colons or periods
     
-    // Private variables.  Do not change!
-    public $OB;
     public $_cart_contents    = array();
 
     private static $instance;
@@ -57,9 +55,6 @@ Class cart implements PHP5_Library {
      */        
     function init($params = array())
     {    
-        // Set the super object to a local variable for use later
-        $this->OB = ob::instance();
-        
         // Are any config settings being passed manually?  If so, set them
         $config = array();
         if (count($params) > 0)
@@ -74,9 +69,9 @@ Class cart implements PHP5_Library {
         loader::base_lib('session', $config);
             
         // Grab the shopping cart array from the session table, if it exists
-        if ($this->OB->session->userdata('cart_contents') !== FALSE)
+        if (ob::instance()->session->get('cart_contents') !== FALSE)
         {
-            $this->_cart_contents = $this->OB->session->userdata('cart_contents');
+            $this->_cart_contents = ob::instance()->session->set('cart_contents');
         }
         else
         {
@@ -410,7 +405,7 @@ Class cart implements PHP5_Library {
         // Is our cart empty?  If so we delete it from the session
         if (count($this->_cart_contents) <= 2)
         {
-            $this->OB->session->unset_userdata('cart_contents');
+            ob::instance()->session->un_set('cart_contents');
             
             // Nothing more to do... coffee time!
             return FALSE;
@@ -418,7 +413,7 @@ Class cart implements PHP5_Library {
 
         // If we made it this far it means that our cart has data.
         // Let's pass it to the Session class so it can be stored
-        $this->OB->session->set_userdata(array('cart_contents' => $this->_cart_contents));
+        ob::instance()->session->set(array('cart_contents' => $this->_cart_contents));
 
         // Woot!
         return TRUE;    
@@ -554,7 +549,7 @@ Class cart implements PHP5_Library {
         $this->_cart_contents['cart_total'] = 0;        
         $this->_cart_contents['total_items'] = 0;        
 
-        $this->OB->session->unset_userdata('cart_contents');
+        ob::instance()->session->un_set('cart_contents');
     }
 
 
