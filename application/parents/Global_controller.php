@@ -11,8 +11,9 @@ Class __autoloader {
 }
 Class Global_controller extends __autoloader
 {
-      public $base     = '';
-      public $base_img = '';
+      public $base      = '';
+      public $base_url  = '';
+      public $base_img  = '';
       
       public $title_tag = '';
       public $head_tag  = '';
@@ -23,11 +24,10 @@ Class Global_controller extends __autoloader
       public function __global()
       {
           parent::__construct();
-                                              
-          $this->base     = config_item('base_url');
-          $this->base_img = config_item('source_url').'/images/';
           
-          $this->meta_tag = '';
+          $this->base      = config_item('base_url');
+          $this->base_url  = config_item('base_url')  . config_item('index_page');
+          $this->base_img  = config_item('source_url').'/images/';
           
           $this->meta_tag  = meta('Expires', 'Fri, Jan 01 1900 00:00:00 GMT', 'equiv');
           $this->meta_tag .= meta('Pragma', 'no-cache', 'equiv');
@@ -36,6 +36,7 @@ Class Global_controller extends __autoloader
           $this->meta_tag .= meta('Lang', 'en', 'equiv');
           $this->meta_tag .= meta('description', '');
           $this->meta_tag .= meta('author', '');
+      
       }
       
 } // end.

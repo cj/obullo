@@ -312,7 +312,7 @@ function get_static($filename = 'config', $var = '', $folder = '')
     
         $static[$filename] =& $$var;
      }
-
+     
     return $static[$filename];    
 }
 

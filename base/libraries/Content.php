@@ -24,12 +24,14 @@ Class ContentException extends CommonException {}
  * @author      Ersin Güvenç
  * @version     0.1
  * @version     0.2 added empty $data string support
+ * @version     0.3 added set_view_folder function
  * @link        
  */
 Class OB_Content {
     
     public $view_folder      = '';
     public $app_view_folder  = '';
+    public $css_folder       = '';
     
     /**
     * Constructor
@@ -40,14 +42,16 @@ Class OB_Content {
     {    
         $this->view_folder     = DS. '';
         $this->app_view_folder = DS. '';
+        $this->css_folder      = '/';
         
         log_message('debug', "Content Class Initialized");
     }
     
     /**
-    * Add your custom folder
-    * change all your view paths for
-    * flexibility.
+    * Create your custom folders and
+    * change all your view paths for the
+    * supporting multiple interfaces (iphone, wap, xml services
+    * etc ..)
     * 
     * @author  Ersin Güvenç
     * @param   string $func view function
@@ -63,6 +67,10 @@ Class OB_Content {
              
            case 'app_view':
              $this->app_view_folder = DS. $folder;  
+             break;
+             
+           case 'css':
+             $this->css_folder      = '/'. $folder;  
              break;
         }
     }

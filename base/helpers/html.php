@@ -73,9 +73,10 @@ function local_css($filename, $arguments = '', $path = 'css', $type = ' type="te
 * @param    string  $dir application or directory css
 * @version  0.1
 * @version  0.2 added $path variable
+* @version  0.2 added ob::instance()->content->css_folder variable
 * @return   string
 */
-function _css($filename, $arguments = ' media="all" ', $dir = 'source', $path = 'css', $type = ' type="text/css" ')
+function _css($filename, $arguments = ' media="all" ', $dir = 'source', $path = '', $type = ' type="text/css" ')
 {
     if( ! is_array($filename))
     $filename = array($filename);
@@ -84,6 +85,8 @@ function _css($filename, $arguments = ' media="all" ', $dir = 'source', $path = 
     {
         $arguments = ' media="all" ';
     }
+    
+    $path = 'css' . ob::instance()->content->css_folder;
     
     $style = "<style $type $arguments>\n";
 
@@ -100,11 +103,11 @@ function _css($filename, $arguments = ' media="all" ', $dir = 'source', $path = 
     
     foreach($filename as $key => $css)
     {
-        $style.= "@import url(\"".$url.$css.'.css'."\");\n";
+        $style.= "@import url(\"". $url . $css. '.css'."\");\n";
     }
     
     $style.= '</style>';
-    
+
     return $style;   
 }
 

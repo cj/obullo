@@ -86,37 +86,34 @@ Class OB_Agent {
      */        
     private function _load_agent_file()
     {
-        $platforms = get_config('user_agents', 'platforms');
-        $browsers  = get_config('user_agents', 'browsers');
-        $mobiles   = get_config('user_agents', 'mobiles');
-        $robots    = get_config('user_agents', 'robots');
+        $user_agents = get_config('user_agents');
         
         $return = FALSE;
         
-        if (isset($platforms))
+        if (isset($user_agents['platforms']))
         {
-            $this->platforms = &$platforms;
-            unset($platforms);
+            $this->platforms = &$user_agents['platforms'];
+            unset($user_agents['platforms']);
             $return = TRUE;
         }
 
-        if (isset($browsers))
+        if (isset($user_agents['browsers']))
         {
-            $this->browsers  = &$browsers;
-            unset($browsers);
+            $this->browsers  = &$user_agents['browsers'];
+            unset($user_agents['browsers']);
             $return = TRUE;
         }
 
-        if (isset($mobiles))
+        if (isset($user_agents['mobiles']))
         {
-            $this->mobiles   = &$mobiles;
-            unset($mobiles);
+            $this->mobiles   = &$user_agents['mobiles'];
+            unset($user_agents['mobiles']);
             $return = TRUE;
         }
         
-        if (isset($robots))
+        if (isset($user_agents['robots']))
         {
-            $this->robots    = &$robots;
+            $this->robots    = &$user_agents['robots'];
             unset($robots);
             $return = TRUE;
         }

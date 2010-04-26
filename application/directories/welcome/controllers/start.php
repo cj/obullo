@@ -16,6 +16,7 @@ Class Start extends Controller
         $this->meta_tag .= meta('keywords', 'obullo, php5, framework');
         
         $this->head_tag  = css('welcome');
+                
         $this->head_tag .= js('welcome');  
         $this->head_tag .= content::script('welcome'); 
         
