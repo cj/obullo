@@ -71,36 +71,36 @@ Class upload implements PHP5_Library {
      *
      * @access    public
      */
-    public function init($props = array())
+    public function init($config = array())
     {
-        if (count($props) > 0)
+        if (count($config) > 0)
         {
             $defaults = array(
-                    'max_size'            => 0,
-                    'max_width'           => 0,
-                    'max_height'          => 0,
-                    'max_filename'        => 0,
-                    'allowed_types'       => "",
-                    'file_temp'           => "",
-                    'file_name'           => "",
-                    'orig_name'           => "",
-                    'file_type'           => "",
-                    'file_size'           => "",
-                    'file_ext'            => "",
-                    'upload_path'         => "",
-                    'overwrite'           => FALSE,
-                    'encrypt_name'        => FALSE,
-                    'is_image'            => FALSE,
-                    'image_width'         => '',
-                    'image_height'        => '',
-                    'image_type'          => '',
-                    'image_size_str'      => '',
-                    'error_msg'           => array(),
-                    'mimes'               => array(),
-                    'remove_spaces'       => TRUE,
-                    'xss_clean'           => FALSE,
-                    'temp_prefix'         => "temp_file_"
-                );    
+                        'max_size'            => 0,
+                        'max_width'           => 0,
+                        'max_height'          => 0,
+                        'max_filename'        => 0,
+                        'allowed_types'       => "",
+                        'file_temp'           => "",
+                        'file_name'           => "",
+                        'orig_name'           => "",
+                        'file_type'           => "",
+                        'file_size'           => "",
+                        'file_ext'            => "",
+                        'upload_path'         => "",
+                        'overwrite'           => FALSE,
+                        'encrypt_name'        => FALSE,
+                        'is_image'            => FALSE,
+                        'image_width'         => '',
+                        'image_height'        => '',
+                        'image_type'          => '',
+                        'image_size_str'      => '',
+                        'error_msg'           => array(),
+                        'mimes'               => array(),
+                        'remove_spaces'       => TRUE,
+                        'xss_clean'           => FALSE,
+                        'temp_prefix'         => "temp_file_"
+                    );    
         
         
             foreach ($defaults as $key => $val)
@@ -885,11 +885,8 @@ Class upload implements PHP5_Library {
     
         if (count($this->mimes) == 0)
         {
-            if (@require_once(APP.'config'.DS.'mimes'.EXT))
-            {
-                $this->mimes = $mimes;
-                unset($mimes);
-            }
+            $this->mimes = get_config('mimes');  // Obullo changes ..
+            unset($mimes);
         }
     
         return ( ! isset($this->mimes[$mime])) ? FALSE : $this->mimes[$mime];

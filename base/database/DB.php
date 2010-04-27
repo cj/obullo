@@ -484,14 +484,28 @@ Class OB_DB extends OB_DBAc_sw {
     // --------------------------------------------------------------------
     
     /**
-    * Native PDOStatement::fetch() 
-    * function
+    * Native PDOStatement::fetch() function
     * 
-    * @return  mixed
+    * @param    int $fetch_style = PDO::FETCH_BOTH  
+    * @param    int $cursor_orientation = PDO::FETCH_ORI_NEXT 
+    * @param    $cursor_offset = 0
+    * @return   object
     */
-    public function fetch($type = NULL)
+    public function fetch()
     {
-        return $this->Stmt->fetch($type);
+        $arg = func_get_args();
+    
+        switch (sizeof($arg)) {
+           case 1:
+           return $this->Stmt->fetch($arg[0]);
+             break;
+           case 2:
+           return $this->Stmt->fetch($arg[0], $arg[1]);
+             break;
+           case 3:
+           return $this->Stmt->fetch($arg[0], $arg[1], $arg[2]);
+             break;
+        }
     } 
     
     // --------------------------------------------------------------------
@@ -500,16 +514,41 @@ Class OB_DB extends OB_DBAc_sw {
     * Get "all results" by assoc, object, num, bound or 
     * anything what u want
     * 
-    * @param    string $type (constant)
-    * @return   mixed
+    * @param    int $fetch_style = PDO::FETCH_BOTH
+    * @param    int $column_index = 0
+    * @param    array $ctor_args = array()
+    * @return   object
     */
-    public function fetch_all($type = NULL)
+    public function fetch_all()
     {    
-        return $this->Stmt->fetchAll($type);
+        $arg = func_get_args();
+    
+        switch (sizeof($arg)) {
+           case 1:
+           return $this->Stmt->fetchAll($arg[0]);
+             break;
+           case 2:
+           return $this->Stmt->fetchAll($arg[0], $arg[1]);
+             break;
+           case 3:
+           return $this->Stmt->fetchAll($arg[0], $arg[1], $arg[2]);
+             break;
+        }
     } 
     
     // --------------------------------------------------------------------
 
+    /**
+    * Returns a single column from the next row of a result set 
+    * 
+    * @param mixed $col
+    */
+    public function fetch_column($col = NULL)
+    {
+        return $this->Stmt->fetchColumn($col);
+    }
+    
+    // --------------------------------------------------------------------
     
     /**
     * Check array associative or not 
@@ -524,13 +563,6 @@ Class OB_DB extends OB_DBAc_sw {
         return array_keys($arr) !== range(0, count($arr) - 1);
     }
     
-    // --------------------------------------------------------------------
-
-    public function output()
-    {
-        return $this->last_sql;
-    }
-   
     // --------------------------------------------------------------------
     
     /**
@@ -576,7 +608,7 @@ Class OB_DB extends OB_DBAc_sw {
     * @param    bool
     * @return   string
     */    
-    function _protect_identifiers($item, $prefix_single = FALSE, $protect_identifiers = NULL, $field_exists = TRUE)
+    public function _protect_identifiers($item, $prefix_single = FALSE, $protect_identifiers = NULL, $field_exists = TRUE)
     {
         if ( ! is_bool($protect_identifiers))
         {

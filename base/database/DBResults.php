@@ -255,6 +255,86 @@ Class result {
         return PDO::FETCH_PROPS_LATE;    
     }
     
+    // --------------------------------------------------------------------
+    
+    /**
+    * Fetch the next row in the result set.
+    * Valid only for scrollable cursors. 
+    * 
+    * @return integer
+    */
+    public static function ori_next()
+    {
+        return PDO::FETCH_ORI_NEXT;    
+    }
+    
+    // --------------------------------------------------------------------
+    
+    /**
+    * Fetch the previous row in the result set.
+    * Valid only for scrollable cursors. 
+    * 
+    * @return integer
+    */
+    public static function ori_prior()
+    {
+        return PDO::FETCH_ORI_PRIOR;    
+    }
+    
+    // --------------------------------------------------------------------
+    
+    /**
+    * Fetch the first row in the result set.
+    * Valid only for scrollable cursors. 
+    * 
+    * @return integer
+    */
+    public static function ori_first()
+    {
+        return PDO::FETCH_ORI_FIRST;    
+    }
+    
+    // --------------------------------------------------------------------
+    
+    /**
+    * Fetch the last row in the result set.
+    * Valid only for scrollable cursors. 
+    * 
+    * @return integer
+    */
+    public static function ori_last()
+    {
+        return PDO::FETCH_ORI_LAST;    
+    }
+    
+    // --------------------------------------------------------------------
+    
+    /**
+    * Fetch the requested row by row number from the result set.
+    * Valid only for scrollable cursors. 
+    * 
+    * @return integer
+    */
+    public static function ori_abs()
+    {
+        return PDO::FETCH_ORI_ABS;    
+    }
+    
+    // --------------------------------------------------------------------
+    
+    /**
+    * Fetch the requested row by relative position from the current 
+    * position of the cursor in the result set. 
+    * Valid only for scrollable cursors. 
+    * 
+    * @return integer
+    */
+    public static function ori_rel()
+    {
+        return PDO::FETCH_ORI_REL;    
+    }
+    
+    
 }  //end class.
 
 ?>
