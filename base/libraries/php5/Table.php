@@ -326,20 +326,16 @@ Class table implements PHP5_Library {
         
         // First generate the headings from the table column names
         if (count($this->heading) == 0)
-        {
-            if ( ! method_exists($query, 'list_fields'))
-            {
-                return FALSE;
-            }
-            
-            $this->heading = $query->list_fields();
+        {   
+            $table_list = $query->fetch_all(result::assoc());    // Obullo Changes ..
+            $this->heading = array_keys($table_list[0]);         // Obullo Changes ..
         }
                 
         // Next blast through the result array and build out the rows
         
         if ($query->num_rows() > 0)
-        {
-            foreach ($query->result_array() as $row)
+        { 
+            foreach ($table_list as $row) // Obullo Changes ..
             {
                 $this->rows[] = $row;
             }

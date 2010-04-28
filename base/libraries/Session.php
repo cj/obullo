@@ -47,6 +47,9 @@ Class OB_Session {
     public $userdata                   = array();
     public $OB                         = NULL;
     public $now;
+    
+    // Obullo changes ..
+    public $sess_db                    = NULL;
 
     /**
     * Session Constructor
@@ -63,7 +66,9 @@ Class OB_Session {
         
         // Set all the session preferences, which can either be set 
         // manually via the $params array above or via the config file
-        foreach (array('sess_encrypt_cookie', 'sess_use_database', 'sess_table_name', 'sess_expiration', 'sess_match_ip', 'sess_match_useragent', 'sess_cookie_name', 'cookie_path', 'cookie_domain', 'sess_time_to_update', 'time_reference', 'cookie_prefix', 'encryption_key') as $key)
+        foreach (array('sess_encrypt_cookie', 'sess_use_database', 'sess_database_var', 'sess_table_name', 
+        'sess_expiration', 'sess_match_ip', 'sess_match_useragent', 'sess_cookie_name', 'cookie_path', 
+        'cookie_domain', 'sess_time_to_update', 'time_reference', 'cookie_prefix', 'encryption_key') as $key)
         {
             $this->$key = (isset($params[$key])) ? $params[$key] : config_item($key);
         }
@@ -71,10 +76,27 @@ Class OB_Session {
         // Load the string helper so we can use the strip_slashes() function
         loader::base_helper('string');
 
-        // Are we using a database?  If so, load it
-        if ($this->sess_use_database === TRUE AND $this->sess_table_name != '')
-        loader::database();
+        // Are we using a database? User must be load it manually !!!
         
+        if ($this->sess_use_database === TRUE AND $this->sess_table_name != '')  // Obullo changes ... 
+        {
+            // if database variable exists ..
+            if($this->OB->{$this->sess_database_var} instanceof PDO)
+            {
+                $this->sess_db = &$this->OB->{$this->sess_database_var};
+            } 
+            else
+            {
+                if( ! $this->OB->db instanceof PDO) 
+                {
+                    throw new SessionException('Session class works with database class so 
+                    you must load database object by loader::database() function.');
+                }
+                
+                $this->sess_db = &$this->OB->db;
+            }
+        }
+        // Obullo changes end ...  
 
         // Set the "now" time.  Can either be GMT or server time, based on the
         // config prefs.  We use this to set the "last activity" time
@@ -189,19 +211,19 @@ Class OB_Session {
         // Is there a corresponding session in the DB?
         if ($this->sess_use_database === TRUE)
         {
-            $this->OB->db->where('session_id', $session['session_id']);
+            $this->sess_db->where('session_id', $session['session_id']);
                     
             if ($this->sess_match_ip == TRUE)
             {
-                $this->OB->db->where('ip_address', $session['ip_address']);
+                $this->sess_db->where('ip_address', $session['ip_address']);
             }
 
             if ($this->sess_match_useragent == TRUE)
             {
-                $this->OB->db->where('user_agent', $session['user_agent']);
+                $this->sess_db->where('user_agent', $session['user_agent']);
             }
             
-            $query = $this->OB->db->get($this->sess_table_name);
+            $query = $this->sess_db->get($this->sess_table_name);
 
             // No result?  Kill it!
             if ($query->num_rows() == 0)
@@ -276,8 +298,8 @@ Class OB_Session {
         }
         
         // Run the update query
-        $this->OB->db->where('session_id', $this->userdata['session_id']);
-        $this->OB->db->update($this->sess_table_name, array('last_activity' => $this->userdata['last_activity'], 'user_data' => $custom_userdata));
+        $this->sess_db->where('session_id', $this->userdata['session_id']);
+        $this->sess_db->update($this->sess_table_name, array('last_activity' => $this->userdata['last_activity'], 'user_data' => $custom_userdata));
 
         // Write the cookie.  Notice that we manually pass the cookie data array to the
         // _set_cookie() function. Normally that function will store $this->userdata, but 
@@ -316,7 +338,7 @@ Class OB_Session {
             // Save the data to the DB if needed
             if ($this->sess_use_database === TRUE)
             {   
-                $this->OB->db->insert($this->sess_table_name, $this->userdata);
+                $this->sess_db->insert($this->sess_table_name, $this->userdata);
             }
                 
             // Write the cookie
@@ -373,8 +395,8 @@ Class OB_Session {
                 $cookie_data[$val] = $this->userdata[$val];
             }
         
-            $this->OB->db->where('session_id',$old_sessid);
-            $this->OB->db->update($this->sess_table_name, 
+            $this->sess_db->where('session_id',$old_sessid);
+            $this->sess_db->update($this->sess_table_name, 
             array('last_activity' => $this->now,'session_id' => $new_sessid));
         }
         
@@ -390,13 +412,13 @@ Class OB_Session {
     * @access    public
     * @return    void
     */
-    public function destroy()
+    public function destroy() // obullo changes ...
     {    
         // Kill the session DB row
         if ($this->sess_use_database === TRUE AND isset($this->userdata['session_id']))
         {
-            $this->OB->db->where('session_id', $this->userdata['session_id']);
-            $this->OB->db->delete($this->sess_table_name);
+            $this->sess_db->where('session_id', $this->userdata['session_id']);
+            $this->sess_db->delete($this->sess_table_name);
         }
     
         // Kill the cookie
@@ -419,7 +441,7 @@ Class OB_Session {
     * @param    string
     * @return   string
     */        
-    public function get($item)
+    public function get($item) // obullo changes ...
     {
         return ( ! isset($this->userdata[$item])) ? FALSE : $this->userdata[$item];
     }
@@ -447,7 +469,7 @@ Class OB_Session {
     * @param    string
     * @return   void
     */        
-    public function set($newdata = array(), $newval = '')
+    public function set($newdata = array(), $newval = '') // obullo changes ...
     {
         if (is_string($newdata))
         {
@@ -473,7 +495,7 @@ Class OB_Session {
     * @access    array
     * @return    void
     */        
-    public function un_set($newdata = array())
+    public function un_set($newdata = array())  // obullo changes ...
     {
         if (is_string($newdata))
         {
@@ -502,7 +524,7 @@ Class OB_Session {
     * @param    string
     * @return   void
     */
-    public function set_flash($newdata = array(), $newval = '')
+    public function set_flash($newdata = array(), $newval = '') // obullo changes ...
     {
         if (is_string($newdata))
         {
@@ -528,7 +550,7 @@ Class OB_Session {
     * @param    string
     * @return   void
     */
-    public function keep_flash($key)
+    public function keep_flash($key) // obullo changes ...
     {
         // 'old' flashdata gets removed.  Here we mark all 
         // flashdata as 'new' to preserve it from _flashdata_sweep()
@@ -550,7 +572,7 @@ Class OB_Session {
     * @param    string
     * @return   string
     */    
-    public function get_flash($key)
+    public function get_flash($key) // obullo changes ...
     {
         $flashdata_key = $this->flashdata_key.':old:'.$key;
         return $this->get($flashdata_key);
@@ -747,8 +769,8 @@ Class OB_Session {
         {
             $expire = $this->now - $this->sess_expiration;
             
-            $this->OB->db->where("last_activity < {$expire}");
-            $this->OB->db->delete($this->sess_table_name);
+            $this->sess_db->where("last_activity < {$expire}");
+            $this->sess_db->delete($this->sess_table_name);
 
             log_message('debug', 'Session garbage collection performed.');
         }

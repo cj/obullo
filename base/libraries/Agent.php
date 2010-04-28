@@ -86,7 +86,7 @@ Class OB_Agent {
      */        
     private function _load_agent_file()
     {
-        $user_agents = get_config('user_agents');
+        $user_agents = get_config('user_agents');  // obullo changes ..
         
         $return = FALSE;
         

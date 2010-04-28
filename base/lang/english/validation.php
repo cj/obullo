@@ -20,5 +20,5 @@ $lang['is_natural']			= "The %s field must contain a number.";
 $lang['is_natural_no_zero']	= "The %s field must contain a number greater than zero.";
 
 
-/* End of file validation_lang.php */
-/* Location: ./base/language/english/validation_lang.php */
+/* End of file validation.php */
+/* Location: ./base/lang/english/validation.php */

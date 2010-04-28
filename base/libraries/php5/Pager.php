@@ -38,7 +38,7 @@ Class pager implements PHP5_Library {
     public $next_link           = '&gt;';
     public $prev_link           = '&lt;';
     public $last_link           = 'Last &rsaquo;';
-    public $uri_segment         = 3;
+    public $uri_segment         = 4;  // Obullo Changes ...
     public $full_tag_open       = '';
     public $full_tag_close      = '';
     public $first_tag_open      = '';
@@ -89,7 +89,7 @@ Class pager implements PHP5_Library {
             }
         }
 
-        log_message('debug', "Pagination Class Initialized");
+        log_message('debug', "Pager Class Initialized");
     }
 
     // --------------------------------------------------------------------
@@ -100,7 +100,7 @@ Class pager implements PHP5_Library {
      * @access    public
      * @return    string
      */
-    public function get_links()
+    public function create_links()
     {
         // If our item count or per-page total is zero there is no need to continue.
         if ($this->total_rows == 0 OR $this->per_page == 0)
@@ -145,7 +145,7 @@ Class pager implements PHP5_Library {
 
         if ($this->num_links < 1)
         {
-            throw new PaginationException('Your number of links must be a positive number.');
+            throw new PagerException('Your number of links must be a positive number.');
         }
 
         if ( ! is_numeric($this->cur_page))

@@ -65,15 +65,15 @@ Class OB_Lang {
         switch ($dir)
         {
             case 'local':
-             $folder = DIR.$GLOBALS['d'].DS.'lang'.DS.$idiom.DS;                            
+             $folder = DIR .$GLOBALS['d']. DS .'lang'. DS .$idiom. DS;                            
              break;
             
             case 'global':
-             $folder = APP.'lang'.DS.$idiom.DS;
+             $folder = APP .'lang'. DS .$idiom. DS;
              break;
              
             case 'base':
-             $folder = BASE.'lang'.DS.$idiom.DS;  
+             $folder = BASE.'lang'. DS .$idiom. DS;  
              break;
         }
 
@@ -84,7 +84,7 @@ Class OB_Lang {
         
         if ( ! isset($lang))
         {
-            log_message('error', 'Language file contains no data: lang/'.$idiom.'/'.$langfile.EXT);
+            log_message('error', 'Language file contains no data: lang/' .$idiom. '/'. $langfile. EXT);
             return;
         }
 
@@ -95,7 +95,7 @@ Class OB_Lang {
         $this->language = array_merge($this->language, $lang);
         unset($lang);
 
-        log_message('debug', 'Language file loaded: lang/'.$idiom.'/'.$langfile.EXT);
+        log_message('debug', 'Language file loaded: lang/' .$idiom. '/' .$langfile. EXT);
         return TRUE;
     }
 

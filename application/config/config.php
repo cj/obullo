@@ -44,7 +44,7 @@ $config['base_url']              = "http://localhost/obullo/";
 |
 | URL to your Static Files.
 |
-|    /sources default or http://static.yourdomain.com/sources/
+|    /sources
 |    /sources/js
 |    /sources/css
 |    /sources/images
@@ -176,15 +176,15 @@ $config['permitted_uri_chars']   = 'a-z 0-9~%.:_\-';
 |
 | The other items let you set the query string "words" that will
 | invoke your controllers and its functions:
-| example.com/index.php?c=controller&m=function
+| example.com/index.php?d=directory&c=controller&m=function
 |
 | Please note that some of the helpers won't work as expected when
 | this feature is enabled, since Obullo is designed primarily to
 | use segment based URLs.
 |
 */
-$config['enable_query_strings']  = TRUE;
-$config['directory_trigger']     = 'd'; // we currently use it in Obullo :)  
+$config['enable_query_strings']  = FALSE;
+$config['directory_trigger']     = 'd';   
 $config['controller_trigger']    = 'c';
 $config['function_trigger']      = 'm';
 
@@ -253,13 +253,15 @@ $config['encryption_key']        = "";
 | 'session_expiration'  = the number of SECONDS you want the session to last.
 |  by default sessions last 7200 seconds (two hours).  Set to zero for no expiration.
 | 'time_to_update'      = how many seconds between Obullo refreshing Session Information
+| 'sess_database_var'   = normally Obullo use standart '$this->db' variable for session database
+|                         insert update operations, you can change it like db2, db3 .. 
 |
 */
 $config['sess_cookie_name']      = 'ob_session';
 $config['sess_expiration']       = 7200;
 $config['sess_encrypt_cookie']   = FALSE;
 $config['sess_use_database']     = FALSE;
-//$config['sess_database_object']  = 'db';   
+$config['sess_database_var']     = 'db';            
 $config['sess_table_name']       = 'ob_sessions';
 $config['sess_match_ip']         = FALSE;
 $config['sess_match_useragent']  = TRUE;
