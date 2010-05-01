@@ -9,7 +9,6 @@ if( !defined('BASE') ) exit('Access Denied!');
 |
 */
 define('use_bind_value', 'bind_value');  // Bind Value
-define('use_bind_column','bind_column'); // Bind Column 
 
 /**
 |--------------------------------------------------------------------------

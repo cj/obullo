@@ -25,6 +25,7 @@ Class ContentException extends CommonException {}
  * @version     0.1
  * @version     0.2 added empty $data string support
  * @version     0.3 added set_view_folder function
+ * @version     0.3 added return , fail gracefully function for views.
  * @link        
  */
 Class OB_Content {
@@ -126,7 +127,11 @@ Class OB_Content {
     */
     public function view($filename, $data = '', $string = TRUE)
     {               
-        return $this->_view(DIR .$GLOBALS['d']. DS .'views'. $this->view_folder .DS, $filename, $data, $string);
+        $return = FALSE;
+        
+        if(isset($this->view_folder{1})) { $return = TRUE; } // if view folder changed don't show errors ..
+
+        return $this->_view(DIR .$GLOBALS['d']. DS .'views'. $this->view_folder .DS, $filename, $data, $string, $return);
     }
     
     // ------------------------------------------------------------------------
@@ -141,7 +146,11 @@ Class OB_Content {
     */
     public function app_view($filename, $data = '', $string = FALSE)
     {
-        return $this->_view(APP .'views'. $this->app_view_folder . DS, $filename, $data, $string); 
+        $return = FALSE;
+        
+        if(isset($this->app_folder{1})) { $return = TRUE; }  // if view folder changed don't show errors ..
+        
+        return $this->_view(APP .'views'. $this->app_view_folder . DS, $filename, $data, $string, $return); 
     }
 
     // ------------------------------------------------------------------------
@@ -181,23 +190,28 @@ Class OB_Content {
     // --------------------------------------------------------------------
     
     /**
-    * Main view function
+    * Main view function        
     * 
     * @author   Ersin Güvenç          
-    * @param    string $path file path 
-    * @param    string $filename 
-    * @param    array $data template vars
-    * @param    boolen $string 
+    * @param    string   $path file path 
+    * @param    string   $filename 
+    * @param    array    $data template vars
+    * @param    boolean  $string 
+    * @param    boolean  $return 
     * @version  0.1
     * @version  0.2 added empty $data
+    * @version  0.3 added $return param
     * @return   void
     */
-    private function _view($path, $filename, $data = '', $string = FALSE)
+    private function _view($path, $filename, $data = '', $string = FALSE, $return = FALSE)
     {   
         if( empty($data) ) $data = array();
         
         if ( ! file_exists($path . $filename . EXT) )
         {
+            if($return) return;  // fail gracefully for different interfaces ..
+                                 // iphone, wap etc..
+            
             throw new ContentException('Unable locate the view file: '. $filename . EXT);
         } 
         

@@ -183,21 +183,17 @@ Class OB_DB extends OB_DBAc_sw {
     * @version  0.2    added secure like conditions support
     * @version  0.3    changed bindValue functionality
     * @param    array  $array bindValue or bindParam arrays
-    * @param    string $bval_or_bparam
+    * @param    string $bind_value
     * @return   void | NULL 
     */
-    public function exec($array = NULL, $bval_or_bparam = '')
+    public function exec($array = NULL, $bind_value = '')
     { 
         $this->last_values = &$array; // store last executed bind values.
         
         if($this->use_bind_values)
         {
-           $this->last_values = &$this->last_bind_values;
-            
-        } elseif($this->use_bind_params)
-        {
-           $this->last_values = &$this->last_bind_params;
-        }        
+           $this->last_values = &$this->last_bind_values;   
+        }      
         
         // this is just for prepared direct queries with bindValues or bindParams..
         if($this->last_sql != NULL AND $this->exec_count == 0)
@@ -207,21 +203,12 @@ Class OB_DB extends OB_DBAc_sw {
     
         //print_r($array); exit;
     
-        if(is_array($array) AND $bval_or_bparam != '')
+        if(is_array($array) AND $bind_value != '')
         {
             if( ! self::_is_assoc($array))
-            throw new DBException('PDO binds data must be associative array !');
+            throw new DBException('PDO bind data must be associative array !');
             
-            switch ($bval_or_bparam)
-            {
-               case 'bind_param':
-                 $this->_bindParams($array);
-                 break;
-                 
-               case 'bind_value':
-                 $this->_bindValues($array);
-                 break;
-            }
+            $this->_bindValues($array);
             
             $array = NULL;
         }
@@ -299,42 +286,6 @@ Class OB_DB extends OB_DBAc_sw {
     }
 
     // --------------------------------------------------------------------
-    
-    /**
-    * Automatically secure bind params..
-    * 
-    * @param    mixed $array
-    * @return   void
-    */
-    private function _bindParams($array)
-    {
-        foreach($array as $key => $val)
-        {                                          
-            switch (gettype($val))              
-            {
-               case 'string':
-                 $this->bind_param($key, $val, PDO::PARAM_STR);
-                 break;
-                 
-               case 'integer':
-                 $this->bind_param($key, $val, PDO::PARAM_INT);
-                 break;
-                 
-               case 'boolean':
-                 $this->bind_param($key, $val, PDO::PARAM_BOOL);
-                 break;
-               
-               case 'null':
-                 $this->bind_param($key, $val, PDO::PARAM_NULL);
-                 break;
-                 
-               default:
-                 $this->bind_param($key, $val, PDO::PARAM_STR);
-            }
-        }
-    }
-    
-    // --------------------------------------------------------------------    
     
     /**                               
     * Fetch prepared or none prepared last_query
@@ -495,7 +446,8 @@ Class OB_DB extends OB_DBAc_sw {
     {
         $arg = func_get_args();
     
-        switch (sizeof($arg)) {
+        switch (sizeof($arg))
+        {
            case 1:
            return $this->Stmt->fetch($arg[0]);
              break;
@@ -523,7 +475,8 @@ Class OB_DB extends OB_DBAc_sw {
     {    
         $arg = func_get_args();
     
-        switch (sizeof($arg)) {
+        switch (sizeof($arg))
+        {
            case 1:
            return $this->Stmt->fetchAll($arg[0]);
              break;

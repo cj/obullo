@@ -3,8 +3,8 @@
 /**
 * Your copy paste library.
 */
-Class Doly
-{
+Class Doly {
+    
     function __construct()
     {
 
@@ -13,12 +13,9 @@ Class Doly
 
     public function test()
     {   
-        // Using libraries in library.
-        
-        // $ob = ob::instance();
-        // $ob->doly->test();
+
     }
     
-} //end of the class.
+} //end.
 
 ?>

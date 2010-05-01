@@ -9,28 +9,23 @@ defined('BASE') or exit('Access Denied!');
 * @see  user_guide: Chapters / General Topics / Front Controller  
 */
   
-Class Front_controller extends OB_Front_controller 
+Class Front_controller extends OB_Front_controller
 {
     
     public function __construct()
     {
-        
-        // remove parent code 
-        // copy base/base/OB_Front_Controller  __construct() 
-        // method contents and paste here !
-        // and customize this contents !
         parent::__construct();
     }
     
     public function run()
     {
-        // remove parent code 
-        // copy base/base/OB_Front_Controller run() 
-        // method contents and paste here !
-        // and customize this contents !
         parent::run();
-    }
+    } 
     
+    public function close()
+    {
+        parent::close();
+    }        
 }   
 // end of the class.
   

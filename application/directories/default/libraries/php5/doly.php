@@ -25,6 +25,6 @@ Class doly implements PHP5_Library
         // ..   
     }
     
-} //end of the class.
+} //end.
 
 ?>

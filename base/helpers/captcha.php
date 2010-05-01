@@ -76,7 +76,7 @@ NOTES:
 
 RETURNED DATA
 
-The create_captcha() function returns an associative array with this data:
+The create_captcha() functio.n returns an associative array with this data:
 
   [array]
   (

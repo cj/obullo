@@ -3,8 +3,8 @@
 /**
 * Your copy paste Controller.
 */
-Class Doly extends Controller
-{
+Class Doly extends Controller {
+    
     function __construct()
     {   
         parent::__construct();
