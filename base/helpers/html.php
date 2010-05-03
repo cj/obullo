@@ -86,24 +86,29 @@ function _css($filename, $arguments = ' media="all" ', $dir = 'source', $path = 
         $arguments = ' media="all" ';
     }
     
-    $path = 'css' . ob::instance()->content->css_folder;
+    $path = 'css';
+    
+    if(isset(ob::instance()->content->css_folder{1}))
+    {
+        $path = 'css' . ob::instance()->content->css_folder; 
+    }
     
     $style = "<style $type $arguments>\n";
 
     switch ($dir)
     {
        case 'local':
-       $url = config_item('base_url').'application/directories/'.$GLOBALS['d'].'/views/'.$path.'/';
+       $url = config_item('base_url').'application/directories/'.$GLOBALS['d'].'/views/'.$path;
          break;
          
        case 'source':
-       $url = config_item('source_url').$path.'/';
+       $url = config_item('source_url').$path;
          break;
     }
     
     foreach($filename as $key => $css)
     {
-        $style.= "@import url(\"". $url . $css. '.css'."\");\n";
+        $style.= "@import url(\"". $url .'/'. $css .'.css'. "\");\n";
     }
     
     $style.= '</style>';
