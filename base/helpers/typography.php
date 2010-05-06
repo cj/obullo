@@ -38,8 +38,6 @@ defined('BASE') or exit('Access Denied!');
 */	
 function nl2br_except_pre($str)
 {
-    loader::base_lib('typography',false);
-    
     $typo = typography::instance();
     $typo->init();
 	
@@ -59,8 +57,6 @@ function nl2br_except_pre($str)
  */
 function auto_typography($str, $reduce_linebreaks = FALSE)
 {
-	loader::base_lib('typography',false);
-	
     $typo = typography::instance();
     $typo->init();
     

@@ -6,11 +6,11 @@ Class Start extends Controller {
     {   
         parent::__construct();
         parent::__global();
-
+        
     }                               
 
     public function index()
-    {      
+    {     
         $this->title_tag = 'Welcome to Obullo Framework !';
         
         $this->meta_tag .= meta('keywords', 'obullo, php5, framework');   // You can manually set meta tag.

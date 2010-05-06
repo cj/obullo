@@ -29,29 +29,9 @@ defined('BASE') or exit('Access Denied!');
 
 // ------------------------------------------------------------------------
 
-function site_url($uri = '')
-{
-	return ob::instance()->config->site_url($uri);
-}
-
-function base_url()
-{
-	return ob::instance()->config->slash_item('base_url');
-}
-
 function current_url()
 {
 	return ob::instance()->config->site_url(ob::instance()->uri->uri_string());
-}
-
-function uri_string()
-{
-	return ob::instance()->uri->uri_string();
-}
-
-function index_page()
-{
-	return ob::instance()->config->item('index_page');
 }
 
 // ------------------------------------------------------------------------
@@ -196,7 +176,7 @@ function safe_mailto($email, $title = '', $attributes = '')
 
 	for ($i = 0; $i < strlen($email); $i++)
 	{
-		$x[] = "|".ord(substr($email, $i, 1));
+		$x[] = "|" . ord(substr($email, $i, 1));
 	}
 
 	$x[] = '"';
@@ -210,7 +190,7 @@ function safe_mailto($email, $title = '', $attributes = '')
 				$x[] =  ' '.$key.'="';
 				for ($i = 0; $i < strlen($val); $i++)
 				{
-					$x[] = "|".ord(substr($val, $i, 1));
+					$x[] = "|" . ord(substr($val, $i, 1));
 				}
 				$x[] = '"';
 			}
@@ -255,25 +235,10 @@ function safe_mailto($email, $title = '', $attributes = '')
 
 	$x[] = '<'; $x[] = '/'; $x[] = 'a'; $x[] = '>';
 
-	$x = array_reverse($x);
-	ob_start();
+	$data['x'] = array_reverse($x);
 
-?><script type="text/javascript">
-//<![CDATA[
-var l=new Array();
-<?php
-$i = 0;
-foreach ($x as $val){ ?>l[<?php echo $i++; ?>]='<?php echo $val; ?>';<?php } ?>
-
-for (var i = l.length-1; i >= 0; i=i-1){
-if (l[i].substring(0, 1) == '|') document.write("&#"+unescape(l[i].substring(1))+";");
-else document.write(unescape(l[i]));}
-//]]>
-</script><?php
-
-	$buffer = ob_get_contents();
-	ob_end_clean();
-	return $buffer;
+    return this()->content->base_script('safe_mail', $data);
+    
 }
 
 // ------------------------------------------------------------------------

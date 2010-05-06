@@ -108,7 +108,7 @@ function _css($filename, $arguments = ' media="all" ', $dir = 'source', $path = 
     
     foreach($filename as $key => $css)
     {
-        $style.= "@import url(\"". $url .'/'. $css .'.css'. "\");\n";
+        $style.= "@import url(\"". $url .'/'. $css . '.css'. "\");\n";
     }
     
     $style.= '</style>';
@@ -160,6 +160,9 @@ function local_js($filename, $arguments = '', $type = ' type="text/javascript" '
 */
 function _js($filename, $arguments = '', $dir = 'source', $type = ' type="text/javascript" ')
 {
+    if( ! is_array($filename))
+    $filename = array($filename);
+    
     switch ($dir)
     {
        case 'local':
@@ -171,7 +174,13 @@ function _js($filename, $arguments = '', $dir = 'source', $type = ' type="text/j
          break;
     }
 
-   return "\n".'<script '.$type.' src="'.$url.$filename.'.js'.$arguments.'"></script>'; 
+    $js = '';
+    foreach($filename as $key => $val)
+    {
+        $js.= "\n".'<script '.$type.' src="'.$url.$val .'.js'. $arguments.'"></script>';  
+    }
+    
+    return $js;
 }
 
 // --------------------------------------------------------------------
@@ -346,7 +355,7 @@ function img($src = '', $index_page = FALSE)
             }
             else
             {
-                $img .= ' src="'.$OB->config->slash_item('base_url').$v.'" ';
+                $img .= ' src="'.$OB->config->slash_item('source_url').$v.'" ';   // Obullo changes..
             }
         }
         else
@@ -377,24 +386,7 @@ function img($src = '', $index_page = FALSE)
  */
 function doctype($type = 'xhtml1-strict')
 {
-    global $_doctypes;
-
-    if ( ! is_array($_doctypes))
-    {
-        if ( ! require_once(APP.'config'.DS.'doctypes.php'))
-        {
-            return FALSE;
-        }
-    }
-
-    if (isset($_doctypes[$type]))
-    {
-        return $_doctypes[$type];
-    }
-    else
-    {
-        return FALSE;
-    }
+    return config_item($type, 'doctypes');      // Obullo changes ..
 }
 
 // ------------------------------------------------------------------------
@@ -505,8 +497,8 @@ function meta($name = '', $content = '', $type = 'name', $newline = "\n")
     $str = '';
     foreach ($name as $meta)
     {
-        $type         = ( ! isset($meta['type']) OR $meta['type'] == 'name') ? 'name' : 'http-equiv';
-        $name         = ( ! isset($meta['name']))     ? ''     : $meta['name'];
+        $type       = ( ! isset($meta['type']) OR $meta['type'] == 'name') ? 'name' : 'http-equiv';
+        $name       = ( ! isset($meta['name']))     ? ''     : $meta['name'];
         $content    = ( ! isset($meta['content']))    ? ''     : $meta['content'];
         $newline    = ( ! isset($meta['newline']))    ? "\n"    : $meta['newline'];
 
