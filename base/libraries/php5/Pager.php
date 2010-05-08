@@ -27,7 +27,7 @@ Class PagerException extends CommonException {}
  * @author        Ersin Güvenç
  * @link          
  */
-Class pager implements PHP5_Library {
+Class pager_CORE implements PHP5_Library {
 
     public $base_url            = ''; // The page we are linking to
     public $total_rows          = ''; // Total number of items (database results)

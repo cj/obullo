@@ -26,7 +26,7 @@ Class FtpException extends CommonException {}
  * @author        Ersin Güvenç
  * @link        
  */
-Class ftp implements PHP5_Library {
+Class ftp_CORE implements PHP5_Library {
 
     public $hostname    = '';
     public $username    = '';

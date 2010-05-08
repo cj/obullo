@@ -93,10 +93,10 @@ Class OB_Session {
                     you must load database object by loader::database() function.');
                 }
                 
-                $this->sess_db = &$this->OB->db;
+                $this->sess_db = &$this->OB->db;              // Obullo changes end ...  
             }
         }
-        // Obullo changes end ...  
+        
 
         // Set the "now" time.  Can either be GMT or server time, based on the
         // config prefs.  We use this to set the "last activity" time

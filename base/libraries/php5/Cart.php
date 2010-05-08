@@ -26,7 +26,7 @@ Class CartException extends CommonException {}
  * @author        Ersin Güvenç
  * @link
  */
-Class cart implements PHP5_Library {
+Class cart_CORE implements PHP5_Library {
 
     // These are the regular expression rules that we use to validate the product ID and product name
     public $product_id_rules    = '\.a-z0-9_-'; // alpha-numeric, dashes, underscores, or periods

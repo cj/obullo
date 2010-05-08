@@ -32,7 +32,7 @@ Class ZipException extends CommonException {}
  * @author        Ersin Güvenç
  * @link          
  */
-Class zip implements PHP5_Library {
+Class zip_CORE implements PHP5_Library {
 
     public $zipdata     = '';
     public $directory   = '';

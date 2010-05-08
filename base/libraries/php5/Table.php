@@ -13,7 +13,7 @@ defined('BASE') or exit('Access Denied!');
  * @license
  */
  
-Class TableException extends CommonException {}  
+Class TableException extends CommonException {} 
 
 /**
  * Table Genarator Class
@@ -24,7 +24,7 @@ Class TableException extends CommonException {}
  * @author      Ersin Güvenç
  * @link        
  */
-Class table implements PHP5_Library {
+Class table_CORE implements PHP5_Library {
 
     public $rows               = array();
     public $heading            = array();

@@ -29,7 +29,7 @@ Class EncryptException extends CommonException {}
  * @author      Ersin Güvenç
  * @link        
  */
-Class encrypt implements PHP5_Library {
+Class encrypt_CORE implements PHP5_Library {
 
     public $encryption_key    = '';
     public $_hash_type        = 'sha1';

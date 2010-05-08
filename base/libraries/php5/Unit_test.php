@@ -28,7 +28,7 @@ Class UnitTestException extends CommonException {}
  * @author        Ersin Güvenç
  * @link          
  */
-Class unit_test implements PHP5_Library {
+Class unit_test_CORE implements PHP5_Library {
 
     public $active            = TRUE;
     public $results           = array();

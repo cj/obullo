@@ -26,7 +26,7 @@ defined('BASE') or exit('Access Denied!');
  * @author        Ersin Güvenç
  * @link          
  */
-Class calendar implements PHP5_Library {
+Class calendar_CORE implements PHP5_Library {
 
     public $OB;
     public $lang;

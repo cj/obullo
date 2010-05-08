@@ -164,8 +164,8 @@ function base_register($class, $params = NULL, $instantiate = TRUE)
 }
 
 /**
-* register_autolod();
-* PHp5 __autoload function.
+* register_autoload(); 
+* Autoload Just for php5 Libraries.
 * 
 * @access   public
 * @author   Ersin Güvenç
@@ -176,6 +176,7 @@ function base_register($class, $params = NULL, $instantiate = TRUE)
 * @version  0.2 added base param
 * @version  0.3 renamed base "libraries" folder as "base"
 * @version  0.4 added php5 library support, added spl_autoload_register() func.
+* @version  0.5 added replace and extend support
 * 
 * @return NULL | Exception
 */
@@ -185,7 +186,7 @@ function register_autoload($real_name)
     return;
 
     try // __autoload func. does not catch exceptions ...
-    {   // try to catch and show user friendly errors ..
+    {   // try to catch it and show user friendly errors ..
       
         if(strpos($real_name, 'OB_DB') === 0)
         {
@@ -208,9 +209,8 @@ function register_autoload($real_name)
             return; 
         }
         
-        $OB = ob::instance();
-        
-        $class = strtolower($real_name); //lowercase classname.
+        // shortcut support        
+        $class = strtolower($real_name); // lowercase classname.
                     
         $shortcuts = array('agent'   => 'Agent',
                            'session' => 'Session', 
@@ -229,7 +229,7 @@ function register_autoload($real_name)
             {
                 include(BASE .'shortcuts'. DS .$shortcuts[$class]. EXT);
 
-                $OB->_libs[$class] = $class;
+                ob::instance()->_libs[$class] = $class;
                 return;
             }
             
@@ -237,30 +237,55 @@ function register_autoload($real_name)
             style writing option in your config file, or use $this variable: $this->'.$class);
         }
         
+        // not necessary extend support for local libraries..
         if(is_dir(DIR .$GLOBALS['d']. DS .'libraries'. DS .'php5'))
         {
             if(file_exists(DIR .$GLOBALS['d']. DS .'libraries'. DS .'php5'. DS .$class. EXT))
             {
                 require(DIR .$GLOBALS['d']. DS .'libraries'. DS .'php5'. DS .$class. EXT);
                 
-                $OB->_libs['php5_'.$class] = $class;
+                ob::instance()->_libs['php5_'.$class] = $class;
                 return;
             } 
         }
-                    
-        if(file_exists(APP .'libraries'. DS .'php5'. DS .$class. EXT))
+        
+        // php5 library replace support
+        if(file_exists(APP .'libraries'. DS .'php5'. DS .ucfirst($class). EXT))
         {
-            require(APP .'libraries'. DS .'php5'. DS .$class. EXT);
+            require(APP .'libraries'. DS .'php5'. DS .ucfirst($class). EXT);
             
-            $OB->_libs['php5_'.$class] = $class;
-            return;
+            ob::instance()->_libs['php5_'.$class.'_replaced'] = $class;
+            return;            
+        } 
+                                          
+        // php5 library extend (override) support
+        if(file_exists(APP .'libraries'. DS .'php5'. DS . config_item('subclass_prefix') .$class. EXT))
+        {
+            require(APP .'libraries'. DS .'php5'. DS . config_item('subclass_prefix') .$class. EXT);
+            
+            ob::instance()->_libs['php5_'.$class.'_overridden'] = $class;
+            return;            
         } 
         
+        // load classname_CORE library
+        if(substr($class, -5) == '_core')
+        {
+            $name = explode('_', $class);
+            
+            require(BASE .'libraries'. DS .'php5'. DS .ucfirst($name[0]). EXT);
+        
+            ob::instance()->_libs['php5_'.$class] = $class;
+            return;
+        }
+        
+        // else call directly php5 base libraries ..
         if(file_exists(BASE .'libraries'. DS .'php5'. DS .ucfirst($class). EXT))
         {
             require(BASE .'libraries'. DS .'php5'. DS .ucfirst($class). EXT);
             
-            $OB->_libs['php5_'.$class] = $class;
+            eval('Class '.$class.' extends '.$class.'_CORE {}');
+            
+            ob::instance()->_libs['php5_'.$class] = $class;
             return;
         } 
         

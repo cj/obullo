@@ -27,7 +27,7 @@ Class EmailException extends CommonException {}
  * @author        Ersin Güvenç
  * @link          
  */
-class email implements PHP5_Library {
+class email_CORE implements PHP5_Library {
 
     public    $useragent       = "Obullo";
     public    $mailpath        = "/usr/sbin/sendmail";    // Sendmail path

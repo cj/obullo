@@ -42,7 +42,7 @@ defined('BASE') or exit('Access Denied!');
  * @author        Ersin Güvenç
  * @link          
  */
-Class sha1 implements PHP5_Library {
+Class sha1_CORE implements PHP5_Library {
 
     private static $instance;
     

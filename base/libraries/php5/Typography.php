@@ -27,7 +27,7 @@ Class TypoException extends CommonException {}
  * @link        
  */
  
-Class typography implements PHP5_Library {
+Class typography_CORE implements PHP5_Library {
 
     // Block level elements that should not be wrapped inside <p> tags
     public $block_elements = 'address|blockquote|div|dl|fieldset|form|h\d|hr|noscript|object|ol|p|pre|script|table|ul';

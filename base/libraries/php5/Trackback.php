@@ -28,7 +28,7 @@ Class TrackbackException extends CommonException {}
  * @author        Ersin Güvenç
  * @link          
  */
-Class trackback implements PHP5_Library {
+Class trackback_CORE implements PHP5_Library {
         
     public $time_format    = 'local';
     public $charset        = 'UTF-8';

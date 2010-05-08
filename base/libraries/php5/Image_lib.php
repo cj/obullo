@@ -26,7 +26,7 @@ Class ImagelibException extends CommonException {}
  * @author        Ersin Güvenç
  * @link          
  */
-Class image_lib implements PHP5_Library {
+Class image_lib_CORE implements PHP5_Library {
 
     public $image_library       = 'gd2';      // Can be:  imagemagick, netpbm, gd, gd2
     public $library_path        = '';

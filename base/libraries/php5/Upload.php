@@ -25,7 +25,7 @@ Class UploadException extends CommonException {}
  * @author        Obullo
  * @link          
  */
-Class upload implements PHP5_Library {
+Class upload_CORE implements PHP5_Library {
     
     public $max_size         = 0;
     public $max_width        = 0;
