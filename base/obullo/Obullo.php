@@ -130,4 +130,10 @@ Class ob extends Core_Controller
 */
 function this(){ return ob::instance(); }
 
+
+// END Ob Class
+
+/* End of file Obullo.php */
+/* Location: ./base/obullo/Obullo.php */
+
 ?>

@@ -17,7 +17,7 @@
 <code>application/parents/Global_controller.php</code>
 
 <code>
-<input type="button" onclick="TestMe();" value="Script Test !"/>
+<input type="button" onclick="test_me();" value="Script Test !"/>
 </code>
 
 <p>The corresponding <b>Script</b> file for this page is found at:</p>
@@ -26,8 +26,9 @@
 <p>The corresponding <b>Global View</b> file for this page is found at:</p>
 <code>application/views/view_base_layout.php</code>
 
-<p><b>Note:</b> If you are new to Obullo Framework, you should start by reading the User Guide.</p>
+<p><b>Note:</b> If you are new to Obullo Framework, you should start by 
+reading the <a href="http://obullo.com/user_guide/show.html">User Guide</a>.</p>
 
-<p><br />Page rendered in {elapsed_time} seconds , using {memory_usage} of memory (Used one Html helper and one Script file).</p>
+<p><br />Page rendered in {elapsed_time} seconds , using {memory_usage} of memory (Used Html helper, Script file and Global Controller).</p>
 
 <!-- body tag content -->

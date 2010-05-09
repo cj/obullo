@@ -226,4 +226,9 @@ Class OB_Config {
     }
 
 }
+
+// END Config Class
+
+/* End of file Config.php */
+/* Location: ./base/libraries/Config.php */
 ?>

@@ -27,8 +27,10 @@ defined('BASE') or exit('Access Denied!');
 *              renamed register_static() function, added replace support ..
 */
 
-// A Php5 library must be contain that functions.
-// Function body can be empty.
+/**
+* A Php5 library must be contain that functions.
+* But function body can be empty.
+*/                        
 interface PHP5_Library 
 {
     public static function instance();
@@ -64,8 +66,7 @@ function register($class, $params = NULL, $dir = '')
     }
 
     $registry = OB_Registry::singleton();
-    
-    $Class = strtolower($class); //lowercase classname.
+    $Class    = strtolower($class); //lowercase classname.
 
     $getObject = $registry->getObject($Class);
     
@@ -114,14 +115,14 @@ function register($class, $params = NULL, $dir = '')
 *               added lib_factory() function
 * @version  0.3 renamed base "libraries" folder as "base"
 * @version  0.4 added extend to core libraries support
+* @version  0.5 added driver file load and extend support.
 * 
 * @return   object  | NULL
 */
-function base_register($class, $params = NULL, $instantiate = TRUE)
+function base_register($class, $params = NULL, $driver = '')
 {
-    $registry = OB_Registry::singleton();
-    
-    $Class = ucfirst($class);
+    $registry  = OB_Registry::singleton();
+    $Class     = ucfirst($class);
     
     $getObject = $registry->getObject($Class);
 
@@ -131,18 +132,37 @@ function base_register($class, $params = NULL, $instantiate = TRUE)
     if(file_exists(BASE .'libraries'. DS .$Class. EXT))
     {
         require(BASE .'libraries'. DS .$Class. EXT);
+        $classname = 'OB_'.$Class; 
+        $prefix    = config_item('subclass_prefix');  // MY_
         
-        $classname = 'OB_'.$Class;
-        
-        $prefix = config_item('subclass_prefix');  // MY_
-                                             
-        if(file_exists(APP .'libraries'. DS .$prefix. $Class. EXT)) // extend support.
+        // No Driver file extend support. 
+        // -------------------------------------------------------------------- 
+        if($driver == '')
         {
-            require(APP .'libraries'. DS .$prefix. $Class. EXT);
+            if(file_exists(APP .'libraries'. DS .$prefix. $Class. EXT))
+            {
+                require(APP .'libraries'. DS .$prefix. $Class. EXT);
+                $classname = $prefix. $Class;
+            }
             
-            $classname = $prefix. $Class;
+        // Driver file load support. 
+        // --------------------------------------------------------------------
+        } else 
+        {
+            $classname = 'OB_'. $Class .'_'. $driver . '_driver';
+            require(BASE .'libraries'. DS .'drivers'. DS .$class. DS .$driver. EXT);
+            
+            // Driver file extend support. 
+            // -------------------------------------------------------------------- 
+            if(file_exists(APP .'libraries'. DS .'drivers'. DS .$class. DS .$prefix. $driver. EXT))
+            {
+                require(BASE .'libraries'. DS .'drivers'. DS .$class. DS .$prefix. $driver. EXT);
+                $classname = $prefix. $Class .'_'. $driver . '_driver';      
+            }
         }
         
+        // __construct params support. 
+        // --------------------------------------------------------------------
         if(is_array($params)) // construct support.
         {
             $registry->storeObject($Class, new $classname($params));
@@ -152,7 +172,8 @@ function base_register($class, $params = NULL, $instantiate = TRUE)
             $registry->storeObject($Class, new $classname());
         }
     
-        //return singleton object.
+        // return to singleton object. 
+        // --------------------------------------------------------------------
         $Object = $registry->getObject($Class);
 
         if(is_object($Object))
@@ -184,10 +205,12 @@ function register_autoload($real_name)
 {   
     if(class_exists($real_name))
     return;
-
+    
     try // __autoload func. does not catch exceptions ...
     {   // try to catch it and show user friendly errors ..
-      
+    
+        // Database files. 
+        // -------------------------------------------------------------------- 
         if(strpos($real_name, 'OB_DB') === 0)
         {
             require(BASE .'database'. DS .substr($real_name, 3). EXT);
@@ -209,7 +232,8 @@ function register_autoload($real_name)
             return; 
         }
         
-        // shortcut support        
+        // Shortcut support. 
+        // --------------------------------------------------------------------       
         $class = strtolower($real_name); // lowercase classname.
                     
         $shortcuts = array('agent'   => 'Agent',
@@ -237,7 +261,8 @@ function register_autoload($real_name)
             style writing option in your config file, or use $this variable: $this->'.$class);
         }
         
-        // not necessary extend support for local libraries..
+        // Local php5 libraries load support. 
+        // -------------------------------------------------------------------- 
         if(is_dir(DIR .$GLOBALS['d']. DS .'libraries'. DS .'php5'))
         {
             if(file_exists(DIR .$GLOBALS['d']. DS .'libraries'. DS .'php5'. DS .$class. EXT))
@@ -249,7 +274,8 @@ function register_autoload($real_name)
             } 
         }
         
-        // php5 library replace support
+        // Php5 library replace support.  
+        // -------------------------------------------------------------------- 
         if(file_exists(APP .'libraries'. DS .'php5'. DS .ucfirst($class). EXT))
         {
             require(APP .'libraries'. DS .'php5'. DS .ucfirst($class). EXT);
@@ -258,7 +284,8 @@ function register_autoload($real_name)
             return;            
         } 
                                           
-        // php5 library extend (override) support
+        // Php5 library extend (override) support    
+        // -------------------------------------------------------------------- 
         if(file_exists(APP .'libraries'. DS .'php5'. DS . config_item('subclass_prefix') .$class. EXT))
         {
             require(APP .'libraries'. DS .'php5'. DS . config_item('subclass_prefix') .$class. EXT);
@@ -266,8 +293,9 @@ function register_autoload($real_name)
             ob::instance()->_libs['php5_'.$class.'_overridden'] = $class;
             return;            
         } 
-        
-        // load classname_CORE library
+
+        // Php5 load classname_CORE libraries.    
+        // -------------------------------------------------------------------- 
         if(substr($class, -5) == '_core')
         {
             $name = explode('_', $class);
@@ -277,8 +305,9 @@ function register_autoload($real_name)
             ob::instance()->_libs['php5_'.$class] = $class;
             return;
         }
-        
-        // else call directly php5 base libraries ..
+
+        // else call directly php5 base libraries.    
+        // -------------------------------------------------------------------- 
         if(file_exists(BASE .'libraries'. DS .'php5'. DS .ucfirst($class). EXT))
         {
             require(BASE .'libraries'. DS .'php5'. DS .ucfirst($class). EXT);
@@ -288,6 +317,9 @@ function register_autoload($real_name)
             ob::instance()->_libs['php5_'.$class] = $class;
             return;
         } 
+        
+        // return to exceptions if its fail..    
+        // --------------------------------------------------------------------
         
         throw new LoaderException('Unable locate to Php5 file: '. $class);
         

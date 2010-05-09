@@ -27,10 +27,10 @@ Class SessionException extends CommonException {}
  * @author       Ersin Güvenç
  * @link         
  */
-Class OB_Session {
+Abstract Class OB_Session {
 
     public $sess_encrypt_cookie        = FALSE;
-    public $sess_use_database          = FALSE;
+    public $sess_driver                = 'cookie';      // Obullo changes .. 
     public $sess_table_name            = '';
     public $sess_expiration            = 7200;
     public $sess_match_ip              = FALSE;
@@ -50,6 +50,8 @@ Class OB_Session {
     
     // Obullo changes ..
     public $sess_db                    = NULL;
+    public $old_sessid                 = NULL;
+    public $new_sessid                 = NULL;
 
     /**
     * Session Constructor
@@ -66,7 +68,7 @@ Class OB_Session {
         
         // Set all the session preferences, which can either be set 
         // manually via the $params array above or via the config file
-        foreach (array('sess_encrypt_cookie', 'sess_use_database', 'sess_database_var', 'sess_table_name', 
+        foreach (array('sess_encrypt_cookie', 'sess_driver', 'sess_database_var', 'sess_table_name', 
         'sess_expiration', 'sess_match_ip', 'sess_match_useragent', 'sess_cookie_name', 'cookie_path', 
         'cookie_domain', 'sess_time_to_update', 'time_reference', 'cookie_prefix', 'encryption_key') as $key)
         {
@@ -75,29 +77,7 @@ Class OB_Session {
                 
         // Load the string helper so we can use the strip_slashes() function
         loader::base_helper('string');
-
-        // Are we using a database? User must be load it manually !!!
         
-        if ($this->sess_use_database === TRUE AND $this->sess_table_name != '')  // Obullo changes ... 
-        {
-            // if database variable exists ..
-            if($this->OB->{$this->sess_database_var} instanceof PDO)
-            {
-                $this->sess_db = &$this->OB->{$this->sess_database_var};
-            } 
-            else
-            {
-                if( ! $this->OB->db instanceof PDO) 
-                {
-                    throw new SessionException('Session class works with database class so 
-                    you must load database object by loader::database() function.');
-                }
-                
-                $this->sess_db = &$this->OB->db;              // Obullo changes end ...  
-            }
-        }
-        
-
         // Set the "now" time.  Can either be GMT or server time, based on the
         // config prefs.  We use this to set the "last activity" time
         $this->now = $this->_get_time();
@@ -109,9 +89,20 @@ Class OB_Session {
                          
         // Set the cookie name
         $this->sess_cookie_name = $this->cookie_prefix.$this->sess_cookie_name;
-    
+        
+        $this->_session_start();
+    }
+              
+    /**
+    * Start the sessions.
+    * 
+    */
+    public function _session_start()
+    {
+        // abstract driver functions here.
+        
         // Run the Session routine. If a session doesn't exist we'll 
-        // create a new one.  If it does, we'll update it.
+        // create a new one.  If it does, we'll update it
         if ( ! $this->sess_read())
         {
             $this->sess_create();
@@ -139,16 +130,16 @@ Class OB_Session {
     * Fetch the current session data if it exists
     *
     * @access    public
-    * @return    void
+    * @return    array() sessions.
     */
     public function sess_read()
     {    
         // Fetch the cookie
         $session = $this->OB->input->cookie($this->sess_cookie_name);
-        
+    
         // No cookie?  Goodbye cruel world!...
         if ($session === FALSE)
-        {
+        {               
             log_message('debug', 'A session cookie was not found.');
             return FALSE;
         }
@@ -164,7 +155,7 @@ Class OB_Session {
         else
         {    
             // encryption was not used, so we need to check the md5 hash
-            $hash    = substr($session, strlen($session)-32); // get last 32 chars
+            $hash          = substr($session, strlen($session)-32); // get last 32 chars
             $session = substr($session, 0, strlen($session)-32);
 
             // Does the md5 hash match?  This is to prevent manipulation of session data in userspace
@@ -181,8 +172,8 @@ Class OB_Session {
         $session = $this->_unserialize($session);
         
         // Is the session data we unserialized an array with the correct format?
-        if ( ! is_array($session) OR ! isset($session['session_id']) OR ! isset($session['ip_address']) OR ! isset($session['user_agent']) OR ! isset($session['last_activity']))
-        {
+        if ( ! is_array($session) OR ! isset($session['session_id']) OR ! isset($session['ip_address']) OR ! isset($session['user_agent']) OR ! isset($session['last_activity'])) 
+        {               
             $this->destroy();
             return FALSE;
         }
@@ -208,51 +199,7 @@ Class OB_Session {
             return FALSE;
         }
         
-        // Is there a corresponding session in the DB?
-        if ($this->sess_use_database === TRUE)
-        {
-            $this->sess_db->where('session_id', $session['session_id']);
-                    
-            if ($this->sess_match_ip == TRUE)
-            {
-                $this->sess_db->where('ip_address', $session['ip_address']);
-            }
-
-            if ($this->sess_match_useragent == TRUE)
-            {
-                $this->sess_db->where('user_agent', $session['user_agent']);
-            }
-            
-            $query = $this->sess_db->get($this->sess_table_name);
-
-            // No result?  Kill it!
-            if ($query->num_rows() == 0)
-            {
-                $this->destroy();
-                return FALSE;
-            }
-
-            // Is there custom data?  If so, add it to the main session array
-            $row = $query->row();
-            if (isset($row->user_data) AND $row->user_data != '')
-            {
-                $custom_data = $this->_unserialize($row->user_data);
-
-                if (is_array($custom_data))
-                {
-                    foreach ($custom_data as $key => $val)
-                    {
-                        $session[$key] = $val;
-                    }
-                }
-            }                
-        }
-    
-        // Session is valid!
-        $this->userdata = $session;
-        unset($session);
-        
-        return TRUE;
+         return $session;
     }
     
     // --------------------------------------------------------------------
@@ -265,46 +212,7 @@ Class OB_Session {
      */
     public function sess_write()
     {
-        // Are we saving custom data to the DB?  If not, all we do is update the cookie
-        if ($this->sess_use_database === FALSE)
-        {
-            $this->_set_cookie();
-            return;
-        }
-
-        // set the custom userdata, the session data we will set in a second
-        $custom_userdata = $this->userdata;
-        $cookie_userdata = array();
-        
-        // Before continuing, we need to determine if there is any custom data to deal with.
-        // Let's determine this by removing the default indexes to see if there's anything left in the array
-        // and set the session data while we're at it
-        foreach (array('session_id','ip_address','user_agent','last_activity') as $val)
-        {
-            unset($custom_userdata[$val]);
-            $cookie_userdata[$val] = $this->userdata[$val];
-        }
-        
-        // Did we find any custom data?  If not, we turn the empty array into a string
-        // since there's no reason to serialize and store an empty array in the DB
-        if (count($custom_userdata) === 0)
-        {
-            $custom_userdata = '';
-        }
-        else
-        {    
-            // Serialize the custom data array so we can store it
-            $custom_userdata = $this->_serialize($custom_userdata);
-        }
-        
-        // Run the update query
-        $this->sess_db->where('session_id', $this->userdata['session_id']);
-        $this->sess_db->update($this->sess_table_name, array('last_activity' => $this->userdata['last_activity'], 'user_data' => $custom_userdata));
-
-        // Write the cookie.  Notice that we manually pass the cookie data array to the
-        // _set_cookie() function. Normally that function will store $this->userdata, but 
-        // in this case that array contains custom data, which we do not want in the cookie.
-        $this->_set_cookie($cookie_userdata);
+        return;
     }
     
     // --------------------------------------------------------------------
@@ -334,16 +242,8 @@ Class OB_Session {
                             'last_activity'  => $this->now
                             );
         
-        
-            // Save the data to the DB if needed
-            if ($this->sess_use_database === TRUE)
-            {   
-                $this->sess_db->insert($this->sess_table_name, $this->userdata);
-            }
-                
-            // Write the cookie
-            $this->_set_cookie();
-        
+        // Write the cookie
+        // none abstract $this->_set_cookie(); 
     }
     
     // --------------------------------------------------------------------
@@ -364,44 +264,29 @@ Class OB_Session {
     
         // Save the old session id so we know which record to 
         // update in the database if we need it
-        $old_sessid = $this->userdata['session_id'];
-        $new_sessid = '';
-        while (strlen($new_sessid) < 32)
+        $this->old_sessid = $this->userdata['session_id'];
+        
+        while (strlen($this->new_sessid) < 32)
         {
-            $new_sessid .= mt_rand(0, mt_getrandmax());
+            $this->new_sessid .= mt_rand(0, mt_getrandmax());
         }
         
         // To make the session ID even more secure we'll combine it with the user's IP
-        $new_sessid .= $this->OB->input->ip_address();
+        $this->new_sessid .= $this->OB->input->ip_address();
         
         // Turn it into a hash
-        $new_sessid = md5(uniqid($new_sessid, TRUE));
+        $new_sessid = md5(uniqid($this->new_sessid, TRUE));
         
         // Update the session data in the session data array
-        $this->userdata['session_id'] = $new_sessid;
+        $this->userdata['session_id']    = $this->new_sessid;
         $this->userdata['last_activity'] = $this->now;
         
         // _set_cookie() will handle this for us if we aren't using database sessions
         // by pushing all userdata to the cookie.
         $cookie_data = NULL;
         
-        // Update the session ID and last_activity field in the DB if needed
-        if ($this->sess_use_database === TRUE)
-        {
-            // set cookie explicitly to only have our session data
-            $cookie_data = array();
-            foreach (array('session_id','ip_address','user_agent','last_activity') as $val)
-            {
-                $cookie_data[$val] = $this->userdata[$val];
-            }
-        
-            $this->sess_db->where('session_id',$old_sessid);
-            $this->sess_db->update($this->sess_table_name, 
-            array('last_activity' => $this->now,'session_id' => $new_sessid));
-        }
-        
         // Write the cookie
-        $this->_set_cookie($cookie_data);
+        // none abstract $this->_set_cookie($cookie_data);
     }
     
     // --------------------------------------------------------------------
@@ -412,24 +297,17 @@ Class OB_Session {
     * @access    public
     * @return    void
     */
-    public function destroy() // obullo changes ...
-    {    
-        // Kill the session DB row
-        if ($this->sess_use_database === TRUE AND isset($this->userdata['session_id']))
-        {
-            $this->sess_db->where('session_id', $this->userdata['session_id']);
-            $this->sess_db->delete($this->sess_table_name);
-        }
-    
+    public function destroy()
+    {   
         // Kill the cookie
         setcookie(
-                    $this->sess_cookie_name,
-                    addslashes(serialize(array())),
-                    ($this->now - 31500000),
-                    $this->cookie_path,
-                    $this->cookie_domain,
-                    0
-                );
+                    $this->sess_cookie_name, 
+                    addslashes(serialize(array())), 
+                    ($this->now - 31500000), 
+                    $this->cookie_path, 
+                    $this->cookie_domain, 
+                    FALSE
+                    );
     }
     
     // --------------------------------------------------------------------
@@ -632,17 +510,20 @@ Class OB_Session {
     * @return    string
     */
     private function _get_time()
-    {
+    {   
+        $time = time();
         if (strtolower($this->time_reference) == 'gmt')
         {
-            $now = time();
-            $time = mktime(gmdate("H", $now), gmdate("i", $now), gmdate("s", $now), gmdate("m", $now), gmdate("d", $now), gmdate("Y", $now));
+            $now  = time();
+            $time = mktime( gmdate("H", $now), 
+            gmdate("i", $now), 
+            gmdate("s", $now), 
+            gmdate("m", $now), 
+            gmdate("d", $now), 
+            gmdate("Y", $now)
+            );
         }
-        else
-        {
-            $time = time();
-        }
-    
+        
         return $time;
     }
 
@@ -674,7 +555,7 @@ Class OB_Session {
         else
         {
             // if encryption is not used, we provide an md5 hash to prevent userside tampering
-            $cookie_data = $cookie_data.md5($cookie_data.$this->encryption_key);
+            $cookie_data = $cookie_data . md5($cookie_data.$this->encryption_key);
         }
         
         // Set the cookie
@@ -700,7 +581,7 @@ Class OB_Session {
     * @param    array
     * @return   string
     */    
-    private function _serialize($data)
+    protected function _serialize($data)
     {
         if (is_array($data))
         {
@@ -759,21 +640,7 @@ Class OB_Session {
     */
     public function _sess_gc()
     {
-        if ($this->sess_use_database != TRUE)
-        {
-            return;
-        }
-        
-        srand(time());
-        if ((rand() % 100) < $this->gc_probability)
-        {
-            $expire = $this->now - $this->sess_expiration;
-            
-            $this->sess_db->where("last_activity < {$expire}");
-            $this->sess_db->delete($this->sess_table_name);
-
-            log_message('debug', 'Session garbage collection performed.');
-        }
+        return;
     }
 
     
@@ -782,3 +649,4 @@ Class OB_Session {
 
 /* End of file Session.php */
 /* Location: ./base/libraries/Session.php */
+?>

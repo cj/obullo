@@ -149,7 +149,7 @@ Class loader {
         if($class == '')
         return FALSE;
          
-        // Instantiate the Ob Super Object.        
+        // Instantiate the Super Object.        
         $OB = ob::instance();
         
         $class_var = strtolower($class);
@@ -165,8 +165,10 @@ Class loader {
              break;
              
            case TRUE:
+             $driver         = self::_get_driver($class, $params);
+           
              $type = 'base';
-             $OB->$class_var = base_register($class, $params); 
+             $OB->$class_var = base_register($class, $params, $driver); 
              break;
         }
         
@@ -538,8 +540,34 @@ Class loader {
             $OB->$model_name->$db_var = &$OB->$db_var;
         }
     }
+    
+    // -------------------------------------------------------------------- 
+    
+    /**
+    * Get library driver name.
+    *              
+    * @param    string $class
+    * @param    array  $params
+    * @return   string
+    */
+    private static function _get_driver($class, $params = NULL)
+    {
+        $driver = '';
+        switch ($class)
+        {
+           case 'session':
+             $driver = isset($params['sess_driver']) ? $params['sess_driver'] : config_item('sess_driver');
+             break;
+        }
+        
+        return $driver;
+    }
   
-  
-} //end of the class.
+}
+
+// END Loader Class
+
+/* End of file Loader.php */
+/* Location: ./base/obullo/Loader.php */
 
 ?>

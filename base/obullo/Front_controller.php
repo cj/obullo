@@ -139,9 +139,9 @@ Class OB_Front_controller {
     
 }  // end class.
 
-// END Front Controller class
+// END Front controller class
 
-/* End of file Front_Controller.php */
-/* Location: ./base/libraries/Front_Controller.php */
+/* End of file Front_controller.php */
+/* Location: ./base/obullo/Front_controller.php */
 
 ?>

@@ -53,7 +53,7 @@ Class cart_CORE implements PHP5_Library {
      *
      * The constructor loads the Session class, used to store the shopping cart contents.
      */        
-    function init($params = array())
+    public function init($params = array())
     {    
         // Are any config settings being passed manually?  If so, set them
         $config = array();

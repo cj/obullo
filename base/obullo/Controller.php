@@ -81,9 +81,13 @@ Class Controller extends ob {
             $this->$public_var = base_register($Class);
         }
 
-    } //end.
+    } 
     
-} //end class.
-  
-  
+}
+
+// END Controller Class
+
+/* End of file Controller.php */
+/* Location: ./base/obullo/Controller.php */
+
 ?>

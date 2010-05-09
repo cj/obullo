@@ -84,6 +84,11 @@ Class OB_Registry extends Obullo_Registry {
         return self::singleton()->set($key,$instance);
     }
 
-} //end of the class.
+}
+
+// END Registry Class
+
+/* End of file Registry.php */
+/* Location: ./base/obullo/Registry.php */
 
 ?>

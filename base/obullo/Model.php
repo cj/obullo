@@ -50,7 +50,12 @@ Class Model {
             $this->$key = &ob::instance()->$key;
         }
     
-    } // end func.
+    }
       
 }
-// end Model Class
+
+// END Model Class
+
+/* End of file Model.php */
+/* Location: ./base/obullo/Model.php */
+
