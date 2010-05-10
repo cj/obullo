@@ -165,7 +165,7 @@ Then, on the page that accepts the submission you'll have something like this:
 |==========================================================
 |
 */
-function html2rgb($color)
+function html2rgb($color)    // Obullo changes ... 
 {
     if ($color[0] == '#')
         $color = substr($color, 1);
@@ -192,7 +192,7 @@ function html2rgb($color)
 */
 function create_captcha($data = '', $img_path = '', $img_url = '', $font_path = '')
 {        
-    $defaults = array(
+    $defaults = array(           // Obullo changes ...
     'word'      => '',
     'max_char'  => '6',
     'img_path'  => '',
@@ -289,10 +289,10 @@ function create_captcha($data = '', $img_path = '', $img_url = '', $font_path = 
     // Determine angle and position    
     // -----------------------------------
     
-    $length    = strlen($word);
-    $angle    = ($length >= 6) ? rand(-($length-6), ($length-6)) : 0;
-    $x_axis    = rand(6, (360/$length)-16);            
-    $y_axis = ($angle >= 0 ) ? rand($img_height, $img_width) : rand(6, $img_height);
+    $length  = strlen($word);
+    $angle   = ($length >= 6) ? rand(-($length-6), ($length-6)) : 0;
+    $x_axis  = rand(6, (360/$length)-16);            
+    $y_axis  = ($angle >= 0 ) ? rand($img_height, $img_width) : rand(6, $img_height);
     
     // -----------------------------------
     // Create image

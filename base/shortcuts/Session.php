@@ -69,6 +69,6 @@ Class session {
         return ob::instance()->session->destroy(); 
     }
     
-} // end of the class. 
+} // end of the class.
 
 ?>

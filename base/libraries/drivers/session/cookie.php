@@ -37,6 +37,8 @@ Class OB_Session_cookie_driver extends OB_Session {
     public function __construct($params = array())
     {
         parent::__construct($params);
+        
+        log_message('debug', 'Session Cookie Driver Initialized');
     }
     
     /**
@@ -130,7 +132,6 @@ Class OB_Session_cookie_driver extends OB_Session {
     
     
 }
- 
 // END Session Cookie Driver Class
 
 /* End of file cookie.php */

@@ -42,18 +42,18 @@ $_controller = $GLOBALS['d'].'.'.$GLOBALS['c'];
 
 if(isset($_parents[$_controller]))
 {
-    if( ! file_exists(APP.'parents'.DS.$_parents[$_controller].EXT))
-    throw new CommonException('Unable locate to /parents controller file: '.$_controller.EXT);
+    if( ! file_exists(APP .'parents'. DS .$_parents[$_controller]. EXT))
+    throw new CommonException('Unable locate to parent controller file: '.$_controller. EXT);
     
-    require(APP.'parents'.DS.$_parents[$_controller].EXT); 
+    require(APP .'parents'. DS .$_parents[$_controller]. EXT); 
 
-    eval('Class Core_Controller extends '.$_parents[$_controller].'{}');
+    eval('Class Controller_CORE extends '.$_parents[$_controller].'{}');
       
 } else 
 {   
-    require(APP.'parents'.DS.'Global_controller'.EXT);
+    require(APP .'parents'. DS .'Global_controller'. EXT);
     
-    eval('Class Core_Controller extends Global_controller{}');   
+    eval('Class Controller_CORE extends Global_controller{}');   
 }
 
 //------------- Global Controller Extend Switch --------------//
@@ -61,7 +61,7 @@ if(isset($_parents[$_controller]))
 /**
 * Obullo Core Class (Super Object)
 */
-Class ob extends Core_Controller
+Class ob extends Controller_CORE
 {   
     /**
     * Obullo Models
@@ -135,5 +135,4 @@ function this(){ return ob::instance(); }
 
 /* End of file Obullo.php */
 /* Location: ./base/obullo/Obullo.php */
-
 ?>

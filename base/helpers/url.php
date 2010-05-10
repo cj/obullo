@@ -53,11 +53,11 @@ function anchor($uri = '', $title = '', $attributes = '')
 
 	if ( ! is_array($uri))
 	{
-		$site_url = ( ! preg_match('!^\w+://! i', $uri)) ? site_url($uri) : $uri;
+		$site_url = ( ! preg_match('!^\w+://! i', $uri)) ? ob::instance()->config->site_url($uri) : $uri;
 	}
 	else
 	{
-		$site_url = site_url($uri);
+		$site_url = ob::instance()->config->site_url($uri);
 	}
 
 	if ($title == '')
@@ -91,7 +91,7 @@ function anchor_popup($uri = '', $title = '', $attributes = FALSE)
 {
 	$title = (string) $title;
 
-	$site_url = ( ! preg_match('!^\w+://! i', $uri)) ? site_url($uri) : $uri;
+	$site_url = ( ! preg_match('!^\w+://! i', $uri)) ? ob::instance()->config->site_url($uri) : $uri;
 
 	if ($title == '')
 	{
@@ -237,7 +237,7 @@ function safe_mailto($email, $title = '', $attributes = '')
 
 	$data['x'] = array_reverse($x);
 
-    return this()->content->base_script('safe_mail', $data);
+    return ob::instance()->content->base_script('safe_mail', $data);
     
 }
 
@@ -405,7 +405,7 @@ function redirect($uri = '', $method = 'location', $http_response_code = 302)
 {
 	if ( ! preg_match('#^https?://#i', $uri))
 	{
-		$uri = site_url($uri);
+		$uri = ob::instance()->config->site_url($uri); 
 	}
 	
 	switch($method)
@@ -461,3 +461,4 @@ function _parse_attributes($attributes, $javascript = FALSE)
 
 /* End of file url_helper.php */
 /* Location: ./base/helpers/url.php */
+?>

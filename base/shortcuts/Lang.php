@@ -27,6 +27,6 @@ Class lang {
         return ob::instance()->lang->line($line);
     }
    
-} // end of the class. 
+} // end of the class.
 
 ?>

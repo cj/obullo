@@ -67,9 +67,9 @@ function set_cookie($name = '', $value = '', $expire = '', $domain = '', $path =
     {
         $domain = $OB->config->item('cookie_domain');
     }
-    if ($path == '/' AND $OB->config->item('cookie_path') != '/')
+    if ($path   == '/' AND $OB->config->item('cookie_path') != '/')
     {
-        $path = $OB->config->item('cookie_path');
+        $path   = $OB->config->item('cookie_path');
     }
     
     if ( ! is_numeric($expire))

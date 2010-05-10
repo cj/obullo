@@ -210,7 +210,7 @@ Class OB_Content {
         if ( ! file_exists($path . $filename . EXT) )
         {
             if($return) return;  // fail gracefully for different interfaces ..
-                                 // iphone, wap etc..
+                                 // iphone etc..
             
             throw new ContentException('Unable locate the view file: '. $filename . EXT);
         } 

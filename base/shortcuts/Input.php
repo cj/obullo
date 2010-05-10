@@ -90,6 +90,6 @@ Class input {
     }  
     
     
-} // end of the class. 
+} // end of the class.
 
 ?>

@@ -62,6 +62,6 @@ Class output {
         return ob::instance()->output->cache($time); 
     }
 
-} // end of the class. 
+} // end of the class.
 
 ?>

@@ -143,5 +143,4 @@ Class OB_Front_controller {
 
 /* End of file Front_controller.php */
 /* Location: ./base/obullo/Front_controller.php */
-
 ?>

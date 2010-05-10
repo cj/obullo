@@ -31,11 +31,6 @@ Class OB_Registry extends Obullo_Registry {
     * @access private 
     */  
     private static $objs = array();
-    
-    /** 
-    * The instance of the registry 
-    * @access private 
-    */  
     private static $instance;
     
     //prevent directly access.
@@ -43,45 +38,78 @@ Class OB_Registry extends Obullo_Registry {
     
     //prevent clone. 
     public function __clone(){}
-    
+
     /** 
     * singleton method used to access the object 
     * @access public 
     */  
-    public static function singleton() 
+    public static function instance()
     {
         if( ! isset(self::$instance))
         {
             self::$instance = new self();
-        } 
+        }
+         
         return self::$instance;
     }
     
+    // --------------------------------------------------------------------
+    
+    /**
+    * Get stored object.
+    * 
+    * @access   protected
+    * @param    string $key
+    * @return   object | NULL.
+    */
     protected function get($key)
     {
         if(isset(self::$objs[$key]))
         {
             return self::$objs[$key];
         }
+        
         return NULL;
     }
 
-
+    // --------------------------------------------------------------------
+    
+    /**
+    * Set object.
+    * 
+    * @access   protected 
+    * @param    string $key
+    * @param    object $val
+    */
     protected function set($key,$val)
     {
         self::$objs[$key] = $val;
     }
 
-    //static get request handle
-    public static function getObject($key)
+    // --------------------------------------------------------------------
+    
+    /**
+    * Get stored object.
+    * 
+    * @param    string $key
+    * @return   object
+    */
+    public static function get_object($key)
     {
-        return self::singleton()->get($key);
+        return self::instance()->get($key);
     }
+    
+    // --------------------------------------------------------------------
 
-    //store object
-    public static function storeObject($key, $instance)
+    /**
+    * Set class instance.
+    * 
+    * @param    string $key
+    * @param    object $instance
+    */
+    public static function set_object($key, $instance)
     {
-        return self::singleton()->set($key,$instance);
+        return self::instance()->set($key, $instance);
     }
 
 }
@@ -89,6 +117,5 @@ Class OB_Registry extends Obullo_Registry {
 // END Registry Class
 
 /* End of file Registry.php */
-/* Location: ./base/obullo/Registry.php */
-
+/* Location: ./base/obullo/Registry.php */ 
 ?>

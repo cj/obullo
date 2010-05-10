@@ -42,7 +42,13 @@ function now()
 	if (strtolower(config_item('time_reference')) == 'gmt')
 	{
 		$now = time();
-		$system_time = mktime(gmdate("H", $now), gmdate("i", $now), gmdate("s", $now), gmdate("m", $now), gmdate("d", $now), gmdate("Y", $now));
+		$system_time = mktime(
+                                gmdate("H", $now), 
+                                gmdate("i", $now), 
+                                gmdate("s", $now), 
+                                gmdate("m", $now), 
+                                gmdate("d", $now), 
+                                gmdate("Y", $now));
 
 		if (strlen($system_time) < 10)
 		{
@@ -293,7 +299,13 @@ function local_to_gmt($time = '')
 	if ($time == '')
 		$time = time();
 
-	return mktime( gmdate("H", $time), gmdate("i", $time), gmdate("s", $time), gmdate("m", $time), gmdate("d", $time), gmdate("Y", $time));
+	return mktime( 
+                    gmdate("H", $time), 
+                    gmdate("i", $time), 
+                    gmdate("s", $time), 
+                    gmdate("m", $time), 
+                    gmdate("d", $time), 
+                    gmdate("Y", $time));
 }
 	
 // ------------------------------------------------------------------------

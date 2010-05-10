@@ -473,5 +473,4 @@ Class calendar_CORE implements PHP5_Library {
 
 /* End of file Calendar.php */
 /* Location: ./base/libraries/php5/Calendar.php */
-
 ?>

@@ -101,3 +101,4 @@ Class OB_Benchmark {
 
 /* End of file Benchmark.php */
 /* Location: ./base/libraries/Benchmark.php */
+?>

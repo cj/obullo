@@ -50,6 +50,8 @@ function Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, $type)
     include(APP.'system'.DS.'errors'.DS.'ob_error'.EXT);
 }
 
+// -------------------------------------------------------------------- 
+
 /**
 * Catch Exceptions
 * 
@@ -76,6 +78,8 @@ function Obullo_ExceptionHandler($e)
     
     include(APP.'system'.DS.'errors'.DS.'ob_exception'.EXT);
 }       
+
+// -------------------------------------------------------------------- 
  
 /**
 * 404 Page Not Found Handler
@@ -93,6 +97,8 @@ function show_404($page = '')
     exit;
 }
 
+// -------------------------------------------------------------------- 
+
 /**
 * Manually Set General Http Errors
 * 
@@ -107,6 +113,8 @@ function show_error($message, $status_code = 500)
     
     exit;
 }
+
+// --------------------------------------------------------------------
 
 /**
  * General Http Errors
@@ -126,6 +134,8 @@ function show_http_error($heading, $message, $template = 'ob_general', $status_c
     
     include(APP.'system'.DS.'errors'.DS.$template.EXT);
 }
+
+// --------------------------------------------------------------------
 
 /**
 * Main Error Handler
@@ -204,11 +214,17 @@ function Obullo_ErrorHandler($errno, $errstr, $errfile, $errline)
     
     }
     
-    return TRUE;    // return true and Don't execute PHP internal error handler 
+    return TRUE;    // return true and don't execute internal error handler 
 }          
 
+// -------------------------------------------------------------------- 
 
 set_error_handler("Obullo_ErrorHandler");
 set_exception_handler('Obullo_ExceptionHandler');
     
+    
+// END Errors.php File
+
+/* End of file Errors.php */
+/* Location: ./base/obullo/Errors.php */
 ?>

@@ -361,14 +361,15 @@ Class zip_CORE implements PHP5_Library {
      */        
     public function clear_data()
     {
-        $this->zipdata        = '';
+        $this->zipdata      = '';
         $this->directory    = '';
-        $this->entries        = 0;
-        $this->file_num        = 0;
-        $this->offset        = 0;
+        $this->entries      = 0;
+        $this->file_num     = 0;
+        $this->offset       = 0;
     }
     
 }
 
 /* End of file Zip.php */
 /* Location: ./base/libraries/php5/Zip.php */
+?>

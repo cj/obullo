@@ -108,7 +108,7 @@ function write_file($path, $data, $mode = FOPEN_WRITE_CREATE_DESTRUCTIVE)
 function delete_files($path, $del_dir = FALSE, $level = 0)
 {	
 	// Trim the trailing slash
-	$path = rtrim($path, DIRECTORY_SEPARATOR);
+	$path = rtrim($path, DS);
 		
 	if ( ! $current_dir = @opendir($path))
 		return;
@@ -117,17 +117,17 @@ function delete_files($path, $del_dir = FALSE, $level = 0)
 	{
 		if ($filename != "." and $filename != "..")
 		{
-			if (is_dir($path.DIRECTORY_SEPARATOR.$filename))
+			if (is_dir($path. DS .$filename))
 			{
 				// Ignore empty folders
 				if (substr($filename, 0, 1) != '.')
 				{
-					delete_files($path.DIRECTORY_SEPARATOR.$filename, $del_dir, $level + 1);
+					delete_files($path. DS .$filename, $del_dir, $level + 1);
 				}				
 			}
 			else
 			{
-				unlink($path.DIRECTORY_SEPARATOR.$filename);
+				unlink($path. DS .$filename);
 			}
 		}
 	}
@@ -163,14 +163,14 @@ function get_filenames($source_dir, $include_path = FALSE, $_recursion = FALSE)
 		if ($_recursion === FALSE)
 		{
 			$_filedata = array();
-			$source_dir = rtrim(realpath($source_dir), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+			$source_dir = rtrim(realpath($source_dir), DS). DS;
 		}
 		
 		while (FALSE !== ($file = readdir($fp)))
 		{
 			if (@is_dir($source_dir.$file) && strncmp($file, '.', 1) !== 0)
 			{
-				 get_filenames($source_dir.$file.DIRECTORY_SEPARATOR, $include_path, TRUE);
+				 get_filenames($source_dir.$file. DS, $include_path, TRUE);
 			}
 			elseif (strncmp($file, '.', 1) !== 0)
 			{
@@ -212,14 +212,14 @@ function get_dir_file_info($source_dir, $include_path = FALSE, $_recursion = FAL
 		if ($_recursion === FALSE)
 		{
 			$_filedata = array();
-			$source_dir = rtrim(realpath($source_dir), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+			$source_dir = rtrim(realpath($source_dir), DS). DS;
 		}
 
 		while (FALSE !== ($file = readdir($fp)))
 		{
 			if (@is_dir($source_dir.$file) && strncmp($file, '.', 1) !== 0)
 			{
-				 get_dir_file_info($source_dir.$file.DIRECTORY_SEPARATOR, $include_path, TRUE);
+				 get_dir_file_info($source_dir.$file. DS, $include_path, TRUE);
 			}
 			elseif (strncmp($file, '.', 1) !== 0)
 			{
@@ -263,29 +263,30 @@ function get_file_info($file, $returned_values = array('name', 'server_path', 's
 		switch ($key)
 		{
 			case 'name':
-				$fileinfo['name'] = substr(strrchr($file, DIRECTORY_SEPARATOR), 1);
+				$fileinfo['name']        = substr(strrchr($file, DS), 1);
 				break;
 			case 'server_path':
 				$fileinfo['server_path'] = $file;
 				break;
 			case 'size':
-				$fileinfo['size'] = filesize($file);
+				$fileinfo['size']        = filesize($file);
 				break;
 			case 'date':
-				$fileinfo['date'] = filectime($file);
+				$fileinfo['date']        = filectime($file);
 				break;
 			case 'readable':
-				$fileinfo['readable'] = is_readable($file);
+				$fileinfo['readable']    = is_readable($file);
 				break;
 			case 'writable':
-				// There are known problems using is_weritable on IIS.  It may not be reliable - consider fileperms()
-				$fileinfo['writable'] = is_writable($file);
+				// There are known problems using is_writable on IIS.
+                // It may not be reliable - consider fileperms()
+				$fileinfo['writable']    = is_writable($file);
 				break;
 			case 'executable':
-				$fileinfo['executable'] = is_executable($file);
+				$fileinfo['executable']  = is_executable($file);
 				break;
 			case 'fileperms':
-				$fileinfo['fileperms'] = fileperms($file);
+				$fileinfo['fileperms']   = fileperms($file);
 				break;
 		}
 	}
@@ -311,16 +312,9 @@ function get_file_info($file, $returned_values = array('name', 'server_path', 's
 function get_mime_by_extension($file)
 {
 	$extension = substr(strrchr($file, '.'), 1);
+    $mimes     = get_config('mimes');    // Obulllo changes ..
 
-	global $mimes;
-
-	if ( ! is_array($mimes))
-	{
-		if ( ! require_once(APP.'config'.DIRECTORY_SEPARATOR.'mimes.php'))
-		{
-			return FALSE;
-		}
-	}
+	if ( ! is_array($mimes)) return FALSE;
 
 	if (array_key_exists($extension, $mimes))
 	{

@@ -37,6 +37,8 @@ Class OB_Session_database_driver extends OB_Session {
     public function __construct($params = array())
     {
         parent::__construct($params);
+        
+        log_message('debug', 'Session Database Driver Initialized');
     }
     
     /**

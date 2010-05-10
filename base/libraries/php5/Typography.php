@@ -419,3 +419,4 @@ Class typography_CORE implements PHP5_Library {
 
 /* End of file Typography.php */
 /* Location: ./base/libraries/php5/Typography.php */
+?>

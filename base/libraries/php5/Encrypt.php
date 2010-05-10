@@ -474,23 +474,7 @@ Class encrypt_CORE implements PHP5_Library {
     */
     public function sha1($str)
     {
-        if ( ! function_exists('sha1'))
-        {
-            if ( ! function_exists('mhash'))
-            {
-                $SH = sha1::instance();
-                
-                return $SH->generate($str);
-            }
-            else
-            {
-                return bin2hex(mhash(MHASH_SHA1, $str));
-            }
-        }
-        else
-        {
-            return sha1($str);
-        }
+        return sha1($str);
     }
 
 }
@@ -499,3 +483,4 @@ Class encrypt_CORE implements PHP5_Library {
 
 /* End of file Encrypt.php */
 /* Location: ./base/libraries/php5/Encrypt.php */
+?>

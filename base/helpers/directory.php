@@ -45,7 +45,7 @@ function directory_map($source_dir, $top_level_only = FALSE, $hidden = FALSE)
 {	
 	if ($fp = @opendir($source_dir))
 	{
-		$source_dir = rtrim($source_dir, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;		
+		$source_dir = rtrim($source_dir, DS). DS;		
 		$filedata = array();
 		
 		while (FALSE !== ($file = readdir($fp)))
@@ -59,7 +59,7 @@ function directory_map($source_dir, $top_level_only = FALSE, $hidden = FALSE)
 			{
 				$temp_array = array();
 			
-				$temp_array = directory_map($source_dir.$file.DIRECTORY_SEPARATOR, $top_level_only, $hidden);
+				$temp_array = directory_map($source_dir.$file. DS, $top_level_only, $hidden);
 			
 				$filedata[$file] = $temp_array;
 			}
@@ -78,7 +78,6 @@ function directory_map($source_dir, $top_level_only = FALSE, $hidden = FALSE)
 	}
 }
 
-
-
 /* End of file directory_helper.php */
 /* Location: ./base/helpers/directory.php */
+?>

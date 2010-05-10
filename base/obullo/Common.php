@@ -37,6 +37,8 @@ interface PHP5_Library
     public function init();
 }
 
+// -------------------------------------------------------------------- 
+
 /**
 * register();
 * Registry Controller Function
@@ -65,10 +67,10 @@ function register($class, $params = NULL, $dir = '')
        $dir = APP; 
     }
 
-    $registry = OB_Registry::singleton();
+    $registry = OB_Registry::instance();
     $Class    = strtolower($class); //lowercase classname.
 
-    $getObject = $registry->getObject($Class);
+    $getObject = $registry->get_object($Class);
     
     if ($getObject !== NULL)     // if class already stored we are done.
     return $getObject;
@@ -82,15 +84,15 @@ function register($class, $params = NULL, $dir = '')
         // construct support.
         if(is_array($params))
         {
-            $registry->storeObject($Class, new $classname($params));
+            $registry->set_object($Class, new $classname($params));
             
         } else 
         {
-            $registry->storeObject($Class, new $classname());
+            $registry->set_object($Class, new $classname());
         }
          
         //return singleton object.
-        $Object = $registry->getObject($Class);
+        $Object = $registry->get_object($Class);
 
         if(is_object($Object))
         return $Object;
@@ -101,6 +103,8 @@ function register($class, $params = NULL, $dir = '')
                   // which file will use ob::register func.
 
 } // end func.
+
+// -------------------------------------------------------------------- 
 
 /**
 * base_register()
@@ -121,10 +125,10 @@ function register($class, $params = NULL, $dir = '')
 */
 function base_register($class, $params = NULL, $driver = '')
 {
-    $registry  = OB_Registry::singleton();
+    $registry  = OB_Registry::instance();
     $Class     = ucfirst($class);
     
-    $getObject = $registry->getObject($Class);
+    $getObject = $registry->get_object($Class);
 
     if ($getObject !== NULL)
     return $getObject;
@@ -156,7 +160,7 @@ function base_register($class, $params = NULL, $driver = '')
             // -------------------------------------------------------------------- 
             if(file_exists(APP .'libraries'. DS .'drivers'. DS .$class. DS .$prefix. $driver. EXT))
             {
-                require(BASE .'libraries'. DS .'drivers'. DS .$class. DS .$prefix. $driver. EXT);
+                require(APP .'libraries'. DS .'drivers'. DS .$class. DS .$prefix. $driver. EXT);
                 $classname = $prefix. $Class .'_'. $driver . '_driver';      
             }
         }
@@ -165,16 +169,16 @@ function base_register($class, $params = NULL, $driver = '')
         // --------------------------------------------------------------------
         if(is_array($params)) // construct support.
         {
-            $registry->storeObject($Class, new $classname($params));
+            $registry->set_object($Class, new $classname($params));
             
         } else 
         {
-            $registry->storeObject($Class, new $classname());
+            $registry->set_object($Class, new $classname());
         }
     
         // return to singleton object. 
         // --------------------------------------------------------------------
-        $Object = $registry->getObject($Class);
+        $Object = $registry->get_object($Class);
 
         if(is_object($Object))
         return $Object;
@@ -183,6 +187,8 @@ function base_register($class, $params = NULL, $driver = '')
     return NULL;  // if register func return to null 
                   // we will show a loader exception
 }
+
+// -------------------------------------------------------------------- 
 
 /**
 * register_autoload(); 
@@ -333,6 +339,7 @@ function register_autoload($real_name)
 
 spl_autoload_register('register_autoload',true);
 
+// -------------------------------------------------------------------- 
 
 /**
 * Loads the (static) configuration or language files.
@@ -373,6 +380,8 @@ function get_static($filename = 'config', $var = '', $folder = '')
     return $static[$filename];    
 }
 
+// -------------------------------------------------------------------- 
+
 /**
 * Get config file.
 * 
@@ -385,6 +394,8 @@ function get_config($filename = 'config', $var = '')
 {
     return get_static($filename, $var, 'application'. DS .'config');
 }
+
+// -------------------------------------------------------------------- 
 
 /**
 * Gets a config item
@@ -413,6 +424,8 @@ function config_item($item, $config_name = 'config')
     return $config_item[$item];
 }
 
+// -------------------------------------------------------------------- 
+
 /**
 * Gets a db configuration items
 *
@@ -440,7 +453,9 @@ function db_item($item, $index = 'db')
 
     return $db_item[$index][$item];
 }
- 
+
+// -------------------------------------------------------------------- 
+
 /**
  * Tests for file writability
  *
@@ -484,6 +499,8 @@ function is_really_writable($file)
     return TRUE;
 }
 
+// -------------------------------------------------------------------- 
+
 /**
 * Error Logging Interface
 *
@@ -503,6 +520,8 @@ function log_message($level = 'error', $message, $php_error = FALSE)
     $LOG = base_register('Log');
     $LOG->write_log($level, $message, $php_error);
 }
+
+// -------------------------------------------------------------------- 
 
 /**
 * Determines if the current version of PHP is greater then the supplied value
@@ -527,6 +546,7 @@ function is_php($version = '5.0.0')
     return $_is_php[$version];
 }
 
+// -------------------------------------------------------------------- 
 
 /**
  * Set HTTP Status Header
@@ -611,5 +631,8 @@ function set_status_header($code = 200, $text = '')
     }
 }
 
+// END Common.php File
 
+/* End of file Common.php */
+/* Location: ./base/obullo/Common.php */
 ?>

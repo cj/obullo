@@ -39,9 +39,7 @@ defined('BASE') or exit('Access Denied!');
 */	
 function xss_clean($str, $is_image = FALSE)
 {
-	$OB = ob::instance();
-    
-	return $OB->input->xss_clean($str, $is_image);
+	return ob::instance()->input->xss_clean($str, $is_image);
 }
 
 // --------------------------------------------------------------------
@@ -61,8 +59,6 @@ function dohash($str, $type = 'sha1')
 		{
 			if ( ! function_exists('mhash'))
 			{	
-                loader::base_lib('sha1',false);
-                
                 $SH = sha1::instance();
                 $SH->init();
             

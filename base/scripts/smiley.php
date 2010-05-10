@@ -30,6 +30,3 @@ function insert_smiley(smiley, field_id)
 }
 //-->
 </script>
-
-
-

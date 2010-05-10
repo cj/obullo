@@ -58,7 +58,7 @@ function force_download($filename = '', $data = '')
 	$extension = end($x);
 
 	// Load the mime types
-	include(APP.'config'.DIRECTORY_SEPARATOR.'mimes'.EXT);
+	$mimes = get_config('mimes');  // Obullo changes ..
 
 	// Set a default mime if we can't find it
 	if ( ! isset($mimes[$extension]))

@@ -34,18 +34,14 @@ defined('BASE') or exit('Access Denied!');
 Class Controller extends ob {
     
     /**
-    * Base class public
-    * variables
-    * @var mixed
+    * System class public variables
+    * @var object
     */
-    public $config;
-    public $input;
-    public $benchmark;
-    public $lang;
-    public $router;
-    public $uri;
-    public $output;
+    public $config, $input, $benchmark, $lang, $router, $uri, $output;
     
+    /**
+    * Constructor.
+    */
     public function __construct()       
     {   
         // Be carefull. parent::__construct() must be at the top otherwise
@@ -89,5 +85,4 @@ Class Controller extends ob {
 
 /* End of file Controller.php */
 /* Location: ./base/obullo/Controller.php */
-
 ?>

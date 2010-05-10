@@ -67,7 +67,7 @@ function smiley_js($alias = '', $field_id = '')
 		
 			$data['m'] = '{'.implode(',', $m).'}';      
             
-            $r .= this()->content->base_script('smiley', $data);    // Obullo Changes ...
+            $r .= ob::instance()->content->base_script('smiley', $data);    // Obullo Changes ...
 	}
 	else
 	{
@@ -189,7 +189,7 @@ function parse_smileys($str = '', $image_url = '', $smileys = NULL)
 */
 function _get_smiley_array()
 {
-	if ( ! file_exists(APP .'config'. DIRECTORY_SEPARATOR .'smileys'. EXT))
+	if ( ! file_exists(APP .'config'. DS .'smileys'. EXT))
 	{
 		return FALSE;
 	}

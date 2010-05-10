@@ -119,3 +119,4 @@ Class OB_Lang {
 
 /* End of file Lang.php */
 /* Location: ./base/libraries/Lang.php */
+?>
