@@ -525,3 +525,4 @@ function nbs($num = 1)
 
 /* End of file html.php */
 /* Location: ./base/helpers/html.php */
+?>

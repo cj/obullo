@@ -17,8 +17,6 @@ defined('BASE') or exit('Access Denied!');
  */ 
 // ------------------------------------------------------------------------
 
-//require(BASE.'database'.DS.'DBAdapter'.EXT); 
-
 /**
  * ODBC Database Adapter Class
  * ODBC v3 (IBM DB2, unixODBC and win32 ODBC) 
@@ -305,3 +303,4 @@ Class Obullo_DB_Driver_Odbc extends OB_DBAdapter
 
 /* End of file odbc_driver.php */
 /* Location: ./base/database/drivers/odbc_driver.php */
+?>

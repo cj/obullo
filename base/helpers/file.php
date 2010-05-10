@@ -417,5 +417,6 @@ function octal_permissions($perms)
 }
 
 
-/* End of file file_helper.php */
+/* End of file file.php */
 /* Location: ./base/helpers/file.php */
+?>

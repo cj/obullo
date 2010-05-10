@@ -1366,7 +1366,7 @@ Class OB_DBAc_record extends PDO {
     }
                  
                                   
-} // end active record class.
-
-
+}
+/* End of file DBAc_record.php */
+/* Location: .base/database/DBAc_record.php.php */
 ?>

@@ -17,8 +17,6 @@ defined('BASE') or exit('Access Denied!');
  */ 
 // ------------------------------------------------------------------------
 
-//require(BASE.'database'.DS.'DBAdapter'.EXT); 
-
 /**
  * PGSQL (PostgreSQL) Database Adapter Class
  *
@@ -304,3 +302,4 @@ Class Obullo_DB_Driver_Pgsql extends OB_DBAdapter
 
 /* End of file pgsql_driver.php */
 /* Location: ./base/database/drivers/pgsql_driver.php */
+?>

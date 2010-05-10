@@ -57,5 +57,6 @@ function xml_convert($str)
 }
 
 
-/* End of file xml_helper.php */
+/* End of file xml.php */
 /* Location: ./base/helpers/xml.php */
+?>

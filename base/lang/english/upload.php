@@ -20,3 +20,4 @@ $lang['upload_not_writable']            = "The upload destination folder does no
 
 /* End of file upload.php */
 /* Location: ./base/lang/english/upload.php */
+?>

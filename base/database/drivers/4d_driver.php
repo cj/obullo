@@ -17,8 +17,6 @@ defined('BASE') or exit('Access Denied!');
  */ 
 // ------------------------------------------------------------------------
 
-//require(BASE.'database'.DS.'DBAdapter'.EXT); 
-
 /**
  * 4D Database Adapter Class
  *
@@ -307,3 +305,4 @@ Class Obullo_DB_Driver_4d extends OB_DBAdapter
 
 /* End of file 4d_driver.php */
 /* Location: ./base/database/drivers/4d_driver.php */
+?>

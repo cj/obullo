@@ -30,4 +30,6 @@ define('param_stmt', PDO::PARAM_STMT); // integer
                                         
 define('param_input_output' , PDO::PARAM_INPUT_OUTPUT); // integer
 
+/* End of file db.php */
+/* Location: ./base/constants/db.php */
 ?>

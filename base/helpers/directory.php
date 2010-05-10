@@ -78,6 +78,6 @@ function directory_map($source_dir, $top_level_only = FALSE, $hidden = FALSE)
 	}
 }
 
-/* End of file directory_helper.php */
+/* End of file directory.php */
 /* Location: ./base/helpers/directory.php */
 ?>

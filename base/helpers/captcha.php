@@ -413,3 +413,4 @@ function create_captcha($data = '', $img_path = '', $img_url = '', $font_path = 
 
 /* End of file captcha.php */
 /* Location: ./base/helpers/captcha.php */
+?>

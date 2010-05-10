@@ -70,5 +70,6 @@ function byte_format($num)
 	return number_format($num, 1).' '.$unit;
 }
 
-/* End of file number_helper.php */
+/* End of file number.php */
 /* Location: ./base/helpers/number.php */
+?>

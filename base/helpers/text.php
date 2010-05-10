@@ -438,5 +438,6 @@ function word_wrap($str, $charlim = '76')
 }
 
 
-/* End of file text_helper.php */
+/* End of file text.php */
 /* Location: ./base/helpers/text.php */
+?>

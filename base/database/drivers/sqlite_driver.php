@@ -17,8 +17,6 @@ defined('BASE') or exit('Access Denied!');
  */ 
 // ------------------------------------------------------------------------
 
-//require(BASE.'database'.DS.'DBAdapter'.EXT); 
-
 /**
  * SQLITE Database Adapter Class
  *
@@ -319,3 +317,4 @@ Class Obullo_DB_Driver_Sqlite extends OB_DBAdapter
 
 /* End of file sqlite_driver.php */
 /* Location: ./base/database/drivers/sqlite_driver.php */
+?>

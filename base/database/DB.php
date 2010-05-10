@@ -201,8 +201,6 @@ Class OB_DB extends OB_DBAc_sw {
             $this->query($this->last_sql);
         }
     
-        //print_r($array); exit;
-    
         if(is_array($array) AND $bind_value != '')
         {
             if( ! self::_is_assoc($array))
@@ -212,8 +210,6 @@ Class OB_DB extends OB_DBAc_sw {
             
             $array = NULL;
         }
-        
-        // if( ! self::_is_assoc($array)) $array = NULL;
         
         // if no query builded by active record
         // switch to pdo::statement
@@ -707,10 +703,8 @@ Class OB_DB extends OB_DBAc_sw {
     }
 
  
-} //end class.
-
+} 
 
 /* End of file DB.php */
 /* Location: .base/database/DB.php */
-
 ?>

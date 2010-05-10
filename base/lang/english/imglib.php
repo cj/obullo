@@ -22,3 +22,4 @@ $lang['imglib_save_failed']           = "Unable to save the image.  Please make 
 
 /* End of file imglib.php */
 /* Location: ./base/lang/english/imglib.php */
+?>

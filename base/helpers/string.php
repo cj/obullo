@@ -243,5 +243,6 @@ function repeater($data, $num = 1)
 	return (($num > 0) ? str_repeat($data, $num) : '');
 }
 
-/* End of file string_helper.php */
+/* End of file string.php */
 /* Location: ./base/helpers/string.php */
+?>

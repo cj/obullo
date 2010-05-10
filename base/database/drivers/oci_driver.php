@@ -17,8 +17,6 @@ defined('BASE') or exit('Access Denied!');
  */ 
 // ------------------------------------------------------------------------
 
-//require(BASE.'database'.DS.'DBAdapter'.EXT); 
-
 /**
  * OCI (Oracle) Database Adapter Class
  *
@@ -307,3 +305,4 @@ Class Obullo_DB_Driver_Oci extends OB_DBAdapter
 
 /* End of file oci_driver.php */
 /* Location: ./base/database/drivers/oci_driver.php */
+?>

@@ -134,7 +134,6 @@ function delete_cookie($name = '', $domain = '', $path = '/', $prefix = '')
 }
 
 
-/* End of file cookie_helper.php */
+/* End of file cookie.php */
 /* Location: ./base/helpers/cookie.php */
-
 ?>

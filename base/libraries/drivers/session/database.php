@@ -259,5 +259,4 @@ Class OB_Session_database_driver extends OB_Session {
 
 /* End of file database.php */
 /* Location: ./base/libraries/drivers/session/database.php */
- 
 ?>

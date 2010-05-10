@@ -66,5 +66,6 @@ function set_realpath($path, $check_existance = FALSE)
 	return $path;
 }
 
-/* End of file path_helper.php */
+/* End of file path.php */
 /* Location: ./base/helpers/path.php */
+?>

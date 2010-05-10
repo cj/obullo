@@ -144,14 +144,10 @@ Class OB_DBFactory {
         
         return $DB->get_connection();
     
-    } //end function.
+    }
     
-    
-
-} //end class.
-
+}
 
 /* End of file DBFactory.php */
 /* Location: ./base/database/DBFactory.php */
-
 ?>

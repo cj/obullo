@@ -152,5 +152,6 @@ function humanize($str)
 	return ucwords(preg_replace('/[_]+/', ' ', strtolower(trim($str))));
 }
 
-/* End of file inflector_helper.php */
+/* End of file inflector.php */
 /* Location: ./base/helpers/inflector.php */
+?>

@@ -459,6 +459,6 @@ function _parse_attributes($attributes, $javascript = FALSE)
 }
 
 
-/* End of file url_helper.php */
+/* End of file url.php */
 /* Location: ./base/helpers/url.php */
 ?>

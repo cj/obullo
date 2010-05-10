@@ -58,5 +58,4 @@ $parents['rest.xml']  =  'Rest_controller';
 
 /* End of file parents.php */
 /* Location: .application/config/parents.php */
-
 ?>

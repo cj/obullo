@@ -17,8 +17,6 @@ defined('BASE') or exit('Access Denied!');
  */ 
 // ------------------------------------------------------------------------
 
-//require(BASE.'database'.DS.'DBAdapter'.EXT); 
-
 /**
  * MySQL Database Adapter Class
  *
@@ -306,3 +304,4 @@ Class Obullo_DB_Driver_Mysql extends OB_DBAdapter
 
 /* End of file mysql_driver.php */
 /* Location: ./base/database/drivers/mysql_driver.php */
+?>

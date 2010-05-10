@@ -72,5 +72,6 @@ function random_element($array)
 
 
 
-/* End of file array_helper.php */
+/* End of file array.php */
 /* Location: ./base/helpers/array.php */
+?>

@@ -95,5 +95,6 @@ function force_download($filename = '', $data = '')
 }
 
 
-/* End of file download_helper.php */
+/* End of file download.php */
 /* Location: ./base/helpers/download.php */
+?>

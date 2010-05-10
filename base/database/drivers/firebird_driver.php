@@ -17,8 +17,6 @@ defined('BASE') or exit('Access Denied!');
  */ 
 // ------------------------------------------------------------------------
 
-//require(BASE.'database'.DS.'DBAdapter'.EXT); 
-
 /**
  * Firebird Database Adapter Class
  *
@@ -299,3 +297,4 @@ Class Obullo_DB_Driver_Firebird extends OB_DBAdapter
 
 /* End of file firebird_driver.php */
 /* Location: ./base/database/drivers/firebird_driver.php */
+?>

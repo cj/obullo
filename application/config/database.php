@@ -44,3 +44,8 @@ $database['db2']['dbh_port'] = "";
 $database['db2']['char_set'] = "utf8";
 $database['db2']['dsn']      = "";
 $database['db2']['options']  = array();
+
+
+/* End of file database.php */
+/* Location: ./application/config/database.php */
+?>

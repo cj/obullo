@@ -593,5 +593,6 @@ function timezones($tz = '')
 
 
 
-/* End of file date_helper.php */
+/* End of file date.php */
 /* Location: ./base/helpers/date.php */
+?>

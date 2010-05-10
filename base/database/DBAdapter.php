@@ -227,6 +227,8 @@ Abstract Class OB_DBAdapter extends OB_DB {
         return $this;
     }
     
-} // end..
- 
+}
+
+/* End of file DBAdapter.php */
+/* Location: .base/database/DBAdapter.php */
 ?>

@@ -39,7 +39,8 @@ Class Global_controller extends __autoloader
       
       }
       
-} // end.
+}
 
- 
+/* End of file Global_controller.php */
+/* Location: ./application/parents/Global_controller.php */
 ?>

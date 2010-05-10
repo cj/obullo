@@ -111,5 +111,6 @@ function encode_php_tags($str)
 	return str_replace(array('<?php', '<?PHP', '<?', '?>'),  array('&lt;?php', '&lt;?PHP', '&lt;?', '?&gt;'), $str);
 }
 
-/* End of file security_helper.php */
+/* End of file security.php */
 /* Location: ./base/helpers/security.php */
+?>

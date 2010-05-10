@@ -25,4 +25,6 @@ defined('BASE') or exit('Access Denied!');
 $cache['cache_path']  = '';
 
 
+/* End of file cache.php */
+/* Location: ./application/config/cache.php */
 ?>

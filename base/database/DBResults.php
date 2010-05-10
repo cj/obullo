@@ -335,6 +335,8 @@ Class result {
     }
     
     
-}  //end class.
+}
 
+/* End of file DBResults.php */
+/* Location: ./base/database/DBResults.php */
 ?>

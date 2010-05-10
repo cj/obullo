@@ -27,6 +27,7 @@ Class Front_controller extends OB_Front_controller
         parent::close();
     }        
 }   
-// end of the class.
-  
+
+/* End of file Front_controller.php */
+/* Location: ./application/system/init/Front_controller.php */
 ?>

@@ -55,5 +55,6 @@ function send_email($recipient, $subject = 'Test email', $message = 'Hello World
 }
 
 
-/* End of file email_helper.php */
+/* End of file email.php */
 /* Location: ./base/helpers/email.php */
+?>
