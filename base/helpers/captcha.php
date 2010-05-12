@@ -317,9 +317,9 @@ function create_captcha($data = '', $img_path = '', $img_url = '', $font_path = 
     $brd = html2rgb($border);
     $border_color    = imagecolorallocate ($im, $brd[0], $brd[1], $brd[2]);
     $txt = html2rgb($text);
-    $text_color        = imagecolorallocate ($im, $txt[0], $txt[1], $txt[2]);
+    $text_color      = imagecolorallocate ($im, $txt[0], $txt[1], $txt[2]);
     $grd = html2rgb($grid);
-    $grid_color        = imagecolorallocate($im, $grd[0],$grd[1],$grd[2]);
+    $grid_color      = imagecolorallocate($im, $grd[0],$grd[1],$grd[2]);
     $shd = html2rgb($shadow); 
     $shadow_color    = imagecolorallocate($im, $shd[0], $shd[1], $shd[2]);
 

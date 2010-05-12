@@ -318,7 +318,7 @@ Class form_validate_CORE implements PHP5_Library {
         }
     
         // Load the language file containing error messages
-        ob::instance()->lang->load('form_validation');
+        ob::instance()->lang->load('form_validate');
                             
         // Cycle through the rules for each field, match the 
         // corresponding $_POST item and test for errors

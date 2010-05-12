@@ -975,7 +975,7 @@ Class OB_Input {
     */
     public function _html_entity_decode_callback($match)
     {
-        $config = base_register('Config');
+        $config  = base_register('Config');
         $charset = $config->item('charset');
 
         return $this->_html_entity_decode($match[0], strtoupper($charset));

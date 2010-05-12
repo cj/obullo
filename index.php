@@ -9,7 +9,6 @@
 | PHP5 MVC Based Minimalist Software for PHP 5.1.2 or newer
 | @see     license.txt
 */ 
-
 define('DS',   DIRECTORY_SEPARATOR);  
 
 /**
@@ -48,27 +47,28 @@ define('FCPATH', __FILE__);
 define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 define('DIR',  APP .'directories'. DS);
  
-require(BASE .'obullo'. DS .'Front_controller.php');
-                        
+require(APP  .'system'. DS .'init'. DS .'Front_control'.EXT);  
+require(BASE .'obullo'. DS .'Front_control.php');
+
 /**
 |--------------------------------------------------------------------------
-| Custom User Front Controller
+| User Front Controller
 |--------------------------------------------------------------------------
 |
-| User can create own Front Controller who want extend
-| and do method overridding for base OB_Front_Controller library
+| User can create own Front Controller who want replace
+| system methods by overriding to Front_conroller.php library.
 | @see
 | User Guide: Chapters / General Topics / Front Controller
 */
-require(APP .'system'. DS .'init'. DS .'Front_controller'.EXT);
-                                          
-$application = new Front_controller();
-$application->run();        
-  
+
+ob_include_files();
+ob_include_headers();
+
+ob_system_run();
+ob_system_close();
+
 // --------------------------------------------------------------------
 
-
-/* Beta 1.0 Rc1 Offical version Release Date: ? - ?  */
+/* Beta 1.0 Rc1 Offical Version Release Date: ? - ?  */
 /* SVN $Id: Index.php 174 18-04-2010 15:24:38 develturk $ */
-
 ?>

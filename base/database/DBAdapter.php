@@ -74,10 +74,10 @@ Abstract Class OB_DBAdapter extends OB_DB {
             } else 
             {
             // Standart Connection..
-                $this->hostname = $param['hostname'];  // required
-                $this->username = $param['username'];  // required
-                $this->password = $param['password'];  // required
-                $this->database = $param['database'];  // required
+                $this->hostname = $param['hostname'];             // required
+                $this->username = $param['username'];             // required
+                $this->password = $param['password'];             // required
+                $this->database = $param['database'];             // required
                 $this->dbdriver = strtolower($param['dbdriver']); // required
                 $this->char_set = isset($param['char_set']) ? $param['char_set'] : '';    // optional
                 $this->dbh_port = isset($param['dbh_port']) ? $param['dbh_port'] : '';    // optional

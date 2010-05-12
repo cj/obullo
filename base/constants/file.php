@@ -37,6 +37,6 @@ define('FOPEN_READ_WRITE_CREATE',               'a+b');
 define('FOPEN_WRITE_CREATE_STRICT',             'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',        'x+b');                                         
 
-/* End of file constants.php */
-/* Location: ./base/constants/constants.php */
+/* End of file file.php */
+/* Location: ./base/constants/file.php */
 ?>

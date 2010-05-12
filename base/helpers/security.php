@@ -55,24 +55,7 @@ function dohash($str, $type = 'sha1')
 {
 	if ($type == 'sha1')
 	{
-		if ( ! function_exists('sha1'))
-		{
-			if ( ! function_exists('mhash'))
-			{	
-                $SH = sha1::instance();
-                $SH->init();
-            
-				return $SH->generate($str);
-			}
-			else
-			{
-				return bin2hex(mhash(MHASH_SHA1, $str));
-			}
-		}
-		else
-		{
-			return sha1($str);
-		}	
+		return sha1($str);
 	}
 	else
 	{

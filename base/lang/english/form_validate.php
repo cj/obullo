@@ -20,6 +20,6 @@ $lang['is_natural']			= "The %s field must contain only positive numbers.";
 $lang['is_natural_no_zero']	= "The %s field must contain a number greater than zero.";
 
 
-/* End of file form_validation.php */
-/* Location: ./base/lang/english/form_validation.php */
+/* End of file form_validate.php */
+/* Location: ./base/lang/english/form_validate.php */
 ?>

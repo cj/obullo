@@ -275,6 +275,8 @@ Class OB_DBAc_record extends PDO {
         return $this;  // beta 1.0 rc1 changes 
     }
 
+    // -------------------------------------------------------------------- 
+    
     public function where_in($key = NULL, $values = NULL)
     {
         return $this->_where_in($key, $values);
@@ -300,6 +302,8 @@ Class OB_DBAc_record extends PDO {
     {
         return $this->_where_in($key, $values, TRUE, 'OR ');
     }
+    
+    // -------------------------------------------------------------------- 
         
     /**
     * Where_in
@@ -693,8 +697,6 @@ Class OB_DBAc_record extends PDO {
         $this->limit($limit, $offset);
             
         $this->sql = $this->_compile_select();
-
-        //echo $this->sql; exit;
         
         if($this->prepare == FALSE)
         {
@@ -732,7 +734,7 @@ Class OB_DBAc_record extends PDO {
         
         if (count($this->ar_set) == 0)
         {
-            throw new DBException('Please set value for insert operation !');
+            throw new DBException(ob::instance()->lang->line('db_ac_insert_set_table'));
             
             return FALSE;
         }
@@ -741,7 +743,7 @@ Class OB_DBAc_record extends PDO {
         {
             if ( ! isset($this->ar_from[0]))
             {
-                throw new DBException('Please set table for insert operation !');
+                throw new DBException(ob::instance()->lang->line('db_ac_insert_set_table'));
                 
                 return FALSE;
             }
@@ -812,7 +814,7 @@ Class OB_DBAc_record extends PDO {
     
         if (count($this->ar_set) == 0)
         {
-            throw new DBException('Please set values for update operation !');
+            throw new DBException(ob::instance()->lang->line('db_ac_update_set_table'));
             
             return FALSE;
         }
@@ -821,7 +823,7 @@ Class OB_DBAc_record extends PDO {
         {
             if ( ! isset($this->ar_from[0]))
             {
-                throw new DBException('Please set table for update operation !'); 
+                throw new DBException(ob::instance()->lang->line('db_ac_update_set_table')); 
                 
                 return FALSE;
             }
@@ -836,9 +838,7 @@ Class OB_DBAc_record extends PDO {
         $this->limit($limit);       
         
         $sql = $this->_update($this->_protect_identifiers($table, TRUE, NULL, FALSE), $this->ar_set, $this->ar_where, $this->ar_orderby, $this->ar_limit);
-        
-        //echo $sql; exit;
-                                   
+                 
         $this->_reset_write();
         
         return $this->exec_query($sql);  // return number of affected rows.  
@@ -923,7 +923,7 @@ Class OB_DBAc_record extends PDO {
         {
             if ( ! isset($this->ar_from[0]))
             {
-                throw new DBException('Please set table for delete operation !');
+                throw new DBException(ob::instance()->lang->line('db_active_record_set_table'));
                 
                 return FALSE;
             }
@@ -950,8 +950,7 @@ Class OB_DBAc_record extends PDO {
         
         if (count($this->ar_where) == 0 && count($this->ar_wherein) == 0 && count($this->ar_like) == 0)
         {
-            throw new DBException('Deletes are not allowed unless they contain a 
-             \'where\' or \'like\' clause.');
+            throw new DBException(ob::instance()->lang->line('db_active_record_delete'));
             
             return FALSE;
         }        

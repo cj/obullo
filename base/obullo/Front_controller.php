@@ -33,10 +33,8 @@ Class CommonException extends Exception {};
  */
 Class OB_Front_controller {
     
-    public $uri, $router, $output, $config, $benchmark;
-    
     public function __construct()
-    {
+    {                  
         require (BASE .'constants'. DS .'db'. EXT);
         require (BASE .'constants'. DS .'file'. EXT);
         require (APP  .'config'. DS .'constants'. EXT);  // Your constants .. 
@@ -51,30 +49,30 @@ Class OB_Front_controller {
         date_default_timezone_set(config_item('timezone_set'));
         
         header('Content-type: text/html;charset='.config_item('charset')); // UTF-8 
-        
-        $this->uri       = base_register('URI');
-        $this->router    = base_register('Router');
-        $this->output    = base_register('Output');
-        $this->config    = base_register('Config');
-        $this->benchmark = base_register('Benchmark');  
     }
     
     public function run()
     {
-        $this->benchmark->mark('total_execution_time_start');
-        $this->benchmark->mark('loading_time_base_classes_start');
+        $uri       = base_register('URI');
+        $router    = base_register('Router');
+        $output    = base_register('Output');
+        $config    = base_register('Config');
+        $benchmark = base_register('Benchmark');  
+        
+        $benchmark->mark('total_execution_time_start');
+        $benchmark->mark('loading_time_base_classes_start');
         
         // Check REQUEST uri if there is a Cached file exist
-        if ($this->output->_display_cache($this->config, $this->uri) == TRUE) { exit; }
+        if ($output->_display_cache($config, $uri) == TRUE) { exit; }
         
-        $GLOBALS['d']   = $this->router->fetch_directory();   // Get requested directory
-        $GLOBALS['c']   = $this->router->fetch_class();       // Get requested controller
-        $GLOBALS['m']   = $this->router->fetch_method();      // Get requested method
+        $GLOBALS['d']   = $router->fetch_directory();   // Get requested directory
+        $GLOBALS['c']   = $router->fetch_class();       // Get requested controller
+        $GLOBALS['m']   = $router->fetch_method();      // Get requested method
         
         // Check the controller exists or not
         if ( ! file_exists(DIR .$GLOBALS['d']. DS .'controllers'. DS .$GLOBALS['c']. EXT))
         {
-            if($this->router->query_string) show_404("{$GLOBALS['c']}/{$GLOBALS['m']}");
+            if($router->query_string) show_404("{$GLOBALS['c']}/{$GLOBALS['m']}");
             
             throw new CommonException('Unable to load your default controller.
             Please make sure the controller specified in your Routes.php file is valid.');
@@ -86,10 +84,10 @@ Class OB_Front_controller {
         require (BASE .'obullo'. DS .'Model'. EXT);
         
         // Set a mark point for benchmarking
-        $this->benchmark->mark('loading_time_base_classes_end');
+        $benchmark->mark('loading_time_base_classes_end');
         
         // Mark a start point so we can benchmark the controller
-        $this->benchmark->mark('execution_time_( '.$GLOBALS['d'].'/'.$GLOBALS['c'].'/'.$GLOBALS['m'].' )_start');
+        $benchmark->mark('execution_time_( '.$GLOBALS['d'].'/'.$GLOBALS['c'].'/'.$GLOBALS['m'].' )_start');
         
         // call the controller.
         require (DIR .$GLOBALS['d']. DS .'controllers'. DS .$GLOBALS['c']. EXT);
@@ -117,10 +115,10 @@ Class OB_Front_controller {
         call_user_func_array(array($OB, $GLOBALS['m']), array_slice($OB->uri->rsegments, 3));
         
         // Mark a benchmark end point
-        $this->benchmark->mark('execution_time_( '.$GLOBALS['d'].'/'.$GLOBALS['c'].'/'.$GLOBALS['m'].' )_end');
+        $benchmark->mark('execution_time_( '.$GLOBALS['d'].'/'.$GLOBALS['c'].'/'.$GLOBALS['m'].' )_end');
         
         // Write Cache file if cache on ! and Send the final rendered output to the browser
-        $this->output->_display(); 
+        $output->_display();
     }
     
     public function close()
@@ -133,7 +131,7 @@ Class OB_Front_controller {
         
         // Closing PDO Connections !
         // ..$OB->db = NULL;
-        // . 
+        // .
     }
     
     

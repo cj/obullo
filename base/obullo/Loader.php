@@ -166,7 +166,6 @@ Class loader {
              
            case TRUE:
              $driver         = self::_get_driver($class, $params);
-           
              $type = 'base';
              $OB->$class_var = base_register($class, $params, $driver); 
              break;

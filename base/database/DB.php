@@ -34,20 +34,20 @@ Class DBException extends CommonException {}
  
 Class OB_DB extends OB_DBAc_sw {
     
-    public $prepare = FALSE;  // prepare switch
-    public $p_opt = array();  // prepare options
-    public $last_sql = '';    // store last queried sql 
-    public $last_values;      // store last executed PDO values
-    public $exec_count = 0;   // count executed func.
+    public $prepare                 = FALSE;    // prepare switch
+    public $p_opt                   = array();  // prepare options
+    public $last_sql                = '';       // store last queried sql 
+    public $last_values;                        // store last executed PDO values
+    public $exec_count              = 0;        // count executed func.
     
-    public $use_bind_values = FALSE;    // bind value usage switch
-    public $use_bind_params = FALSE;    // bind param usage switch
+    public $use_bind_values         = FALSE;    // bind value usage switch
+    public $use_bind_params         = FALSE;    // bind param usage switch
     
-    private $Stmt = NULL;     // PDOStatement Object
+    private $Stmt                   = NULL;     // PDOStatement Object
 
-    public $last_bind_values = array(); // Last bindValues and bindParams
-    public $last_bind_params = array(); // We store binds values to array() 
-                                        // because of we need it in last_query() function
+    public $last_bind_values        = array();  // Last bindValues and bindParams
+    public $last_bind_params        = array();  // We store binds values to array() 
+                                                // because of we need it in last_query() function
 
     // Private variables
     public $_protect_identifiers    = TRUE;
@@ -67,8 +67,9 @@ Class OB_DB extends OB_DBAc_sw {
     */
     public function pdo_connect($dsn, $user = NULL, $pass = NULL, $options = NULL)
     {
-        //echo 'connected!'.$dsn;
         parent::__construct($dsn, $user, $pass, $options);
+        
+        ob::instance()->lang->load('db');
         
         return $this;
     }  
@@ -204,7 +205,7 @@ Class OB_DB extends OB_DBAc_sw {
         if(is_array($array) AND $bind_value != '')
         {
             if( ! self::_is_assoc($array))
-            throw new DBException('PDO bind data must be associative array !');
+            throw new DBException(ob::instance()->lang->line('db_bind_data_must_assoc'));
             
             $this->_bindValues($array);
             
