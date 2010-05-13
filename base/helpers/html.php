@@ -35,12 +35,11 @@ defined('BASE') or exit('Access Denied!');
 * @param  string $filename
 * @param  string $arguments
 * @param  string $path
-* @param  string $type
 * @return _css
 */
-function css($filename, $arguments = '', $path = 'css', $type = ' type="text/css" ')
+function css($filename, $path = 'css', $title = '', $media = '')
 {   
-    return _css($filename, $arguments, $dir = 'source', $path, $type);
+    return _css($filename, $dir = 'source', $path , $title, $media);
 }
 
 // --------------------------------------------------------------------
@@ -53,12 +52,11 @@ function css($filename, $arguments = '', $path = 'css', $type = ' type="text/css
 * @param  string $filename
 * @param  string $arguments
 * @param  string $path
-* @param  string $type
 * @return _css
 */
-function local_css($filename, $arguments = '', $path = 'css', $type = ' type="text/css" ')
+function local_css($filename, $path = 'css', $title = '', $media = '')
 {   
-    return _css($filename, $arguments, $dir = 'local', $path, $type);
+    return _css($filename, $dir = 'local', $path, $title, $media);
 }
 
 // --------------------------------------------------------------------
@@ -76,25 +74,16 @@ function local_css($filename, $arguments = '', $path = 'css', $type = ' type="te
 * @version  0.2 added ob::instance()->content->css_folder variable
 * @return   string
 */
-function _css($filename, $arguments = ' media="all" ', $dir = 'source', $path = '', $type = ' type="text/css" ')
+function _css($filename, $dir = 'source', $path = 'css', $title = '', $media = '')
 {
     if( ! is_array($filename))
     $filename = array($filename);
     
-    if(empty($arguments))
-    {
-        $arguments = ' media="all" ';
-    }
-    
-    $path = 'css';
-    
     if(isset(ob::instance()->content->css_folder{1}))
     {
-        $path = 'css' . ob::instance()->content->css_folder; 
+        $path = $path . ob::instance()->content->css_folder; 
     }
     
-    $style = "<style $type $arguments>\n";
-
     switch ($dir)
     {
        case 'local':
@@ -106,13 +95,12 @@ function _css($filename, $arguments = ' media="all" ', $dir = 'source', $path = 
          break;
     }
     
+    $style = '';
     foreach($filename as $key => $css)
-    {
-        $style.= "@import url(\"". $url .'/'. $css . '.css'. "\");\n";
+    {    
+        $style .= link_tag($url.'/'.$css, 'stylesheet', 'text/css', $title, $media)."\n";
     }
     
-    $style.= '</style>';
-
     return $style;   
 }
 
@@ -126,9 +114,9 @@ function _css($filename, $arguments = ' media="all" ', $dir = 'source', $path = 
 * @param  string $arguments
 * @param  string $type
 */
-function js($filename, $arguments = '', $type = ' type="text/javascript" ')
+function js($filename, $arguments = '', $type = 'text/javascript')
 {   
-    return _js($filename, $arguments, 'source'); 
+    return _js($filename, $arguments, 'source', $type); 
 }
 
 // --------------------------------------------------------------------
@@ -142,7 +130,7 @@ function js($filename, $arguments = '', $type = ' type="text/javascript" ')
 * @param  string $arguments
 * @param  string $type
 */
-function local_js($filename, $arguments = '', $type = ' type="text/javascript" ')
+function local_js($filename, $arguments = '', $type = 'text/javascript')
 {   
     return _js($filename, $arguments, 'local'); 
 }
@@ -158,7 +146,7 @@ function local_js($filename, $arguments = '', $type = ' type="text/javascript" '
 * @param    string $dir
 * @param    string $type
 */
-function _js($filename, $arguments = '', $dir = 'source', $type = ' type="text/javascript" ')
+function _js($filename, $arguments = '', $dir = 'source', $type = 'text/javascript')
 {
     if( ! is_array($filename))
     $filename = array($filename);
@@ -175,9 +163,9 @@ function _js($filename, $arguments = '', $dir = 'source', $type = ' type="text/j
     }
 
     $js = '';
-    foreach($filename as $key => $val)
+    foreach($filename as $key => $file)
     {
-        $js.= "\n".'<script '.$type.' src="'.$url.$val .'.js'. $arguments.'"></script>';  
+        $js.= "\n".'<script type="'.$type.'" src="'.$url.$file.'" '.$arguments.'></script>';  
     }
     
     return $js;

@@ -179,7 +179,6 @@ Class OB_Output {
     public function _display($output = '')
     {    
         $benchmark = base_register('Benchmark');
-        $config    = base_register('Config');
         
         // --------------------------------------------------------------------
         
@@ -203,9 +202,9 @@ Class OB_Output {
         // then swap the pseudo-variables with the data
 
         $elapsed = $benchmark->elapsed_time('total_execution_time_start', 'total_execution_time_end');        
-        $output = str_replace('{elapsed_time}', $elapsed, $output);
+        $output  = str_replace('{elapsed_time}', $elapsed, $output);
         
-        $memory = '';
+        $memory  = '';
         if( function_exists('memory_get_usage') )
         {
            $memory = round(memory_get_usage()/1024/1024, 2).'MB'; 
@@ -216,7 +215,7 @@ Class OB_Output {
         // --------------------------------------------------------------------
         
         // Is compression requested?
-        if ($config->item('compress_output') === TRUE)
+        if (config_item('compress_output', 'cache') === TRUE)
         {
             if (extension_loaded('zlib'))
             {
@@ -252,27 +251,24 @@ Class OB_Output {
         }
     
         // --------------------------------------------------------------------
-
-        // Grab the super object.  We'll need it in a moment...
-        $OB = ob::instance();
         
         // Do we need to generate profile data?
         // If so, load the Profile class and run it.
         if ($this->enable_profiler == TRUE)
         {
-            loader::base_lib('profiler');                
+            $profiler = base_register('Profiler');                
                                         
             // If the output data contains closing </body> and </html> tags
             // we will remove them and add them back after we insert the profile data
             if (preg_match("|</body>.*?</html>|is", $output))
             {
                 $output  = preg_replace("|</body>.*?</html>|is", '', $output);
-                $output .= $OB->profiler->run();
+                $output .= $profiler->run();
                 $output .= '</body></html>';
             }
             else
             {
-                $output .= $OB->profiler->run();
+                $output .= $profiler->run();
             }
         }
         
@@ -280,9 +276,9 @@ Class OB_Output {
 
         // Does the controller contain a function named _output()?
         // If so send the output there.  Otherwise, echo it.
-        if (method_exists($OB, '_output'))
+        if (method_exists(ob::instance(), '_output'))
         {
-            $OB->_output($output);
+            ob::instance()->_output($output);
         }
         else
         {

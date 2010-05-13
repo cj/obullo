@@ -1,10 +1,10 @@
 <style type="text/css">
-#ob_error_content  {
-font-family: verdana;
-font-size:12;
-width:50%;
-padding:5px;
-background-color:#eee;
+#ob_error_content {
+    font-family: verdana;
+    font-size:12;
+    width:50%;
+    padding:5px;
+    background-color:#eee;
 }
 </style>
 

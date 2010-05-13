@@ -58,7 +58,7 @@ Class loader {
     * 
     * @var array
     */
-    private static $_base_helpers = array();
+    public static $_base_helpers = array();
     
     /**
     * Prevent Duplication 
@@ -66,7 +66,7 @@ Class loader {
     * 
     * @var array
     */
-    private static $_app_helpers = array();
+    public static $_app_helpers = array();
     
     /**
     * Prevent Duplication 
@@ -74,7 +74,7 @@ Class loader {
     * 
     * @var array
     */
-    private static $_helpers = array();      
+    public static $_helpers = array();      
     
     /**
     * loader::lib();
@@ -464,11 +464,12 @@ Class loader {
     * @access   public
     * @param    array
     * @param    string
+    * @version  0.1
     * @return   void
     */
-    public static function lang($file = '', $folder = '', $return = FALSE)
-    {
-        ob::instance()->lang->load($file, $folder, 'local', $return);
+    public static function lang($file, $return = FALSE)
+    {               
+        ob::instance()->lang->load($file, '', 'local', $return);
     }
         
     // --------------------------------------------------------------------

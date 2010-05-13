@@ -27,6 +27,8 @@ defined('BASE') or exit('Access Denied!');
 *              renamed register_static() function, added replace support ..
 */
 
+// --------------------------------------------------------------------
+
 /**
 * A Php5 library must be contain that functions.
 * But function body can be empty.
@@ -35,6 +37,17 @@ interface PHP5_Library
 {
     public static function instance();
     public function init();
+}
+
+/**
+* A Php5 Driver library must be contain that functions.
+* But function body can be empty.
+*/                        
+interface PHP5_Driver_Library 
+{
+    public static function instance();
+    public function init();
+    public function __call($method, $args);
 }
 
 // -------------------------------------------------------------------- 
@@ -179,7 +192,7 @@ function base_register($class, $params = NULL, $driver = '')
         // return to singleton object. 
         // --------------------------------------------------------------------
         $Object = $registry->get_object($Class);
-
+        
         if(is_object($Object))
         return $Object;
     }
@@ -243,7 +256,6 @@ function register_autoload($real_name)
         $class = strtolower($real_name); // lowercase classname.
                     
         $shortcuts = array('agent'   => 'Agent',
-                           'session' => 'Session', 
                            'config'  => 'Config',
                            'input'   => 'Input',
                            'lang'    => 'Lang',
@@ -310,7 +322,7 @@ function register_autoload($real_name)
         
             ob::instance()->_libs['php5_'.$class] = $class;
             return;
-        }
+        }  
 
         // else call directly php5 base libraries.    
         // -------------------------------------------------------------------- 
@@ -322,7 +334,21 @@ function register_autoload($real_name)
             
             ob::instance()->_libs['php5_'.$class] = $class;
             return;
-        } 
+        }
+        
+        // Load driver file.
+        if(strpos($real_name, 'OB_') === 0 AND (substr($class, -7) == '_driver'))
+        {
+             $part   = explode('_', $real_name);
+             $class  = strtolower($part[1]); 
+             $driver = $part[2]; 
+            
+             require(BASE .'libraries'. DS .'php5'. DS .'drivers'. DS .$class. DS .$class. EXT); 
+             require(BASE .'libraries'. DS .'php5'. DS .'drivers'. DS .$class. DS .$driver. EXT);
+             
+             ob::instance()->_libs['php5_driver_'.$class] = $driver;
+             return;
+        }
         
         // return to exceptions if its fail..    
         // --------------------------------------------------------------------

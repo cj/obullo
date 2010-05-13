@@ -50,9 +50,9 @@ Class OB_Lang {
     * @return	mixed
     */
     public function load($langfile = '', $idiom = '', $dir = 'base', $return = FALSE)
-    {
+    {     
         if (in_array($langfile, $this->is_loaded, TRUE))
-        return;
+        return;  
         
         if ($idiom == '')
         {
@@ -65,7 +65,7 @@ Class OB_Lang {
         switch ($dir)
         {
             case 'local':
-             $folder = DIR .$GLOBALS['d']. DS .'lang'. DS .$idiom. DS;                            
+             $folder = DIR .$GLOBALS['d']. DS .'lang'. DS;                            
              break;
             
             case 'global':
@@ -92,7 +92,7 @@ Class OB_Lang {
         return $lang;
 
         $this->is_loaded[] = $langfile;
-        $this->language = array_merge($this->language, $lang);
+        $this->language    = array_merge($this->language, $lang);
         unset($lang);
 
         log_message('debug', 'Language file loaded: lang/' .$idiom. '/' .$langfile. EXT);

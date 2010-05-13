@@ -9,11 +9,8 @@
 <base href="<?php echo this()->base; ?>" />
 
 <?php 
-
-this()->head_tag .= css('welcome');
-
+this()->head_tag .= css('welcome.css');
 echo this()->head_tag;
-
 ?>
 
 </head>

@@ -47,20 +47,20 @@ define('FCPATH', __FILE__);
 define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 define('DIR',  APP .'directories'. DS);
  
-require(APP  .'system'. DS .'init'. DS .'Front_control'.EXT);  
-require(BASE .'obullo'. DS .'Front_control.php');
+require(APP  .'system'. DS .'init'. DS .'Bootstrap'. EXT);  
+require(BASE .'obullo'. DS .'Bootstrap'. EXT);
 
 /**
 |--------------------------------------------------------------------------
-| User Front Controller
+| User Front Controller for Bootstrap.php file. 
 |--------------------------------------------------------------------------
 |
 | User can create own Front Controller who want replace
-| system methods by overriding to Front_conroller.php library.
+| system methods by overriding to Bootstrap.php library.
 | @see
-| User Guide: Chapters / General Topics / Front Controller
+| User Guide: Chapters / General Topics / Control Your Application Boot
+|
 */
-
 ob_include_files();
 ob_include_headers();
 
