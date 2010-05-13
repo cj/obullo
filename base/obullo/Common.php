@@ -136,7 +136,7 @@ function register($class, $params = NULL, $dir = '')
 * 
 * @return   object  | NULL
 */
-function base_register($class, $params = NULL, $driver = '')
+function base_register($class, $params = NULL)
 {
     $registry  = OB_Registry::instance();
     $Class     = ucfirst($class);
@@ -152,30 +152,10 @@ function base_register($class, $params = NULL, $driver = '')
         $classname = 'OB_'.$Class; 
         $prefix    = config_item('subclass_prefix');  // MY_
         
-        // No Driver file extend support. 
-        // -------------------------------------------------------------------- 
-        if($driver == '')
+        if(file_exists(APP .'libraries'. DS .$prefix. $Class. EXT))
         {
-            if(file_exists(APP .'libraries'. DS .$prefix. $Class. EXT))
-            {
-                require(APP .'libraries'. DS .$prefix. $Class. EXT);
-                $classname = $prefix. $Class;
-            }
-            
-        // Driver file load support. 
-        // --------------------------------------------------------------------
-        } else 
-        {
-            $classname = 'OB_'. $Class .'_'. $driver . '_driver';
-            require(BASE .'libraries'. DS .'drivers'. DS .$class. DS .$driver. EXT);
-            
-            // Driver file extend support. 
-            // -------------------------------------------------------------------- 
-            if(file_exists(APP .'libraries'. DS .'drivers'. DS .$class. DS .$prefix. $driver. EXT))
-            {
-                require(APP .'libraries'. DS .'drivers'. DS .$class. DS .$prefix. $driver. EXT);
-                $classname = $prefix. $Class .'_'. $driver . '_driver';      
-            }
+            require(APP .'libraries'. DS .$prefix. $Class. EXT);
+            $classname = $prefix. $Class;
         }
         
         // __construct params support. 
@@ -302,7 +282,7 @@ function register_autoload($real_name)
             return;            
         } 
                                           
-        // Php5 library extend (override) support    
+        // Php5 library extend (override) support.    
         // -------------------------------------------------------------------- 
         if(file_exists(APP .'libraries'. DS .'php5'. DS . config_item('subclass_prefix') .$class. EXT))
         {
@@ -312,7 +292,7 @@ function register_autoload($real_name)
             return;            
         } 
 
-        // Php5 load classname_CORE libraries.    
+        // load classname_CORE libraries.    
         // -------------------------------------------------------------------- 
         if(substr($class, -5) == '_core')
         {
@@ -336,24 +316,42 @@ function register_autoload($real_name)
             return;
         }
         
+        // Driver file support for php5 base libraries.    
+        // -------------------------------------------------------------------- 
+        $prefix = config_item('subclass_prefix');
+        $suffix = substr($class, -7);
+        
         // Load driver file.
-        if(strpos($real_name, 'OB_') === 0 AND (substr($class, -7) == '_driver'))
+        if(strpos($real_name, 'OB_') === 0 AND $suffix == '_driver')
         {
              $part   = explode('_', $real_name);
-             $class  = strtolower($part[1]); 
-             $driver = $part[2]; 
+             $class  = strtolower($part[1]);
             
              require(BASE .'libraries'. DS .'php5'. DS .'drivers'. DS .$class. DS .$class. EXT); 
-             require(BASE .'libraries'. DS .'php5'. DS .'drivers'. DS .$class. DS .$driver. EXT);
+             require(BASE .'libraries'. DS .'php5'. DS .'drivers'. DS .$class. DS .$part[2]. EXT);
              
-             ob::instance()->_libs['php5_driver_'.$class] = $driver;
+             ob::instance()->_libs['php5_driver_'.$class] = $part[2];
+             return;
+        }
+        
+        // Driver file extend (override) support.    
+        // -------------------------------------------------------------------- 
+        if(strpos($real_name, $prefix) === 0 AND $suffix == '_driver') 
+        {
+             $part   = explode('_', $real_name);
+             $class  = strtolower($part[1]);
+            
+             require(BASE .'libraries'. DS .'php5'. DS .'drivers'. DS .$class. DS .$class. EXT);
+             require(BASE .'libraries'. DS .'php5'. DS .'drivers'. DS .$class. DS .$part[2]. EXT); 
+             require(APP  .'libraries'. DS .'php5'. DS .'drivers'. DS .$class. DS .$prefix.$part[2]. EXT);
+             
+             ob::instance()->_libs['php5_driver_'.$class.'_overridden'] = $part[2];
              return;
         }
         
         // return to exceptions if its fail..    
         // --------------------------------------------------------------------
-        
-        throw new LoaderException('Unable locate to Php5 file: '. $class);
+        throw new LoaderException('Unable locate to Php5 file: '. $real_name);
         
     } catch(LoaderException $e) 
     {
@@ -555,9 +553,9 @@ function log_message($level = 'error', $message, $php_error = FALSE)
 * Since there are a few places where we conditionally test for PHP > 5
 * we'll set a static variable.
 *
-* @access    public
+* @access   public
 * @param    string
-* @return    bool
+* @return   bool
 */
 function is_php($version = '5.0.0')
 {

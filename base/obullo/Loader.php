@@ -165,9 +165,8 @@ Class loader {
              break;
              
            case TRUE:
-             $driver         = self::_get_driver($class, $params);
              $type = 'base';
-             $OB->$class_var = base_register($class, $params, $driver); 
+             $OB->$class_var = base_register($class, $params); 
              break;
         }
         
@@ -540,31 +539,8 @@ Class loader {
             $OB->$model_name->$db_var = &$OB->$db_var;
         }
     }
-    
-    // -------------------------------------------------------------------- 
-    
-    /**
-    * Get library driver name.
-    *              
-    * @param    string $class
-    * @param    array  $params
-    * @return   string
-    */
-    private static function _get_driver($class, $params = NULL)
-    {
-        $driver = '';
-        switch ($class)
-        {
-           case 'session':
-             $driver = isset($params['sess_driver']) ? $params['sess_driver'] : config_item('sess_driver');
-             break;
-        }
-        
-        return $driver;
-    }
   
 }
-
 // END Loader Class
 
 /* End of file Loader.php */
