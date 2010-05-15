@@ -10,7 +10,7 @@ defined('BASE') or exit('Access Denied!');
  * @subpackage      Libraries
  * @category        Libraries      
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009.
+ * @copyright       Ersin Guvenc (c) 2009.
  * @since           Version 1.0
  * @filesource
  * @license 

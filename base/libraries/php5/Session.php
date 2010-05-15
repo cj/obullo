@@ -8,7 +8,7 @@ defined('BASE') or exit('Access Denied!');
  *
  * @package         obullo      
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009.
+ * @copyright       Ersin Guvenc (c) 2009.
  * @since           Version 1.0
  * @filesource
  * @license
@@ -24,7 +24,7 @@ Class SessionException extends CommonException {}
  * @package      Obullo
  * @subpackage   Libraries
  * @category     Sessions
- * @author       Ersin Güvenç
+ * @author       Ersin Guvenc
  * @link         
  */
 Class session_CORE implements PHP5_Driver_Library {
@@ -44,9 +44,9 @@ Class session_CORE implements PHP5_Driver_Library {
     }
 
     // --------------------------------------------------------------------
-
+    
     public function init($params = array())
-    {
+    {              
         $driver = (isset($params['sess_driver'])) ? $params['sess_driver'] : config_item('sess_driver'); 
         $prefix = config_item('subclass_prefix');
         
@@ -59,7 +59,6 @@ Class session_CORE implements PHP5_Driver_Library {
              {
                 $classname = $prefix.'Session_cookie_driver';
              }
-             
              $this->session = new $classname($params);  
              break;
              
@@ -70,7 +69,6 @@ Class session_CORE implements PHP5_Driver_Library {
              {
                 $classname = $prefix.'Session_database_driver';
              }
-             
              $this->session = new $classname($params);  
              break;
              
@@ -78,7 +76,7 @@ Class session_CORE implements PHP5_Driver_Library {
              $this->session = NULL; // not implemented yet.
              break;
         }
-    }
+    }              
     
     // --------------------------------------------------------------------   
     

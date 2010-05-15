@@ -8,7 +8,7 @@ defined('BASE') or exit('Access Denied!');
  *
  * @package         obullo      
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009.
+ * @copyright       Ersin Guvenc (c) 2009.
  * @since           Version 1.0
  * @filesource
  * @license
@@ -20,13 +20,14 @@ defined('BASE') or exit('Access Denied!');
  * @package      Obullo
  * @subpackage   Libraries
  * @category     Sessions
- * @author       Ersin Güvenç
+ * @author       Ersin Guvenc
  * @link         
  */
 Abstract Class OB_Session {
 
     public $sess_encrypt_cookie        = FALSE;
-    public $sess_driver                = 'cookie';      // Obullo changes .. 
+    public $sess_driver                = 'cookie';  // Obullo changes .. 
+    public $sess_db_var                = 'db';      // Obullo changes .. 
     public $sess_table_name            = '';
     public $sess_expiration            = 7200;
     public $sess_match_ip              = FALSE;
@@ -64,7 +65,7 @@ Abstract Class OB_Session {
         
         // Set all the session preferences, which can either be set 
         // manually via the $params array above or via the config file
-        foreach (array('sess_encrypt_cookie', 'sess_driver', 'sess_database_var', 'sess_table_name', 
+        foreach (array('sess_encrypt_cookie', 'sess_driver', 'sess_db_var', 'sess_table_name', 
         'sess_expiration', 'sess_match_ip', 'sess_match_useragent', 'sess_cookie_name', 'cookie_path', 
         'cookie_domain', 'sess_time_to_update', 'time_reference', 'cookie_prefix', 'encryption_key') as $key)
         {
@@ -151,7 +152,7 @@ Abstract Class OB_Session {
         else
         {    
             // encryption was not used, so we need to check the md5 hash
-            $hash          = substr($session, strlen($session)-32); // get last 32 chars
+            $hash    = substr($session, strlen($session)-32); // get last 32 chars
             $session = substr($session, 0, strlen($session)-32);
 
             // Does the md5 hash match?  This is to prevent manipulation of session data in userspace

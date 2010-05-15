@@ -8,7 +8,7 @@ defined('BASE') or exit('Access Denied!');
  * 
  * @package         obullo       
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009.
+ * @copyright       Ersin Guvenc (c) 2009.
  * @filesource
  * @license
  */
@@ -21,7 +21,7 @@ Class ContentException extends CommonException {}
  * @package     Obullo
  * @subpackage  Libraries
  * @category    Language
- * @author      Ersin Güvenç
+ * @author      Ersin Guvenc
  * @version     0.1
  * @version     0.2 added empty $data string support
  * @version     0.3 added set_view_folder function
@@ -54,7 +54,7 @@ Class OB_Content {
     * supporting multiple interfaces (iphone, wap, xml services
     * etc ..)
     * 
-    * @author  Ersin Güvenç
+    * @author  Ersin Guvenc
     * @param   string $func view function
     * @param   string $folder view folder (no trailing slash)
     */
@@ -159,7 +159,7 @@ Class OB_Content {
     * Load Java script files externally
     * like fetch view files as string
     * 
-    * @author   Ersin Güvenç
+    * @author   Ersin Guvenc
     * @param    string $path
     * @param    string $filename
     * @version  0.1
@@ -194,7 +194,7 @@ Class OB_Content {
     /**
     * Main view function        
     * 
-    * @author   Ersin Güvenç          
+    * @author   Ersin Guvenc          
     * @param    string   $path file path 
     * @param    string   $filename 
     * @param    array    $data template vars

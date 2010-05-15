@@ -12,7 +12,7 @@ defined('BASE') or exit('Access Denied!');
 
 /*
 |--------------------------------------------------------------------------
-| Cache Directory Path
+| Output Cache Directory Path
 |--------------------------------------------------------------------------
 |
 | Leave this BLANK unless you would like to set something other than the
@@ -40,7 +40,8 @@ $cache['cache_path']             = '';
 | by the output class.  Do not "echo" any values with compression enabled.
 |
 */
-$config['compress_output']       = FALSE;
+$cache['compress_output']       = FALSE;
+$cache['compression_level']     = 8;
 
 /* End of file cache.php */
 /* Location: ./application/config/cache.php */

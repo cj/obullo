@@ -10,7 +10,7 @@ defined('BASE') or exit('Access Denied!');
  * @package         Obullo
  * @author          Obullo.com  
  * @subpackage      Base.database        
- * @copyright       Copyright (c) 2009 Ersin Güvenç.
+ * @copyright       Copyright (c) 2009 Ersin Guvenc.
  * @license         public
  * @since           Version 1.0
  * @filesource
@@ -32,7 +32,7 @@ defined('BASE') or exit('Access Denied!');
 /**
 * Custom query result class
 * 
-* @author  Ersin Güvenç
+* @author  Ersin Guvenc
 * @version 0.1
 */
 Class result {

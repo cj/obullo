@@ -8,7 +8,7 @@ defined('BASE') or exit('Access Denied!');
  * 
  * @package         obullo       
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2010.
+ * @copyright       Ersin Guvenc (c) 2010.
  * @filesource
  * @license
  */
@@ -25,7 +25,7 @@ Class UnitTestException extends CommonException {}
  * @package       Obullo
  * @subpackage    Libraries
  * @category      UnitTesting
- * @author        Ersin Güvenç
+ * @author        Ersin Guvenc
  * @link          
  */
 Class unit_test_CORE implements PHP5_Library {

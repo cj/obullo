@@ -9,7 +9,7 @@ defined('BASE') or exit('Access Denied!');
  * @package         Obullo
  * @author          Obullo.com  
  * @subpackage      Base.database        
- * @copyright       Copyright (c) 2009 Ersin Güvenç.
+ * @copyright       Copyright (c) 2009 Ersin Guvenc.
  * @license         public 
  * @since           Version 1.0 @alpha 2
  * @filesource
@@ -37,7 +37,7 @@ Class OB_DBFactory {
     * Check pdo extension
     * and build database params
     * 
-    * @author   Ersin Güvenç
+    * @author   Ersin Guvenc
     * @version  0.1
     * @version  0.2 Added dsn connection, Added optional, required variables.
     * @return   object PDO
@@ -58,7 +58,7 @@ Class OB_DBFactory {
     /**
     * Connect Requested PDO Driver
     * 
-    * @author   Ersin Güvenç
+    * @author   Ersin Guvenc
     * @param    
     * @version  0.1
     * @version  0.2 added $db_var and $settings vars

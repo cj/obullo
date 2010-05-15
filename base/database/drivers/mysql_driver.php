@@ -65,10 +65,10 @@ Class Obullo_DB_Driver_Mysql extends OB_DBAdapter
         $dsn  = empty($this->dsn) ? 'mysql:host='.$this->hostname.$port.';dbname='.$this->database : $this->dsn;
         
         // array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES $this->char_set") it occurs an error !
-        $this->_conn  = $this->pdo_connect($dsn, $this->username, $this->password, $this->options);
+        $this->_pdo  = $this->pdo_connect($dsn, $this->username, $this->password, $this->options);
              
         if( ! empty($this->char_set) )
-        $this->_conn->query("SET NAMES '" . $this->char_set . "'");
+        $this->_conn->exec("SET NAMES '" . $this->char_set . "'");
         
         // We set exception attribute for always showing the pdo exceptions errors. (ersin)
         $this->_conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
@@ -159,7 +159,7 @@ Class Obullo_DB_Driver_Mysql extends OB_DBAdapter
         } 
         
         if( ! $this->prepare)
-        $str = $this->quote($str, PDO::PARAM_STR); 
+        $str = $this->_conn->quote($str, PDO::PARAM_STR); 
         
         return $str;
     }

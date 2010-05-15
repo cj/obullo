@@ -8,7 +8,7 @@ defined('BASE') or exit('Access Denied!');
  * 
  * @package         obullo      
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009.
+ * @copyright       Ersin Guvenc (c) 2009.
  * @since           Version 1.0
  * @filesource
  * @license
@@ -26,7 +26,7 @@ Class InputException extends CommonException {}
  * @package       Obullo
  * @subpackage    Libraries
  * @category      Input
- * @author        Ersin Güvenç
+ * @author        Ersin Guvenc
  * @link          
  */
 Class OB_Input {
@@ -95,8 +95,8 @@ Class OB_Input {
     private function _sanitize_globals()
     {
         // Would kind of be "wrong" to unset any of these GLOBALS
-        $protected = array('_SERVER', '_GET', '_POST', '_FILES', '_REQUEST', '_SESSION', '_ENV', 'GLOBALS', 'HTTP_RAW_POST_DATA',
-                            'system_folder', 'application_folder', 'BM', 'EXT', 'CFG', 'URI', 'RTR', 'OUT', 'IN');
+        $protected = array('_SERVER', '_GET', '_POST', '_FILES', '_REQUEST', '_SESSION', 
+        '_ENV', '_parents', '_controller', 'GLOBALS', 'HTTP_RAW_POST_DATA');
        
         // Unset globals for security. 
         // This is effectively the same as register_globals = off

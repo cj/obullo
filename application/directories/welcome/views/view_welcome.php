@@ -1,4 +1,3 @@
-
 <!-- body tag content -->
 
 <h1>Welcome to Obullo Framework !</h1> 

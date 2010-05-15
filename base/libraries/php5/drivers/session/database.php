@@ -8,7 +8,7 @@ defined('BASE') or exit('Access Denied!');
  *
  * @package         obullo      
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009.
+ * @copyright       Ersin Guvenc (c) 2009.
  * @since           Version 1.0
  * @filesource
  * @license
@@ -22,7 +22,7 @@ defined('BASE') or exit('Access Denied!');
  * @package      Obullo
  * @subpackage   Libraries
  * @category     Sessions
- * @author       Ersin Güvenç
+ * @author       Ersin Guvenc
  * @link         
  */
  
@@ -46,18 +46,21 @@ Class OB_Session_database_driver extends OB_Session {
     * 
     */
     public function _session_start()
-    {
+    {                   
         // if database variable exists ..
-        if($this->OB->{$this->sess_database_var} instanceof PDO)
+        if($this->OB->{$this->sess_db_var} instanceof OB_DB)
         {
-            $this->sess_db = &$this->OB->{$this->sess_database_var};
-        } 
+            $this->sess_db = &$this->OB->{$this->sess_db_var};
+        }                                
         else
         {
-            if( ! $this->OB->db instanceof PDO) 
+            if(isset($this->OB->db)) 
             {
-                throw new SessionException('Session class works with database class so 
-                you must load database object by loader::database() function.');
+                if( ! $this->OB->db instanceof OB_DB) 
+                {
+                    throw new SessionException('Session class works with database class so 
+                    first you must load database object by loader::database() function.');
+                }
             }
             
             $this->sess_db = &$this->OB->db;

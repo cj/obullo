@@ -8,7 +8,7 @@ defined('BASE') or exit('Access Denied!');
  * 
  * @package         obullo    
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009.
+ * @copyright       Ersin Guvenc (c) 2009.
  * @since           Version 1.0
  * @filesource
  * @license
@@ -47,8 +47,6 @@ defined('BASE') or exit('Access Denied!');
 */
 function Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, $type)
 {   
-    // while (ob_get_level()) { ob_end_clean(); }  
-    
     include(APP.'system'.DS.'errors'.DS.'ob_error'.EXT);
 }
 
@@ -77,8 +75,6 @@ function Obullo_ExceptionHandler($e)
            }
         }        
     }
-    
-    // while (ob_get_level()) { ob_end_clean(); } 
     
     include(APP.'system'.DS.'errors'.DS.'ob_exception'.EXT);
 }       

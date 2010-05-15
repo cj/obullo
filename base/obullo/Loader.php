@@ -9,7 +9,7 @@ defined('BASE') or exit('Access Denied!');
  * @package         Obullo  
  * @author          Obullo.com  
  * @subpackage      Base.libraries        
- * @copyright       Copyright (c) 2009 Ersin Güvenç.
+ * @copyright       Copyright (c) 2009 Ersin Guvenc.
  * @license          
  * @filesource
  */ 
@@ -69,14 +69,6 @@ Class loader {
     public static $_app_helpers = array();
     
     /**
-    * Prevent Duplication 
-    * memory of the "local" helper files.
-    * 
-    * @var array
-    */
-    public static $_helpers = array();      
-    
-    /**
     * loader::lib();
     * 
     * load app libraries from /directories folder.
@@ -128,13 +120,13 @@ Class loader {
     // --------------------------------------------------------------------
     
     /**
-    * Obullo Library Loader (c) 2009
+    * Obullo Library Loader.
     * 
     * Load user or system classes
     * from application/libraries or base/libraries
     * directories.
     * 
-    * @author   Ersin Güvenç
+    * @author   Ersin Guvenc
     * @param    string $class class name
     * @param    array $params
     *           Array = provide __construct() params
@@ -181,13 +173,13 @@ Class loader {
     /**
     * loader::app_model();
     * 
-    * @author   Ersin Güvenç
+    * @author   Ersin Guvenc
     * @param    string $model
+    * @param    string $params (construct params)  
     * @param    string $object_name
-    * @param    string $params (construct params)
     * @return   void
     */
-    public static function app_model($model, $object_name = '', $params = '')
+    public static function app_model($model, $params = '', $object_name = '')
     {
         self::_model(APP .'models'. DS .strtolower($model). EXT, strtolower($model), $object_name, $params);
     }
@@ -198,9 +190,11 @@ Class loader {
     * loader::model();
     * Obullo Model Loader
     * 
-    * @author    Ersin Güvenç
+    * @author    Ersin Guvenc
     * @copyright obullo.com
     * @param     string $model
+    * @param     array  $params (construct params)
+    * @param     string $object_name 
     * @version   0.1
     * @version   0.2 added directory support
     * @version   0.3 changed $GLOBALS['c'] as $GLOBALS['d']
@@ -210,7 +204,7 @@ Class loader {
     * @version   0.5 added $object_name and $params variables 
     * @return    void
     */
-    public static function model($model, $object_name = '', $params = '')
+    public static function model($model, $params = '', $object_name = '')
     {   
         $model_name = strtolower($model);
         
@@ -284,7 +278,7 @@ Class loader {
     * This function loads the database for controllers
     * and model files.
     * 
-    * @author   Ersin Güvenç
+    * @author   Ersin Guvenc
     * @param    mixed $db_name for manual connection
     * @param    boolean $instantiate switch
     * @param    boolean $ac active record switch
@@ -379,7 +373,7 @@ Class loader {
     *   o App/helpers   : /application helpers
     *   o Local/helpers : /directiories/$directory/ helpers
     * 
-    * @author   Ersin Güvenç
+    * @author   Ersin Guvenc
     * @param    string $helper
     * @version  0.1
     * @version  0.2 changed $GLOBALS['c'] as $GLOBALS['d']
@@ -430,7 +424,7 @@ Class loader {
     /**
     * loader::base_helper();
     *
-    * @author   Ersin Güvenç
+    * @author   Ersin Guvenc
     * @param    string $helper
     * @version  0.1
     * @version  0.2 added self::$_base_helpers static var
@@ -520,7 +514,7 @@ Class loader {
     /**
     * Assign db objects to all Models
     * 
-    * @author  Ersin Güvenç
+    * @author  Ersin Guvenc
     * @param   string $db_var
     *
     * @version 0.1

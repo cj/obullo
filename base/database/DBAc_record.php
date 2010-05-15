@@ -10,7 +10,7 @@ defined('BASE') or exit('Access Denied!');
  * @package         Obullo
  * @author          Obullo.com  
  * @subpackage      Base.database        
- * @copyright       Copyright (c) 2009 Ersin Güvenç.
+ * @copyright       Copyright (c) 2009 Ersin Guvenc.
  * @license         public
  * @since           Version 1.0
  * @filesource
@@ -29,7 +29,7 @@ defined('BASE') or exit('Access Denied!');
  * @version         0.5 added method chaining support. 
  */
  
-Class OB_DBAc_record extends PDO {
+Class OB_DBAc_record  {
                                          
     public $ar_select              = array();
     public $ar_distinct            = FALSE;
@@ -419,11 +419,11 @@ Class OB_DBAc_record extends PDO {
                 $escaped_val = $this->escape_like($v, $side);
                 $like_statement = $prefix." $k $not LIKE ".$escaped_val; // Obullo rc1 Changes...
             }
-            
+
             // some platforms require an escape sequence definition for LIKE wildcards
             if ($this->_like_escape_str != '')
             {
-                $like_statement = $like_statement.sprintf($this->_like_escape_str, $this->_like_escape_char);
+                $like_statement = $like_statement.sprintf($this->_like_escape_str, $this->_like_escape_chr);
             }
             
             $this->ar_like[] = $like_statement;
@@ -795,7 +795,7 @@ Class OB_DBAc_record extends PDO {
     *
     * Compiles an update string and runs the query
     *
-    * @author   Ersin Güvenç
+    * @author   Ersin Guvenc
     * @access   public
     * @param    string   the table to retrieve the results from
     * @param    array    an associative array of update values

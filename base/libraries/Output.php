@@ -8,7 +8,7 @@ defined('BASE') or exit('Access Denied!');
  * 
  * @package         obullo       
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009.
+ * @copyright       Ersin Guvenc (c) 2009.
  * @filesource
  * @license
  */
@@ -25,7 +25,7 @@ Class OutputException extends CommonException {}
  * @package       Obullo
  * @subpackage    Libraries
  * @category      Libraries
- * @author        Ersin Güvenç
+ * @author        Ersin Guvenc
  * @link          
  */
 Class OB_Output {
@@ -218,9 +218,10 @@ Class OB_Output {
         if (config_item('compress_output', 'cache') === TRUE)
         {
             if (extension_loaded('zlib'))
-            {
+            {             
                 if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) AND strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== FALSE)
-                {
+                { 
+                    ini_set('zlib.output_compression_level', config_item('compression_level', 'cache'));  // Obullo changes .. 
                     ob_start('ob_gzhandler');
                 }
             }
@@ -239,10 +240,10 @@ Class OB_Output {
 
         // --------------------------------------------------------------------
         
-        // Does the ob::instance() function exist?
+        // Does the this() function exist?
         // If not we know we are dealing with a cache file so we'll
         // simply echo out the data and exit.
-        if ( ! class_exists('ob'))
+        if ( ! function_exists('this'))
         {
             echo $output;
             log_message('debug', "Final output sent to browser");

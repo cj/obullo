@@ -10,7 +10,7 @@ defined('BASE') or exit('Access Denied!');
  * @package         Obullo
  * @author          Obullo.com  
  * @subpackage      Base.database        
- * @copyright       Copyright (c) 2009 Ersin Güvenç.
+ * @copyright       Copyright (c) 2009 Ersin Guvenc.
  * @license         public
  * @since           Version 1.0
  * @filesource
@@ -23,7 +23,7 @@ defined('BASE') or exit('Access Denied!');
  * @package       Obullo
  * @subpackage    Drivers
  * @category      Database
- * @author        Ersin Güvenç 
+ * @author        Ersin Guvenc 
  * @link                              
  */
 
@@ -34,11 +34,11 @@ Class Obullo_DB_Driver_Sqlite extends OB_DBAdapter
     * 
     * @var string
     */
-    public $_escape_char = '`';
+    public $_escape_char = ''; // sqlite not use ` backticks ..
     
     // clause and character used for LIKE escape sequences
-    public $_like_escape_str = " ESCAPE '%s' ";
-    public $_like_escape_chr = '!';     
+    public $_like_escape_str = "";  // some errors using ESCAPE with sqlite2
+    public $_like_escape_chr = "\\";     
      
     public function __construct($param, $db_var = 'db')
     {   
@@ -49,7 +49,7 @@ Class Obullo_DB_Driver_Sqlite extends OB_DBAdapter
     /**
     * Connect to PDO
     * 
-    * @author   Ersin Güvenç 
+    * @author   Ersin Guvenc 
     * @param    string $dsn  Dsn
     * @param    string $user Db username
     * @param    mixed  $pass Db password
@@ -62,9 +62,12 @@ Class Obullo_DB_Driver_Sqlite extends OB_DBAdapter
         if ($this->_conn) { return; }
         
         $type = '';
-        
          switch ($this->dbdriver)
          {
+            case 'sqlite':
+                $type = 'sqlite';
+                break;
+             
             case 'sqlite2':
                 $type = 'sqlite2';
                 break;
@@ -72,18 +75,32 @@ Class Obullo_DB_Driver_Sqlite extends OB_DBAdapter
             case 'sqlite3':
                 $type = 'sqlite3';
                 break;
-                
-            case 'sqlite':
-                $type = 'sqlite';
-                break;
         }
         
         $dsn  = empty($this->dsn) ? $type.':'.$this->database : $this->dsn;        
 
-        $this->_conn = $this->pdo_connect($dsn, NULL, NULL, $this->options);
+        $this->_pdo = $this->pdo_connect($dsn, NULL, NULL, $this->options);
         
         // We set exception attribute for always showing the pdo exceptions errors. (ersin)
         $this->_conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+        
+        $retval = $this->_conn->exec('PRAGMA full_column_names=0');
+        
+        if ($retval === false) {
+            
+            $error = $this->_conn->errorInfo();
+
+            throw new DBException($error[2]);
+        }
+
+        $retval = $this->_conn->exec('PRAGMA short_column_names=1');
+        if ($retval === false) {
+            
+            $error = $this->_conn->errorInfo();
+
+            throw new DBException($error[2]);
+        }
+        
     } 
 
     // --------------------------------------------------------------------
@@ -173,7 +190,7 @@ Class Obullo_DB_Driver_Sqlite extends OB_DBAdapter
         } 
         
         if( ! $this->prepare)
-        $str = $this->quote($str, PDO::PARAM_STR); 
+        $str = $this->_conn->quote($str, PDO::PARAM_STR); 
         
         return $str;
     }

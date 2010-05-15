@@ -8,7 +8,7 @@ defined('BASE') or exit('Access Denied!');
  * 
  * @package         obullo       
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009.
+ * @copyright       Ersin Guvenc (c) 2009.
  * @filesource
  * @license
  */
@@ -21,7 +21,7 @@ Class TableException extends CommonException {}
  * @package     Obullo
  * @subpackage  Libraries
  * @category    Libraries
- * @author      Ersin Güvenç
+ * @author      Ersin Guvenc
  * @link        
  */
 Class table_CORE implements PHP5_Library {

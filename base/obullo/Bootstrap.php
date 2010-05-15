@@ -8,7 +8,7 @@ defined('BASE') or exit('Access Denied!');
  *
  * @package         obullo     
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009.
+ * @copyright       Ersin Guvenc (c) 2009.
  * @since           Version 1.0
  * @filesource
  * @license
@@ -23,17 +23,12 @@ defined('BASE') or exit('Access Denied!');
  * @category        Front Controller
  * @version         1.0
  */  
- 
-/**
-* Common Exception Class.
-*/
-Class CommonException extends Exception {};  
 
+Class CommonException extends Exception {};
+
+
+//  Include application header files.
 // -------------------------------------------------------------------- 
-
-/**
-* Include application header files.
-*/
 if( ! function_exists('ob_include_files'))
 {
     function ob_include_files()
@@ -47,11 +42,8 @@ if( ! function_exists('ob_include_files'))
     }
 }
 
+//  Include header functions. 
 // -------------------------------------------------------------------- 
-
-/**
-* Include header functions.
-*/
 if( ! function_exists('ob_include_headers'))
 {
     function ob_include_headers()
@@ -62,15 +54,11 @@ if( ! function_exists('ob_include_headers'))
         ini_set('display_errors', config_item('display_errors'));
         date_default_timezone_set(config_item('timezone_set'));
         
-        header('Content-type: text/html;charset='.config_item('charset')); // UTF-8 
     }
 }
 
+//  Run the application.
 // --------------------------------------------------------------------    
-
-/**
-* Run the application.
-*/
 if( ! function_exists('ob_system_run'))
 {
     function ob_system_run()
@@ -124,7 +112,6 @@ if( ! function_exists('ob_system_run'))
         // If Everyting ok Declare Called Controller !
         $OB = new $GLOBALS['c']();
 
-
         // Check method exist or not
         if ( ! in_array(strtolower($GLOBALS['m']), array_map('strtolower', get_class_methods($OB))))
         {
@@ -145,11 +132,8 @@ if( ! function_exists('ob_system_run'))
     }
 }
 
+// Close the opened connections.
 // --------------------------------------------------------------------  
-
-/**
-* Close the opened connections.
-*/
 if( ! function_exists('ob_system_close'))
 {
     function ob_system_close()
@@ -160,9 +144,8 @@ if( ! function_exists('ob_system_close'))
             ob::instance()->{$db_var} = NULL;
         }
         
-        // Closing PDO Connections !
-        // ..$OB->db = NULL;
-        // .
+        // close all buffers.
+        while (ob_get_level() > 0) { ob_end_flush(); }
     }
 }
 

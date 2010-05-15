@@ -9,7 +9,7 @@ defined('BASE') or exit('Access Denied!');
  * @package         obullo
  * @subpackage      Base.base        
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009.
+ * @copyright       Ersin Guvenc (c) 2009.
  * @filesource
  * @license
  */
@@ -23,7 +23,7 @@ Class RouterException extends CommonException {}
  * @package     Obullo
  * @subpackage  Base
  * @category    URI
- * @author      Ersin Güvenç
+ * @author      Ersin Guvenc
  * @version     0.1 changed php4 rules as php5
  * @version     0.2 Routing structure changed as /directory/class/method/arg..
  * @version     0.3 added query string support d= directory & c= class & m= method
@@ -45,13 +45,13 @@ Class OB_Router {
     * Constructor
     * Runs the route mapping function.
     * 
-    * @author   Ersin Güvenç
+    * @author   Ersin Guvenc
     * @version  0.1
     * @version  0.2 added config index method and include route
     */
     public function __construct()
     {
-        include(APP.'config'.DS.'routes'.EXT);
+        $routes = get_config('routes');   // Obullo changes..
         
         $this->routes = ( ! isset($routes) OR ! is_array($routes)) ? array() : $routes;
         unset($routes);
@@ -72,7 +72,7 @@ Class OB_Router {
     * as well as any "routes" that have been set in the routing config file.
     *
     * @access    private
-    * @author    Ersin Güvenç
+    * @author    Ersin Guvenc
     * @version   0.1
     * @version   0.2 added query_sting = true var
     * @return    void
@@ -155,7 +155,7 @@ Class OB_Router {
     * input, and sets the current class/method
     *
     * @access   private
-    * @author   Ersin Güvenç
+    * @author   Ersin Guvenc
     * @param    array
     * @param    bool
     * @version  0.1
@@ -196,7 +196,7 @@ Class OB_Router {
     * Validates the supplied segments.  Attempts to determine the path to
     * the controller.
     *
-    * @author   Ersin Güvenç
+    * @author   Ersin Guvenc
     * @access   private
     * @param    array
     * @version  Changed segments[0] as segments[1]

@@ -10,7 +10,7 @@ defined('BASE') or exit('Access Denied!');
  * @package         Obullo
  * @author          Obullo.com  
  * @subpackage      Base.database        
- * @copyright       Copyright (c) 2009 Ersin Güvenç.
+ * @copyright       Copyright (c) 2009 Ersin Guvenc.
  * @license         public
  * @since           Version 1.0
  * @filesource
@@ -23,7 +23,7 @@ defined('BASE') or exit('Access Denied!');
  * @package       Obullo
  * @subpackage    Drivers
  * @category      Database
- * @author        Ersin Güvenç 
+ * @author        Ersin Guvenc 
  * @link          ftp://ftp.4d.com/ACI_PRODUCT_REFERENCE_LIBRARY/
  *                4D_PRODUCT_DOCUMENTATION/PDF_Docs_by_4D_Product_A-Z/
  *                4D/4D_v11_SQL/4D_v11_SQL_Reference_r4.pdf                           
@@ -51,7 +51,7 @@ Class Obullo_DB_Driver_4d extends OB_DBAdapter
     /**
     * Connect to PDO
     * 
-    * @author   Ersin Güvenç 
+    * @author   Ersin Guvenc 
     * @param    string $dsn  Dsn
     * @param    string $user Db username
     * @param    mixed  $pass Db password
@@ -67,7 +67,7 @@ Class Obullo_DB_Driver_4d extends OB_DBAdapter
         $charset = empty($this->char_set) ? '' : ';charset='.$this->char_set;
         $dsn     = empty($this->dsn) ? '4D:host='.$this->hostname.$port.$charset : $this->dsn;
              
-        $this->_conn  = $this->pdo_connect($dsn, $this->username, $this->password, $this->options);
+        $this->_pdo  = $this->pdo_connect($dsn, $this->username, $this->password, $this->options);
 
         // We set exception attribute for always showing the pdo exceptions errors. (ersin)
         $this->_conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
@@ -158,7 +158,7 @@ Class Obullo_DB_Driver_4d extends OB_DBAdapter
         } 
         
         if( ! $this->prepare)
-        $str = $this->quote($str, PDO::PARAM_STR); 
+        $str = $this->_conn->quote($str, PDO::PARAM_STR); 
         
         return $str;
     }

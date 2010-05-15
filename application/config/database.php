@@ -15,9 +15,8 @@ $database['system']['active_record'] = TRUE;
 | Put your static database configurations here and decide your db variable
 | name. You will use it in the application like this $this->db .
 | 
-| Db variable name ( default $this->db )
+| db variable name ( default $this->db )
 |     ------------
-|             |
 |             |
 | $database['db']['...'] 
 | 
@@ -44,7 +43,6 @@ $database['db2']['dbh_port'] = "";
 $database['db2']['char_set'] = "utf8";
 $database['db2']['dsn']      = "";
 $database['db2']['options']  = array();
-
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */

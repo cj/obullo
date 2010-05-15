@@ -1,4 +1,4 @@
-<?php
+<?php      
 
 Class Start extends Controller {
     
@@ -10,11 +10,11 @@ Class Start extends Controller {
     }                               
 
     public function index()
-    {        
+    {       
         $this->title_tag = 'Welcome to Obullo Framework !';
         
         $this->meta_tag .= meta('keywords', 'obullo, php5, framework');   // You can manually set meta tags
-                                                                          // or globally via Global controller. 
+                                                                          // or globally via Global views. 
         $this->head_tag .= js('welcome.js');  
         $this->head_tag .= content::script('welcome'); 
         
@@ -24,6 +24,6 @@ Class Start extends Controller {
         content::app_view('view_base_layout');
     }
     
-} //end.
+}
   
 ?>

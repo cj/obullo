@@ -8,7 +8,7 @@ defined('BASE') or exit('Access Denied!');
  * 
  * @package         obullo       
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009.
+ * @copyright       Ersin Guvenc (c) 2009.
  * @filesource
  * @license
  */
@@ -23,7 +23,7 @@ Class ImagelibException extends CommonException {}
  * @package       Obullo
  * @subpackage    Libraries
  * @category      Image Lib
- * @author        Ersin Güvenç
+ * @author        Ersin Guvenc
  * @link          
  */
 Class image_lib_CORE implements PHP5_Library {

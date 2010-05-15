@@ -10,7 +10,7 @@ defined('BASE') or exit('Access Denied!');
  * @package         Obullo
  * @author          Obullo.com  
  * @subpackage      Base.database        
- * @copyright       Copyright (c) 2009 Ersin Güvenç.
+ * @copyright       Copyright (c) 2009 Ersin Guvenc.
  * @license         public
  * @since           Version 1.0
  * @filesource
@@ -24,7 +24,7 @@ defined('BASE') or exit('Access Denied!');
  * @package       Obullo
  * @subpackage    Drivers
  * @category      Database
- * @author        Ersin Güvenç 
+ * @author        Ersin Guvenc 
  * @link                              
  */
 
@@ -49,7 +49,7 @@ Class Obullo_DB_Driver_Odbc extends OB_DBAdapter
     /**
     * Connect to PDO
     * 
-    * @author   Ersin Güvenç 
+    * @author   Ersin Guvenc 
     * @param    string $dsn  Dsn
     * @param    string $user Db username
     * @param    mixed  $pass Db password
@@ -70,7 +70,7 @@ Class Obullo_DB_Driver_Odbc extends OB_DBAdapter
         // or username arguments in the PDO constructor. (ersin)
         // @see http://www.php.net/manual/en/ref.pdo-odbc.connection.php
         
-        $this->_conn  = $this->pdo_connect($dsn, $this->username, $this->password, $this->options);
+        $this->_pdo  = $this->pdo_connect($dsn, $this->username, $this->password, $this->options);
         
         // We set exception attribute for always showing the pdo exceptions errors. (ersin)
         $this->_conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
@@ -123,7 +123,7 @@ Class Obullo_DB_Driver_Odbc extends OB_DBAdapter
         
         // PDO_Odbc does not support PDO::quote() function.
         if( ! $this->prepare)
-        $str = "'".$str."'";
+        $str = "'".addslashes($str)."'";
         
         return $str;
     }

@@ -8,7 +8,7 @@ defined('BASE') or exit('Access Denied!');
  *
  * @package         obullo     
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009.
+ * @copyright       Ersin Guvenc (c) 2009.
  * @since           Version 1.0
  * @filesource
  * @license
@@ -57,7 +57,7 @@ interface PHP5_Driver_Library
 * Registry Controller Function
 * 
 * @access   private
-* @author   Ersin Güvenç
+* @author   Ersin Guvenc
 * @param    string $class name of the class.
 * @param    array $params construct params of the class.
 * @version  0.1
@@ -188,7 +188,7 @@ function base_register($class, $params = NULL)
 * Autoload Just for php5 Libraries.
 * 
 * @access   public
-* @author   Ersin Güvenç
+* @author   Ersin Guvenc
 * @param    string $class name of the class.
 *           You must provide real class name. (lowercase)
 * @param    boolean $base base class or not
@@ -267,18 +267,22 @@ function register_autoload($real_name)
             {
                 require(DIR .$GLOBALS['d']. DS .'libraries'. DS .'php5'. DS .$class. EXT);
                 
-                ob::instance()->_libs['php5_'.$class] = $class;
+                ob::instance()->_libs['php5_local_'.$class.'_loaded'] = $class;
                 return;
             } 
         }
         
-        // Php5 library replace support.  
+        // Php5 application library load and replace support.  
         // -------------------------------------------------------------------- 
-        if(file_exists(APP .'libraries'. DS .'php5'. DS .ucfirst($class). EXT))
+        if(file_exists(APP .'libraries'. DS .'php5'. DS .$class. EXT))
         {
-            require(APP .'libraries'. DS .'php5'. DS .ucfirst($class). EXT);
+            $replaced = '_loaded';
+            require(APP .'libraries'. DS .'php5'. DS .$class. EXT);
             
-            ob::instance()->_libs['php5_'.$class.'_replaced'] = $class;
+            if(file_exists(BASE .'libraries'. DS .'php5'. DS .ucfirst($class). EXT))
+            $replaced = '_replaced';
+            
+            ob::instance()->_libs['php5_'.$class.$replaced] = $class;
             return;            
         } 
                                           
@@ -312,7 +316,7 @@ function register_autoload($real_name)
             
             eval('Class '.$class.' extends '.$class.'_CORE {}');
             
-            ob::instance()->_libs['php5_'.$class] = $class;
+            ob::instance()->_libs['php5_'.$class.'_loaded'] = $class;
             return;
         }
         
@@ -369,7 +373,7 @@ spl_autoload_register('register_autoload',true);
 * Loads the (static) configuration or language files.
 *
 * @access    private
-* @author    Ersin Güvenç
+* @author    Ersin Guvenc
 * @param     string $filename file name
 * @param     string $var variable of the file
 * @param     string $folder folder of the file
@@ -454,7 +458,7 @@ function config_item($item, $config_name = 'config')
 * Gets a db configuration items
 *
 * @access    public
-* @author    Ersin Güvenç
+* @author    Ersin Guvenc
 * @param     string $item
 * @param     string $index 'default'
 * @version   0.1

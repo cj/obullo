@@ -8,7 +8,7 @@ defined('BASE') or exit('Access Denied!');
  * 
  * @package         obullo       
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009.
+ * @copyright       Ersin Guvenc (c) 2009.
  * @filesource
  * @license
  */
@@ -23,7 +23,7 @@ Class CartException extends CommonException {}
  * @package       Obullo
  * @subpackage    Libraries
  * @category      Shopping Cart
- * @author        Ersin Güvenç
+ * @author        Ersin Guvenc
  * @link
  */
 Class cart_CORE implements PHP5_Library {
@@ -65,13 +65,13 @@ Class cart_CORE implements PHP5_Library {
             }
         }
         
-        // Load the Session class
-        loader::base_lib('session', $config);
+        $session = session::instance();
+        $session->init($params);
             
         // Grab the shopping cart array from the session table, if it exists
-        if (ob::instance()->session->get('cart_contents') !== FALSE)
+        if ($session->get('cart_contents') !== FALSE)
         {
-            $this->_cart_contents = ob::instance()->session->set('cart_contents');
+            $this->_cart_contents = $session->get('cart_contents');
         }
         else
         {
@@ -400,12 +400,12 @@ Class cart_CORE implements PHP5_Library {
 
         // Set the cart total and total items.
         $this->_cart_contents['total_items'] = count($this->_cart_contents);            
-        $this->_cart_contents['cart_total'] = $total;
+        $this->_cart_contents['cart_total']  = $total;
     
         // Is our cart empty?  If so we delete it from the session
         if (count($this->_cart_contents) <= 2)
         {
-            ob::instance()->session->un_set('cart_contents');
+            session::instance()->un_set('cart_contents');
             
             // Nothing more to do... coffee time!
             return FALSE;
@@ -413,7 +413,7 @@ Class cart_CORE implements PHP5_Library {
 
         // If we made it this far it means that our cart has data.
         // Let's pass it to the Session class so it can be stored
-        ob::instance()->session->set(array('cart_contents' => $this->_cart_contents));
+        session::instance()->set(array('cart_contents' => $this->_cart_contents));
 
         // Woot!
         return TRUE;    
@@ -549,7 +549,7 @@ Class cart_CORE implements PHP5_Library {
         $this->_cart_contents['cart_total'] = 0;        
         $this->_cart_contents['total_items'] = 0;        
 
-        ob::instance()->session->un_set('cart_contents');
+        session::instance()->un_set('cart_contents');
     }
 
 

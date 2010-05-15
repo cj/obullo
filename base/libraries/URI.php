@@ -8,7 +8,7 @@ defined('BASE') or exit('Access Denied!');
  *
  * @package         obullo       
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009.
+ * @copyright       Ersin Guvenc (c) 2009.
  * @filesource
  * @license
  */
@@ -22,7 +22,7 @@ Class UriException extends CommonException {}
  * @package     Obullo
  * @subpackage  Libraries
  * @category    URI
- * @author      Ersin Güvenç
+ * @author      Ersin Guvenc
  * @link        
  */
 Class OB_URI

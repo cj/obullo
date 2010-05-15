@@ -10,7 +10,7 @@ defined('BASE') or exit('Access Denied!');
  * @package         Obullo
  * @author          Obullo.com  
  * @subpackage      Base.database        
- * @copyright       Copyright (c) 2009 Ersin Güvenç.
+ * @copyright       Copyright (c) 2009 Ersin Guvenc.
  * @license         public
  * @since           Version 1.0
  * @filesource
@@ -42,23 +42,28 @@ Class OB_DB extends OB_DBAc_sw {
     
     public $use_bind_values         = FALSE;    // bind value usage switch
     public $use_bind_params         = FALSE;    // bind param usage switch
-    
-    private $Stmt                   = NULL;     // PDOStatement Object
-
     public $last_bind_values        = array();  // Last bindValues and bindParams
     public $last_bind_params        = array();  // We store binds values to array() 
                                                 // because of we need it in last_query() function
+    
+    private $Stmt                   = NULL;     // PDOStatement Object
 
     // Private variables
     public $_protect_identifiers    = TRUE;
     public $_reserved_identifiers   = array('*'); // Identifiers that should NOT be escaped
     
+    /**
+    * Pdo connection object.
+    * 
+    * @var string
+    */
+    public $_conn = NULL;  
     // --------------------------------------------------------------------
     
     /**
     * Connect to PDO
     * 
-    * @author   Ersin Güvenç 
+    * @author   Ersin Guvenc 
     * @param    string $dsn  Dsn
     * @param    string $user Db username
     * @param    mixed  $pass Db password
@@ -67,17 +72,17 @@ Class OB_DB extends OB_DBAc_sw {
     */
     public function pdo_connect($dsn, $user = NULL, $pass = NULL, $options = NULL)
     {
-        parent::__construct($dsn, $user, $pass, $options);
-        
         ob::instance()->lang->load('db');
         
+        $this->_conn = new PDO($dsn, $user, $pass, $options);
+    
         return $this;
     }  
     
     /**
     * Set PDO native Prepare() function
     * 
-    * @author   Ersin Güvenç 
+    * @author   Ersin Guvenc 
     * @param    array $options prepare options
     */
     public function prep($options = array())
@@ -92,7 +97,7 @@ Class OB_DB extends OB_DBAc_sw {
     /**
     * Flexible Prepared or Direct Query
     *         
-    * @author  Ersin Güvenç
+    * @author  Ersin Guvenc
     * @param   string $sql
     * @version 1.0
     * @version 1.1  added $this->exec_count
@@ -104,14 +109,14 @@ Class OB_DB extends OB_DBAc_sw {
         
         if($this->prepare)
         {
-            $this->Stmt = parent::prepare($sql, $this->p_opt);
+            $this->Stmt = $this->_conn->prepare($sql, $this->p_opt);
             
             ++$this->exec_count;
             
             return $this;   // beta 1.0 rc1 changes ( direct query bug fixed )
         }
         
-        $this->Stmt = parent::query($sql);
+        $this->Stmt = $this->_conn->query($sql);
 
         ++$this->exec_count;
         
@@ -156,7 +161,7 @@ Class OB_DB extends OB_DBAc_sw {
                  break;
                  
                case 'integer':
-                 $str = $this->quote($str, PDO::PARAM_INT);  
+                 $str = $this->_conn->quote($str, PDO::PARAM_INT);  
                  break;
                  
                case 'boolean':
@@ -179,7 +184,7 @@ Class OB_DB extends OB_DBAc_sw {
     /**
     * Execute prepared query
     * 
-    * @author   Ersin Güvenç
+    * @author   Ersin Guvenc
     * @version  0.1
     * @version  0.2    added secure like conditions support
     * @version  0.3    changed bindValue functionality
@@ -192,9 +197,7 @@ Class OB_DB extends OB_DBAc_sw {
         $this->last_values = &$array; // store last executed bind values.
         
         if($this->use_bind_values)
-        {
-           $this->last_values = &$this->last_bind_values;   
-        }      
+        $this->last_values = &$this->last_bind_values;     
         
         // this is just for prepared direct queries with bindValues or bindParams..
         if($this->last_sql != NULL AND $this->exec_count == 0)
@@ -227,12 +230,12 @@ Class OB_DB extends OB_DBAc_sw {
     // --------------------------------------------------------------------
     
     /**
-    * Exec just for INSERT and 
+    * Exec just for CREATE, DELETE, INSERT and 
     * UPDATE operations it returns to
     * number of affected rows after the write
     * operations.
     * 
-    * @author   Ersin Güvenç
+    * @author   Ersin Guvenc
     * @param    string $sql
     * @version  0.1
     * @return   boolean
@@ -241,7 +244,7 @@ Class OB_DB extends OB_DBAc_sw {
     {
         $this->last_sql = &$sql;
         
-        return parent::exec($sql);
+        return $this->_conn->exec($sql);
     }
         
     // --------------------------------------------------------------------
@@ -287,7 +290,7 @@ Class OB_DB extends OB_DBAc_sw {
     /**                               
     * Fetch prepared or none prepared last_query
     * 
-    * @author   Ersin Güvenç
+    * @author   Ersin Guvenc
     * @version  0.1
     * @version  0.2 added prepared param
     * @param    boolean $prepared
@@ -300,7 +303,7 @@ Class OB_DB extends OB_DBAc_sw {
             $quote_added_vals = array();
             foreach(array_values($this->last_values) as $q)
             {
-                $quote_added_vals[] = PDO::quote($q); // "'".$q."'"; 
+                $quote_added_vals[] = $this->_conn->quote($q); // "'".$q."'"; 
             }
         
             return str_replace(array_keys($this->last_values), $quote_added_vals, $this->last_sql);
@@ -318,7 +321,7 @@ Class OB_DB extends OB_DBAc_sw {
     */
     public function insert_id()
     {
-        return parent::lastInsertId();
+        return $this->_conn->lastInsertId();
     }
     
     // --------------------------------------------------------------------
@@ -366,7 +369,7 @@ Class OB_DB extends OB_DBAc_sw {
     */
     public function drivers()
     {
-        return PDO::getAvailableDrivers();
+        return $this->_conn->getAvailableDrivers();
     }
     
     // --------------------------------------------------------------------

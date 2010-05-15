@@ -8,7 +8,7 @@ defined('BASE') or exit('Access Denied!');
  *
  * @package         obullo    
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009.
+ * @copyright       Ersin Guvenc (c) 2009.
  * @since           Version 1.0
  * @filesource
  * @license
@@ -56,7 +56,7 @@ Class Controller extends ob {
     /**
     * Initialize to default base libraries.
     * 
-    * @author   Ersin Güvenç
+    * @author   Ersin Guvenc
     * @return   void
     */
     private function _ob_init()
@@ -80,7 +80,6 @@ Class Controller extends ob {
     } 
     
 }
-
 // END Controller Class
 
 /* End of file Controller.php */

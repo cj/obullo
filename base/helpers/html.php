@@ -8,7 +8,7 @@ defined('BASE') or exit('Access Denied!');
  * 
  * @package         obullo       
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009.
+ * @copyright       Ersin Guvenc (c) 2009.
  * @license         public
  * @since           Version 1.0
  * @filesource
@@ -23,7 +23,7 @@ defined('BASE') or exit('Access Denied!');
  * @package     Obullo
  * @subpackage  Helpers
  * @category    Helpers
- * @author      Ersin Güvenç
+ * @author      Ersin Guvenc
  * @link        
  */
 // ------------------------------------------------------------------------
@@ -31,7 +31,7 @@ defined('BASE') or exit('Access Denied!');
 /**
 * Load Global Css File
 * 
-* @author Ersin Güvenç
+* @author Ersin Guvenc
 * @param  string $filename
 * @param  string $arguments
 * @param  string $path
@@ -48,7 +48,7 @@ function css($filename, $path = 'css', $title = '', $media = '')
 * Load Local Css File from
 * current controller directory.
 * 
-* @author Ersin Güvenç
+* @author Ersin Guvenc
 * @param  string $filename
 * @param  string $arguments
 * @param  string $path
@@ -64,7 +64,7 @@ function local_css($filename, $path = 'css', $title = '', $media = '')
 /**
 * Build css files in <head> tags
 * 
-* @author   Ersin Güvenç
+* @author   Ersin Guvenc
 * @param    mixed   $filename array or string
 * @param    string  $media  'all' or 'print' etc..
 * @param    string  $arguments add argument
@@ -109,7 +109,7 @@ function _css($filename, $dir = 'source', $path = 'css', $title = '', $media = '
 /**
 * Load global js file.
 * 
-* @author Ersin Güvenç
+* @author Ersin Guvenc
 * @param  string $filename
 * @param  string $arguments
 * @param  string $type
@@ -125,7 +125,7 @@ function js($filename, $arguments = '', $type = 'text/javascript')
 * Load local js file from
 * current controller directory.
 * 
-* @author Ersin Güvenç
+* @author Ersin Guvenc
 * @param  string $filename
 * @param  string $arguments
 * @param  string $type
@@ -140,7 +140,7 @@ function local_js($filename, $arguments = '', $type = 'text/javascript')
 /**
 * Build js files in <head> tags
 * 
-* @author   Ersin Güvenç
+* @author   Ersin Guvenc
 * @param    string $filename
 * @param    string $arguments
 * @param    string $dir

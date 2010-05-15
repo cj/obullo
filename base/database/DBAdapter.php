@@ -10,7 +10,7 @@ defined('BASE') or exit('Access Denied!');
  * @package         Obullo
  * @author          Obullo.com  
  * @subpackage      Base.database        
- * @copyright       Copyright (c) 2009 Ersin Güvenç.
+ * @copyright       Copyright (c) 2009 Ersin Guvenc.
  * @license         public
  * @since           Version 1.0
  * @filesource
@@ -23,7 +23,7 @@ defined('BASE') or exit('Access Denied!');
  * @package       Obullo
  * @subpackage    Base.database
  * @category      Database
- * @author        Ersin Güvenç 
+ * @author        Ersin Guvenc
  * @link                              
  */
 
@@ -42,11 +42,11 @@ Abstract Class OB_DBAdapter extends OB_DB {
     public $dbprefix = '';
     
     /**
-    * Pdo connection object.
+    * Db object.
     * 
     * @var string
     */
-    public $_conn = NULL;  
+    public $_pdo = NULL;  
     
     /**
     * The character used for escaping
@@ -120,10 +120,10 @@ Abstract Class OB_DBAdapter extends OB_DB {
         $dsn  = empty($this->dsn) ? 'mysql:host='.$this->hostname.';'.$port.'dbname='.$this->database : $this->dsn;
         
         // array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES $this->char_set") it occurs an error !
-        $this->_conn  = $this->pdo_connect($dsn, $this->username, $this->password, $this->options);
+        $this->_pdo = $this->pdo_connect($dsn, $this->username, $this->password, $this->options);
              
         if( ! empty($this->char_set) )
-        $this->_conn->query("SET NAMES '" . $this->char_set . "'");
+        $this->_conn->exec("SET NAMES '" . $this->char_set . "'");
         
         // We set exception attribute for always showing the pdo exceptions errors. (ersin)
         $this->_conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
@@ -137,7 +137,7 @@ Abstract Class OB_DBAdapter extends OB_DB {
     */
     public function get_connection()
     {
-       return $this->_conn;
+       return $this->_pdo;
     }
     
     /**
@@ -200,7 +200,7 @@ Abstract Class OB_DBAdapter extends OB_DB {
     public function transaction()
     {
         $this->_connect();
-        parent::beginTransaction();
+        $this->_conn->beginTransaction();
         
         return $this;
     }
@@ -211,7 +211,7 @@ Abstract Class OB_DBAdapter extends OB_DB {
     public function commit()
     {
         $this->_connect(); 
-        parent::commit();
+        $this->_conn->commit();
         
         return $this;
     }
@@ -222,7 +222,7 @@ Abstract Class OB_DBAdapter extends OB_DB {
     public function rollback()
     {    
         $this->_connect();
-        parent::rollBack();
+        $this->_conn->rollBack();
         
         return $this;
     }

@@ -8,7 +8,7 @@ defined('BASE') or exit('Access Denied!');
  * 
  * @package         obullo       
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009.
+ * @copyright       Ersin Guvenc (c) 2009.
  * @filesource
  * @license
  */
@@ -23,7 +23,7 @@ Class FtpException extends CommonException {}
  * @package       Obullo
  * @subpackage    Base
  * @category      Libraries
- * @author        Ersin Güvenç
+ * @author        Ersin Guvenc
  * @link        
  */
 Class ftp_CORE implements PHP5_Library {

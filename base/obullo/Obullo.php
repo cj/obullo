@@ -8,7 +8,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  *
  * @package         obullo        
  * @author          obullo.com
- * @copyright       Ersin Güvenç (c) 2009 - 2010.
+ * @copyright       Ersin Guvenc (c) 2009 - 2010.
  * @since           Version 1.0
  * @filesource
  * @license
@@ -108,7 +108,7 @@ Class ob extends Controller_CORE
     * 
     * Obullo Super Object in Every Where
     *  
-    * @author Ersin Güvenç
+    * @author Ersin Guvenc
     * @version 1.0 
     * @version 1.1 get_instance renamed and moved here
     * @return object
@@ -121,7 +121,7 @@ Class ob extends Controller_CORE
 } // end class.
                           
 /**
-* @author  Ersin Güvenç
+* @author  Ersin Guvenc
 * 
 * A Pretty handy function for ob::instance();
 * ob::instance = $this so this() = ob::instance;
