@@ -333,7 +333,7 @@ Class table_CORE implements PHP5_Library {
                 
         // Next blast through the result array and build out the rows
         
-        if ($query->num_rows() > 0)
+        if (count($table_list) > 0)
         { 
             foreach ($table_list as $row) // Obullo Changes ..
             {

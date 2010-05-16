@@ -196,9 +196,6 @@ Class OB_DBAc_record  {
     
     public function where($key, $value = NULL, $escape = TRUE)
     {
-        if($this->prepare) $escape = FALSE;
-        
-        // beta 1.0 rc1 changes added return
         return $this->_where($key, $value, 'AND ', $escape);
     }
     
@@ -206,8 +203,6 @@ Class OB_DBAc_record  {
     
     public function or_where($key, $value = NULL, $escape = TRUE)
     {
-        if($this->prepare) $escape = FALSE;
-        
         return $this->_where($key, $value, 'OR ', $escape);
     }
     
@@ -250,8 +245,17 @@ Class OB_DBAc_record  {
                     $k = $this->_protect_identifiers($k, FALSE, $escape);
                     
                     $v = ' '.$this->escape($v);
+                
+                } else  // Obullo changes 
+                {
+                    // obullo changes.. 
+                    // make sure is it bind value, if not ... 
+                    if( strpos($v, ':') === FALSE || strpos($v, ':') > 0)
+                    {
+                         $v = "'{$v}'";  // obullo changes..
+                    }
                 }
-
+                
                 if ( ! self::_has_operator($k))
                 {
                     $k .= ' =';
@@ -329,12 +333,7 @@ Class OB_DBAc_record  {
 
         foreach ($values as $value)
         {
-            if($this->prepare)
-            {
-                $this->ar_wherein[] = $value;
-            } else {
-                $this->ar_wherein[] = $this->escape($value);     
-            }
+            $this->ar_wherein[] = $this->escape($value);
         }
 
         $prefix = (count($this->ar_where) == 0) ? '' : $type;
@@ -351,7 +350,7 @@ Class OB_DBAc_record  {
         // reset the array for multiple calls
         $this->ar_wherein = array();
         
-        return $this; // beta 1.0 rc1 changes 
+        return $this;
     }
     
     public function like($field, $match = '', $side = 'both')
@@ -409,16 +408,11 @@ Class OB_DBAc_record  {
             
             $prefix = (count($this->ar_like) == 0) ? '' : $type;
             
-            // if pdo prepare used , remove % operators..
-            if($this->prepare) 
-            {
-                $like_statement = $prefix." $k $not LIKE ".$v;  // Obullo rc1 Changes...
-            } 
-            else 
-            {
-                $escaped_val = $this->escape_like($v, $side);
-                $like_statement = $prefix." $k $not LIKE ".$escaped_val; // Obullo rc1 Changes...
-            }
+            // !!IMPORTANT if pdo Bind value used , remove "%" operators..
+            // make sure is it bind value or not. 
+
+            // Obullo rc1 Changes...
+            $like_statement = $prefix." $k $not LIKE ".$this->escape_like($v, $side); 
 
             // some platforms require an escape sequence definition for LIKE wildcards
             if ($this->_like_escape_str != '')
@@ -434,7 +428,7 @@ Class OB_DBAc_record  {
             }
         }
         
-        return $this;  // beta 1.0 rc1 changes 
+        return $this;
     }
     
     /**
@@ -465,7 +459,7 @@ Class OB_DBAc_record  {
             }
         }
         
-        return $this;  // beta 1.0 rc1 changes 
+        return $this;
     }
     
     // --------------------------------------------------------------------
@@ -479,8 +473,6 @@ Class OB_DBAc_record  {
     
     public function having($key, $value = '', $escape = TRUE)
     {
-        if($this->prepare) $escape = FALSE;
-        
         return $this->_having($key, $value, 'AND ', $escape);
     }
 
@@ -488,8 +480,6 @@ Class OB_DBAc_record  {
 
     public function orhaving($key, $value = '', $escape = TRUE)
     {
-        if($this->prepare) $escape = FALSE;
-        
         return $this->or_having($key, $value, $escape);
     }    
     
@@ -497,8 +487,6 @@ Class OB_DBAc_record  {
     
     public function or_having($key, $value = '', $escape = TRUE)
     {
-        if($this->prepare) $escape = FALSE;
-        
         return $this->_having($key, $value, 'OR ', $escape);
     }
     
@@ -532,8 +520,7 @@ Class OB_DBAc_record  {
             }
             
             if ($v != '')
-            {
-                if( ! $this->prepare)               
+            {               
                 $v = ' '.$this->escape_str($v);
             }
             
@@ -545,7 +532,7 @@ Class OB_DBAc_record  {
             }
         }
         
-        return $this; // beta 1.0 rc1 changes 
+        return $this;
     }
     
     // --------------------------------------------------------------------
@@ -605,7 +592,7 @@ Class OB_DBAc_record  {
         if ($this->ar_caching === TRUE)
         {
             $this->ar_cache_orderby[] = $orderby_statement;
-            $this->ar_cache_exists[] = 'orderby';
+            $this->ar_cache_exists[]  = 'orderby';
         }
         
         return $this;
@@ -628,7 +615,7 @@ Class OB_DBAc_record  {
         if ($offset != '')
         $this->ar_offset = $offset;
         
-        return $this; // beta 1.0 rc1 changes 
+        return $this;
     }
                                           
     // --------------------------------------------------------------------
@@ -637,7 +624,7 @@ Class OB_DBAc_record  {
     {
         $this->ar_offset = $offset;
         
-        return $this; // beta 1.0 rc1 changes 
+        return $this;
     }
  
     // --------------------------------------------------------------------
@@ -660,9 +647,17 @@ Class OB_DBAc_record  {
 
         foreach ($key as $k => $v)
         {
-            if ($escape === FALSE)
-            {                                                   // obullo changes..
-                $this->ar_set[$this->_protect_identifiers($k)] = "'".$v."'";
+            if ($escape === FALSE)                      
+            {                                           
+                // obullo changes.. 
+                // make sure is it bind value, if not ... 
+                if( strpos($v, ':') === FALSE || strpos($v, ':') > 0)
+                {
+                     $v = "'{$v}'";  // obullo changes..
+                }
+            
+                // obullo changes..
+                $this->ar_set[$this->_protect_identifiers($k)] = $v;
             }
             else
             {
@@ -670,7 +665,7 @@ Class OB_DBAc_record  {
             }
         }
         
-        return $this;  // beta 1.0 rc1 changes 
+        return $this; 
     } 
     
     /**
@@ -698,7 +693,7 @@ Class OB_DBAc_record  {
             
         $this->sql = $this->_compile_select();
         
-        if($this->prepare == FALSE)
+        if($this->prepare == FALSE)    // obullo changes ..
         {
             $result = $this->query($this->sql);
             $this->_reset_select();
@@ -709,6 +704,8 @@ Class OB_DBAc_record  {
         {
             $this->query($this->sql);  
             $this->_reset_select();
+            
+            return $this;    // obullo changes ..
         }
  
     }   
@@ -752,8 +749,6 @@ Class OB_DBAc_record  {
         }
 
         $sql = $this->_insert($this->_protect_identifiers($table, TRUE, NULL, FALSE), array_keys($this->ar_set), array_values($this->ar_set));
-                     
-        //echo $sql; exit;
         
         $this->_reset_write();
         
@@ -768,7 +763,7 @@ Class OB_DBAc_record  {
     * Generate an insert string
     *
     * @access   public
-    * @param    string    the table upon which the query will be performed
+    * @param    string   the table upon which the query will be performed
     * @param    array    an associative array data of key/values
     * @return   string        
     */    
@@ -962,7 +957,7 @@ Class OB_DBAc_record  {
         
         return $this->exec_query($sql); // return number of  affected rows
     
-    }  //end func.
+    } 
     
     // _delete function in to ?_driver.php file.
     

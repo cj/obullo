@@ -157,11 +157,32 @@ Class Obullo_DB_Driver_4d extends OB_DBAdapter
             }
         } 
         
-        if( ! $this->prepare)
-        $str = $this->_conn->quote($str, PDO::PARAM_STR); 
+        // make sure is it bind value, if not ... 
+        if( strpos($str, ':') === FALSE || strpos($str, ':') > 0)
+        {
+             $str = $this->quote($str, PDO::PARAM_STR);
+        }
         
         return $str;
     }
+    
+    // --------------------------------------------------------------------
+    
+    /**
+    * Platform specific pdo quote
+    * function.
+    *                 
+    * @author  Ersin Guvenc.
+    * @param   string $str
+    * @param   int    $type
+    * @return
+    */
+    public function quote($str, $type = NULL)
+    {
+         return $this->_conn->quote($str, $type);  
+    }
+    
+    // -------------------------------------------------------------------- 
     
     /**
     * From Tables

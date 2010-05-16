@@ -44,6 +44,18 @@ $database['db2']['char_set'] = "utf8";
 $database['db2']['dsn']      = "";
 $database['db2']['options']  = array();
 
+
+// second database
+$database['db3']['hostname'] = "localhost";
+$database['db3']['username'] = "root";
+$database['db3']['password'] = "";
+$database['db3']['database'] = "db/example_db2";
+$database['db3']['dbdriver'] = "sqlite2";
+$database['db3']['dbh_port'] = "";
+$database['db3']['char_set'] = "utf8";
+$database['db3']['dsn']      = "";
+$database['db3']['options']  = array();
+
 /* End of file database.php */
 /* Location: ./application/config/database.php */
 ?>

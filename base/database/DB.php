@@ -88,8 +88,9 @@ Class OB_DB extends OB_DBAc_sw {
     public function prep($options = array())
     {
         $this->p_opt   = &$options;
-        
         $this->prepare = TRUE;
+        
+        return $this; // beta 1.0 rc1 changes
     }
     
     // --------------------------------------------------------------------
@@ -161,7 +162,7 @@ Class OB_DB extends OB_DBAc_sw {
                  break;
                  
                case 'integer':
-                 $str = $this->_conn->quote($str, PDO::PARAM_INT);  
+                 $str = $this->quote($str, PDO::PARAM_INT);  
                  break;
                  
                case 'boolean':
@@ -287,7 +288,7 @@ Class OB_DB extends OB_DBAc_sw {
 
     // --------------------------------------------------------------------
     
-    /**                               
+    /**                              
     * Fetch prepared or none prepared last_query
     * 
     * @author   Ersin Guvenc
@@ -298,15 +299,16 @@ Class OB_DB extends OB_DBAc_sw {
     */
     public function last_query($prepared = FALSE)
     {   
+        // make sure is it prepared query ..
         if($prepared == TRUE AND self::_is_assoc($this->last_values))
         {                                  
-            $quote_added_vals = array();
-            foreach(array_values($this->last_values) as $q)
+            $quoted_vals = array();
+            foreach(array_values($this->last_values) as $v)
             {
-                $quote_added_vals[] = $this->_conn->quote($q); // "'".$q."'"; 
+                $quoted_vals[] = $this->quote($v);
             }
         
-            return str_replace(array_keys($this->last_values), $quote_added_vals, $this->last_sql);
+            return str_replace(array_keys($this->last_values), $quoted_vals, $this->last_sql);
         }
             
         return $this->last_sql;
@@ -415,12 +417,64 @@ Class OB_DB extends OB_DBAc_sw {
     * 
     * @return  integer
     */
-    public function num_rows()
+    public function row_count()
     {    
         return $this->Stmt->rowCount();
     }     
     
     // --------------------------------------------------------------------
+    
+    /**
+    * Retrieves the next rowset (result set) for a SQL statement that has
+    * multiple result sets.  An example is a stored procedure that returns
+    * the results of multiple queries.
+    *
+    * @return bool
+    */
+    public function next_rowset()
+    {                    
+        return $this->Stmt->nextRowset();
+    }
+    
+    // --------------------------------------------------------------------
+    
+    /**
+    * Fetches the next row and returns it as an object.
+    *
+    * @param    string $class  OPTIONAL Name of the class to create.
+    * @param    array  $config OPTIONAL Constructor arguments for the class.
+    * @return   mixed One object instance of the specified class.
+    */
+    public function fetch_object($class = 'stdClass', array $config = array())
+    {
+        return $this->Stmt->fetchObject($class, $config);
+    }
+
+    // -------------------------------------------------------------------- 
+    
+    /**
+    * Retrieve a statement attribute.
+    *
+    * @param   integer $key Attribute name.
+    * @return  mixed      Attribute value.
+    */
+    public function get_attribute($key)
+    {
+        return $this->Stmt->getAttribute($key);
+    }
+
+    // -------------------------------------------------------------------- 
+    
+    /**
+    * Returns metadata for a column in a result set.
+    *
+    * @param int $column
+    * @return mixed
+    */
+    public function get_colmeta($column)
+    {
+        return $this->Stmt->getColumnMeta($column);
+    }
     
     /**
     * Get column names and numbers (both)

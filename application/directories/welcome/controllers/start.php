@@ -13,8 +13,8 @@ Class Start extends Controller {
     {       
         $this->title_tag = 'Welcome to Obullo Framework !';
         
-        $this->meta_tag .= meta('keywords', 'obullo, php5, framework');   // You can manually set meta tags
-                                                                          // or globally via Global views. 
+        $this->meta_tag .= meta('keywords', 'obullo, php5, framework');   // You can manually set head tags
+                                                                          // or globally using Global views. 
         $this->head_tag .= js('welcome.js');  
         $this->head_tag .= content::script('welcome'); 
         
@@ -25,5 +25,4 @@ Class Start extends Controller {
     }
     
 }
-  
 ?>

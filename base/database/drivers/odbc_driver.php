@@ -122,14 +122,35 @@ Class Obullo_DB_Driver_Odbc extends OB_DBAdapter
         }
         
         // PDO_Odbc does not support PDO::quote() function.
-        if( ! $this->prepare)
-        $str = "'".addslashes($str)."'";
+        // make sure is it bind value, if not ... 
+        if( strpos($str, ':') === FALSE || strpos($str, ':') > 0)
+        {
+             $str = $this->quote($str); 
+        }
         
         return $str;
     }
     
     // --------------------------------------------------------------------
 
+    /**
+    * Platform specific pdo quote
+    * function.
+    *                 
+    * @author  Ersin Guvenc.
+    * @param   string $str
+    * @param   int    $type
+    * @return
+    */
+    public function quote($str, $type = NULL)
+    {
+        // PDO_Odbc does not support PDO::quote() function.
+        
+         return "'".addslashes($str)."'";  
+    }
+
+    // --------------------------------------------------------------------
+    
     /**
      * Escape the SQL Identifiers
      *

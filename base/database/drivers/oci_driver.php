@@ -115,13 +115,37 @@ Class Obullo_DB_Driver_Oci extends OB_DBAdapter
             }
         } 
         
-        if( ! $this->prepare)
-        $str = $this->_conn->quote($str, PDO::PARAM_STR); 
-        
+        // make sure is it bind value, if not ... 
+        if( strpos($str, ':') === FALSE || strpos($str, ':') > 0)
+        {
+             $str = $this->quote($str);
+        }
+
         return $str;
     }
     
     // --------------------------------------------------------------------
+    
+    /**
+    * Quote a string.
+    * Most PDO drivers have an implementation for the quote() method,
+    * but the Oracle OCI driver not. From Zend.
+    *
+    * @param   string $value    Raw string
+    * @return  string           Quoted string
+    */
+    protected function quote($value, $type = NULL)
+    {
+        if (is_int($value) || is_float($value))
+        {
+            return $value;
+        }
+        
+        $value = str_replace("'", "''", $value);
+        return "'" . addcslashes($value, "\000\n\r\\\032") . "'";
+    }
+    
+    // -------------------------------------------------------------------- 
     
     /**
      * Escape the SQL Identifiers

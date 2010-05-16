@@ -58,8 +58,8 @@ Class OB_Session_database_driver extends OB_Session {
             {
                 if( ! $this->OB->db instanceof OB_DB) 
                 {
-                    throw new SessionException('Session class works with database class so 
-                    first you must load database object by loader::database() function.');
+                    throw new SessionException('Session class works with database so 
+                    first you must load a database object by loader::database() function.');
                 }
             }
             
@@ -96,15 +96,15 @@ Class OB_Session_database_driver extends OB_Session {
         
         $query = $this->sess_db->get($this->sess_table_name);
 
+        // Is there custom data?  If so, add it to the main session array
+        $row = $query->row();
+        
         // No result?  Kill it!
-        if ($query->num_rows() == 0)
+        if (count($row) == 0)      // Obullo changes ..
         {
             $this->destroy();
             return FALSE;
         }
-
-        // Is there custom data?  If so, add it to the main session array
-        $row = $query->row();
         
         if (isset($row->user_data) AND $row->user_data != '')
         {
