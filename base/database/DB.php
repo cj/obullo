@@ -105,7 +105,7 @@ Class OB_DB extends OB_DBAc_sw {
     * @return  object PDOStatement
     */
     public function query($sql = NULL)
-    {   
+    {  
         $this->last_sql = $sql;
         
         if($this->prepare)
@@ -195,10 +195,14 @@ Class OB_DB extends OB_DBAc_sw {
     */
     public function exec($array = NULL, $bind_value = '')
     { 
+        if(is_array($array))
         $this->last_values = &$array; // store last executed bind values.
         
         if($this->use_bind_values)
-        $this->last_values = &$this->last_bind_values;     
+        $this->last_values = &$this->last_bind_values;
+        
+        if($this->use_bind_params)
+        $this->last_values = &$this->last_bind_params;       
         
         // this is just for prepared direct queries with bindValues or bindParams..
         if($this->last_sql != NULL AND $this->exec_count == 0)
@@ -213,14 +217,15 @@ Class OB_DB extends OB_DBAc_sw {
             
             $this->_bindValues($array);
             
-            $array = NULL;
+            unset($array);
         }
         
         // if no query builded by active record
         // switch to pdo::statement
         $this->Stmt->execute($array);
+        unset($array);
         
-        // reset prepare variable 
+        // reset prepare variable so user may again use it ..
         $this->prepare = FALSE;
         
         ++$this->exec_count; 
@@ -298,17 +303,23 @@ Class OB_DB extends OB_DBAc_sw {
     * @return   string
     */
     public function last_query($prepared = FALSE)
-    {   
-        // make sure is it prepared query ..
+    {  
+        // let's make sure is it prepared query ?
         if($prepared == TRUE AND self::_is_assoc($this->last_values))
-        {                                  
+        {   
+            $bind_keys = array();               
+            foreach(array_keys($this->last_values) as $k)
+            {
+                $bind_keys[]   = '/\\'.$k.'\b/';  // escape bind ':' character
+            }
+            
             $quoted_vals = array();
             foreach(array_values($this->last_values) as $v)
             {
                 $quoted_vals[] = $this->quote($v);
             }
-        
-            return str_replace(array_keys($this->last_values), $quoted_vals, $this->last_sql);
+            
+            return preg_replace($bind_keys, $quoted_vals, $this->last_sql);
         }
             
         return $this->last_sql;
@@ -341,6 +352,8 @@ Class OB_DB extends OB_DBAc_sw {
         
         $this->use_bind_values = TRUE;
         $this->last_bind_values[$param] = $val;
+        
+        return $this;
     }
     
     // ------------------------------------------------------------------
@@ -360,6 +373,8 @@ Class OB_DB extends OB_DBAc_sw {
         
         $this->use_bind_params = TRUE;
         $this->last_bind_params[$param] = $val;
+        
+        return $this;
     }        
         
     // --------------------------------------------------------------------

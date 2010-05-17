@@ -100,12 +100,12 @@ Class OB_Session_database_driver extends OB_Session {
         $row = $query->row();
         
         // No result?  Kill it!
-        if (count($row) == 0)      // Obullo changes ..
+        if ($row == FALSE)      // Obullo changes ..
         {
             $this->destroy();
             return FALSE;
-        }
-        
+        }  
+           
         if (isset($row->user_data) AND $row->user_data != '')
         {
             $custom_data = $this->_unserialize($row->user_data);

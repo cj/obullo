@@ -28,7 +28,7 @@ define('param_lob' , PDO::PARAM_LOB);  // integer  Large Object Data (lob)
 define('param_stmt', PDO::PARAM_STMT); // integer 
                                        // Represents a recordset type. Not currently supported by any drivers. 
                                         
-define('param_input_output' , PDO::PARAM_INPUT_OUTPUT); // integer
+define('param_inout' , PDO::PARAM_INPUT_OUTPUT); // integer
 
 /* End of file db.php */
 /* Location: ./base/constants/db.php */

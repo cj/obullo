@@ -327,12 +327,11 @@ Class table_CORE implements PHP5_Library {
         // First generate the headings from the table column names
         if (count($this->heading) == 0)
         {   
-            $table_list = $query->fetch_all(result::assoc());    // Obullo Changes ..
+            $table_list    = $query->fetch_all(result::assoc()); // Obullo Changes ..
             $this->heading = array_keys($table_list[0]);         // Obullo Changes ..
         }
                 
         // Next blast through the result array and build out the rows
-        
         if (count($table_list) > 0)
         { 
             foreach ($table_list as $row) // Obullo Changes ..
@@ -340,6 +339,8 @@ Class table_CORE implements PHP5_Library {
                 $this->rows[] = $row;
             }
         }
+        
+        unset($table_list);
     }
 
     // --------------------------------------------------------------------

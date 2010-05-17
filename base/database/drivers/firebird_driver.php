@@ -151,6 +151,10 @@ Class Obullo_DB_Driver_Firebird extends OB_DBAdapter
                default:
                  $str = "%{$str}%";
             }
+            
+            // not need to quote for who use prepare and :like bind.
+            if($this->prepare == TRUE AND $this->is_like_bind)   
+            return $str;
         } 
         
         // make sure is it bind value, if not ... 

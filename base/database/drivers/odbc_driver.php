@@ -119,6 +119,10 @@ Class Obullo_DB_Driver_Odbc extends OB_DBAdapter
                default:
                  $str = "%{$str}%";
             }
+            
+            // not need to quote for who use prepare and :like bind.
+            if($this->prepare == TRUE AND $this->is_like_bind)   
+            return $str;
         }
         
         // PDO_Odbc does not support PDO::quote() function.

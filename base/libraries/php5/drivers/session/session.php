@@ -262,17 +262,17 @@ Abstract Class OB_Session {
         // Save the old session id so we know which record to 
         // update in the database if we need it
         $this->old_sessid = $this->userdata['session_id'];
-        
-        while (strlen($this->new_sessid) < 32)
+        $new_sessid = '';
+        while (strlen($new_sessid) < 32)
         {
-            $this->new_sessid .= mt_rand(0, mt_getrandmax());
+            $new_sessid .= mt_rand(0, mt_getrandmax());
         }
         
         // To make the session ID even more secure we'll combine it with the user's IP
-        $this->new_sessid .= $this->OB->input->ip_address();
+        $new_sessid .= $this->OB->input->ip_address();
         
         // Turn it into a hash
-        $new_sessid = md5(uniqid($this->new_sessid, TRUE));
+        $this->new_sessid = md5(uniqid($new_sessid, TRUE));
         
         // Update the session data in the session data array
         $this->userdata['session_id']    = $this->new_sessid;

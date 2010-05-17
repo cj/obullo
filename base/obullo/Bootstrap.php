@@ -74,7 +74,7 @@ if( ! function_exists('ob_system_run'))
         
         // Check REQUEST uri if there is a Cached file exist
         if ($output->_display_cache($config, $uri) == TRUE) { exit; }
-        
+          
         $GLOBALS['d']   = $router->fetch_directory();   // Get requested directory
         $GLOBALS['c']   = $router->fetch_class();       // Get requested controller
         $GLOBALS['m']   = $router->fetch_method();      // Get requested method

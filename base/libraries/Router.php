@@ -86,13 +86,13 @@ Class OB_Router {
             // obullo 1.0 changes 
             $this->query_string = TRUE;
             // obullo 1.0 changes
-               
+        
             $this->set_directory(trim($this->uri->_filter_uri($_GET[config_item('directory_trigger')])));
             $this->set_class(trim($this->uri->_filter_uri($_GET[config_item('controller_trigger')])));
 
             if (isset($_GET[config_item('function_trigger')]))
             {
-                $this->set_method(trim($this->uri->_filter_uri($_GET[config_item('function_trigger')])));
+                $this->set_method(trim($this->uri->_filter_uri($_GET[config_item('function_trigger')]))); 
             }
             
             return;

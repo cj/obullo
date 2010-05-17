@@ -259,6 +259,11 @@ function register_autoload($real_name)
             style writing option in your config file, or use $this variable: $this->'.$class);
         }
         
+        // When enable_query_strings = true there are some isset errors ...
+        // we need to set directory again.  
+        $router = base_register('Router');
+        $GLOBALS['d'] = $router->fetch_directory();   // Get requested directory
+        
         // Local php5 libraries load support. 
         // -------------------------------------------------------------------- 
         if(is_dir(DIR .$GLOBALS['d']. DS .'libraries'. DS .'php5'))

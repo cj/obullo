@@ -68,6 +68,15 @@ Class OB_DBAc_record  {
     * @var string
     */
     public $sql;
+    
+    /**
+    * This is used in _like function
+    * we need to know whether like is
+    * bind value (:like)
+    * 
+    * @var mixed
+    */
+    public $is_like_bind = FALSE;
                                     
     
     public function select($select = '*', $escape = NULL)
@@ -97,7 +106,7 @@ Class OB_DBAc_record  {
             }
         }
         
-        return $this; // beta 1.0 rc1 changes
+        return $this;
     }    
     
     /**
@@ -113,7 +122,7 @@ Class OB_DBAc_record  {
     {
         $this->ar_distinct = (is_bool($val)) ? $val : TRUE;
         
-        return $this; // beta 1.0 rc1 changes
+        return $this;
     }
     
     
@@ -157,7 +166,7 @@ Class OB_DBAc_record  {
         
         } // end foreach.
         
-        return $this; // beta 1.0 rc1 changes  
+        return $this;  
     }
     
     // --------------------------------------------------------------------
@@ -276,7 +285,7 @@ Class OB_DBAc_record  {
             
         }
         
-        return $this;  // beta 1.0 rc1 changes 
+        return $this;
     }
 
     // -------------------------------------------------------------------- 
@@ -407,13 +416,23 @@ Class OB_DBAc_record  {
             $k = $this->_protect_identifiers($k);
             
             $prefix = (count($this->ar_like) == 0) ? '' : $type;
+        
+            // Obullo changes ..
+            // if not bind value ... 
+            if( strpos($v, ':') === FALSE || strpos($v, ':') > 0) // Obullo rc1 Changes...
+            {
+               $like_statement = $prefix." $k $not LIKE ".$this->escape_like($v, $side);
+            } 
+            else 
+            {
+                // !!IMPORTANT if pdo Bind value used , remove "%" operators..
+                // don't do this->db->escape_like
+                // because of user must be filter '%like%' values from outside.
+               $this->is_like_bind = TRUE;
+                
+               $like_statement = $prefix." $k $not LIKE ".$v;   
+            }
             
-            // !!IMPORTANT if pdo Bind value used , remove "%" operators..
-            // make sure is it bind value or not. 
-
-            // Obullo rc1 Changes...
-            $like_statement = $prefix." $k $not LIKE ".$this->escape_like($v, $side); 
-
             // some platforms require an escape sequence definition for LIKE wildcards
             if ($this->_like_escape_str != '')
             {
@@ -836,6 +855,8 @@ Class OB_DBAc_record  {
                  
         $this->_reset_write();
         
+        $this->prepare = FALSE;
+        
         return $this->exec_query($sql);  // return number of affected rows.  
     }
     
@@ -856,7 +877,7 @@ Class OB_DBAc_record  {
     {
         if ($where == '')
         {
-            return false;
+            return FALSE;
         }
                     
         $fields = array();
@@ -954,6 +975,8 @@ Class OB_DBAc_record  {
         
         if ($reset_data)
         $this->_reset_write();
+        
+        $this->prepare = FALSE;
         
         return $this->exec_query($sql); // return number of  affected rows
     
