@@ -2,22 +2,22 @@
 <html>
 <head>
 
-<?php echo this()->meta_tag; ?>
+<?php echo this()->meta; ?>
 
-<title><?php echo this()->title_tag; ?></title>
+<title><?php echo this()->title; ?></title>
 
 <base href="<?php echo this()->base; ?>" />
 
 <?php 
-this()->head_tag .= css('welcome.css');
-echo this()->head_tag;
+this()->head .= css('welcome.css');
+echo this()->head;
 ?>
 
 </head>
 
 <body <?php echo this()->body_attributes; ?>>
 
-<?php echo this()->body_tag; ?>
+<?php echo this()->body; ?>
 
 </body>
 

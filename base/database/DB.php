@@ -162,7 +162,15 @@ Class OB_DB extends OB_DBAc_sw {
                  break;
                  
                case 'integer':
-                 $str = $this->quote($str, PDO::PARAM_INT);  
+                 $str = (int)$str;
+                 break;
+                 
+               case 'double':
+                 $str = (double)$str;
+                 break;
+                 
+               case 'float':
+                 $str = (float)$str;
                  break;
                  
                case 'boolean':

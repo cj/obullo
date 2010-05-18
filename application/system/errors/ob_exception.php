@@ -4,7 +4,8 @@
     font-size:12;
     width:50%;
     padding:5px;
-    background-color:#eee;
+    background-color: #F9F9F9;
+    border: 1px dotted #D0D0D0;
 }
 </style>
 
@@ -26,4 +27,3 @@
 <?php } ?>
 
 </div>
-

@@ -26,7 +26,6 @@ defined('BASE') or exit('Access Denied!');
 
 Class CommonException extends Exception {};
 
-
 //  Include application header files.
 // -------------------------------------------------------------------- 
 if( ! function_exists('ob_include_files'))
@@ -44,15 +43,17 @@ if( ! function_exists('ob_include_files'))
 
 //  Include header functions. 
 // -------------------------------------------------------------------- 
-if( ! function_exists('ob_include_headers'))
+if( ! function_exists('ob_set_headers'))
 {
-    function ob_include_headers()
+    function ob_set_headers()
     {
         // Kill magic quotes
         if ( ! is_php('5.3')) { @set_magic_quotes_runtime(0); }
         
-        ini_set('display_errors', config_item('display_errors'));
-        date_default_timezone_set(config_item('timezone_set'));
+        $config    = base_register('Config');
+        
+        ini_set('display_errors', $config->item('display_errors'));
+        date_default_timezone_set($config->item('timezone_set'));
         
     }
 }
@@ -148,7 +149,6 @@ if( ! function_exists('ob_system_close'))
         while (ob_get_level() > 0) { ob_end_flush(); }
     }
 }
-
 // END Bootstrap.php File
 
 /* End of file Bootstrap.php

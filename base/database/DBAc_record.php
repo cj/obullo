@@ -109,6 +109,8 @@ Class OB_DBAc_record  {
         return $this;
     }    
     
+    // --------------------------------------------------------------------
+    
     /**
     * DISTINCT
     *
@@ -125,6 +127,7 @@ Class OB_DBAc_record  {
         return $this;
     }
     
+    // --------------------------------------------------------------------
     
     public function from($from)
     {   
@@ -171,10 +174,22 @@ Class OB_DBAc_record  {
     
     // --------------------------------------------------------------------
                                              
-    public function join($table, $condition, $direction = '')
-    {
-        $join = strtoupper($direction).' JOIN '.$table.' ON '.$condition.' ';
-        
+    public function join($table, $cond, $type = '')
+    {        
+        if ($type != '')
+        {
+            $type = strtoupper(trim($type));
+
+            if ( ! in_array($type, array('LEFT', 'RIGHT', 'OUTER', 'INNER', 'LEFT OUTER', 'RIGHT OUTER')))
+            {
+                $type = '';
+            }
+            else
+            {
+                $type .= ' ';
+            }
+        }
+
         // Extract any aliases that might exist.  We use this information
         // in the _protect_identifiers to know whether to add a table prefix 
         $this->_track_aliases($table);
@@ -246,7 +261,7 @@ Class OB_DBAc_record  {
             
             if (is_null($v) && ! self::_has_operator($k))
             $k .= ' IS NULL';  // value appears not to have been set, assign the test to IS NULL  
-            
+        
             if ( ! is_null($v))
             {
                 if ($escape === TRUE)
@@ -256,11 +271,12 @@ Class OB_DBAc_record  {
                     $v = ' '.$this->escape($v);
                 
                 } else  // Obullo changes 
-                {
+                {   
                     // obullo changes.. 
                     // make sure is it bind value, if not ... 
                     if( strpos($v, ':') === FALSE || strpos($v, ':') > 0)
                     {
+                         if(is_string($v))
                          $v = "'{$v}'";  // obullo changes..
                     }
                 }
@@ -395,6 +411,8 @@ Class OB_DBAc_record  {
         return $this->or_like($field, $match, $side);
     }
     
+    // --------------------------------------------------------------------
+    
     /**
     * Like
     *
@@ -449,6 +467,8 @@ Class OB_DBAc_record  {
         
         return $this;
     }
+    
+    // --------------------------------------------------------------------
     
     /**
     * GROUP BY
@@ -509,6 +529,8 @@ Class OB_DBAc_record  {
         return $this->_having($key, $value, 'OR ', $escape);
     }
     
+    // --------------------------------------------------------------------
+    
     /**
     * Sets the HAVING values
     *
@@ -540,7 +562,7 @@ Class OB_DBAc_record  {
             
             if ($v != '')
             {               
-                $v = ' '.$this->escape_str($v);
+                $v = ' '.$this->escape($v);  // obullo changes ..
             }
             
             $this->ar_having[] = $prefix.$k.$v;
@@ -672,6 +694,7 @@ Class OB_DBAc_record  {
                 // make sure is it bind value, if not ... 
                 if( strpos($v, ':') === FALSE || strpos($v, ':') > 0)
                 {
+                     if(is_string($v))
                      $v = "'{$v}'";  // obullo changes..
                 }
             
@@ -686,6 +709,8 @@ Class OB_DBAc_record  {
         
         return $this; 
     } 
+    
+    // --------------------------------------------------------------------
     
     /**
     * Get
@@ -802,7 +827,7 @@ Class OB_DBAc_record  {
     
     // --------------------------------------------------------------------
     
-    // _insert function in to ?_driver.php file.
+    // _insert function in ?_driver.php file.
     
     /**
     * Update
@@ -860,7 +885,7 @@ Class OB_DBAc_record  {
         return $this->exec_query($sql);  // return number of affected rows.  
     }
     
-    // _update function in to ?_driver.php file.
+    // _update function in ?_driver.php file.
     
     // --------------------------------------------------------------------
                     
@@ -916,7 +941,7 @@ Class OB_DBAc_record  {
     
     // --------------------------------------------------------------------
     
-    // _update function in to ?_driver.php file.
+    // _update function in ?_driver.php file.
     
     /**
     * Delete
@@ -982,7 +1007,7 @@ Class OB_DBAc_record  {
     
     } 
     
-    // _delete function in to ?_driver.php file.
+    // _delete function in ?_driver.php file.
     
     /**
     * Track Aliases

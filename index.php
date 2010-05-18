@@ -62,7 +62,7 @@ require(BASE .'obullo'. DS .'Bootstrap'. EXT);
 |
 */
 ob_include_files();
-ob_include_headers();
+ob_set_headers();
 
 ob_system_run();
 ob_system_close();
