@@ -224,13 +224,7 @@ function register_autoload($real_name)
             require(BASE .'database'. DS .'drivers'. DS .$class.'_driver'. EXT);
             return;
         }
-        
-        if($real_name == 'result')
-        {
-            require(BASE .'database'. DS .'DBResults'. EXT);
-            return; 
-        }
-        
+                
         // Shortcut support. 
         // --------------------------------------------------------------------       
         $class = strtolower($real_name); // lowercase classname.

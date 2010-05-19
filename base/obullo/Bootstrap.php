@@ -83,7 +83,7 @@ if( ! function_exists('ob_system_run'))
         // Check the controller exists or not
         if ( ! file_exists(DIR .$GLOBALS['d']. DS .'controllers'. DS .$GLOBALS['c']. EXT))
         {
-            if($router->query_string) show_404("{$GLOBALS['c']}/{$GLOBALS['m']}");
+            if($router->query_string) show_404("{$GLOBALS['d']}/{$GLOBALS['c']}/{$GLOBALS['m']}");
             
             throw new CommonException('Unable to load your default controller.
             Please make sure the controller specified in your Routes.php file is valid.');
@@ -107,7 +107,7 @@ if( ! function_exists('ob_system_run'))
               OR in_array(strtolower($GLOBALS['m']), array_map('strtolower', get_class_methods('Controller')))
             )
         {
-            show_404("{$GLOBALS['c']}/{$GLOBALS['m']}");
+            show_404("{$GLOBALS['d']}/{$GLOBALS['c']}/{$GLOBALS['m']}");
         }
         
         // If Everyting ok Declare Called Controller !
@@ -116,7 +116,7 @@ if( ! function_exists('ob_system_run'))
         // Check method exist or not
         if ( ! in_array(strtolower($GLOBALS['m']), array_map('strtolower', get_class_methods($OB))))
         {
-            show_404("{$GLOBALS['c']}/{$GLOBALS['m']}"); 
+            show_404("{$GLOBALS['d']}/{$GLOBALS['c']}/{$GLOBALS['m']}");
         }
 
         // Call the requested method.                1       2       3

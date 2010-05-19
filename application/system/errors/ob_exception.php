@@ -4,8 +4,7 @@
     font-size:12;
     width:50%;
     padding:5px;
-    background-color: #F9F9F9;
-    border: 1px dotted #D0D0D0;
+    background-color: #F0F0F0;
 }
 </style>
 

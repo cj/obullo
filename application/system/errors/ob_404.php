@@ -16,7 +16,7 @@ body {
 <body>
 
 <div id="ob_error_content">
-<b> [404 Page Not Found]: </b> The page <?php echo $page; ?> you requested was not found. <br />
+<b> [404 Page Not Found]: </b> The url <?php echo $page; ?> you requested was not found. <br />
 </div>
 
 </body>
