@@ -60,7 +60,11 @@ Class form_validate_CORE implements PHP5_Library {
         // Automatically load the form helper
         loader::base_helper('form');
             
-        mb_internal_encoding(ob::instance()->config->item('charset'));
+        // Set the character encoding in MB.
+        if (function_exists('mb_internal_encoding'))
+        {
+            mb_internal_encoding(ob::instance()->config->item('charset'));
+        }
     
         log_message('debug', "Form Validation Class Initialized");
     }
@@ -663,7 +667,7 @@ Class form_validate_CORE implements PHP5_Library {
                 // of another field?  If so we need to grab its "field label"
                 if (isset($this->_field_data[$param]) AND isset($this->_field_data[$param]['label']))
                 {
-                    $param = $this->_field_data[$param]['label'];
+                    $param = $this->_translate_fieldname($this->_field_data[$param]['label']);
                 }
                 
                 // Build the error message

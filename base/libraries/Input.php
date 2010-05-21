@@ -528,11 +528,11 @@ Class OB_Input {
     * harvested from examining vulnerabilities in other programs:
     * http://ha.ckers.org/xss.html
     *
-    * @access   public
+    * @access    public
     * @param    string
-    * @return   string
+    * @return    string
     */
-    public function xss_clean($str, $is_image = FALSE)
+    function xss_clean($str, $is_image = FALSE)
     {
         /*
         * Is the string an array?
@@ -559,7 +559,7 @@ Class OB_Input {
 
         // 901119URL5918AMP18930PROTECT8198
 
-        $str = preg_replace('|\&([a-z\_0-9]+)\=([a-z\_0-9]+)|i', $this->xss_hash()."\\1=\\2", $str);
+        $str = preg_replace('|\&([a-z\_0-9\-]+)\=([a-z\_0-9\-]+)|i', $this->xss_hash()."\\1=\\2", $str);
 
         /*
         * Validate standard character entities
@@ -623,7 +623,7 @@ Class OB_Input {
         *
         */
 
-        if (strpos($str, "\t") !== FALSE)
+         if (strpos($str, "\t") !== FALSE)
         {
             $str = str_replace("\t", ' ', $str);
         }
@@ -807,12 +807,14 @@ Class OB_Input {
         log_message('debug', "XSS Filtering completed");
         return $str;
     }
-
+    
     // --------------------------------------------------------------------
 
     /**
     * Random Hash for protecting URLs
-    *
+    * 
+    * @version   0.1 
+    * @version   0.2 Obullo changes removed php_version
     * @access    public
     * @return    string
     */
@@ -820,11 +822,8 @@ Class OB_Input {
     {
         if ($this->xss_hash == '')
         {
-            if (phpversion() >= 4.2)
-                mt_srand();
-            else
-                mt_srand(hexdec(substr(md5(microtime()), -8)) & 0x7fffffff);
-
+            mt_srand();
+            
             $this->xss_hash = md5(time() + mt_rand(0, 1999999999));
         }
 

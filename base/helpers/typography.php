@@ -63,6 +63,7 @@ function auto_typography($str, $reduce_linebreaks = FALSE)
     $typo->auto_typography($str, $reduce_linebreaks);
 }
 
+    
 /* End of file typography.php */
 /* Location: ./base/helpers/typography.php */
 ?>

@@ -584,11 +584,13 @@ Abstract Class OB_Session {
         {
             foreach ($data as $key => $val)
             {
+                if (is_string($val))
                 $data[$key] = str_replace('\\', '{{slash}}', $val);
             }
         }
         else
         {
+            if (is_string($val))
             $data = str_replace('\\', '{{slash}}', $data);
         }
         
@@ -615,13 +617,14 @@ Abstract Class OB_Session {
         {
             foreach ($data as $key => $val)
             {
+                if(is_string($val))
                 $data[$key] = str_replace('{{slash}}', '\\', $val);
             }
             
             return $data;
         }
         
-        return str_replace('{{slash}}', '\\', $data);
+        return (is_string($data)) ? str_replace('{{slash}}', '\\', $data) : $data;
     }
 
     // --------------------------------------------------------------------

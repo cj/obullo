@@ -78,29 +78,41 @@ function singular($str)
  */	
 function plural($str, $force = FALSE)
 {
-	$str = strtolower(trim($str));
-	$end = substr($str, -1);
+    $str = strtolower(trim($str));
+    $end = substr($str, -1);
 
-	if ($end == 'y')
-	{
-		// Y preceded by vowel => regular plural
-		$vowels = array('a', 'e', 'i', 'o', 'u');
-		$str = in_array(substr($str, -2, 1), $vowels) ? $str.'s' : substr($str, 0, -1).'ies';
-	}
-	elseif ($end == 's')
-	{
-		if ($force == TRUE)
-		{
-			$str .= 'es';
-		}
-	}
-	else
-	{
-		$str .= 's';
-	}
+    if ($end == 'y')
+    {
+        // Y preceded by vowel => regular plural
+        $vowels = array('a', 'e', 'i', 'o', 'u');
+        $str = in_array(substr($str, -2, 1), $vowels) ? $str.'s' : substr($str, 0, -1).'ies';
+    }
+    elseif ($end == 'h')
+    {
+        if (substr($str, -2) == 'ch' || substr($str, -2) == 'sh')
+        {
+            $str .= 'es';
+        }
+        else
+        {
+            $str .= 's';
+        }
+    }
+    elseif ($end == 's')
+    {
+        if ($force == TRUE)
+        {
+            $str .= 'es';
+        }
+    }
+    else
+    {
+        $str .= 's';
+    }
 
-	return $str;
+    return $str;
 }
+
 
 // --------------------------------------------------------------------
 

@@ -2,7 +2,7 @@
 
 <h1>Welcome to Obullo Framework !</h1> 
 
-<p><?php echo $sample_var;?></p><br />
+<p><?php echo $var;?></p><br />
 
 <p></p>
 

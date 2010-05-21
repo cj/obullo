@@ -51,7 +51,7 @@ function xss_clean($str, $is_image = FALSE)
 * @param	string
 * @return	string
 */	
-function dohash($str, $type = 'sha1')
+function do_hash($str, $type = 'sha1')
 {
 	if ($type == 'sha1')
 	{

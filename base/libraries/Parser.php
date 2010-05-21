@@ -33,24 +33,21 @@ Class OB_Parser {
     public $object;
         
     /**
-     *  Parse a template
-     *
-     * Parses pseudo-variables contained in the specified template,
-     * replacing them with the data in the second param
-     *
-     * @access   public
-     * @param    string
-     * @param    array
-     * @param    bool
-     * @return   string
-     */
+    *  Parse a template
+    *
+    * Parses pseudo-variables contained in the specified template,
+    * replacing them with the data in the second param
+    *
+    * @access   public
+    * @param    string
+    * @param    array
+    * @param    bool
+    * @return   string
+    */
     public function parse($template, $data, $return = FALSE)
     {
         $OB = ob::instance();
-        
-        base_register('Content');
-        
-        $template = $this->content->view($template, $data);
+        $template = base_register('Content')->content->view($template, $data);
         
         if ($template == '')
         {
@@ -74,6 +71,66 @@ Class OB_Parser {
             $OB->output->append_output($template);
         }
         
+        return $template;
+    }
+    
+    // --------------------------------------------------------------------
+    
+    /**
+    *  Parse a String
+    *
+    * Parses pseudo-variables contained in the specified string,
+    * replacing them with the data in the second param
+    *
+    * @access   public
+    * @param    string
+    * @param    array
+    * @param    bool
+    * @return   string
+    */
+    public function parse_string($template, $data, $return = FALSE)
+    {
+        return $this->_parse($template, $data, $return);
+    }
+
+    // --------------------------------------------------------------------
+    
+    /**
+    *  Parse a template
+    *
+    * Parses pseudo-variables contained in the specified template,
+    * replacing them with the data in the second param
+    *
+    * @access   public
+    * @param    string
+    * @param    array
+    * @param    bool
+    * @return   string
+    */
+    function _parse($template, $data, $return = FALSE)
+    {
+        if ($template == '')
+        {
+            return FALSE;
+        }
+
+        foreach ($data as $key => $val)
+        {
+            if (is_array($val))
+            {
+                $template = $this->_parse_pair($key, $val, $template);        
+            }
+            else
+            {
+                $template = $this->_parse_single($key, (string)$val, $template);
+            }
+        }
+
+        if ($return == FALSE)
+        {
+            ob::instance()->output->append_output($template);
+        }
+
         return $template;
     }
     
@@ -154,16 +211,16 @@ Class OB_Parser {
     // --------------------------------------------------------------------
     
     /**
-     *  Matches a variable pair
-     *
-     * @access   private
-     * @param    string
-     * @param    string
-     * @return   mixed
-     */
+    *  Matches a variable pair
+    *
+    * @access   private
+    * @param    string
+    * @param    string
+    * @return   mixed
+    */
     private function _match_pair($string, $variable)
     {
-        if ( ! preg_match("|".$this->l_delim . $variable . $this->r_delim."(.+?)".$this->l_delim . '/' . $variable . $this->r_delim."|s", $string, $match))
+        if ( ! preg_match("|" . preg_quote($this->l_delim) . $variable . preg_quote($this->r_delim) . "(.+?) ". preg_quote($this->l_delim) . '/' . $variable . preg_quote($this->r_delim) . "|s", $string, $match))
         {
             return FALSE;
         }
@@ -171,6 +228,7 @@ Class OB_Parser {
         return $match;
     }
 
+    
 }
 // END Parser Class
 

@@ -76,31 +76,31 @@ Class upload_CORE implements PHP5_Library {
         if (count($config) > 0)
         {
             $defaults = array(
-                        'max_size'            => 0,
-                        'max_width'           => 0,
-                        'max_height'          => 0,
-                        'max_filename'        => 0,
-                        'allowed_types'       => "",
-                        'file_temp'           => "",
-                        'file_name'           => "",
-                        'orig_name'           => "",
-                        'file_type'           => "",
-                        'file_size'           => "",
-                        'file_ext'            => "",
-                        'upload_path'         => "",
-                        'overwrite'           => FALSE,
-                        'encrypt_name'        => FALSE,
-                        'is_image'            => FALSE,
-                        'image_width'         => '',
-                        'image_height'        => '',
-                        'image_type'          => '',
-                        'image_size_str'      => '',
-                        'error_msg'           => array(),
-                        'mimes'               => array(),
-                        'remove_spaces'       => TRUE,
-                        'xss_clean'           => FALSE,
-                        'temp_prefix'         => "temp_file_"
-                    );    
+                    'max_size'          => 0,
+                    'max_width'         => 0,
+                    'max_height'        => 0,
+                    'max_filename'      => 0,
+                    'allowed_types'     => "",
+                    'file_temp'         => "",
+                    'file_name'         => "",
+                    'orig_name'         => "",
+                    'file_type'         => "",
+                    'file_size'         => "",
+                    'file_ext'          => "",
+                    'upload_path'       => "",
+                    'overwrite'         => FALSE,
+                    'encrypt_name'      => FALSE,
+                    'is_image'          => FALSE,
+                    'image_width'       => '',
+                    'image_height'      => '',
+                    'image_type'        => '',
+                    'image_size_str'    => '',
+                    'error_msg'         => array(),
+                    'mimes'             => array(),
+                    'remove_spaces'     => TRUE,
+                    'xss_clean'         => FALSE,
+                    'temp_prefix'       => "temp_file_"
+                );    
         
         
             foreach ($defaults as $key => $val)
@@ -122,12 +122,11 @@ Class upload_CORE implements PHP5_Library {
                     $this->$key = $val;
                 }
             }
-            
         } // end if.
         
         log_message('debug', "Upload Class Initialized");
     }
-
+        
     // --------------------------------------------------------------------
     
     /**
@@ -192,7 +191,7 @@ Class upload_CORE implements PHP5_Library {
         $this->file_name = $this->_prep_filename($_FILES[$field]['name']);
         $this->file_size = $_FILES[$field]['size'];        
         $this->file_type = preg_replace("/^(.+?);.*$/", "\\1", $_FILES[$field]['type']);
-        $this->file_type = strtolower($this->file_type);
+        $this->file_type = trim(stripslashes($this->file_type), '"');
         $this->file_ext  = $this->get_extension($_FILES[$field]['name']);
         
         // Convert the file size to kilobytes
@@ -278,9 +277,13 @@ Class upload_CORE implements PHP5_Library {
          * embedded within a file.  Scripts can easily
          * be disguised as images or other file types.
          */
-        if ($this->xss_clean == TRUE)
+        if ($this->xss_clean)
         {
-            $this->do_xss_clean();
+            if ($this->do_xss_clean() === FALSE)
+            {
+                $this->set_error('upload_unable_to_write_file');
+                return FALSE;
+            }
         }
 
         /*
@@ -308,19 +311,19 @@ Class upload_CORE implements PHP5_Library {
     public function data()
     {
         return array (
-                        'file_name'           => $this->file_name,
-                        'file_type'           => $this->file_type,
-                        'file_path'           => $this->upload_path,
-                        'full_path'           => $this->upload_path.$this->file_name,
-                        'raw_name'            => str_replace($this->file_ext, '', $this->file_name),
-                        'orig_name'           => $this->orig_name,
-                        'file_ext'            => $this->file_ext,
-                        'file_size'           => $this->file_size,
-                        'is_image'            => $this->is_image(),
-                        'image_width'         => $this->image_width,
-                        'image_height'        => $this->image_height,
-                        'image_type'          => $this->image_type,
-                        'image_size_str'      => $this->image_size_str,
+                        'file_name'            => $this->file_name,
+                        'file_type'            => $this->file_type,
+                        'file_path'            => $this->upload_path,
+                        'full_path'            => $this->upload_path.$this->file_name,
+                        'raw_name'             => str_replace($this->file_ext, '', $this->file_name),
+                        'orig_name'            => $this->orig_name,
+                        'file_ext'             => $this->file_ext,
+                        'file_size'            => $this->file_size,
+                        'is_image'             => $this->is_image(),
+                        'image_width'          => $this->image_width,
+                        'image_height'         => $this->image_height,
+                        'image_type'           => $this->image_type,
+                        'image_size_str'       => $this->image_size_str,
                     );
     }
     
@@ -395,7 +398,7 @@ Class upload_CORE implements PHP5_Library {
      * Set Maximum File Size
      *
      * @access    public
-     * @param     integer
+     * @param    integer
      * @return    void
      */    
     public function set_max_filesize($n)
@@ -409,7 +412,7 @@ Class upload_CORE implements PHP5_Library {
      * Set Maximum File Name Length
      *
      * @access    public
-     * @param     integer
+     * @param    integer
      * @return    void
      */    
     public function set_max_filename($n)
@@ -423,7 +426,7 @@ Class upload_CORE implements PHP5_Library {
      * Set Maximum Image Width
      *
      * @access    public
-     * @param     integer
+     * @param    integer
      * @return    void
      */    
     public function set_max_width($n)
@@ -437,7 +440,7 @@ Class upload_CORE implements PHP5_Library {
      * Set Maximum Image Height
      *
      * @access    public
-     * @param     integer
+     * @param    integer
      * @return    void
      */    
     public function set_max_height($n)
@@ -451,11 +454,16 @@ Class upload_CORE implements PHP5_Library {
      * Set Allowed File Types
      *
      * @access    public
-     * @param     string
+     * @param    string
      * @return    void
      */    
     public function set_allowed_types($types)
     {
+        if ( ! is_array($types) && $types == '*')
+        {
+            $this->allowed_types = '*';
+            return;
+        }
         $this->allowed_types = explode('|', $types);
     }
     
@@ -467,7 +475,7 @@ Class upload_CORE implements PHP5_Library {
      * Uses GD to determine the width/height/type of image
      *
      * @access    public
-     * @param     string
+     * @param    string
      * @return    void
      */    
     public function set_image_properties($path = '')
@@ -500,7 +508,7 @@ Class upload_CORE implements PHP5_Library {
      * will be run through the XSS filter.
      *
      * @access    public
-     * @param     bool
+     * @param    bool
      * @return    void
      */
     public function set_xss_clean($flag = FALSE)
@@ -553,6 +561,11 @@ Class upload_CORE implements PHP5_Library {
      */    
     public function is_allowed_filetype()
     {
+        if ($this->allowed_types == '*')
+        {
+            return TRUE;
+        }
+        
         if (count($this->allowed_types) == 0 OR ! is_array($this->allowed_types))
         {
             $this->set_error('upload_no_file_types');
@@ -566,7 +579,7 @@ Class upload_CORE implements PHP5_Library {
             $mime = $this->mimes_types(strtolower($val));
 
             // Images get some additional checks
-            if (in_array($val, $image_types))
+            if ($this->file_ext == '.'.$val &&  in_array($val, $image_types))
             {
                 if (getimagesize($this->file_temp) === FALSE)
                 {
@@ -693,9 +706,9 @@ Class upload_CORE implements PHP5_Library {
     /**
      * Extract the file extension
      *
-     * @access    public
-     * @param     string
-     * @return    string
+     * @access   public
+     * @param    string
+     * @return   string
      */    
     public function get_extension($filename)
     {
@@ -709,7 +722,7 @@ Class upload_CORE implements PHP5_Library {
      * Clean the file name for security
      *
      * @access    public
-     * @param     string
+     * @param    string
      * @return    string
      */        
     public function clean_file_name($filename)
@@ -754,7 +767,7 @@ Class upload_CORE implements PHP5_Library {
      * Limit the File Name Length
      *
      * @access    public
-     * @param     string
+     * @param    string
      * @return    string
      */        
     public function limit_filename_length($filename, $length)
@@ -767,9 +780,9 @@ Class upload_CORE implements PHP5_Library {
         $ext = '';
         if (strpos($filename, '.') !== FALSE)
         {
-            $parts      = explode('.', $filename);
+            $parts        = explode('.', $filename);
             $ext        = '.'.array_pop($parts);
-            $filename   = implode('.', $parts);
+            $filename    = implode('.', $parts);
         }
     
         return substr($filename, 0, ($length - strlen($ext))).$ext;
@@ -795,24 +808,53 @@ Class upload_CORE implements PHP5_Library {
         {
             return FALSE;
         }
+        
+        if (function_exists('memory_get_usage') && memory_get_usage() && ini_get('memory_limit') != '')
+        {
+            $current = ini_get('memory_limit') * 1024 * 1024;
+            
+                // There was a bug/behavioural change in PHP 5.2, where numbers over one million get output
+                // into scientific notation.  number_format() ensures this number is an integer
+                // http://bugs.php.net/bug.php?id=43053
+                
+                $new_memory = number_format(ceil(filesize($this->new_name) + $current), 0, '.', '');
+                
+                ini_set('memory_limit', $new_memory); // When an integer is used, the value is measured in bytes. - PHP.net
+        }
+
+        // If the file being uploaded is an image, then we should have no problem with XSS attacks (in theory), but
+        // IE can be fooled into mime-type detecting a malformed image as an html file, thus executing an XSS attack on anyone
+        // using IE who looks at the image.  It does this by inspecting the first 255 bytes of an image.  To get around this
+        // CI will itself look at the first 255 bytes of an image to determine its relative safety.  This can save a lot of
+        // processor power and time if it is actually a clean image, as it will be in nearly all instances _except_ an 
+        // attempted XSS attack.
+
+        if (function_exists('getimagesize') && @getimagesize($file) !== FALSE)
+        {
+            if (($file = @fopen($file, 'rb')) === FALSE) // "b" to force binary
+            {
+                return FALSE; // Couldn't open the file, return FALSE
+            }
+
+            $opening_bytes = fread($file, 256);
+            fclose($file);
+
+            // These are known to throw IE into mime-type detection chaos
+            // <a, <body, <head, <html, <img, <plaintext, <pre, <script, <table, <title
+            // title is basically just in SVG, but we filter it anyhow
+
+            if ( ! preg_match('/<(a|body|head|html|img|plaintext|pre|script|table|title)[\s>]/i', $opening_bytes))
+            {
+                return TRUE; // its an image, no "triggers" detected in the first 256 bytes, we're good
+            }
+        }
 
         if (($data = @file_get_contents($file)) === FALSE)
         {
             return FALSE;
         }
-        
-        if ( ! $fp = @fopen($file, FOPEN_READ_WRITE))
-        {
-            return FALSE;
-        }
 
-        $OB = ob::instance();    
-        $data = $OB->input->xss_clean($data);
-        
-        flock($fp, LOCK_EX);
-        fwrite($fp, $data);
-        flock($fp, LOCK_UN);
-        fclose($fp);
+        return ob::instance()->input->xss_clean($data, TRUE);
     }
     
     // --------------------------------------------------------------------
@@ -821,7 +863,7 @@ Class upload_CORE implements PHP5_Library {
      * Set an error message
      *
      * @access    public
-     * @param     string
+     * @param    string
      * @return    void
      */    
     public function set_error($msg)
@@ -851,10 +893,10 @@ Class upload_CORE implements PHP5_Library {
     /**
      * Display the error message
      *
-     * @access   public
+     * @access    public
      * @param    string
      * @param    string
-     * @return   string
+     * @return    string
      */    
     public function display_errors($open = '<p>', $close = '</p>')
     {
@@ -881,11 +923,11 @@ Class upload_CORE implements PHP5_Library {
      */    
     public function mimes_types($mime)
     {
-        global $mimes;
+        $mimes = get_config('mimes');       // obullo changes ..
     
         if (count($this->mimes) == 0)
         {
-            $this->mimes = get_config('mimes');  // Obullo changes ..
+            $this->mimes = $mimes;
             unset($mimes);
         }
     
@@ -900,11 +942,11 @@ Class upload_CORE implements PHP5_Library {
      * Prevents possible script execution from Apache's handling of files multiple extensions
      * http://httpd.apache.org/docs/1.3/mod/mod_mime.html#multipleext
      *
-     * @access   private
+     * @access    private
      * @param    string
-     * @return   string
+     * @return    string
      */
-    private function _prep_filename($filename)
+    public function _prep_filename($filename)
     {
         if (strpos($filename, '.') === FALSE)
         {

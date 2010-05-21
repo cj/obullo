@@ -144,7 +144,7 @@ Class OB_URI
             return '';
         }
         
-        $fc_path = FCPATH;        
+        $fc_path = FCPATH.SELF;        
         if (strpos($request_uri, '?') !== FALSE)
         {
             $fc_path .= '?';
@@ -184,16 +184,20 @@ Class OB_URI
     {
         if ($str != '' && config_item('permitted_uri_chars') != '' && config_item('enable_query_strings') == FALSE)
         {
-            if ( ! preg_match("|^[".preg_quote(config_item('permitted_uri_chars'))."]+$|i", $str))
+            // preg_quote() in PHP 5.3 escapes -, so the str_replace() and 
+            // addition of - to preg_quote() is to maintain backwards
+            // compatibility as many are unaware of how characters in the permitted_uri_chars 
+            // will be parsed as a regex pattern
+            if ( ! preg_match("|^[".str_replace(array('\\-', '\-'), '-', preg_quote(config_item('permitted_uri_chars'), '-'))."]+$|i", $str))
             {
-                exit('The URI you submitted has disallowed characters.');
+                show_error('The URI you submitted has disallowed characters.', 400);
             }
-        }    
+        }
         
         // Convert programatic characters to entities
-        $bad    = array('$',         '(',         ')',         '%28',         '%29');
-        $good   = array('&#36;',    '&#40;',    '&#41;',    '&#40;',    '&#41;');
-        
+        $bad    = array('$',         '(',         ')',       '%28',    '%29');
+        $good   = array('&#36;',    '&#40;',    '&#41;',    '&#40;',   '&#41;');
+
         return str_replace($bad, $good, $str);
     }
 

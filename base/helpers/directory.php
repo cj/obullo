@@ -38,45 +38,42 @@ defined('BASE') or exit('Access Denied!');
  *
  * @access	public
  * @param	string	path to source
- * @param	bool	whether to limit the result to the top level only
+ * @param	int	    depth of directories to traverse (0 = fully recursive, 1 = current dir, etc)
  * @return	array
- */	
-function directory_map($source_dir, $top_level_only = FALSE, $hidden = FALSE)
-{	
-	if ($fp = @opendir($source_dir))
-	{
-		$source_dir = rtrim($source_dir, DS). DS;		
-		$filedata = array();
-		
-		while (FALSE !== ($file = readdir($fp)))
-		{
-			if (($hidden == FALSE && strncmp($file, '.', 1) == 0) OR ($file == '.' OR $file == '..'))
-			{
-				continue;
-			}
-			
-			if ($top_level_only == FALSE && @is_dir($source_dir.$file))
-			{
-				$temp_array = array();
-			
-				$temp_array = directory_map($source_dir.$file. DS, $top_level_only, $hidden);
-			
-				$filedata[$file] = $temp_array;
-			}
-			else
-			{
-				$filedata[] = $file;
-			}
-		}
-		
-		closedir($fp);
-		return $filedata;
-	}
-	else
-	{
-		return FALSE;
-	}
+ */
+function directory_map($source_dir, $directory_depth = 0, $hidden = FALSE)
+{
+    if ($fp = @opendir($source_dir))
+    {
+        $filedata    = array();
+        $new_depth    = $directory_depth - 1;
+        $source_dir    = rtrim($source_dir, DS).DS;        
+                    
+        while (FALSE !== ($file = readdir($fp)))
+        {
+            // Remove '.', '..', and hidden files [optional]
+            if ( ! trim($file, '.') OR ($hidden == FALSE && $file[0] == '.'))
+            {
+                continue;
+            }
+
+            if (($directory_depth < 1 OR $new_depth > 0) && @is_dir($source_dir.$file))
+            {
+                $filedata[$file] = directory_map($source_dir.$file.DS, $new_depth, $hidden);
+            }
+            else
+            {
+                $filedata[] = $file;
+            }
+        }
+        
+        closedir($fp);
+        return $filedata;
+    }
+
+    return FALSE;
 }
+
 
 /* End of file directory.php */
 /* Location: ./base/helpers/directory.php */

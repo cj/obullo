@@ -34,6 +34,8 @@ Class OB_Output {
     public $cache_expiration    = 0;
     public $headers             = array();
     public $enable_profiler     = FALSE;
+    public $parse_exec_vars     = TRUE;    
+    // whether or not to parse variables like {elapsed_time} and {memory_usage}
 
 
     public function __construct()
@@ -125,7 +127,7 @@ Class OB_Output {
      * @param    string    
      * @return   void
      */    
-    public function set_status_header($code = '200', $text = '')
+    public function set_status_header($code = 200, $text = '')
     {
         set_status_header($code, $text);
     }
@@ -203,14 +205,13 @@ Class OB_Output {
 
         $elapsed = $benchmark->elapsed_time('total_execution_time_start', 'total_execution_time_end');        
         $output  = str_replace('{elapsed_time}', $elapsed, $output);
-        
-        $memory  = '';
-        if( function_exists('memory_get_usage') )
+                
+        if ($this->parse_exec_vars === TRUE)
         {
-           $memory = round(memory_get_usage()/1024/1024, 2).'MB'; 
-        }
-        
-        $output = str_replace('{memory_usage}', $memory, $output);        
+            $memory = ( ! function_exists('memory_get_usage')) ? '0' : round(memory_get_usage()/1024/1024, 2).'MB';
+            $output = str_replace('{elapsed_time}', $elapsed, $output);
+            $output = str_replace('{memory_usage}', $memory, $output);
+        }       
 
         // --------------------------------------------------------------------
         
@@ -349,17 +350,12 @@ Class OB_Output {
     public function _display_cache(&$config, &$URI)
     {
         $cache_path = (config_item('cache_path', 'cache') == '') ? APP.'system'.DS.'cache'.DS : config_item('cache_path', 'cache');
-            
-        if ( ! is_dir($cache_path) OR ! is_really_writable($cache_path))
-        {
-            return FALSE;
-        }
-        
+          
         // Build the file path.  The file name is an MD5 hash of the full URI
         $uri =  $config->item('base_url').$config->item('index_page').$URI->uri_string;
-                
+          
         $filepath = $cache_path . md5($uri);
-        
+                
         if ( ! @file_exists($filepath))
         {
             return FALSE;
@@ -390,9 +386,12 @@ Class OB_Output {
         // Has the file expired? If so we'll delete it.
         if (time() >= trim(str_replace('TS--->', '', $match['1'])))
         {         
-            @unlink($filepath);
-            log_message('debug', "Cache file has expired. File deleted");
-            return FALSE;
+            if (is_really_writable($cache_path))
+            {
+                @unlink($filepath);
+                log_message('debug', "Cache file has expired. File deleted");
+                return FALSE;
+            }
         }
 
         // Display the cache

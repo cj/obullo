@@ -326,7 +326,7 @@ function prep_url($str = '')
 		return '';
 	}
 
-	if (substr($str, 0, 7) != 'http://' && substr($str, 0, 8) != 'https://')
+	if ( ! parse_url($str, PHP_URL_SCHEME))
 	{
 		$str = 'http://'.$str;
 	}

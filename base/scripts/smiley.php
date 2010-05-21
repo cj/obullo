@@ -25,7 +25,7 @@ function insert_smiley(smiley, field_id)
         el.setSelectionRange(newStart, newStart);
     }
     else if (document.selection) {
-        document.selection.createRange().text = text;
+        document.selection.createRange().text = smiley;
     }
 }
 //-->
