@@ -69,6 +69,6 @@ ob_system_close();
 
 // --------------------------------------------------------------------
 
-/* Beta 1.0 Rc1 Offical Version Release Date: ? - ?  */
-/* SVN $Id: Index.php 174 18-04-2010 15:24:38 develturk $ */
+/* Beta 1.0 Rc1 Offical Version Release Date: 22-05-2010. */
+/* SVN $Id: Index.php 198 22-05-2010 15:24:38 develturk $ */
 ?>

@@ -419,7 +419,7 @@ function get_static($filename = 'config', $var = '', $folder = '')
 */
 function get_config($filename = 'config', $var = '')
 {
-    return get_static($filename, $var, 'application'. DS .'config');
+    return get_static($filename, $var, APP .'config');
 }
 
 // -------------------------------------------------------------------- 

@@ -45,13 +45,21 @@ defined('BASE') or exit('Access Denied!');
  *                  and $params support for model files.
  * @version         1.7 added $x_helpers .. private static vars and added self::$_x_helpers static functions.
  * @version         1.8 updated db functions, @deprecated register_static(),
- *                      we use spl_autoload_register() func. because of performance :)
+ *                      we use spl_autoload_register() func. because of performance :), added app_file() func.
  */
 
 Class LoaderException extends CommonException {}
                 
 Class loader {  
    
+    /**
+    * Prevent Duplication 
+    * memory of the "local" helper files.
+    * 
+    * @var array
+    */
+    public static $_helpers = array();
+    
     /**
     * Prevent Duplication 
     * memory of the "base" helper files.
@@ -67,6 +75,14 @@ Class loader {
     * @var array
     */
     public static $_app_helpers = array();
+    
+        /**
+    * Prevent Duplication 
+    * memory of the "application" files.
+    * 
+    * @var array
+    */
+    public static $_app_files = array();
     
     /**
     * loader::lib();
@@ -507,6 +523,44 @@ Class loader {
     public static function config($file)    
     {
         ob::instance()->config->load($file);
+    }
+    
+    // --------------------------------------------------------------------
+    
+    /**
+    * Load a file from application directory.
+    *
+    * @access   public
+    * @param    string $file filename
+    * @return   void
+    */                                 
+    public static function file($path, $string = FALSE)    
+    {
+        if( isset(self::$_app_files[$path]) )
+        return;
+        
+        if(file_exists(APP .$path. EXT)) 
+        { 
+            self::$_app_files[$path] = $path;
+            
+            log_message('debug', 'Application file loaded: '.$path. EXT);
+       
+            if($string === TRUE)
+            {
+                ob_start();
+                include(APP .$path. EXT);
+            
+                $content = ob_get_contents();
+                @ob_end_clean();
+                
+                return $content;
+            }
+            
+            require(APP .$path. EXT);
+            return;
+        }
+        
+        throw new LoaderException('Unable to locate the application file: ' .$path. EXT);
     }
     
     // --------------------------------------------------------------------

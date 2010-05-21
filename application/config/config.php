@@ -14,12 +14,12 @@ $config['display_errors']        = 1;
 
 /**
 |--------------------------------------------------------------------------
-| Set default time zone for php date() function.
+| Set default time zone for php default date() function.
 |--------------------------------------------------------------------------
 | Sets the default timezone used by all date/time functions in the framework
 |
-| @see http://php.net/manual/en/function.date-default-timezone-set.php
-| @see http://www.php.net/manual/en/timezones.php
+| @see  http://php.net/manual/en/function.date-default-timezone-set.php
+| @link http://www.php.net/manual/en/timezones.php
 |
 */
 $config['timezone_set']          = 'Europe/Istanbul';
@@ -56,10 +56,10 @@ $config['source_url']            = "http://localhost/obullo/sources/";
 |--------------------------------------------------------------------------
 | Obullo Style Writing
 |--------------------------------------------------------------------------
-|  When obullo style writing is on, you can use MOST USED libraries functions
-|  as static. e.g. input::post , instead of $this->input->post
+|  When Obullo style writing is on, you can use MOST USED library functions
+|  as static in everywhere. e.g. input::post('') instead of $this->input->post('')
 | (everywhere means controller, model, library, script, views and 
-|  any other files.)
+|  other files.)
 |
 */
 $config['obullo_style_writing']  = TRUE; 
@@ -253,8 +253,8 @@ $config['encryption_key']        = "";
 | 'session_expiration'  = the number of SECONDS you want the session to last.
 |  by default sessions last 7200 seconds (two hours).  Set to zero for no expiration.
 | 'time_to_update'      = how many seconds between Obullo refreshing Session Information
-| 'sess_database_var'   = normally Obullo use standart '$this->db' variable for session database
-|                         insert update operations, you can change it like db2, db3 .. 
+| 'sess_db_var'         = normally Obullo use standart '$this->db' variable for session database
+|                         crud operations, you can change it like db2, db3 .. 
 |
 */
 $config['sess_cookie_name']      = 'ob_session';

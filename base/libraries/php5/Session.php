@@ -32,6 +32,7 @@ Class session_CORE implements PHP5_Driver_Library {
     public $session;
                    
     private static $instance;
+    private static $driver;
 
     public static function instance()
     {
@@ -46,7 +47,10 @@ Class session_CORE implements PHP5_Driver_Library {
     // --------------------------------------------------------------------
     
     public function init($params = array())
-    {              
+    {         
+        if(isset(self::$driver))
+        return;
+         
         $driver = (isset($params['sess_driver'])) ? $params['sess_driver'] : config_item('sess_driver'); 
         $prefix = config_item('subclass_prefix');
         
@@ -59,7 +63,8 @@ Class session_CORE implements PHP5_Driver_Library {
              {
                 $classname = $prefix.'Session_cookie_driver';
              }
-             $this->session = new $classname($params);  
+             $this->session = new $classname($params);
+             self::$driver = 'cookie'; 
              break;
              
            case 'database':
@@ -69,7 +74,8 @@ Class session_CORE implements PHP5_Driver_Library {
              {
                 $classname = $prefix.'Session_database_driver';
              }
-             $this->session = new $classname($params);  
+             $this->session = new $classname($params);
+             self::$driver = 'database';  
              break;
              
            case 'native':

@@ -220,8 +220,8 @@ Class OB_Output {
             if (extension_loaded('zlib'))
             {             
                 if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) AND strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== FALSE)
-                { 
-                    ini_set('zlib.output_compression_level', config_item('compression_level', 'cache'));  // Obullo changes .. 
+                {   // Obullo changes .. 
+                    ini_set('zlib.output_compression_level', config_item('compression_level', 'cache'));  
                     ob_start('ob_gzhandler');
                 }
             }

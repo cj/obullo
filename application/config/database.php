@@ -45,7 +45,7 @@ $database['db2']['dsn']      = "";
 $database['db2']['options']  = array();
 
 
-// second database
+// third database
 $database['db3']['hostname'] = "localhost";
 $database['db3']['username'] = "root";
 $database['db3']['password'] = "";

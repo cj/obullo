@@ -45,23 +45,6 @@ function css($filename, $path = 'css', $title = '', $media = '')
 // --------------------------------------------------------------------
 
 /**
-* Load Local Css File from
-* current controller directory.
-* 
-* @author Ersin Guvenc
-* @param  string $filename
-* @param  string $arguments
-* @param  string $path
-* @return _css
-*/
-function local_css($filename, $path = 'css', $title = '', $media = '')
-{   
-    return _css($filename, $dir = 'local', $path, $title, $media);
-}
-
-// --------------------------------------------------------------------
-
-/**
 * Build css files in <head> tags
 * 
 * @author   Ersin Guvenc
@@ -83,17 +66,8 @@ function _css($filename, $dir = 'source', $path = 'css', $title = '', $media = '
     {
         $path = $path . ob::instance()->content->css_folder; 
     }
-    
-    switch ($dir)
-    {
-       case 'local':
-       $url = config_item('base_url').'application/directories/'.$GLOBALS['d'].'/views/'.$path;
-         break;
-         
-       case 'source':
-       $url = config_item('source_url').$path;
-         break;
-    }
+
+    $url = ob::instance()->config->slash_item('source_url').$path;
     
     $style = '';
     foreach($filename as $key => $css)
@@ -122,22 +96,6 @@ function js($filename, $arguments = '', $type = 'text/javascript')
 // --------------------------------------------------------------------
 
 /**
-* Load local js file from
-* current controller directory.
-* 
-* @author Ersin Guvenc
-* @param  string $filename
-* @param  string $arguments
-* @param  string $type
-*/
-function local_js($filename, $arguments = '', $type = 'text/javascript')
-{   
-    return _js($filename, $arguments, 'local'); 
-}
-
-// --------------------------------------------------------------------
-
-/**
 * Build js files in <head> tags
 * 
 * @author   Ersin Guvenc
@@ -151,16 +109,7 @@ function _js($filename, $arguments = '', $dir = 'source', $type = 'text/javascri
     if( ! is_array($filename))
     $filename = array($filename);
     
-    switch ($dir)
-    {
-       case 'local':
-       $url = config_item('base_url').'application/directories/'.$GLOBALS['d'].'/views/js/';
-         break;
-         
-       case 'source':
-       $url = config_item('source_url').'js/';
-         break;
-    }
+    $url = ob::instance()->config->slash_item('source_url').'js/';
 
     $js = '';
     foreach($filename as $key => $file)
