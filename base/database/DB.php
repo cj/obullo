@@ -29,16 +29,18 @@ Class DBException extends CommonException {}
  * @category        Database
  * @version         0.1
  * @version         0.2 added active record class
- * @version         0.3 beta 1.0 rc1 changes ( direct query bug fixed ), added use_bindcolumn constant 
+ * @version         0.3 beta 1.0 rc1 changes ( direct query bug fixed ) removed auto bind value, 
+ *                  last query bug fixed.
  */
  
 Class OB_DB extends OB_DBAc_sw {
     
     public $prepare                 = FALSE;    // prepare switch
     public $p_opt                   = array();  // prepare options
-    public $last_sql                = '';       // store last queried sql 
-    public $last_values;                        // store last executed PDO values
-    public $exec_count              = 0;        // count executed func.
+    public $last_sql                = NULL;     // store last queried sql 
+    public $last_values             = array();  // store last executed PDO values by exec_count
+    public $query_count             = 0;        // count all queries.
+    public $exec_count              = 0;        // count exec method.
     
     public $use_bind_values         = FALSE;    // bind value usage switch
     public $use_bind_params         = FALSE;    // bind param usage switch
@@ -107,19 +109,19 @@ Class OB_DB extends OB_DBAc_sw {
     public function query($sql = NULL)
     {  
         $this->last_sql = $sql;
-        
+    
         if($this->prepare)
         {
             $this->Stmt = $this->_conn->prepare($sql, $this->p_opt);
             
-            ++$this->exec_count;
-            
+            ++$this->query_count;
+                        
             return $this;   // beta 1.0 rc1 changes ( direct query bug fixed )
         }
         
         $this->Stmt = $this->_conn->query($sql);
 
-        ++$this->exec_count;
+        ++$this->query_count;
         
         return $this;
     }                    
@@ -151,41 +153,29 @@ Class OB_DB extends OB_DBAc_sw {
     *
     * @access    public
     * @param     string
+    * @version   0.1
+    * @version   0.2  Switched from using gettype() to is_ , some PHP versions might change its output.
     * @return    mixed        
     */    
     public function escape($str)
     {
-        switch (gettype($str))              
-            {
-               case 'string':
-                 $str = $this->escape_str($str); 
-                 break;
-                 
-               case 'integer':
-                 $str = (int)$str;
-                 break;
-                 
-               case 'double':
-                 $str = (double)$str;
-                 break;
-                 
-               case 'float':
-                 $str = (float)$str;
-                 break;
-                 
-               case 'boolean':
-                 $str = ($str === FALSE) ? 0 : 1;
-                 break;
-               
-               case 'null':
-                 $str = 'NULL';
-                 break;
-                 
-               default:
-                 $str = $this->escape_str($str);
-            }
+        if(is_string($str))
+        return $this->escape_str($str);
+        
+        if(is_integer($str))
+        return (int)$str;
+        
+        if(is_double($str))
+        return (double)$str;
+        
+        if(is_float($str))
+        return (float)$str;
+        
+        if(is_bool($str))
+        return ($str === FALSE) ? 0 : 1;    
 
-        return $str;
+        if(is_null($str))
+        return 'NULL';
     }
     
     // --------------------------------------------------------------------
@@ -195,48 +185,52 @@ Class OB_DB extends OB_DBAc_sw {
     * 
     * @author   Ersin Guvenc
     * @version  0.1
-    * @version  0.2    added secure like conditions support
-    * @version  0.3    changed bindValue functionality
-    * @param    array  $array bindValue or bindParam arrays
-    * @param    string $bind_value
-    * @return   void | NULL 
+    * @version  0.2     added secure like conditions support
+    * @version  0.3     changed bindValue functionality
+    * @version  0.3     removed auto bind value, changed value storage
+    * @param    array   $array bound, DEFAULT MUST BE NULL.
+    * @param    string  $bind_value
+    * @return   object  | void 
     */
-    public function exec($array = NULL, $bind_value = '')
-    { 
+    public function exec($array = NULL)
+    {                                                                                
         if(is_array($array))
-        $this->last_values = &$array; // store last executed bind values.
-        
-        if($this->use_bind_values)
-        $this->last_values = &$this->last_bind_values;
-        
-        if($this->use_bind_params)
-        $this->last_values = &$this->last_bind_params;       
-        
-        // this is just for prepared direct queries with bindValues or bindParams..
-        if($this->last_sql != NULL AND $this->exec_count == 0)
-        {
-            $this->query($this->last_sql);
-        }
-    
-        if(is_array($array) AND $bind_value != '')
-        {
+        {                       
             if( ! self::_is_assoc($array))
             throw new DBException(ob::instance()->lang->line('db_bind_data_must_assoc'));
-            
-            $this->_bindValues($array);
-            
-            unset($array);
         }
         
-        // if no query builded by active record
         // switch to pdo::statement
         $this->Stmt->execute($array);
-        unset($array);
         
-        // reset prepare variable so user may again use it ..
+        // reset prepare variable and prevent collision to next query ..
         $this->prepare = FALSE;
         
-        ++$this->exec_count; 
+        // count execute of prepared statements ..
+        ++$this->exec_count;
+        
+        // reset last bind values ..
+        $this->last_values = array();
+        
+        // store last executed bind values for last_query method.
+        if(is_array($array))
+        {
+            $this->last_values[$this->exec_count] = $array;
+            
+        }elseif($this->use_bind_values)
+        {
+            $this->last_values[$this->exec_count] = $this->last_bind_values;
+        
+        }elseif($this->use_bind_params)
+        {
+            $this->last_values[$this->exec_count] = $this->last_bind_params;
+        }
+        
+        // reset query bind usage informations ..
+        $this->use_bind_values  = FALSE;
+        $this->use_bind_params  = FALSE;
+        $this->last_bind_values = array();
+        $this->last_bind_params = array();
         
         return $this;
     }
@@ -260,45 +254,7 @@ Class OB_DB extends OB_DBAc_sw {
         
         return $this->_conn->exec($sql);
     }
-        
-    // --------------------------------------------------------------------
     
-    /**
-    * Automatically secure bind values..
-    * 
-    * @param    mixed $array
-    * @return   void 
-    */
-    private function _bindValues($array)
-    {
-        foreach($array as $key => $val)
-        {                                          
-            switch (gettype($val))
-            {
-               case 'string':
-               //echo 'string'; 
-                 $this->bind_value($key, $val, PDO::PARAM_STR);
-                 break;
-                 
-               case 'integer':
-                 $this->bind_value($key, $val, PDO::PARAM_INT);
-                 break;
-                 
-               case 'boolean':
-               //echo 'BOOL';
-                 $this->bind_value($key, $val, PDO::PARAM_BOOL);
-                 break;
-               
-               case 'null':
-                 $this->bind_value($key, $val, PDO::PARAM_NULL);
-                 break;
-                 
-               default:
-                 $this->bind_value($key, $val, PDO::PARAM_STR);
-            }
-        }
-    }
-
     // --------------------------------------------------------------------
     
     /**                              
@@ -311,25 +267,28 @@ Class OB_DB extends OB_DBAc_sw {
     * @return   string
     */
     public function last_query($prepared = FALSE)
-    {  
+    {         
         // let's make sure is it prepared query ?
         if($prepared == TRUE AND self::_is_assoc($this->last_values))
         {   
             $bind_keys = array();               
-            foreach(array_keys($this->last_values) as $k)
+            foreach(array_keys($this->last_values[$this->exec_count]) as $k)
             {
                 $bind_keys[]   = '/\\'.$k.'\b/';  // escape bind ':' character
             }
             
             $quoted_vals = array();
-            foreach(array_values($this->last_values) as $v)
+            foreach(array_values($this->last_values[$this->exec_count]) as $v)
             {
                 $quoted_vals[] = $this->quote($v);
             }
             
+            // reset last values.
+            $this->last_values = array();
+            
             return preg_replace($bind_keys, $quoted_vals, $this->last_sql);
         }
-            
+        
         return $this->last_sql;
     }                 
     
@@ -355,7 +314,7 @@ Class OB_DB extends OB_DBAc_sw {
     * @param   string $type PDO FETCH CONSTANT
     */
     public function bind_value($param, $val, $type)
-    {
+    {                                     
         $this->Stmt->bindValue($param, $val, $type);
         
         $this->use_bind_values = TRUE;
@@ -376,12 +335,12 @@ Class OB_DB extends OB_DBAc_sw {
     * @param   mixed $driver_options
     */
     public function bind_param($param, $val, $type, $length = NULL, $driver_options = NULL)
-    {
+    {   
         $this->Stmt->bindParam($param, $val, $type, $length, $driver_options);  
         
         $this->use_bind_params = TRUE;
         $this->last_bind_params[$param] = $val;
-        
+
         return $this;
     }        
         
@@ -683,7 +642,7 @@ Class OB_DB extends OB_DBAc_sw {
         // with an alias. While we're at it, we will escape the components
         if (strpos($item, '.') !== FALSE)
         {
-            $parts    = explode('.', $item);
+            $parts = explode('.', $item);
             
             // Does the first segment of the exploded item match
             // one of the aliases previously identified?  If so,
