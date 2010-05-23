@@ -177,8 +177,6 @@ Class OB_Content {
         
         if(sizeof($data) > 0) { extract($data, EXTR_SKIP); }
         
-        flush();
-        
         ob_start();
         
         include($path . $filename . EXT);
@@ -218,8 +216,6 @@ Class OB_Content {
         } 
         
         if(sizeof($data) > 0) { extract($data, EXTR_SKIP); }
-        
-        flush();
         
         ob_start();
         

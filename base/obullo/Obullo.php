@@ -86,6 +86,14 @@ Class ob extends Controller_CORE
     * @var array
     */
     public $_dbs = array();
+
+    /**
+    * stdClass Object reserved for
+    * session helper operations.
+    * 
+    * @var object
+    */
+    public $_std = NULL; 
        
     /**
     * Obullo instance

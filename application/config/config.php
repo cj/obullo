@@ -237,7 +237,7 @@ $config['log_date_format']       = 'Y-m-d H:i:s';
 | Encryption Key
 |--------------------------------------------------------------------------
 |
-| If you use the Encryption class or the Sessions class with encryption
+| If you use the Encryption class or the Sessions helper with encryption
 | enabled you MUST set an encryption key.  See the user guide for info.
 |
 */
@@ -260,7 +260,7 @@ $config['encryption_key']        = "";
 $config['sess_cookie_name']      = 'ob_session';
 $config['sess_expiration']       = 7200;
 $config['sess_encrypt_cookie']   = FALSE;
-$config['sess_driver']           = 'cookie';  // or database
+$config['sess_driver']           = 'database';  // or database
 $config['sess_db_var']           = 'db';            
 $config['sess_table_name']       = 'ob_sessions';
 $config['sess_match_ip']         = FALSE;

@@ -64,19 +64,20 @@ Class cart_CORE implements PHP5_Library {
                 $config[$key] = $val;
             }
         }
+
+        loader::base_helper('session');
         
-        $session = session::instance();
-        $session->init($params);
-            
+        sess_start($params);   
+         
         // Grab the shopping cart array from the session table, if it exists
-        if ($session->get('cart_contents') !== FALSE)
+        if (sess_get('cart_contents') !== FALSE)
         {
-            $this->_cart_contents = $session->get('cart_contents');
+            $this->_cart_contents = sess_get('cart_contents');
         }
         else
         {
             // No cart exists so we'll set some base values
-            $this->_cart_contents['cart_total'] = 0;        
+            $this->_cart_contents['cart_total']  = 0;        
             $this->_cart_contents['total_items'] = 0;        
         }
     
@@ -326,9 +327,9 @@ Class cart_CORE implements PHP5_Library {
      * changes to the quantity before checkout. That array must contain the
      * product ID and quantity for each item.
      *
-     * @access    private
+     * @access   private
      * @param    array
-     * @return    bool
+     * @return   bool
      */    
     private function _update($items = array())
     {
@@ -405,7 +406,7 @@ Class cart_CORE implements PHP5_Library {
         // Is our cart empty?  If so we delete it from the session
         if (count($this->_cart_contents) <= 2)
         {
-            session::instance()->un_set('cart_contents');
+            sess_unset('cart_contents');
             
             // Nothing more to do... coffee time!
             return FALSE;
@@ -413,7 +414,7 @@ Class cart_CORE implements PHP5_Library {
 
         // If we made it this far it means that our cart has data.
         // Let's pass it to the Session class so it can be stored
-        session::instance()->set(array('cart_contents' => $this->_cart_contents));
+        sess_set(array('cart_contents' => $this->_cart_contents));
 
         // Woot!
         return TRUE;    
@@ -549,7 +550,7 @@ Class cart_CORE implements PHP5_Library {
         $this->_cart_contents['cart_total'] = 0;        
         $this->_cart_contents['total_items'] = 0;        
 
-        session::instance()->un_set('cart_contents');
+        sess_unset('cart_contents');
     }
 
 

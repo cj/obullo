@@ -4,7 +4,7 @@
 | Obullo Framework (c) 2010. 
 |--------------------------------------------------------------------------
 |
-| @version See .base/obullo/obullo.php for the version.
+| @version See .base/obullo/obullo.php
 | 
 | PHP5 MVC Based Minimalist Software for PHP 5.1.2 or newer
 | @see     license.txt
@@ -66,9 +66,9 @@ ob_set_headers();
 
 ob_system_run();
 ob_system_close();
-
+ 
 // --------------------------------------------------------------------
 
-/* Beta 1.0 Rc1 Offical Version Release Date: 22-05-2010. */
-/* SVN $Id: Index.php 198 22-05-2010 15:24:38 develturk $ */
+/* Beta 1.0 Rc1 Offical Version Release Date: 25-05-2010. */
+/* SVN $Id: Index.php 204 25-05-2010 21:44:38 develturk $ */
 ?>

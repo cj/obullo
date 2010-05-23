@@ -45,7 +45,7 @@ defined('BASE') or exit('Access Denied!');
  *                  and $params support for model files.
  * @version         1.7 added $x_helpers .. private static vars and added self::$_x_helpers static functions.
  * @version         1.8 updated db functions, @deprecated register_static(),
- *                      we use spl_autoload_register() func. because of performance :), added app_file() func.
+ *                      we use spl_autoload_register() func. because of performance :), added loader::file() func.
  */
 
 Class LoaderException extends CommonException {}
@@ -76,13 +76,13 @@ Class loader {
     */
     public static $_app_helpers = array();
     
-        /**
+    /**
     * Prevent Duplication 
-    * memory of the "application" files.
+    * memory of the "external" files.
     * 
     * @var array
     */
-    public static $_app_files = array();
+    public static $_files = array();
     
     /**
     * loader::lib();
@@ -534,21 +534,21 @@ Class loader {
     * @param    string $file filename
     * @return   void
     */                                 
-    public static function file($path, $string = FALSE)    
+    public static function file($path, $string = FALSE, $ROOT = APP)    
     {
-        if( isset(self::$_app_files[$path]) )
+        if( isset(self::$_files[$path]) )
         return;
         
-        if(file_exists(APP .$path. EXT)) 
+        if(file_exists($ROOT .$path. EXT)) 
         { 
-            self::$_app_files[$path] = $path;
+            self::$_files[$path] = $path;
             
-            log_message('debug', 'Application file loaded: '.$path. EXT);
+            log_message('debug', 'External file loaded: '.$path. EXT);
        
             if($string === TRUE)
             {
                 ob_start();
-                include(APP .$path. EXT);
+                include($ROOT .$path. EXT);
             
                 $content = ob_get_contents();
                 @ob_end_clean();
@@ -556,11 +556,11 @@ Class loader {
                 return $content;
             }
             
-            require(APP .$path. EXT);
+            require($ROOT .$path. EXT);
             return;
         }
         
-        throw new LoaderException('Unable to locate the application file: ' .$path. EXT);
+        throw new LoaderException('Unable to locate the external file: ' .$path. EXT);
     }
     
     // --------------------------------------------------------------------
