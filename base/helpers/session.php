@@ -23,17 +23,19 @@ Class SessionException extends CommonException {}
 */
 function sess_start($params = array())
 {   
-    static $session = NULL;
+    static $session_start = NULL;
     
-    if ($session == NULL)
+    if ($session_start == NULL)
     {
         $driver = (isset($params['sess_driver'])) ? $params['sess_driver'] : config_item('sess_driver');
         loader::file('helpers'. DS .'drivers'. DS .'session'. DS .$driver.'_driver', false, BASE);
     
         _sess_start($params);
-        $session = TRUE;
+        $session_start = TRUE;
         return TRUE;
     }
+    
+    log_message('debug', "Sessions started"); 
     
     return FALSE;
 }
