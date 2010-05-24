@@ -19,9 +19,7 @@ defined('BASE') or exit('Access Denied!');
 Abstract Class Obullo_Registry
 {
     abstract protected function get($key);
-    //get stored object.
     abstract protected function set($key,$val);
-    //set (store) object.
 } 
  
 Class OB_Registry extends Obullo_Registry {
@@ -33,12 +31,6 @@ Class OB_Registry extends Obullo_Registry {
     private static $objs = array();
     private static $instance;
     
-    //prevent directly access.
-    private function __construct(){}
-    
-    //prevent clone. 
-    public function __clone(){}
-
     /** 
     * singleton method used to access the object 
     * @access public 
@@ -49,7 +41,7 @@ Class OB_Registry extends Obullo_Registry {
         {
             self::$instance = new self();
         }
-         
+        
         return self::$instance;
     }
     
@@ -68,7 +60,6 @@ Class OB_Registry extends Obullo_Registry {
         {
             return self::$objs[$key];
         }
-        
         return NULL;
     }
 

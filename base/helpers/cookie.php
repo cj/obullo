@@ -113,7 +113,7 @@ function get_cookie($index = '', $xss_clean = FALSE)
         $prefix = config_item('cookie_prefix');
     }
     
-    return $OB->input->cookie($prefix.$index, $xss_clean);
+    return input_cookie($prefix.$index, $xss_clean);
 }
 
 // --------------------------------------------------------------------

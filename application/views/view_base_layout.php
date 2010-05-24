@@ -1,7 +1,6 @@
 <?php echo doctype('html4-trans')."\n"; ?>
 <html>
 <head>
-
 <?php echo this()->meta; ?>
 
 <title><?php echo this()->title; ?></title>

@@ -6,8 +6,7 @@ Class __autoloader {
     function __construct()
     {         
         loader::base_helper('html'); 
-        loader::base_lib('content');
-        
+        loader::base_helper('content');        
     } 
 }
 Class Global_controller extends __autoloader
@@ -19,7 +18,7 @@ Class Global_controller extends __autoloader
       public function __global()
       {
           parent::__construct();
-          
+      
           $this->base     = config_item('base_url');
           $this->base_url = config_item('base_url')  . config_item('index_page');
           $this->base_img = config_item('source_url').'/images/';
@@ -27,7 +26,7 @@ Class Global_controller extends __autoloader
           $this->meta     = meta('Content-type', 'text/html; charset=utf-8', 'equiv');
           $this->meta    .= meta('description', '');
           $this->meta    .= meta('author', '');
-      
+                                                  
       }
       
 }

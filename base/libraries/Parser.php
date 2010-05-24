@@ -47,7 +47,7 @@ Class OB_Parser {
     public function parse($template, $data, $return = FALSE)
     {
         $OB = ob::instance();
-        $template = base_register('Content')->content->view($template, $data);
+        $template = content_view($template, $data);
         
         if ($template == '')
         {

@@ -41,7 +41,7 @@ Class OB_Log {
     {
         $config = get_config();
         
-        $this->log_path = ($config['log_path'] != '') ? $config['log_path'] : APP.'system'.DS.'logs/';
+        $this->log_path = ($config['log_path'] != '') ? $config['log_path'] : APP.'system'.DS.'logs'.DS;
         
         if ( ! is_dir($this->log_path) OR ! is_really_writable($this->log_path))
         {

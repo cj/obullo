@@ -91,7 +91,9 @@ Class Obullo_DB_Driver_Oci extends OB_DBAdapter
             return $str;
         }
 
-        $str = ob::instance()->input->_remove_invisible_characters($str);
+        loader::base_helper('security');
+        
+        $str = _remove_invisible_characters($str);
         
         // escape LIKE condition wildcards
         if ($like === TRUE)

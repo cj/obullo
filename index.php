@@ -38,10 +38,19 @@ error_reporting(E_ALL | E_STRICT);
 |
 */
 define('BASE', 'base'. DS);
-define('APP',  'application'. DS);  
-                                                       
-// --------------------------------------------------------------------                               
-
+define('APP',  'application'. DS);
+/*
+|---------------------------------------------------------------
+| DEFINE APPLICATION CONSTANTS
+|---------------------------------------------------------------
+|
+| EXT       - The file extension.  Typically ".php"
+| SELF      - The name of THIS file (typically "index.php")
+| FCPATH    - The full server path to THIS file
+| BASE      - The full server path to the "system" folder
+| APP       - The full server path to the "application" folder
+|
+*/
 define('EXT',  '.php'); 
 define('FCPATH', __FILE__);
 define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));

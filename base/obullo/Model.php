@@ -21,7 +21,7 @@ defined('BASE') or exit('Access Denied!');
  * Main model class.
  *
  * @package         Obullo 
- * @subpackage      Base.libraries     
+ * @subpackage      Base.obullo     
  * @category        Libraries
  * @version         0.1
  * @version         0.2 added extend to ob

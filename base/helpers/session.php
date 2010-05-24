@@ -10,6 +10,23 @@ defined('BASE') or exit('Access Denied!');
 * 
 */
 Class SessionException extends CommonException {}
+
+$_ses = ssc::instance();
+$_ses->_sion = new stdClass();
+$_ses->_sion->sess_encrypt_cookie  = FALSE;
+$_ses->_sion->sess_expiration      = '7200';
+$_ses->_sion->sess_match_ip        = FALSE;
+$_ses->_sion->sess_match_useragent = TRUE;
+$_ses->_sion->sess_cookie_name     = 'ob_session';
+$_ses->_sion->cookie_prefix        = '';
+$_ses->_sion->cookie_path          = '';
+$_ses->_sion->cookie_domain        = '';
+$_ses->_sion->sess_time_to_update  = 300;
+$_ses->_sion->encryption_key       = '';
+$_ses->_sion->flashdata_key        = 'flash';
+$_ses->_sion->time_reference       = 'time';
+$_ses->_sion->gc_probability       = 5;
+$_ses->_sion->userdata             = array();
  
 /**
 * Be carefull you shouldn't declare sess_start

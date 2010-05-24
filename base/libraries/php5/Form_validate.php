@@ -1024,7 +1024,7 @@ Class form_validate_CORE implements PHP5_Library {
      */
     public function valid_ip($ip)
     {
-        return ob::instance()->input->valid_ip($ip);
+        return input_valid_ip($ip);
     }
 
     // --------------------------------------------------------------------
@@ -1234,7 +1234,9 @@ Class form_validate_CORE implements PHP5_Library {
      */    
     public function strip_image_tags($str)
     {
-        return ob::instance()->input->strip_image_tags($str);
+        loader::base_helper('security');
+        
+        return strip_image_tags($str);
     }
     
     // --------------------------------------------------------------------
@@ -1248,7 +1250,9 @@ Class form_validate_CORE implements PHP5_Library {
      */    
     public function xss_clean($str)
     {
-        return ob::instance()->input->xss_clean($str);
+        loader::base_helper('security');
+        
+        return xss_clean($str);
     }
     
     // --------------------------------------------------------------------

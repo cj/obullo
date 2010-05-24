@@ -237,7 +237,7 @@ function safe_mailto($email, $title = '', $attributes = '')
 
 	$data['x'] = array_reverse($x);
 
-    return ob::instance()->content->base_script('safe_mail', $data);
+    return content_base_script('safe_mail', $data);
     
 }
 

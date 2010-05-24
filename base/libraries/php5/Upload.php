@@ -802,6 +802,8 @@ Class upload_CORE implements PHP5_Library {
      */    
     public function do_xss_clean()
     {        
+        loader::base_helper('security');
+        
         $file = $this->upload_path.$this->file_name;
         
         if (filesize($file) == 0)
@@ -854,7 +856,7 @@ Class upload_CORE implements PHP5_Library {
             return FALSE;
         }
 
-        return ob::instance()->input->xss_clean($data, TRUE);
+        return xss_clean($data, TRUE);
     }
     
     // --------------------------------------------------------------------

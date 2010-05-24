@@ -113,7 +113,7 @@ Class loader {
     */
     public static function app_lib($class, $no_ins_params = NULL, $object_name = '')
     {          
-        self::_library($class, $no_ins_params, FALSE, $object_name = '');
+        self::_library($class, $no_ins_params, FALSE, $object_name = '', 'app');
     }
     
     // --------------------------------------------------------------------
@@ -169,7 +169,7 @@ Class loader {
         {
            case FALSE:
              $type = 'application';
-             $OB->$class_var = register($class, $params, $lib_dir); 
+             $OB->$class_var = base_register($class, $params, $lib_dir); 
              break;
              
            case TRUE:

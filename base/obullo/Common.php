@@ -27,8 +27,6 @@ defined('BASE') or exit('Access Denied!');
 *              renamed register_static() function, added replace support ..
 */
 
-// --------------------------------------------------------------------
-
 /**
 * A Php5 library must be contain that functions.
 * But function body can be empty.
@@ -38,86 +36,6 @@ interface PHP5_Library
     public static function instance();
     public function init();
 }
-
-/**
-* A Php5 Driver library must be contain that functions.
-* But function body can be empty.
-*/                        
-interface PHP5_Driver_Library 
-{
-    public static function instance();
-    public function init();
-    public function __call($method, $args);
-}
-
-// -------------------------------------------------------------------- 
-
-/**
-* register();
-* Registry Controller Function
-* 
-* @access   private
-* @author   Ersin Guvenc
-* @param    string $class name of the class.
-* @param    array $params construct params of the class.
-* @version  0.1
-* @version  0.2 added $file_exists var
-* @version  0.3 moved into ob class
-* @version  0.4 added __construct(params = array()) support
-* @version  0.5 removed OB_Library::factory(), lib_factory()
-* @version  0.6 added $dir param
-* @return   object | NULL
-*/
-function register($class, $params = NULL, $dir = '')
-{
-    switch ($dir)
-    {
-       case 'directory':
-       $dir = DIR . $GLOBALS['d']. DS;
-         break;
-         
-       default: // application.
-       $dir = APP; 
-    }
-
-    $registry = OB_Registry::instance();
-    $Class    = strtolower($class); //lowercase classname.
-
-    $getObject = $registry->get_object($Class);
-    
-    if ($getObject !== NULL)     // if class already stored we are done.
-    return $getObject;
-    
-    if(file_exists($dir .'libraries'. DS .$class. EXT))
-    {
-        require($dir .'libraries'. DS .$class. EXT);
-        
-        $classname = ucfirst($class);
-        
-        // construct support.
-        if(is_array($params))
-        {
-            $registry->set_object($Class, new $classname($params));
-            
-        } else 
-        {
-            $registry->set_object($Class, new $classname());
-        }
-         
-        //return singleton object.
-        $Object = $registry->get_object($Class);
-
-        if(is_object($Object))
-        return $Object;
-    }
-    
-    return NULL;  // if register func return to null 
-                  // we will show a loader exception inside from
-                  // which file will use ob::register func.
-
-} // end func.
-
-// -------------------------------------------------------------------- 
 
 /**
 * base_register()
@@ -136,26 +54,46 @@ function register($class, $params = NULL, $dir = '')
 * 
 * @return   object  | NULL
 */
-function base_register($class, $params = NULL)
+function base_register($class, $params = NULL, $dir = '')
 {
     $registry  = OB_Registry::instance();
-    $Class     = ucfirst($class);
-    
-    $getObject = $registry->get_object($Class);
+    $Class     = strtolower($class);
+      
+    switch ($dir)
+    {
+       case 'directory':
+       $path = DIR . $GLOBALS['d']. DS;
+         break;
+         
+       case 'app':
+       $path = APP; 
+         break;
+         
+       case '':
+       $path  = BASE;
+       $Class = ucfirst($class);
+         break;
+    }        
 
+    $getObject = $registry->get_object($Class);
+    
     if ($getObject !== NULL)
     return $getObject;
-    
-    if(file_exists(BASE .'libraries'. DS .$Class. EXT))
+
+    if(file_exists($path .'libraries'. DS .$Class. EXT))
     {
-        require(BASE .'libraries'. DS .$Class. EXT);
-        $classname = 'OB_'.$Class; 
-        $prefix    = config_item('subclass_prefix');  // MY_
+        require($path .'libraries'. DS .$Class. EXT);
+        $classname = $Class;
         
-        if(file_exists(APP .'libraries'. DS .$prefix. $Class. EXT))
+        if($dir == '')   // if base class
         {
-            require(APP .'libraries'. DS .$prefix. $Class. EXT);
-            $classname = $prefix. $Class;
+            $classname = 'OB_'.$Class;
+            $prefix    = config_item('subclass_prefix');  // MY_
+            if(file_exists(APP .'libraries'. DS .$prefix. $Class. EXT))
+            {
+                require(APP .'libraries'. DS .$prefix. $Class. EXT);
+                $classname = $prefix. $Class;
+            }
         }
         
         // __construct params support. 
@@ -175,6 +113,7 @@ function base_register($class, $params = NULL)
         
         if(is_object($Object))
         return $Object;
+        
     }
 
     return NULL;  // if register func return to null 
@@ -228,30 +167,6 @@ function register_autoload($real_name)
         // Shortcut support. 
         // --------------------------------------------------------------------       
         $class = strtolower($real_name); // lowercase classname.
-                    
-        $shortcuts = array('agent'   => 'Agent',
-                           'config'  => 'Config',
-                           'input'   => 'Input',
-                           'lang'    => 'Lang',
-                           'uri'     => 'Uri',
-                           'output'  => 'Output',
-                           'content' => 'Content',
-                           'benchmark'  => 'Benchmark'
-                            );
-        
-        if(isset($shortcuts[$class]))
-        {            
-            if(config_item('obullo_style_writing'))  // shortcut files ..
-            {
-                include(BASE .'shortcuts'. DS .$shortcuts[$class]. EXT);
-
-                ob::instance()->_libs[$class] = $class;
-                return;
-            }
-            
-            throw new LoaderException($class . ' shortcut file not found, check your obullo 
-            style writing option in your config file, or use $this variable: $this->'.$class);
-        }
         
         // When enable_query_strings = true there are some isset errors ...
         // we need to set directory again.  
@@ -260,16 +175,13 @@ function register_autoload($real_name)
         
         // Local php5 libraries load support. 
         // -------------------------------------------------------------------- 
-        if(is_dir(DIR .$GLOBALS['d']. DS .'libraries'. DS .'php5'))
+        if(file_exists(DIR .$GLOBALS['d']. DS .'libraries'. DS .'php5'. DS .$class. EXT))
         {
-            if(file_exists(DIR .$GLOBALS['d']. DS .'libraries'. DS .'php5'. DS .$class. EXT))
-            {
-                require(DIR .$GLOBALS['d']. DS .'libraries'. DS .'php5'. DS .$class. EXT);
-                
-                ob::instance()->_libs['php5_local_'.$class.'_loaded'] = $class;
-                return;
-            } 
-        }
+            require(DIR .$GLOBALS['d']. DS .'libraries'. DS .'php5'. DS .$class. EXT);
+            
+            ob::instance()->_libs['php5_local_'.$class.'_loaded'] = $class;
+            return;
+        } 
         
         // Php5 application library load and replace support.  
         // -------------------------------------------------------------------- 

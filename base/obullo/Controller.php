@@ -13,41 +13,23 @@ defined('BASE') or exit('Access Denied!');
  * @filesource
  * @license
  */
-
- /**
- * Obullo Controller
- * 
- * @package         Obullo 
- * @subpackage      Base.libraries     
- * @category        Libraries
- * @version         1.0
- * @version         1.1 renamed Register as base_register
- * @version         1.2 added 'extends to ob'
- * @version         1.3 added __autoloader()
- * @version         1.4 removed __autoloader()
- * @version         1.5 added loader::shortcut()
- * @version         1.6 added base class public variables, @deprecated      self::__autoloader()
- * @version         1.7 removed obullo style writing func because of we added spl_autoload_register func.
- * 
- */   
  
+ /**
+ * Controller Class.
+ *
+ * Main Controller class.
+ *
+ * @package         Obullo 
+ * @subpackage      Base.obullo     
+ * @category        Libraries
+ * @version         0.1
+ */
 Class Controller extends ob {
-    
-    /**
-    * System class public variables
-    * @var object
-    */
-    public $config, $input, $benchmark, $lang, $router, $uri, $output;
-    
-    /**
-    * Constructor.
-    */
+
     public function __construct()       
     {   
-        // Be carefull. parent::__construct() must be at the top otherwise
-        // __autoloader functionality does not work.
+        // Be carefull. parent::__construct() must be at the top.
         parent::__construct();
-           
         $this->_ob_init();
         
         log_message('debug', "Controller Class Initialized");
@@ -63,7 +45,6 @@ Class Controller extends ob {
     {
         $Classes = array(                         
                             'config'    => 'Config',
-                            'input'     => 'Input',
                             'benchmark' => 'Benchmark',
                             'lang'      => 'Lang',
                             'router'    => 'Router',
@@ -71,14 +52,15 @@ Class Controller extends ob {
                             'output'    => 'Output' 
                         );
                         
-
         foreach ($Classes as $public_var => $Class)
         {
             $this->$public_var = base_register($Class);
         }
+        
+        // Helpers
+        loader::base_helper('input');
 
-    } 
-    
+    }
 }
 // END Controller Class
 

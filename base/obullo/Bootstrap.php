@@ -139,10 +139,12 @@ if( ! function_exists('ob_system_close'))
 {
     function ob_system_close()
     {
+        $ob = ob::instance();
+        
         // Close all PDO connections..        
-        foreach(ob::instance()->_dbs as $db_var)
+        foreach($ob->_dbs as $db_var)
         {
-            ob::instance()->{$db_var} = NULL;
+            $ob->{$db_var} = NULL;
         }
         
         // close all buffers.

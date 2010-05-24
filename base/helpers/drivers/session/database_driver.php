@@ -13,49 +13,34 @@ function _sess_start($params = array())
 {                       
     log_message('debug', "Session Database Driver Initialized"); 
 
-    $ob = ob::instance();
-    
-    $ob->_std = new stdClass();
-    $ob->_std->sess_encrypt_cookie  = FALSE;
-    $ob->_std->sess_expiration      = '7200';
-    $ob->_std->sess_match_ip        = FALSE;
-    $ob->_std->sess_match_useragent = TRUE;
-    $ob->_std->sess_cookie_name     = 'ob_session';
-    $ob->_std->cookie_prefix        = '';
-    $ob->_std->cookie_path          = '';
-    $ob->_std->cookie_domain        = '';
-    $ob->_std->sess_time_to_update  = 300;
-    $ob->_std->encryption_key       = '';
-    $ob->_std->flashdata_key        = 'flash';
-    $ob->_std->time_reference       = 'time';
-    $ob->_std->gc_probability       = 5;
-    $ob->_std->userdata             = array();
+    $ob  = ob::instance();
+    $ses = ssc::instance();
 
     foreach (array('sess_encrypt_cookie', 'sess_driver', 'sess_db_var', 'sess_table_name', 
     'sess_expiration', 'sess_match_ip', 'sess_match_useragent', 'sess_cookie_name', 'cookie_path', 
     'cookie_domain', 'sess_time_to_update', 'time_reference', 'cookie_prefix', 'encryption_key') as $key)
     {
-        $ob->_std->$key = (isset($params[$key])) ? $params[$key] : config_item($key);
+        $ses->_sion->$key = (isset($params[$key])) ? $params[$key] : config_item($key);
     }
 
     // _unserialize func. use strip_slashes() func.
     loader::base_helper('string');
 
-    $ob->_std->now = _get_time();
+    $ses->_sion->now = _get_time();
 
     // Set the expiration two years from now.
-    if ($ob->_std->sess_expiration == 0)
-    $ob->_std->sess_expiration = (60 * 60 * 24 * 365 * 2);  
+    if ($ses->_sion->sess_expiration == 0)
+    $ses->_sion->sess_expiration = (60 * 60 * 24 * 365 * 2);  
 
     // Set the cookie name
-    $ob->_std->sess_cookie_name = $ob->_std->cookie_prefix . $ob->_std->sess_cookie_name;
+    $ses->_sion->sess_cookie_name = $ses->_sion->cookie_prefix . $ses->_sion->sess_cookie_name;
     
     // --------------------------------------------------------------------
     
     // if custom database variable exists ..
-    if(isset($ob->{$ob->_std->sess_db_var}) AND $ob->{$ob->_std->sess_db_var} instanceof OB_DB)
+    if(isset($ob->{$ses->_sion->sess_db_var}) AND $ob->{$ses->_sion->sess_db_var} instanceof OB_DB)
     {
-        $ob->_std->sess_db = &$ob->{$ob->_std->sess_db_var};
+        $ses->_sion->sess_db = &$ob->{$ses->_sion->sess_db_var};
     }                                
     else
     {
@@ -65,7 +50,7 @@ function _sess_start($params = array())
                 first you must load a database object by loader::database() function.');
         }
         
-        $ob->_std->sess_db = &$ob->db;
+        $ses->_sion->sess_db = &$ob->db;
     }
     
     // --------------------------------------------------------------------
@@ -105,10 +90,10 @@ function _sess_start($params = array())
 */
 function sess_read()
 {    
-    $ob = ob::instance();
+    $ses = ssc::instance();
     
     // Fetch the cookie
-    $session = $ob->input->cookie($ob->_std->sess_cookie_name);
+    $session = input_cookie($ses->_sion->sess_cookie_name);
 
     // No cookie?  Goodbye cruel world!...
     if ($session === FALSE)
@@ -118,7 +103,7 @@ function sess_read()
     }
     
     // Decrypt the cookie data
-    if ($ob->_std->sess_encrypt_cookie == TRUE)
+    if ($ses->_sion->sess_encrypt_cookie == TRUE)
     {
         $encrypt = encrypt::instance();
         $encrypt->init();
@@ -132,7 +117,7 @@ function sess_read()
         $session = substr($session, 0, strlen($session)-32);
 
         // Does the md5 hash match?  This is to prevent manipulation of session data in userspace
-        if ($hash !==  md5($session . $ob->_std->encryption_key))
+        if ($hash !==  md5($session . $ses->_sion->encryption_key))
         {
             log_message('error', 'The session cookie data did not match what was expected. This could be a possible hacking attempt.');
             
@@ -154,21 +139,21 @@ function sess_read()
     }
     
     // Is the session current?
-    if (($session['last_activity'] + $ob->_std->sess_expiration) < $ob->_std->now)
+    if (($session['last_activity'] + $ses->_sion->sess_expiration) < $ses->_sion->now)
     {
         sess_destroy();
         return FALSE;
     }
 
     // Does the IP Match?
-    if ($ob->_std->sess_match_ip == TRUE AND $session['ip_address'] != $ob->input->ip_address())
+    if ($ses->_sion->sess_match_ip == TRUE AND $session['ip_address'] != input_ip_address())
     {
         sess_destroy();
         return FALSE;
     }
     
     // Does the User Agent Match?
-    if ($ob->_std->sess_match_useragent == TRUE AND trim($session['user_agent']) != trim(substr($ob->input->user_agent(), 0, 50)))
+    if ($ses->_sion->sess_match_useragent == TRUE AND trim($session['user_agent']) != trim(substr(input_user_agent(), 0, 50)))
     {
         sess_destroy();
         return FALSE;
@@ -177,19 +162,19 @@ function sess_read()
     // Db driver changes ...
     // -------------------------------------------------------------------- 
     
-    $ob->_std->sess_db->where('session_id', $session['session_id']);
+    $ses->_sion->sess_db->where('session_id', $session['session_id']);
             
-    if ($ob->_std->sess_match_ip == TRUE)
+    if ($ses->_sion->sess_match_ip == TRUE)
     {
-        $ob->_std->sess_db->where('ip_address', $session['ip_address']);
+        $ses->_sion->sess_db->where('ip_address', $session['ip_address']);
     }
 
-    if ($ob->_std->sess_match_useragent == TRUE)
+    if ($ses->_sion->sess_match_useragent == TRUE)
     {
-        $ob->_std->sess_db->where('user_agent', $session['user_agent']);
+        $ses->_sion->sess_db->where('user_agent', $session['user_agent']);
     }
     
-    $query = $ob->_std->sess_db->get($ob->_std->sess_table_name);
+    $query = $ses->_sion->sess_db->get($ses->_sion->sess_table_name);
 
     // Is there custom data?  If so, add it to the main session array
     $row = $query->row();
@@ -215,7 +200,7 @@ function sess_read()
     }                
 
     // Session is valid!
-    $ob->_std->userdata = $session;
+    $ses->_sion->userdata = $session;
     unset($session);
     
     return TRUE;
@@ -231,10 +216,10 @@ function sess_read()
  */
 function sess_write()
 {
-    $ob = ob::instance();
+    $ses = ssc::instance();
     
     // set the custom userdata, the session data we will set in a second
-    $custom_userdata = $ob->_std->userdata;
+    $custom_userdata = $ses->_sion->userdata;
     $cookie_userdata = array();
 
     // Before continuing, we need to determine if there is any custom data to deal with.
@@ -243,7 +228,7 @@ function sess_write()
     foreach (array('session_id','ip_address','user_agent','last_activity') as $val)
     {
         unset($custom_userdata[$val]);
-        $cookie_userdata[$val] = $ob->_std->userdata[$val];
+        $cookie_userdata[$val] = $ses->_sion->userdata[$val];
     }
 
     // Did we find any custom data?  If not, we turn the empty array into a string
@@ -259,8 +244,8 @@ function sess_write()
     }
 
     // Run the update query
-    $ob->_std->sess_db->where('session_id', $ob->_std->userdata['session_id']);
-    $ob->_std->sess_db->update($ob->_std->sess_table_name, array('last_activity' => $ob->_std->userdata['last_activity'], 
+    $ses->_sion->sess_db->where('session_id', $ses->_sion->userdata['session_id']);
+    $ses->_sion->sess_db->update($ses->_sion->sess_table_name, array('last_activity' => $ses->_sion->userdata['last_activity'], 
     'user_data' => $custom_userdata));
 
     // Write the cookie.  Notice that we manually pass the cookie data array to the
@@ -277,7 +262,7 @@ function sess_write()
 */
 function sess_create()
 {    
-    $ob = ob::instance();
+    $ses = ssc::instance();
     
     $sessid = '';
     while (strlen($sessid) < 32)
@@ -286,20 +271,20 @@ function sess_create()
     }
     
     // To make the session ID even more secure we'll combine it with the user's IP
-    $sessid .= $ob->input->ip_address();
+    $sessid .= input_ip_address();
 
          
-    $ob->_std->userdata = array(
+    $ses->_sion->userdata = array(
                         'session_id'     => md5(uniqid($sessid, TRUE)),
-                        'ip_address'     => $ob->input->ip_address(),
-                        'user_agent'     => substr($ob->input->user_agent(), 0, 50),
-                        'last_activity'  => $ob->_std->now
+                        'ip_address'     => input_ip_address(),
+                        'user_agent'     => substr(input_user_agent(), 0, 50),
+                        'last_activity'  => $ses->_sion->now
                         );
     
     // Db driver changes..
     // --------------------------------------------------------------------  
 
-    $ob->_std->sess_db->insert($ob->_std->sess_table_name, $ob->_std->userdata);
+    $ses->_sion->sess_db->insert($ses->_sion->sess_table_name, $ses->_sion->userdata);
     
     // Write the cookie        
     _set_cookie(); 
@@ -315,17 +300,17 @@ function sess_create()
 */
 function sess_update()
 {
-    $ob = ob::instance();
+    $ses = ssc::instance();
     
     // We only update the session every five minutes by default
-    if (($ob->_std->userdata['last_activity'] + $ob->_std->sess_time_to_update) >= $ob->_std->now)
+    if (($ses->_sion->userdata['last_activity'] + $ses->_sion->sess_time_to_update) >= $ses->_sion->now)
     {
         return;
     }
 
     // Save the old session id so we know which record to 
     // update in the database if we need it
-    $old_sessid = $ob->_std->userdata['session_id'];
+    $old_sessid = $ses->_sion->userdata['session_id'];
     $new_sessid = '';
     while (strlen($new_sessid) < 32)
     {
@@ -333,14 +318,14 @@ function sess_update()
     }
     
     // To make the session ID even more secure we'll combine it with the user's IP
-    $new_sessid .= $ob->input->ip_address();
+    $new_sessid .= input_ip_address();
     
     // Turn it into a hash
     $new_sessid = md5(uniqid($new_sessid, TRUE));
     
     // Update the session data in the session data array
-    $ob->_std->userdata['session_id']    = $new_sessid;
-    $ob->_std->userdata['last_activity'] = $ob->_std->now;
+    $ses->_sion->userdata['session_id']    = $new_sessid;
+    $ses->_sion->userdata['last_activity'] = $ses->_sion->now;
     
     // _set_cookie() will handle this for us if we aren't using database sessions
     // by pushing all userdata to the cookie.
@@ -355,12 +340,12 @@ function sess_update()
     $cookie_data = array();
     foreach (array('session_id','ip_address','user_agent','last_activity') as $val)
     {
-        $cookie_data[$val] = $ob->_std->userdata[$val];
+        $cookie_data[$val] = $ses->_sion->userdata[$val];
     }
 
-    $ob->_std->sess_db->where('session_id', $old_sessid);
-    $ob->_std->sess_db->update($ob->_std->sess_table_name, 
-    array('last_activity' => $ob->_std->now, 'session_id' => $new_sessid)); 
+    $ses->_sion->sess_db->where('session_id', $old_sessid);
+    $ses->_sion->sess_db->update($ses->_sion->sess_table_name, 
+    array('last_activity' => $ses->_sion->now, 'session_id' => $new_sessid)); 
     
     // Write the cookie
     _set_cookie($cookie_data);
@@ -376,25 +361,25 @@ function sess_update()
 */
 function sess_destroy()
 {   
-    $ob = ob::instance(); 
+    $ses = ssc::instance(); 
     
     // Db driver changes..
     // -------------------------------------------------------------------
-    if(isset($ob->_std->userdata['session_id']))
+    if(isset($ses->_sion->userdata['session_id']))
     {
         // Kill the session DB row
-        $ob->_std->sess_db->where('session_id', $ob->_std->userdata['session_id']);
-        $ob->_std->sess_db->delete($ob->_std->sess_table_name);
+        $ses->_sion->sess_db->where('session_id', $ses->_sion->userdata['session_id']);
+        $ses->_sion->sess_db->delete($ses->_sion->sess_table_name);
     }
     // -------------------------------------------------------------------
     
     // Kill the cookie
     setcookie(           
-                $ob->_std->sess_cookie_name, 
+                $ses->_sion->sess_cookie_name, 
                 addslashes(serialize(array())), 
-                ($ob->_std->now - 31500000), 
-                $ob->_std->cookie_path, 
-                $ob->_std->cookie_domain, 
+                ($ses->_sion->now - 31500000), 
+                $ses->_sion->cookie_path, 
+                $ses->_sion->cookie_domain, 
                 FALSE
     );
 }
@@ -410,8 +395,8 @@ function sess_destroy()
 */        
 function sess_get($item)
 {
-    $ob = ob::instance();
-    return ( ! isset($ob->_std->userdata[$item])) ? FALSE : $ob->_std->userdata[$item];
+    $ses = ssc::instance();
+    return ( ! isset($ses->_sion->userdata[$item])) ? FALSE : $ses->_sion->userdata[$item];
 }
 
 // --------------------------------------------------------------------
@@ -424,8 +409,8 @@ function sess_get($item)
 */    
 function all_userdata()
 {
-    $ob = ob::instance();
-    return ( ! isset($ob->_std->userdata)) ? FALSE : $ob->_std->userdata;
+    $ses = ssc::instance();
+    return ( ! isset($ses->_sion->userdata)) ? FALSE : $ses->_sion->userdata;
 }
 
 // --------------------------------------------------------------------
@@ -440,7 +425,7 @@ function all_userdata()
 */        
 function sess_set($newdata = array(), $newval = '')
 {
-    $ob = ob::instance();
+    $ses = ssc::instance();
     
     if (is_string($newdata))
     {
@@ -451,7 +436,7 @@ function sess_set($newdata = array(), $newval = '')
     {
         foreach ($newdata as $key => $val)
         {
-            $ob->_std->userdata[$key] = $val;
+            $ses->_sion->userdata[$key] = $val;
         }
     }
 
@@ -468,7 +453,7 @@ function sess_set($newdata = array(), $newval = '')
 */        
 function sess_unset($newdata = array())  // obullo changes ...
 {
-    $ob = ob::instance();
+    $ses = ssc::instance();
     
     if (is_string($newdata))
     {
@@ -479,7 +464,7 @@ function sess_unset($newdata = array())  // obullo changes ...
     {
         foreach ($newdata as $key => $val)
         {
-            unset($ob->_std->userdata[$key]);
+            unset($ses->_sion->userdata[$key]);
         }
     }
 
@@ -499,7 +484,7 @@ function sess_unset($newdata = array())  // obullo changes ...
 */
 function sess_set_flash($newdata = array(), $newval = '') // obullo changes ...
 {
-    $ob = ob::instance();
+    $ses = ssc::instance();
     
     if (is_string($newdata))
     {
@@ -510,7 +495,7 @@ function sess_set_flash($newdata = array(), $newval = '') // obullo changes ...
     {
         foreach ($newdata as $key => $val)
         {
-            $flashdata_key = $ob->_std->flashdata_key.':new:'.$key;
+            $flashdata_key = $ses->_sion->flashdata_key.':new:'.$key;
             sess_set($flashdata_key, $val);
         }
     }
@@ -527,15 +512,15 @@ function sess_set_flash($newdata = array(), $newval = '') // obullo changes ...
 */
 function sess_keep_flash($key) // obullo changes ...
 {
-    $ob = ob::instance();
+    $ses = ssc::instance();
     // 'old' flashdata gets removed.  Here we mark all 
     // flashdata as 'new' to preserve it from _flashdata_sweep()
     // Note the function will return FALSE if the $key 
     // provided cannot be found
-    $old_flashdata_key = $ob->_std->flashdata_key.':old:'.$key;
+    $old_flashdata_key = $ses->_sion->flashdata_key.':old:'.$key;
     $value = sess_get($old_flashdata_key);
 
-    $new_flashdata_key = $ob->_std->flashdata_key.':new:'.$key;
+    $new_flashdata_key = $ses->_sion->flashdata_key.':new:'.$key;
     sess_set($new_flashdata_key, $value);
 }
 
@@ -550,8 +535,8 @@ function sess_keep_flash($key) // obullo changes ...
 */    
 function sess_get_flash($key) // obullo changes ...
 {
-    $ob = ob::instance();
-    $flashdata_key = $ob->_std->flashdata_key.':old:'.$key;
+    $ses = ssc::instance();
+    $flashdata_key = $ses->_sion->flashdata_key.':old:'.$key;
     return sess_get($flashdata_key);
 }
 
@@ -566,14 +551,14 @@ function sess_get_flash($key) // obullo changes ...
 */
 function _flashdata_mark()
 {
-    $ob = ob::instance();
+    $ses = ssc::instance();
     $userdata = all_userdata();
     foreach ($userdata as $name => $value)
     {
         $parts = explode(':new:', $name);
         if (is_array($parts) && count($parts) === 2)
         {
-            $new_name = $ob->_std->flashdata_key.':old:'.$parts[1];
+            $new_name = $ses->_sion->flashdata_key.':old:'.$parts[1];
             sess_set($new_name, $value);
             sess_unset($name);
         }
@@ -611,9 +596,9 @@ function _flashdata_sweep()
 */
 function _get_time()
 {   
-    $ob   = ob::instance();
+    $ses  = ssc::instance();
     $time = time();
-    if (strtolower($ob->_std->time_reference) == 'gmt')
+    if (strtolower($ses->_sion->time_reference) == 'gmt')
     {
         $now  = time();
         $time = mktime( gmdate("H", $now), 
@@ -638,16 +623,16 @@ function _get_time()
 */
 function _set_cookie($cookie_data = NULL)
 {
-    $ob = ob::instance();
+    $ses = ssc::instance();
     if (is_null($cookie_data))
     {
-        $cookie_data = $ob->_std->userdata;
+        $cookie_data = $ses->_sion->userdata;
     }
 
     // Serialize the userdata for the cookie
     $cookie_data = _serialize($cookie_data);
     
-    if ($ob->_std->sess_encrypt_cookie == TRUE)
+    if ($ses->_sion->sess_encrypt_cookie == TRUE)
     {
         $encrypt = encrypt::instance();
         $encrypt->init();
@@ -657,16 +642,16 @@ function _set_cookie($cookie_data = NULL)
     else
     {
         // if encryption is not used, we provide an md5 hash to prevent userside tampering
-        $cookie_data = $cookie_data . md5($cookie_data . $ob->_std->encryption_key);
+        $cookie_data = $cookie_data . md5($cookie_data . $ses->_sion->encryption_key);
     }
     
     // Set the cookie
     setcookie(
-                $ob->_std->sess_cookie_name,
+                $ses->_sion->sess_cookie_name,
                 $cookie_data,
-                $ob->_std->sess_expiration + time(),
-                $ob->_std->cookie_path,
-                $ob->_std->cookie_domain,
+                $ses->_sion->sess_expiration + time(),
+                $ses->_sion->cookie_path,
+                $ses->_sion->cookie_domain,
                 0
             );
 }
@@ -745,15 +730,15 @@ function _unserialize($data)
 */
 function _sess_gc()
 {
-    $ob = ob::instance();
+    $ses = ssc::instance();
     srand(time());
     
-    if ((rand() % 100) < $ob->_std->gc_probability)
+    if ((rand() % 100) < $ses->_sion->gc_probability)
     {
-        $expire = $ob->_std->now - $ob->_std->sess_expiration;
+        $expire = $ses->_sion->now - $ses->_sion->sess_expiration;
         
-        $ob->_std->sess_db->where("last_activity < {$expire}");
-        $ob->_std->sess_db->delete($ob->_std->sess_table_name);
+        $ses->_sion->sess_db->where("last_activity < {$expire}");
+        $ses->_sion->sess_db->delete($ses->_sion->sess_table_name);
 
         log_message('debug', 'Session garbage collection performed.');
     }

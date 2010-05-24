@@ -54,18 +54,6 @@ $config['source_url']            = "http://localhost/obullo/sources/";
 
 /*
 |--------------------------------------------------------------------------
-| Obullo Style Writing
-|--------------------------------------------------------------------------
-|  When Obullo style writing is on, you can use MOST USED library functions
-|  as static in everywhere. e.g. input::post('') instead of $this->input->post('')
-| (everywhere means controller, model, library, script, views and 
-|  other files.)
-|
-*/
-$config['obullo_style_writing']  = TRUE; 
-
-/*
-|--------------------------------------------------------------------------
 | Index File
 |--------------------------------------------------------------------------
 |
@@ -260,7 +248,7 @@ $config['encryption_key']        = "";
 $config['sess_cookie_name']      = 'ob_session';
 $config['sess_expiration']       = 7200;
 $config['sess_encrypt_cookie']   = FALSE;
-$config['sess_driver']           = 'database';  // or database
+$config['sess_driver']           = 'cookie';  // or database
 $config['sess_db_var']           = 'db';            
 $config['sess_table_name']       = 'ob_sessions';
 $config['sess_match_ip']         = FALSE;
