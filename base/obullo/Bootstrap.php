@@ -34,10 +34,18 @@ if( ! function_exists('ob_include_files'))
     {
         require (BASE .'constants'. DS .'db'. EXT);
         require (BASE .'constants'. DS .'file'. EXT);
-        require (APP  .'config'. DS .'constants'. EXT);  // Your constants .. 
+        require (APP  .'config'. DS .'constants'. EXT);  // Your constants ..
+        require (BASE .'obullo'. DS .'Ssc'. EXT); 
         require (BASE .'obullo'. DS .'Errors'. EXT);       
         require (BASE .'obullo'. DS .'Registry'. EXT); 
-        require (BASE .'obullo'. DS .'Common'. EXT); 
+        require (BASE .'obullo'. DS .'Common'. EXT);
+        
+        // system helpers
+        if(config_item('log_threshold') > 0)
+        require (BASE .'helpers'. DS .'log'. EXT);
+        require (BASE .'helpers'. DS .'input'. EXT);
+        require (BASE .'helpers'. DS .'lang'. EXT);
+        require (BASE .'helpers'. DS .'benchmark'. EXT); 
     }
 }
 
@@ -54,7 +62,6 @@ if( ! function_exists('ob_set_headers'))
         
         ini_set('display_errors', $config->item('display_errors'));
         date_default_timezone_set($config->item('timezone_set'));
-        
     }
 }
 
@@ -67,11 +74,10 @@ if( ! function_exists('ob_system_run'))
         $uri       = base_register('URI');
         $router    = base_register('Router');
         $output    = base_register('Output');
-        $config    = base_register('Config');
-        $benchmark = base_register('Benchmark');  
+        $config    = base_register('Config'); 
         
-        $benchmark->mark('total_execution_time_start');
-        $benchmark->mark('loading_time_base_classes_start');
+        benchmark_mark('total_execution_time_start');
+        benchmark_mark('loading_time_base_classes_start');
         
         // Check REQUEST uri if there is a Cached file exist
         if ($output->_display_cache($config, $uri) == TRUE) { exit; }
@@ -95,10 +101,10 @@ if( ! function_exists('ob_system_run'))
         require (BASE .'obullo'. DS .'Model'. EXT);
         
         // Set a mark point for benchmarking
-        $benchmark->mark('loading_time_base_classes_end');
+        benchmark_mark('loading_time_base_classes_end');
         
         // Mark a start point so we can benchmark the controller
-        $benchmark->mark('execution_time_( '.$GLOBALS['d'].'/'.$GLOBALS['c'].'/'.$GLOBALS['m'].' )_start');
+        benchmark_mark('execution_time_( '.$GLOBALS['d'].'/'.$GLOBALS['c'].'/'.$GLOBALS['m'].' )_start');
         
         // call the controller.
         require (DIR .$GLOBALS['d']. DS .'controllers'. DS .$GLOBALS['c']. EXT);
@@ -125,7 +131,7 @@ if( ! function_exists('ob_system_run'))
         call_user_func_array(array($OB, $GLOBALS['m']), array_slice($OB->uri->rsegments, 3));
         
         // Mark a benchmark end point
-        $benchmark->mark('execution_time_( '.$GLOBALS['d'].'/'.$GLOBALS['c'].'/'.$GLOBALS['m'].' )_end');
+        benchmark_mark('execution_time_( '.$GLOBALS['d'].'/'.$GLOBALS['c'].'/'.$GLOBALS['m'].' )_end');
         
         // Write Cache file if cache on ! and Send the final rendered output to the browser
         $output->_display();

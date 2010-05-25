@@ -1512,22 +1512,23 @@ Class image_lib_CORE implements PHP5_Library {
      */
     public function set_error($msg)
     {
-        $OB = ob::instance();
-        $OB->lang->load('imglib');
+        lang_load('imglib');
 
         if (is_array($msg))
         {
             foreach ($msg as $val)
             {
-                $msg = ($OB->lang->line($val) == FALSE) ? $val : $OB->lang->line($val);
+                $msg = (lang_item($val) == FALSE) ? $val : lang_item($val);
                 $this->error_msg[] = $msg;
+                
                 log_message('error', $msg);
             }
         }
         else
         {
-            $msg = ($OB->lang->line($msg) == FALSE) ? $msg : $OB->lang->line($msg);
+            $msg = (lang_item($msg) == FALSE) ? $msg : lang_item($msg);
             $this->error_msg[] = $msg;
+            
             log_message('error', $msg);
         }
     }

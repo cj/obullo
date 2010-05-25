@@ -597,10 +597,9 @@ Class ftp_CORE implements PHP5_Library {
      */
     private function _error($line)
     {
-        $OB = ob::instance();
-        $OB->lang->load('ftp');
+        lang_load('ftp');
         
-        show_error($OB->lang->line($line));
+        show_error(lang_item($line));
     }
 
 

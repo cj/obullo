@@ -478,7 +478,7 @@ Class loader {
     */
     public static function lang($file, $return = FALSE)
     {               
-        ob::instance()->lang->load($file, '', 'local', $return);
+        lang_load($file, '', 'local', $return);
     }
         
     // --------------------------------------------------------------------
@@ -493,7 +493,7 @@ Class loader {
     */
     public static function app_lang($file = '', $folder = '', $return = FALSE)
     {
-        ob::instance()->lang->load($file, $folder, 'global', $return);
+        lang_load($file, $folder, 'global', $return);
     }
     
     // ------------------------------------------------------------------
@@ -508,7 +508,7 @@ Class loader {
     */
     public static function base_lang($file = '', $folder = '', $return = FALSE)
     {
-        ob::instance()->lang->load($file, $folder, 'base' ,$return);
+        lang_load($file, $folder, 'base' ,$return);
     }
     
     // --------------------------------------------------------------------

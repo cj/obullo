@@ -180,10 +180,6 @@ Class OB_Output {
      */        
     public function _display($output = '')
     {    
-        $benchmark = base_register('Benchmark');
-        
-        // --------------------------------------------------------------------
-        
         // Set the output data
         if ($output == '')
         {
@@ -202,8 +198,8 @@ Class OB_Output {
 
         // Parse out the elapsed time and memory usage,
         // then swap the pseudo-variables with the data
-
-        $elapsed = $benchmark->elapsed_time('total_execution_time_start', 'total_execution_time_end');        
+        
+        $elapsed = benchmark_elapsed_time('total_execution_time_start', 'total_execution_time_end');        
         $output  = str_replace('{elapsed_time}', $elapsed, $output);
                 
         if ($this->parse_exec_vars === TRUE)
@@ -278,9 +274,11 @@ Class OB_Output {
 
         // Does the controller contain a function named _output()?
         // If so send the output there.  Otherwise, echo it.
-        if (method_exists(ob::instance(), '_output'))
+        $ob = ob::instance();
+        
+        if (method_exists($ob, '_output'))
         {
-            ob::instance()->_output($output);
+            $ob->_output($output);
         }
         else
         {

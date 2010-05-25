@@ -322,7 +322,7 @@ Class form_validate_CORE implements PHP5_Library {
         }
     
         // Load the language file containing error messages
-        ob::instance()->lang->load('form_validate');
+        lang_load('form_validate');
                             
         // Cycle through the rules for each field, match the 
         // corresponding $_POST item and test for errors
@@ -516,7 +516,7 @@ Class form_validate_CORE implements PHP5_Library {
             
                 if ( ! isset($this->_error_messages[$type]))
                 {
-                    if (FALSE === ($line = ob::instance()->lang->line($type)))
+                    if (FALSE === ($line = lang_item($type)))
                     {
                         $line = 'The field was not set';
                     }                            
@@ -653,7 +653,7 @@ Class form_validate_CORE implements PHP5_Library {
             {            
                 if ( ! isset($this->_error_messages[$rule]))
                 {
-                    if (FALSE === ($line = ob::instance()->lang->line($rule)))
+                    if (FALSE === ($line = lang_item($rule)))
                     {
                         $line = 'Unable to access an error message corresponding to your field name.';
                     }                        
@@ -705,7 +705,7 @@ Class form_validate_CORE implements PHP5_Library {
             $line = substr($fieldname, 5);            
             
             // Were we able to translate the field name?  If not we use $line
-            if (FALSE === ($fieldname = ob::instance()->lang->line($line)))
+            if (FALSE === ($fieldname = lang_item($line)))
             {
                 return $line;
             }

@@ -74,7 +74,7 @@ Class OB_DB extends OB_DBAc_sw {
     */
     public function pdo_connect($dsn, $user = NULL, $pass = NULL, $options = NULL)
     {
-        ob::instance()->lang->load('db');
+        lang_load('db');
         
         $this->_conn = new PDO($dsn, $user, $pass, $options);
     
@@ -197,7 +197,7 @@ Class OB_DB extends OB_DBAc_sw {
         if(is_array($array))
         {                       
             if( ! self::_is_assoc($array))
-            throw new DBException(ob::instance()->lang->line('db_bind_data_must_assoc'));
+            throw new DBException(lang_item('db_bind_data_must_assoc'));
         }
         
         // switch to pdo::statement

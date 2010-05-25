@@ -147,9 +147,7 @@ function standard_date($fmt = 'DATE_RFC822', $time = '')
  */	
 function timespan($seconds = 1, $time = '')
 {
-	$OB = ob::instance();
-	
-    $OB->lang->load('date');
+    lang_load('date');
 
 	if ( ! is_numeric($seconds))
 	{
@@ -185,7 +183,7 @@ function timespan($seconds = 1, $time = '')
 	{
 		if ($months > 0)
 		{	
-			$str .= $months.' '.$OB->lang->line((($months	> 1) ? 'date_months' : 'date_month')).', ';
+			$str .= $months.' '.lang_item((($months	> 1) ? 'date_months' : 'date_month')).', ';
 		}	
 
 		$seconds -= $months * 2628000;
@@ -197,7 +195,7 @@ function timespan($seconds = 1, $time = '')
 	{
 		if ($weeks > 0)
 		{	
-			$str .= $weeks.' '.$OB->lang->line((($weeks	> 1) ? 'date_weeks' : 'date_week')).', ';
+			$str .= $weeks.' '.lang_item((($weeks	> 1) ? 'date_weeks' : 'date_week')).', ';
 		}
 	
 		$seconds -= $weeks * 604800;
@@ -209,7 +207,7 @@ function timespan($seconds = 1, $time = '')
 	{
 		if ($days > 0)
 		{	
-			$str .= $days.' '.$OB->lang->line((($days	> 1) ? 'date_days' : 'date_day')).', ';
+			$str .= $days.' '.lang_item((($days	> 1) ? 'date_days' : 'date_day')).', ';
 		}
 
 		$seconds -= $days * 86400;
@@ -221,7 +219,7 @@ function timespan($seconds = 1, $time = '')
 	{
 		if ($hours > 0)
 		{
-			$str .= $hours.' '.$OB->lang->line((($hours	> 1) ? 'date_hours' : 'date_hour')).', ';
+			$str .= $hours.' '.lang_item((($hours	> 1) ? 'date_hours' : 'date_hour')).', ';
 		}
 	
 		$seconds -= $hours * 3600;
@@ -233,7 +231,7 @@ function timespan($seconds = 1, $time = '')
 	{
 		if ($minutes > 0)
 		{	
-			$str .= $minutes.' '.$OB->lang->line((($minutes	> 1) ? 'date_minutes' : 'date_minute')).', ';
+			$str .= $minutes.' '.lang_item((($minutes	> 1) ? 'date_minutes' : 'date_minute')).', ';
 		}
 	
 		$seconds -= $minutes * 60;
@@ -241,7 +239,7 @@ function timespan($seconds = 1, $time = '')
 
 	if ($str == '')
 	{
-		$str .= $seconds.' '.$OB->lang->line((($seconds	> 1) ? 'date_seconds' : 'date_second')).', ';
+		$str .= $seconds.' '.lang_item((($seconds	> 1) ? 'date_seconds' : 'date_second')).', ';
 	}
 		
 	return substr(trim($str), 0, -1);
@@ -493,8 +491,7 @@ function human_to_unix($datestr = '')
  */	
 function timezone_menu($default = 'UTC', $class = "", $name = 'timezones')
 {
-	$OB = ob::instance();
-	$OB->lang->load('date');
+	lang_load('date');
 
 	if ($default == 'GMT')
 		$default = 'UTC';
@@ -511,7 +508,7 @@ function timezone_menu($default = 'UTC', $class = "", $name = 'timezones')
 	foreach (timezones() as $key => $val)
 	{
 		$selected = ($default == $key) ? " selected='selected'" : '';
-		$menu .= "<option value='{$key}'{$selected}>".$OB->lang->line($key)."</option>\n";
+		$menu .= "<option value='{$key}'{$selected}>".lang_item($key)."</option>\n";
 	}
 
 	$menu .= "</select>";

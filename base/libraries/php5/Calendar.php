@@ -61,11 +61,11 @@ Class calendar_CORE implements PHP5_Library {
      */
     public function init($config = array())
     {        
-        $this->OB = ob::instance();
+        $la = ssc::instance();
         
-        if ( ! in_array('calendar_lang'.EXT, $this->OB->lang->is_loaded, TRUE))
+        if ( ! in_array('calendar_lang'.EXT, $la->_ng->is_loaded, TRUE))
         {
-            $this->OB->lang->load('calendar');
+            lang_load('calendar');
         }
 
         $this->local_time = time();
@@ -273,12 +273,12 @@ Class calendar_CORE implements PHP5_Library {
         
         $month = $month_names[$month];
         
-        if ($this->OB->lang->line($month) === FALSE)
+        if (lang_item($month) === FALSE)
         {
             return ucfirst(str_replace('cal_', '', $month));
         }
 
-        return $this->OB->lang->line($month);
+        return lang_item($month);
     }
     
     // --------------------------------------------------------------------
@@ -314,7 +314,7 @@ Class calendar_CORE implements PHP5_Library {
         $days = array();
         foreach ($day_names as $val)
         {            
-            $days[] = ($this->OB->lang->line('cal_'.$val) === FALSE) ? ucfirst($val) : $this->OB->lang->line('cal_'.$val);
+            $days[] = (lang_item('cal_'.$val) === FALSE) ? ucfirst($val) : lang_item('cal_'.$val);
         }
     
         return $days;

@@ -1916,10 +1916,9 @@ class email_CORE implements PHP5_Library {
      */
     private function _set_error_message($msg, $val = '')
     {
-        $OB = ob::instance();
-        $OB->lang->load('email');
+        lang_load('email');
 
-        if (FALSE === ($line = $OB->lang->line($msg)))
+        if (FALSE === ($line = lang_item($msg)))
         {
             $this->_debug_msg[] = str_replace('%s', $val, $msg)."<br />";
         }

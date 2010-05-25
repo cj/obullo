@@ -27,26 +27,14 @@ $_in->_put->ip_address         = FALSE;
 $_in->_put->user_agent         = FALSE;
 $_in->_put->allow_get_array    = FALSE;
                                 
-/**
-* Constructor
-*
-* Sets whether to globally enable the XSS processing
-* and whether to allow the $_GET array
-*
-* @access    public
-*/
-function input_start()
-{
-    log_message('debug', "Input Class Initialized");
+log_message('debug', "Input Helper Initialized");
 
-    $in = ssc::instance();
-    $config = base_register('Config');
-    
-    $in->_put->use_xss_clean   = ($config->item('global_xss_filtering') === TRUE) ? TRUE : FALSE;
-    $in->_put->allow_get_array = ($config->item('enable_query_strings') === TRUE) ? TRUE : FALSE;
-    
-    _sanitize_globals();
-}
+$_config = base_register('Config');
+
+$_in->_put->use_xss_clean   = ($_config->item('global_xss_filtering') === TRUE) ? TRUE : FALSE;
+$_in->_put->allow_get_array = ($_config->item('enable_query_strings') === TRUE) ? TRUE : FALSE;
+
+_sanitize_globals();
 
 /**
 * Sanitize Globals
@@ -65,7 +53,8 @@ function _sanitize_globals()
     
     // Would kind of be "wrong" to unset any of these GLOBALS
     $protected = array('_SERVER', '_GET', '_POST', '_FILES', '_REQUEST', '_SESSION', 
-    '_ENV', '_parents', '_in', '_secur', '_ses', '_cont', '_controller', 'GLOBALS', 'HTTP_RAW_POST_DATA');
+    '_ENV', '_parents', '_bench', '_log', '_config', '_la', '_in', '_secur', '_ses', '_cont', '_controller', 
+    'GLOBALS', 'HTTP_RAW_POST_DATA');
    
     // Unset globals for security. 
     // This is effectively the same as register_globals = off

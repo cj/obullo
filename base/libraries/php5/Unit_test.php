@@ -124,7 +124,7 @@ Class unit_test_CORE implements PHP5_Library {
             $result = $this->result();
         }
         
-        loader::base_lang('unit_test');
+        lang_load('unit_test');
 
         $this->_parse_template();
 
@@ -136,13 +136,13 @@ Class unit_test_CORE implements PHP5_Library {
             foreach ($res as $key => $val)
             {
 
-                if ($key == this()->lang->line('ut_result'))
+                if ($key == lang_item('ut_result'))
                 {
-                    if ($val == this()->lang->line('ut_passed'))
+                    if ($val == lang_item('ut_passed'))
                     {
                         $val = '<span style="color: #0C0;">'.$val.'</span>';
                     }
-                    elseif ($val == this()->lang->line('ut_failed'))
+                    elseif ($val == lang_item('ut_failed'))
                     {
                         $val = '<span style="color: #C00;">'.$val.'</span>';
                     }
@@ -221,20 +221,20 @@ Class unit_test_CORE implements PHP5_Library {
                 {
                     foreach ($val as $k => $v)
                     {
-                        if (FALSE !== ($line = this()->lang->line(strtolower('ut_'.$v))))
+                        if (FALSE !== ($line = lang_item(strtolower('ut_'.$v))))
                         {
                             $v = $line;
                         }                
-                        $temp[this()->lang->line('ut_'.$k)] = $v;                    
+                        $temp[lang_item('ut_'.$k)] = $v;                    
                     }
                 }
                 else
                 {
-                    if (FALSE !== ($line = this()->lang->line(strtolower('ut_'.$val))))
+                    if (FALSE !== ($line = lang_item(strtolower('ut_'.$val))))
                     {
                         $val = $line;
                     }                
-                    $temp[this()->lang->line('ut_'.$key)] = $val;
+                    $temp[lang_item('ut_'.$key)] = $val;
                 }
             }
             

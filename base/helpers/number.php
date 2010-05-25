@@ -39,31 +39,31 @@ defined('BASE') or exit('Access Denied!');
  */
 function byte_format($num, $precision = 1)
 {
-    ob::instance()->lang->load('number');
+    lang_load('number');
 
     if ($num >= 1000000000000) 
     {
         $num = round($num / 1099511627776, $precision);
-        $unit = ob::instance()->lang->line('terabyte_abbr');
+        $unit = lang_item('terabyte_abbr');
     }
     elseif ($num >= 1000000000) 
     {
         $num = round($num / 1073741824, $precision);
-        $unit = ob::instance()->lang->line('gigabyte_abbr');
+        $unit = lang_item('gigabyte_abbr');
     }
     elseif ($num >= 1000000) 
     {
         $num = round($num / 1048576, $precision);
-        $unit = ob::instance()->lang->line('megabyte_abbr');
+        $unit = lang_item('megabyte_abbr');
     }
     elseif ($num >= 1000) 
     {
         $num = round($num / 1024, $precision);
-        $unit = ob::instance()->lang->line('kilobyte_abbr');
+        $unit = lang_item('kilobyte_abbr');
     }
     else
     {
-        $unit = ob::instance()->lang->line('bytes');
+        $unit = lang_item('bytes');
         return number_format($num).' '.$unit;
     }
 

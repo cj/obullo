@@ -133,32 +133,6 @@ Class ob extends Controller_CORE
 */
 function this(){ return ob::instance(); }
 
-/**
-* Super Static Controllers (SSC). (c) 2010.
-* Control the Procedural Functions.
-* @author   Ersin Guvenc
-*/
-Class ssc {
-    
-    private static $instance;
-    
-    public $_ent  = NULL; // cont_ent
-    public $_put  = NULL; // in_put
-    public $_ity  = NULL; // secur_ity 
-    public $_sion = NULL; // ses_sion
-
-    public static function instance()
-    {
-        if( ! isset(self::$instance))
-        {
-            self::$instance = new self();
-        }
-        
-        return self::$instance;
-    }
-}
-
-
 // END Ob Class
 
 /* End of file Obullo.php */

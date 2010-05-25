@@ -12,7 +12,7 @@ defined('BASE') or exit('Access Denied!');
  * @filesource
  * @license
  */
- 
+
 Class LogException extends CommonException {}  
 
 /**

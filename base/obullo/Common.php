@@ -231,38 +231,7 @@ function register_autoload($real_name)
             return;
         }
         
-        // Driver file support for php5 base libraries.    
-        // -------------------------------------------------------------------- 
-        $prefix = config_item('subclass_prefix');
-        $suffix = substr($class, -7);
-        
-        // Load driver file.
-        if(strpos($real_name, 'OB_') === 0 AND $suffix == '_driver')
-        {
-             $part   = explode('_', $real_name);
-             $class  = strtolower($part[1]);
-            
-             require(BASE .'libraries'. DS .'php5'. DS .'drivers'. DS .$class. DS .$class. EXT); 
-             require(BASE .'libraries'. DS .'php5'. DS .'drivers'. DS .$class. DS .$part[2]. EXT);
-             
-             ob::instance()->_libs['php5_driver_'.$class] = $part[2];
-             return;
-        }
-        
-        // Driver file extend (override) support.    
-        // -------------------------------------------------------------------- 
-        if(strpos($real_name, $prefix) === 0 AND $suffix == '_driver') 
-        {
-             $part   = explode('_', $real_name);
-             $class  = strtolower($part[1]);
-            
-             require(BASE .'libraries'. DS .'php5'. DS .'drivers'. DS .$class. DS .$class. EXT);
-             require(BASE .'libraries'. DS .'php5'. DS .'drivers'. DS .$class. DS .$part[2]. EXT); 
-             require(APP  .'libraries'. DS .'php5'. DS .'drivers'. DS .$class. DS .$prefix.$part[2]. EXT);
-             
-             ob::instance()->_libs['php5_driver_'.$class.'_overridden'] = $part[2];
-             return;
-        }
+        // Driver file support ...
         
         // return to exceptions if its fail..    
         // --------------------------------------------------------------------
@@ -436,28 +405,6 @@ function is_really_writable($file)
 
     fclose($fp);
     return TRUE;
-}
-
-// -------------------------------------------------------------------- 
-
-/**
-* Error Logging Interface
-*
-* We use this as a simple mechanism to access the logging
-* class and send messages to be logged.
-*
-* @access    public
-* @return    void
-*/
-function log_message($level = 'error', $message, $php_error = FALSE)
-{
-    static $LOG;
-    
-    if (config_item('log_threshold') == 0)
-    return;
-
-    $LOG = base_register('Log');
-    $LOG->write_log($level, $message, $php_error);
 }
 
 // -------------------------------------------------------------------- 

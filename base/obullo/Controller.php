@@ -45,8 +45,6 @@ Class Controller extends ob {
     {
         $Classes = array(                         
                             'config'    => 'Config',
-                            'benchmark' => 'Benchmark',
-                            'lang'      => 'Lang',
                             'router'    => 'Router',
                             'uri'       => 'URI', 
                             'output'    => 'Output' 
@@ -56,10 +54,6 @@ Class Controller extends ob {
         {
             $this->$public_var = base_register($Class);
         }
-        
-        // Helpers
-        loader::base_helper('input');
-
     }
 }
 // END Controller Class
