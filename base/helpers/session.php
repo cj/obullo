@@ -46,7 +46,7 @@ function sess_start($params = array())
     {
         $driver = (isset($params['sess_driver'])) ? $params['sess_driver'] : config_item('sess_driver');
         loader::file('helpers'. DS .'drivers'. DS .'session'. DS .$driver.'_driver', false, BASE);
-    
+        echo 'ok';
         _sess_start($params);
         $session_start = TRUE;
         return TRUE;

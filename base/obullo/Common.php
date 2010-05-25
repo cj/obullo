@@ -365,6 +365,25 @@ function db_item($item, $index = 'db')
 // -------------------------------------------------------------------- 
 
 /**
+* Error Logging Interface
+*
+* We use this as a simple mechanism to access the logging
+* class and send messages to be logged.
+*
+* @access    public
+* @return    void
+*/
+function log_message($level = 'error', $message, $php_error = FALSE)
+{
+    if (config_item('log_threshold') == 0)
+    return;
+    
+    log_write($level, $message, $php_error);
+}
+
+// -------------------------------------------------------------------- 
+
+/**
  * Tests for file writability
  *
  * is_writable() returns TRUE on Windows servers when you really can't write to 

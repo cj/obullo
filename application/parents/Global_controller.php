@@ -5,8 +5,8 @@ Class __autoloader {
     
     function __construct()
     {         
-        loader::base_helper('html'); 
-        loader::base_helper('content');        
+        loader::base_helper('content');   
+        loader::base_helper('head_tag');   
     } 
 }
 Class Global_controller extends __autoloader
@@ -18,7 +18,7 @@ Class Global_controller extends __autoloader
       public function __global()
       {
           parent::__construct();
-      
+          
           $this->base     = config_item('base_url');
           $this->base_url = config_item('base_url')  . config_item('index_page');
           $this->base_img = config_item('source_url').'/images/';

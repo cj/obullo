@@ -19,7 +19,7 @@ Class ContentException extends CommonException {}
  * Obullo Content Builder Helper
  *
  * @package     Obullo
- * @subpackage  Libraries
+ * @subpackage  Helpers
  * @category    Language
  * @author      Ersin Guvenc
  * @version     0.1
@@ -35,7 +35,7 @@ $_cont->_ent = new stdClass();
 $_cont->_ent->view_folder     = DS. '';
 $_cont->_ent->app_view_folder = DS. '';
 $_cont->_ent->css_folder      = '/';
-
+                                           
 log_message('debug', "Content Helper Initialized");
 
 // ------------------------------------------------------------------------ 
@@ -53,14 +53,16 @@ log_message('debug', "Content Helper Initialized");
 function content_set_folder($func = 'view', $folder = '')
 {
     $cont = ssc::instance();
+    $folder_path = empty($folder) ? DS : $folder. DS;
+    
     switch ($func)
     {
        case 'view':
-         $cont->_ent->view_folder     = DS. $folder;
+         $cont->_ent->view_folder     = DS. $folder_path;
          break;
          
        case 'app_view':
-         $cont->_ent->app_view_folder = DS. $folder;  
+         $cont->_ent->app_view_folder = DS. $folder_path;  
          break;
          
        case 'css':
@@ -126,7 +128,7 @@ function content_view($filename, $data = '', $string = TRUE)
 
     if(isset($cont->_ent->view_folder{1})) { $return = TRUE; } // if view folder changed don't show errors ..
 
-    return _load_view(DIR .$GLOBALS['d']. DS .'views'. $cont->_ent->view_folder .DS, $filename, $data, $string, $return);
+    return _load_view(DIR .$GLOBALS['d']. DS .'views'. $cont->_ent->view_folder, $filename, $data, $string, $return);
 }
 
 // ------------------------------------------------------------------------
@@ -146,7 +148,7 @@ function content_app_view($filename, $data = '', $string = FALSE)
     
     if(isset($cont->_ent->app_view_folder{1})) { $return = TRUE; }  // if view folder changed don't show errors ..
     
-    return _load_view(APP .'views'. $cont->_ent->app_view_folder . DS, $filename, $data, $string, $return); 
+    return _load_view(APP .'views'. $cont->_ent->app_view_folder, $filename, $data, $string, $return); 
 }
 
 // ------------------------------------------------------------------------
@@ -180,6 +182,8 @@ function _load_script($path, $filename, $data = '')
     
     ob_end_clean();
 
+    log_message('debug', 'Script file loaded: '.$path . $filename . EXT); 
+    
     return "\n".$content; 
 }
 
@@ -202,7 +206,7 @@ function _load_script($path, $filename, $data = '')
 function _load_view($path, $filename, $data = '', $string = FALSE, $return = FALSE)
 {   
     if( empty($data) ) $data = array();
-    
+
     if ( ! file_exists($path . $filename . EXT) )
     {
         if($return) return;  // fail gracefully for different interfaces ..

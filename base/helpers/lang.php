@@ -45,7 +45,7 @@ log_message('debug', "Language Helper Initialized");
 */
 function lang_load($langfile = '', $idiom = '', $dir = 'base', $return = FALSE)
 {     
-    global $_la;
+    $_la = ssc::instance();
     
     if (in_array($langfile, $_la->_ng->is_loaded, TRUE))
     return;  
@@ -102,7 +102,7 @@ function lang_load($langfile = '', $idiom = '', $dir = 'base', $return = FALSE)
 */
 function lang_item($item = '')
 {
-    global $_la;
+    $_la = ssc::instance();
     
     $item = ($item == '' OR ! isset($_la->_ng->language[$item])) ? FALSE : $_la->_ng->language[$item];
     return $item;

@@ -39,13 +39,7 @@ if( ! function_exists('ob_include_files'))
         require (BASE .'obullo'. DS .'Errors'. EXT);       
         require (BASE .'obullo'. DS .'Registry'. EXT); 
         require (BASE .'obullo'. DS .'Common'. EXT);
-        
-        // system helpers
-        if(config_item('log_threshold') > 0)
-        require (BASE .'helpers'. DS .'log'. EXT);
-        require (BASE .'helpers'. DS .'input'. EXT);
-        require (BASE .'helpers'. DS .'lang'. EXT);
-        require (BASE .'helpers'. DS .'benchmark'. EXT); 
+    
     }
 }
 
@@ -62,6 +56,13 @@ if( ! function_exists('ob_set_headers'))
         
         ini_set('display_errors', $config->item('display_errors'));
         date_default_timezone_set($config->item('timezone_set'));
+        
+        // system helpers
+        if (config_item('log_threshold') > 0)
+        require (BASE .'helpers'. DS .'log'. EXT); 
+        require (BASE .'helpers'. DS .'input'. EXT);
+        require (BASE .'helpers'. DS .'lang'. EXT);
+        require (BASE .'helpers'. DS .'benchmark'. EXT);
     }
 }
 

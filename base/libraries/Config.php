@@ -45,8 +45,6 @@ Class OB_Config {
     public function __construct()
     {
         $this->config = get_config();
-        
-        log_message('debug', "Config Class Initialized");
     }
       
     // --------------------------------------------------------------------

@@ -34,8 +34,6 @@ $_log->_er->_date_fmt  = 'Y-m-d H:i:s';
 $_log->_er->_enabled   = TRUE;
 $_log->_er->_levels    = array('ERROR' => '1', 'DEBUG' => '2',  'INFO' => '3', 'ALL' => '4');
 
-log_message('debug', "Log Helper Initialized");
-
 
 $_config = get_config();
 $_log->_er->_log_path = ($_config['log_path'] != '') ? $_config['log_path'] : APP.'system'.DS.'logs'.DS;
@@ -53,22 +51,6 @@ if (is_numeric($_config['log_threshold']))
 if ($_config['log_date_format'] != '')
 {
     $_log->_er->_date_fmt = $_config['log_date_format'];
-}
-
-// --------------------------------------------------------------------  
-
-/**
-* Error Logging Interface
-*
-* We use this as a simple mechanism to access the logging
-* class and send messages to be logged.
-*
-* @access    public
-* @return    void
-*/
-function log_message($level = 'error', $message, $php_error = FALSE)
-{
-    return log_write($level, $message, $php_error);
 }
 
 // --------------------------------------------------------------------
