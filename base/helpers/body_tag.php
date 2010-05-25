@@ -18,7 +18,7 @@ defined('BASE') or exit('Access Denied!');
 // ------------------------------------------------------------------------
 
 /**
- * Obullo Html Helper
+ * Obullo Body Tag Helper
  *
  * @package     Obullo
  * @subpackage  Helpers
