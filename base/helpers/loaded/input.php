@@ -225,7 +225,7 @@ function _fetch_from_array(&$array, $index = '', $xss_clean = FALSE)
 * @param    bool
 * @return   string
 */
-function input_get($index = '', $xss_clean = FALSE)
+function i_get($index = '', $xss_clean = FALSE)
 {
     return _fetch_from_array($_GET, $index, $xss_clean);
 }
@@ -240,7 +240,7 @@ function input_get($index = '', $xss_clean = FALSE)
 * @param    bool
 * @return   string
 */
-function input_post($index = '', $xss_clean = FALSE)
+function i_post($index = '', $xss_clean = FALSE)
 {
     return _fetch_from_array($_POST, $index, $xss_clean);
 }
@@ -255,15 +255,15 @@ function input_post($index = '', $xss_clean = FALSE)
 * @param    bool    XSS cleaning
 * @return   string
 */
-function input_get_post($index = '', $xss_clean = FALSE)
+function i_get_post($index = '', $xss_clean = FALSE)
 {
     if ( ! isset($_POST[$index]) )
     {
-        return input_get($index, $xss_clean);
+        return i_get($index, $xss_clean);
     }
     else
     {
-        return input_post($index, $xss_clean);
+        return i_post($index, $xss_clean);
     }
 }
 
@@ -277,7 +277,7 @@ function input_get_post($index = '', $xss_clean = FALSE)
 * @param    bool
 * @return   string
 */
-function input_cookie($index = '', $xss_clean = FALSE)
+function i_cookie($index = '', $xss_clean = FALSE)
 {
     return _fetch_from_array($_COOKIE, $index, $xss_clean);
 }
@@ -292,7 +292,7 @@ function input_cookie($index = '', $xss_clean = FALSE)
 * @param    bool
 * @return   string
 */
-function input_server($index = '', $xss_clean = FALSE)
+function i_server($index = '', $xss_clean = FALSE)
 {
     return _fetch_from_array($_SERVER, $index, $xss_clean);
 }
@@ -305,7 +305,7 @@ function input_server($index = '', $xss_clean = FALSE)
 * @access    public
 * @return    string
 */
-function input_ip_address()
+function i_ip_address()
 {
     $in = ssc::instance();
     
@@ -314,26 +314,26 @@ function input_ip_address()
         return $in->_put->ip_address;
     }
     
-    if (config_item('proxy_ips') != '' && input_server('HTTP_X_FORWARDED_FOR') && input_server('REMOTE_ADDR'))
+    if (config_item('proxy_ips') != '' && i_server('HTTP_X_FORWARDED_FOR') && i_server('REMOTE_ADDR'))
     {
         $proxies = preg_split('/[\s,]/', config_item('proxy_ips'), -1, PREG_SPLIT_NO_EMPTY);
         $proxies = is_array($proxies) ? $proxies : array($proxies);
 
         $in->_put->ip_address = in_array($_SERVER['REMOTE_ADDR'], $proxies) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
     }
-    elseif (input_server('REMOTE_ADDR') AND input_server('HTTP_CLIENT_IP'))
+    elseif (i_server('REMOTE_ADDR') AND i_server('HTTP_CLIENT_IP'))
     {
         $in->_put->ip_address = $_SERVER['HTTP_CLIENT_IP'];
     }
-    elseif (input_server('REMOTE_ADDR'))
+    elseif (i_server('REMOTE_ADDR'))
     {
         $in->_put->ip_address = $_SERVER['REMOTE_ADDR'];
     }
-    elseif (input_server('HTTP_CLIENT_IP'))
+    elseif (i_server('HTTP_CLIENT_IP'))
     {
         $in->_put->ip_address = $_SERVER['HTTP_CLIENT_IP'];
     }
-    elseif (input_server('HTTP_X_FORWARDED_FOR'))
+    elseif (i_server('HTTP_X_FORWARDED_FOR'))
     {
         $in->_put->ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
     }
@@ -350,7 +350,7 @@ function input_ip_address()
         $in->_put->ip_address = trim(end($x));
     }
 
-    if ( ! input_valid_ip($in->_put->ip_address))
+    if ( ! i_valid_ip($in->_put->ip_address))
     {
         $in->_put->ip_address = '0.0.0.0';
     }
@@ -369,7 +369,7 @@ function input_ip_address()
 * @param    string
 * @return   string
 */
-function input_valid_ip($ip)
+function i_valid_ip($ip)
 {
     $ip_segments = explode('.', $ip);
 
@@ -405,7 +405,7 @@ function input_valid_ip($ip)
 * @access    public
 * @return    string
 */
-function input_user_agent()
+function i_user_agent()
 {
     $in = ssc::instance();
     
@@ -428,7 +428,7 @@ function input_user_agent()
 * @param    string
 * @return   string
 */
-function input_filename_security($str)
+function i_filename_security($str)
 {
     $bad = array(
                     "../",

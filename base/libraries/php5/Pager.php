@@ -122,9 +122,9 @@ Class pager_CORE implements PHP5_Library {
 
         if ($OB->config->item('enable_query_strings') === TRUE OR $this->page_query_string === TRUE)
         {
-            if (input_get($this->query_string_segment) != 0)
+            if (i_get($this->query_string_segment) != 0)
             {
-                $this->cur_page = input_get($this->query_string_segment);
+                $this->cur_page = i_get($this->query_string_segment);
 
                 // Prep the current page - no funny business!
                 $this->cur_page = (int) $this->cur_page;

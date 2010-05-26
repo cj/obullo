@@ -129,7 +129,7 @@ Class Obullo_DB_Driver_Mssql extends OB_DBAdapter
         $str = _remove_invisible_characters($str);
         
         // If pdo::quote() not work Escape single quotes
-        // $str = str_replace("'", "''", ob::instance()->input->_remove_invisible_characters($str));
+        // $str = str_replace("'", "''", _remove_invisible_characters($str));
         
         // escape LIKE condition wildcards
         if ($like === TRUE)

@@ -35,6 +35,8 @@ $_ses->_sion->userdata             = array();
 * about if you declare this func. more than one time
 * it will return to false automatically !!
 * 
+* @see Chapter / Helpers / Session Helper
+* 
 * @author   Ersin Guvenc
 * @param    mixed $params
 */
@@ -46,7 +48,7 @@ function sess_start($params = array())
     {
         $driver = (isset($params['sess_driver'])) ? $params['sess_driver'] : config_item('sess_driver');
         loader::file('helpers'. DS .'drivers'. DS .'session'. DS .$driver.'_driver', false, BASE);
-        echo 'ok';
+
         _sess_start($params);
         $session_start = TRUE;
         return TRUE;

@@ -113,7 +113,7 @@ function get_cookie($index = '', $xss_clean = FALSE)
         $prefix = config_item('cookie_prefix');
     }
     
-    return input_cookie($prefix.$index, $xss_clean);
+    return i_cookie($prefix.$index, $xss_clean);
 }
 
 // --------------------------------------------------------------------

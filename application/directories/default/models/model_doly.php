@@ -22,6 +22,4 @@ Class Model_doly extends Model {
 
 } //end.
 
-
-
 ?>

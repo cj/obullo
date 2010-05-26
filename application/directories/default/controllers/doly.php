@@ -14,14 +14,13 @@ Class Doly extends Controller {
 
     public function index()
     {
-        $this->title_tag = '';
+        $this->title = '';
     
-        $this->head_tag  = '';
-        $this->head_tag .= '';
+        $this->head  = '';
+        $this->head .= '';
 
-        $this->body_tag  = content::view('');
-    
-        content::app_view('');
+        $this->body  = content_view('');
+        content_app_view('');
     }
     
 } //end.

@@ -28,6 +28,6 @@
 <p><b>Note:</b> If you are new to Obullo Framework, you should start by 
 reading the <a href="http://obullo.com/user_guide/show.html">User Guide</a>.</p>
 
-<p><br />Page rendered in {elapsed_time} seconds , using {memory_usage} of memory (Used Html helper, Script file and Global Controller).</p>
+<p><br />Page rendered in {elapsed_time} seconds , using {memory_usage} of memory (Used Head_tag helper, Script file and Global Controller).</p>
 
 <!-- body tag content -->

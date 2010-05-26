@@ -93,7 +93,7 @@ function sess_read()
     $ses = ssc::instance();
     
     // Fetch the cookie
-    $session = input_cookie($ses->_sion->sess_cookie_name);
+    $session = i_cookie($ses->_sion->sess_cookie_name);
 
     // No cookie?  Goodbye cruel world!...
     if ($session === FALSE)
@@ -153,7 +153,7 @@ function sess_read()
     }
     
     // Does the User Agent Match?
-    if ($ses->_sion->sess_match_useragent == TRUE AND trim($session['user_agent']) != trim(substr(input_user_agent(), 0, 50)))
+    if ($ses->_sion->sess_match_useragent == TRUE AND trim($session['user_agent']) != trim(substr(i_user_agent(), 0, 50)))
     {
         sess_destroy();
         return FALSE;
@@ -271,13 +271,13 @@ function sess_create()
     }
     
     // To make the session ID even more secure we'll combine it with the user's IP
-    $sessid .= input_ip_address();
+    $sessid .= i_ip_address();
 
          
     $ses->_sion->userdata = array(
                         'session_id'     => md5(uniqid($sessid, TRUE)),
-                        'ip_address'     => input_ip_address(),
-                        'user_agent'     => substr(input_user_agent(), 0, 50),
+                        'ip_address'     => i_ip_address(),
+                        'user_agent'     => substr(i_user_agent(), 0, 50),
                         'last_activity'  => $ses->_sion->now
                         );
     
@@ -318,7 +318,7 @@ function sess_update()
     }
     
     // To make the session ID even more secure we'll combine it with the user's IP
-    $new_sessid .= input_ip_address();
+    $new_sessid .= i_ip_address();
     
     // Turn it into a hash
     $new_sessid = md5(uniqid($new_sessid, TRUE));

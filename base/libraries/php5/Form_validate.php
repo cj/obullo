@@ -1024,7 +1024,7 @@ Class form_validate_CORE implements PHP5_Library {
      */
     public function valid_ip($ip)
     {
-        return input_valid_ip($ip);
+        return i_valid_ip($ip);
     }
 
     // --------------------------------------------------------------------
