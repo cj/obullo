@@ -1,24 +1,38 @@
 <html>
 <head>
 <title>404 Page Not Found</title>
+
+<?php 
+// Important: Don't change the 404 page css names (body, content, h1) 
+// Some browsers does not support different css names for 404 errors.        
+?>
+
 <style type="text/css">
 body {
-    background-color:    #fff;
+background-color:    #fff;
+margin:              0px;
+font-size:           12px;
+font-family:         Verdana, Sans-serif;
 }
 
-#ob_error_content  {
-    font-family: verdana;
-    font-size:12;
-    width:50%;
-    padding:5px;
+#content  {
+border:             none;
+background-color:   #fff;
+padding:            20px 20px 12px 20px;
+}
+
+h1 {
+font-weight:        bold;
+font-size:          14px;
+color:              #000;
+margin:             0 0 8px 0;
 }
 </style>
+
+</head>
 <body>
-
-<div id="ob_error_content">
-<b> [404 Page Not Found]: </b> The url <?php echo $page; ?> you requested was not found. <br />
+<div id="content">
+<h1> [<?php echo $heading;?>]: </h1> The url <?php echo $message; ?> you requested was not found. <br />
 </div>
-
 </body>
 </html>
-

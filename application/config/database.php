@@ -24,7 +24,7 @@ $database['system']['active_record'] = TRUE;
 $database['db']['hostname'] = "localhost";
 $database['db']['username'] = "root";
 $database['db']['password'] = "";
-$database['db']['database'] = "example_db";
+$database['db']['database'] = "";
 $database['db']['dbdriver'] = "mysql";
 $database['db']['dbh_port'] = "";
 $database['db']['char_set'] = "utf8";
@@ -37,24 +37,12 @@ $database['db']['options']  = array();  // Example:  array( PDO::ATTR_PERSISTENT
 $database['db2']['hostname'] = "localhost";
 $database['db2']['username'] = "root";
 $database['db2']['password'] = "";
-$database['db2']['database'] = "example_db2";
+$database['db2']['database'] = "";
 $database['db2']['dbdriver'] = "mysql";
 $database['db2']['dbh_port'] = "";
 $database['db2']['char_set'] = "utf8";
 $database['db2']['dsn']      = "";
 $database['db2']['options']  = array();
-
-
-// third database
-$database['db3']['hostname'] = "localhost";
-$database['db3']['username'] = "root";
-$database['db3']['password'] = "";
-$database['db3']['database'] = "db/example_db2";
-$database['db3']['dbdriver'] = "sqlite2";
-$database['db3']['dbh_port'] = "";
-$database['db3']['char_set'] = "utf8";
-$database['db3']['dsn']      = "";
-$database['db3']['options']  = array();
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */

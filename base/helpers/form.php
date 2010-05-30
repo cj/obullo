@@ -537,46 +537,41 @@ function form_close($extra = '')
  * @param	string
  * @return	string
  */
-function form_prep($str = '', $field_name = '')
+function form_prep($str = '')
 {
-	static $prepped_fields = array();
-	
-	// if the field name is an array we do this recursively
-	if (is_array($str))
-	{
-		foreach ($str as $key => $val)
-		{
-			$str[$key] = form_prep($val);
-		}
+    // if the field name is an array we do this recursively
+    if (is_array($str))
+    {
+        foreach ($str as $key => $val)
+        {
+            $str[$key] = form_prep($val);
+        }
 
-		return $str;
-	}
+        return $str;
+    }
 
-	if ($str === '')
-	{
-		return '';
-	}
+    if ($str === '')
+    {
+        return '';
+    }
 
-	// we've already prepped a field with this name
-	// @todo need to figure out a way to namespace this so
-	// that we know the *exact* field and not just one with
-	// the same name
-	if (isset($prepped_fields[$field_name]))
-	{
-		return $str;
-	}
-	
-	$str = htmlspecialchars($str);
+    $temp = '__TEMP_AMPERSANDS__';
 
-	// In case htmlspecialchars misses these.
-	$str = str_replace(array("'", '"'), array("&#39;", "&quot;"), $str);
+    // Replace entities to temporary markers so that 
+    // htmlspecialchars won't mess them up
+    $str = preg_replace("/&#(\d+);/", "$temp\\1;", $str);
+    $str = preg_replace("/&(\w+);/",  "$temp\\1;", $str);
 
-	if ($field_name != '')
-	{
-		$prepped_fields[$field_name] = $str;
-	}
-	
-	return $str;
+    $str = htmlspecialchars($str);
+
+    // In case htmlspecialchars misses these.
+    $str = str_replace(array("'", '"'), array("&#39;", "&quot;"), $str);
+
+    // Decode the temp markers back to entities
+    $str = preg_replace("/$temp(\d+);/","&#\\1;",$str);
+    $str = preg_replace("/$temp(\w+);/","&\\1;",$str);
+
+    return $str;
 }
 
 // ------------------------------------------------------------------------

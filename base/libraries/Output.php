@@ -120,7 +120,7 @@ Class OB_Output {
     
     /**
      * Set HTTP Status Header
-     * moved to Common procedural functions in 1.7.2
+     * moved to Common procedural functions.
      * 
      * @access   public
      * @param    int     the status code

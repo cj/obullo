@@ -35,11 +35,11 @@ if( ! function_exists('ob_include_files'))
         require (BASE .'constants'. DS .'db'. EXT);
         require (BASE .'constants'. DS .'file'. EXT);
         require (APP  .'config'. DS .'constants'. EXT);  // Your constants ..
-        require (BASE .'obullo'. DS .'Ssc'. EXT); 
-        require (BASE .'obullo'. DS .'Errors'. EXT);       
-        require (BASE .'obullo'. DS .'Registry'. EXT); 
+        require (BASE .'obullo'. DS .'Ssc'. EXT);
+        require (BASE .'obullo'. DS .'Registry'. EXT);
         require (BASE .'obullo'. DS .'Common'. EXT);
-    
+        require (BASE .'obullo'. DS .'Errors'. EXT);
+        
     }
 }
 
@@ -100,6 +100,8 @@ if( ! function_exists('ob_system_run'))
         require (BASE .'obullo'. DS .'Obullo'. EXT);
         require (BASE .'obullo'. DS .'Controller'. EXT);
         require (BASE .'obullo'. DS .'Model'. EXT);
+        
+        _sanitize_globals(); // Initalize to input filter.
         
         // Set a mark point for benchmarking
         benchmark_mark('loading_time_base_classes_end');

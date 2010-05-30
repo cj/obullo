@@ -2,22 +2,20 @@
 <head>
 <title>Error</title>
 <style type="text/css">
-#ob_error_content  {
-    font-family: verdana;
-    font-size:12;
-    width:50%;
-    padding:5px;
-    background-color: #F0F0F0;
+#error_general  {
+font-family: verdana;
+font-size:12;
+width:50%;
+padding:5px;
+background-color: #F0F0F0;
 }
 </style>
 </head>
 <body>
 
-<div id="ob_error_content">
+<div id="error_general">
 <b>[Obullo][<?php echo $heading; ?>]:</b> <?php echo $message; ?>        
 </div>
 
 </body>
 </html>
-
-

@@ -22,7 +22,6 @@ $_in = ssc::instance();
 $_in->_put = new stdClass();
 
 $_in->_put->use_xss_clean      = FALSE;
-$_in->_put->xss_hash           = '';
 $_in->_put->ip_address         = FALSE;
 $_in->_put->user_agent         = FALSE;
 $_in->_put->allow_get_array    = FALSE;
@@ -33,8 +32,6 @@ $_config = base_register('Config');
 
 $_in->_put->use_xss_clean   = ($_config->item('global_xss_filtering') === TRUE) ? TRUE : FALSE;
 $_in->_put->allow_get_array = ($_config->item('enable_query_strings') === TRUE) ? TRUE : FALSE;
-
-_sanitize_globals();
 
 /**
 * Sanitize Globals

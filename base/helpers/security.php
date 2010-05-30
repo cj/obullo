@@ -30,7 +30,8 @@ defined('BASE') or exit('Access Denied!');
 // --------------------------------------------------------------------
 
 $_secur = ssc::instance();
-$_secur->_ity = new stdClass(); 
+$_secur->_ity = new stdClass();
+$_secur->_ity->xss_hash            = ''; 
 
 /* never allowed, string replacement */
 $_secur->_ity->never_allowed_str   = array(

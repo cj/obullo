@@ -41,36 +41,50 @@ function current_url()
  *
  * Creates an anchor based on the local URL.
  *
- * @access	public
- * @param	string	the URL
- * @param	string	the link title
- * @param	mixed	any attributes
- * @return	string
+ * @access    public
+ * @param     string    the URL
+ * @param     string    the link title
+ * @param     mixed     any attributes
+ * @version   0.1    
+ * @version   0.2       Sharp character url support    
+ * @return    string
  */
 function anchor($uri = '', $title = '', $attributes = '')
 {
-	$title = (string) $title;
+    $title = (string) $title;
+    $sharp = FALSE;
 
-	if ( ! is_array($uri))
-	{
-		$site_url = ( ! preg_match('!^\w+://! i', $uri)) ? ob::instance()->config->site_url($uri) : $uri;
-	}
-	else
-	{
-		$site_url = ob::instance()->config->site_url($uri);
-	}
+    // ' # ' sharp support for anchors. Obullo changes..
+    if(strpos($uri, '#') > 0)
+    {
+        $sharp_uri = explode('#', $uri);
+        $uri       = $sharp_uri[0];
+        $sharp     = TRUE;
+    }
 
-	if ($title == '')
-	{
-		$title = $site_url;
-	}
+    if ( ! is_array($uri))
+    {
+        $site_url = ( ! preg_match('!^\w+://! i', $uri)) ? ob::instance()->config->site_url($uri) : $uri;
+    }
+    else
+    {
+        $site_url = ob::instance()->config->site_url($uri);
+    }
 
-	if ($attributes != '')
-	{
-		$attributes = _parse_attributes($attributes);
-	}
+    if ($title == '')
+    {
+        $title = $site_url;
+    }
 
-	return '<a href="'.$site_url.'"'.$attributes.'>'.$title.'</a>';
+    if ($attributes != '')
+    {
+        $attributes = _parse_attributes($attributes);
+    }
+    
+    if($sharp) // Obullo changes..
+    $site_url = $site_url.'#'.$sharp_uri[1];
+    
+    return '<a href="'.$site_url.'"'.$attributes.'>'.$title.'</a>';
 }
 
 // ------------------------------------------------------------------------
