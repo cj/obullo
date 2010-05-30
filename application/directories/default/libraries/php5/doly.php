@@ -20,7 +20,7 @@ Class doly implements PHP5_Library
     public function init() {}
     
 
-    public function doly()
+    public function doly_func()
     {
         // ..   
     }
