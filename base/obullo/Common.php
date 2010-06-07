@@ -43,18 +43,18 @@ interface PHP5_Library
 * Register base classes which start by OB_ prefix
 * 
 * @access   private
-* @param    string the class name being requested
-* @param    bool optional flag that lets classes get loaded but not instantiated
+* @param    string $class the class name being requested
+* @param    array | bool $params_or_no_ins (__construct parameter ) | or | No Instantiate
 * @version  0.1
 * @version  0.2 removed OB_Library::factory()
 *               added lib_factory() function
 * @version  0.3 renamed base "libraries" folder as "base"
 * @version  0.4 added extend to core libraries support
-* @version  0.5 added driver file load and extend support.
+* @version  0.5 added $params_or_no_ins instantiate switch FALSE.
 * 
 * @return   object  | NULL
 */
-function base_register($class, $params = NULL, $dir = '')
+function base_register($class, $params_or_no_ins = '', $dir = '')
 {
     $registry  = OB_Registry::instance();
     $Class     = strtolower($class);
@@ -85,6 +85,12 @@ function base_register($class, $params = NULL, $dir = '')
         require($path .'libraries'. DS .$Class. EXT);
         $classname = $Class;
         
+        if($params_or_no_ins === FALSE) 
+        {
+            ob::instance()->_libs['php_'.$class.'_no_instantiate'] = $Class; 
+            return TRUE;
+        }
+        
         if($dir == '')   // if base class
         {
             $classname = 'OB_'.$Class;
@@ -98,9 +104,9 @@ function base_register($class, $params = NULL, $dir = '')
         
         // __construct params support. 
         // --------------------------------------------------------------------
-        if(is_array($params)) // construct support.
+        if(is_array($params_or_no_ins)) // construct support.
         {
-            $registry->set_object($Class, new $classname($params));
+            $registry->set_object($Class, new $classname($params_or_no_ins));
             
         } else 
         {

@@ -90,11 +90,11 @@ Class loader {
     * load app libraries from /directories folder.
     * 
     * @param    mixed $class
-    * @param    mixed $no_ins_params array | null | false
+    * @param    mixed $no_ins_params array | false
     * @param    string $object_name
     * @return   self::_library()
     */
-    public static function lib($class, $no_ins_params = NULL, $object_name = '')
+    public static function lib($class, $no_ins_params = '', $object_name = '')
     {          
         self::_library($class, $no_ins_params, FALSE, $object_name = '', 'directory'); 
     }
@@ -144,15 +144,14 @@ Class loader {
     * 
     * @author   Ersin Guvenc
     * @param    string $class class name
-    * @param    array $params
-    *           Array = provide __construct() params
+    * @param    array | boolean $params_or_no_ins __construct() params  | or | No Instantiate 
     *                      
     * @version  0.1
     * @version  0.2  added register_static functions
     * @version  0.3  removed class_exists, removed asn_to_models()
     * @return   void
     */
-    private static function _library($class, $params = NULL, $base = FALSE, $object_name = '', $lib_dir = '')
+    private static function _library($class, $params_or_no_ins = '', $base = FALSE, $object_name = '', $lib_dir = '')
     {
         if($class == '')
         return FALSE;
@@ -169,12 +168,12 @@ Class loader {
         {
            case FALSE:
              $type = 'application';
-             $OB->$class_var = base_register($class, $params, $lib_dir); 
+             $OB->$class_var = base_register($class, $params_or_no_ins, $lib_dir); 
              break;
              
            case TRUE:
              $type = 'base';
-             $OB->$class_var = base_register($class, $params); 
+             $OB->$class_var = base_register($class, $params_or_no_ins); 
              break;
         }
         
@@ -191,13 +190,13 @@ Class loader {
     * 
     * @author   Ersin Guvenc
     * @param    string $model
-    * @param    string $params (construct params)  
+    * @param    array | boolean $params_or_no_ins (construct params) | or | No Instantiate 
     * @param    string $object_name
     * @return   void
     */
-    public static function app_model($model, $params = '', $object_name = '')
+    public static function app_model($model, $params_or_no_ins = '', $object_name = '')
     {
-        self::_model(APP .'models'. DS .strtolower($model). EXT, strtolower($model), $object_name, $params);
+        self::_model(APP .'models'. DS .strtolower($model). EXT, strtolower($model), $object_name, $params_or_no_ins);
     }
     
     // --------------------------------------------------------------------
@@ -207,9 +206,8 @@ Class loader {
     * Obullo Model Loader
     * 
     * @author    Ersin Guvenc
-    * @copyright obullo.com
     * @param     string $model
-    * @param     array  $params (construct params)
+    * @param     array | boolean $params (construct params) | or | Not Instantiate
     * @param     string $object_name 
     * @version   0.1
     * @version   0.2 added directory support
@@ -218,9 +216,10 @@ Class loader {
     *                new model directory structure support 
     * @version   0.5 added multiple load support
     * @version   0.5 added $object_name and $params variables 
+    * @version   0.6 changed $params as $params_or_no_ins
     * @return    void
     */
-    public static function model($model, $params = '', $object_name = '')
+    public static function model($model, $params_or_no_ins = '', $object_name = '')
     {   
         $model_name = strtolower($model);
         
@@ -241,7 +240,7 @@ Class loader {
             $file = DIR .$GLOBALS['d']. DS .'models'. DS .$model_name. EXT;
         }
     
-        self::_model($file, $model_name, $object_name, $params);
+        self::_model($file, $model_name, $object_name, $params_or_no_ins);
     }
     
     // --------------------------------------------------------------------
@@ -249,11 +248,13 @@ Class loader {
     /**
     * Load _model
     * 
-    * @access  private
-    * @param   string $file
-    * @param   string $model_name
+    * @access    private
+    * @param     string $file
+    * @param     string $model_name
+    * @version   0.1  
+    * @version   0.2 added params_or_no_ins instantiate switch.  
     */
-    private static function _model($file, $model_name, $object_name = '', $params = '')
+    private static function _model($file, $model_name, $object_name = '', $params_or_no_ins = '')
     {
         if ( ! file_exists($file))
         {
@@ -270,12 +271,18 @@ Class loader {
         require($file);
         $model = ucfirst($model_name);   
 
+        if($params_or_no_ins === FALSE)
+        {
+            $OB->_mods[$model_var.'_no_instantiate'] = $model_name;
+            return; 
+        }
+        
         if( ! class_exists($model_name))
         {
             throw new LoaderException('Model name is not correct in file: '.$model_name);
         }
         
-        $OB->$model_var = new $model($params);    //register($class); we don't need it   
+        $OB->$model_var = new $model($params_or_no_ins);    // register($class); we don't need it   
 
         // assign all loaded db objects inside to current model
         // loader::database() support for Model_x { function __construct() { loader::database() }}

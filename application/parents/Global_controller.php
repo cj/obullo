@@ -21,12 +21,7 @@ Class Global_controller extends __autoloader
           
           $this->base     = config_item('base_url');
           $this->base_url = config_item('base_url')  . config_item('index_page');
-          $this->base_img = config_item('source_url').'/images/';
-          
-          $this->meta     = meta('Content-type', 'text/html; charset=utf-8', 'equiv');
-          $this->meta    .= meta('description', '');
-          $this->meta    .= meta('author', '');
-                                                  
+          $this->base_img = config_item('source_url').'/images/';                                                
       }
       
 }
