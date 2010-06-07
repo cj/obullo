@@ -45,9 +45,11 @@ Class Model {
     */
     public function _assign_db_objects()
     {
-        foreach(ob::instance()->_dbs as $key)
+        $OB = ob::instance();
+        
+        foreach($OB->_dbs as $key)
         {
-            $this->$key = &ob::instance()->$key;
+            $this->$key = &$OB->$key;
         }
     
     }

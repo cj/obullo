@@ -1,18 +1,8 @@
 <?php
 if( !defined('BASE') ) exit('Access Denied!');                 
-/*
-|--------------------------------------------------------------------------
-| Datanase Constants
-|--------------------------------------------------------------------------
-|
-| These prefs are used when working with query binding functions.
-|
-*/
-define('use_bind_value', 'bind_value');  // Bind Value
-
 /**
 |--------------------------------------------------------------------------
-| Database Type Constants
+| Database Result Type Constants
 |--------------------------------------------------------------------------
 | PDO paramater type constants
 | @link http://php.net/manual/en/pdo.constants.php
