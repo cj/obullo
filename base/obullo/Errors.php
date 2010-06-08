@@ -131,11 +131,15 @@ function show_404($page = '')
 * 
 * @param string $message
 * @param int    $status_code
+* @param int    $heading
+* 
+* @version 0.1
+* @version 0.2  added custom $heading params for users
 */
-function show_error($message, $status_code = 500)
+function show_error($message, $status_code = 500, $heading = 'An Error Was Encountered')
 {
     log_message('error', 'HTTP Error --> '.$message); 
-    echo show_http_error('An Error Was Encountered', $message, 'ob_general', $status_code);
+    echo show_http_error($heading, $message, 'ob_general', $status_code);
     
     exit;
 }
