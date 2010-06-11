@@ -141,10 +141,8 @@ Class OB_Output {
      * @param    bool
      * @return   void
      */    
-    public function enable_profiler($val = TRUE)
+    public function profiler($val = TRUE)
     {
-        exit('Profiler Class Not Implemented Yet ! Use this->db->last_query() for now.');
-        
         $this->enable_profiler = (is_bool($val)) ? $val : TRUE;
     }
     
@@ -217,7 +215,8 @@ Class OB_Output {
             if (extension_loaded('zlib'))
             {             
                 if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) AND strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== FALSE)
-                {   // Obullo changes .. 
+                {   
+                    // Obullo changes .. 
                     ini_set('zlib.output_compression_level', config_item('compression_level', 'cache'));  
                     ob_start('ob_gzhandler');
                 }
@@ -250,23 +249,28 @@ Class OB_Output {
     
         // --------------------------------------------------------------------
         
-        // Do we need to generate profile data?
+        // Do we need to generate profile data?        
         // If so, load the Profile class and run it.
         if ($this->enable_profiler == TRUE)
         {
-            $profiler = base_register('Profiler');                
-                                        
+            // Get profiler output.
+            $profiler       = base_register('Profiler');
+            $data['output'] = $profiler->run();
+            
+                                 
             // If the output data contains closing </body> and </html> tags
-            // we will remove them and add them back after we insert the profile data
+            // we will remove them and add them back after we insert the profile script
             if (preg_match("|</body>.*?</html>|is", $output))
             {
                 $output  = preg_replace("|</body>.*?</html>|is", '', $output);
-                $output .= $profiler->run();
+                
+                // Add profiler script before the body end tag. ( Obullo Changes )
+                $output .= content_base_script('profiler', $data);  
                 $output .= '</body></html>';
             }
             else
             {
-                $output .= $profiler->run();
+                $output .= content_base_script('profiler', $data);
             }
         }
         

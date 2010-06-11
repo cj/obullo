@@ -211,6 +211,19 @@ Class OB_Config {
     // --------------------------------------------------------------------
 
     /**
+    * Source URL (Get the url for static media files)
+    *
+    * @access   public
+    * @return   string
+    */
+    public function source_url()
+    {
+        return $this->slash_item('source_url');
+    }
+    
+    // --------------------------------------------------------------------
+    
+    /**
     * Set a config file item
     *
     * @access   public

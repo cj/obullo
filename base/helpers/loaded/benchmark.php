@@ -48,7 +48,7 @@ log_message('debug', "Benchmark Helper Initialized");
  */
 function benchmark_mark($name)
 {
-    global $_bench;
+    $_bench = ssc::instance(); 
     
     $_bench->_mark->marker[$name] = microtime();
 }
@@ -66,7 +66,7 @@ function benchmark_mark($name)
 */
 function benchmark_elapsed_time($point1 = '', $point2 = '', $decimals = 4)
 {
-    global $_bench;
+    $_bench = ssc::instance(); 
     
     if ($point1 == '')
     {

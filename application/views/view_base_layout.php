@@ -24,5 +24,4 @@ echo this()->head;
 <?php echo this()->body; ?>
 
 </body>
-
 </html>
