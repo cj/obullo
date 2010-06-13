@@ -73,20 +73,18 @@ Class OB_Profiler {
         // be modified.  We also might want to make this data available to be logged
     
         $output  = "\n\n";
-        $output .= '<fieldset style="border:1px solid #990000;padding:6px 10px 10px 10px;margin:0 0 20px 0;background-color:#eee">';
-        $output .= "\n";
-        $output .= '<legend style="color:#990000;">&nbsp;&nbsp;'.lang_item('profiler_benchmarks').'&nbsp;&nbsp;</legend>';
-        $output .= "\n";            
-        $output .= "\n\n<table cellpadding='4' cellspacing='1' border='0' width='100%'>\n";
+        $output .= '<div id="benchmark">';       
+        $output .= "\n\n<table class=\"tableborder\">\n";
+        $output .= "<tr><th>".lang_item('profiler_benchmarks')."</th></tr>";
         
         foreach ($profile as $key => $val)
         {
             $key = ucwords(str_replace(array('_', '-'), ' ', $key));
-            $output .= "<tr><td width='50%' style='color:#000;font-weight:bold;background-color:#ddd;'>".$key."&nbsp;&nbsp;</td><td width='50%' style='color:#990000;font-weight:normal;background-color:#ddd;'>".$val."</td></tr>\n";
+            $output .= "<tr><td class='td'>".$key."&nbsp;&nbsp;</td><td class='td'>".$val."</td></tr>\n";
         }
         
         $output .= "</table>\n";
-        $output .= "</fieldset>";
+        $output .= "</div>";
          
         return $output;
     
@@ -187,19 +185,18 @@ Class OB_Profiler {
     public function _compile_get()
     {    
         $output  = "\n\n";
-        $output .= '<fieldset style="border:1px solid #cd6e00;padding:6px 10px 10px 10px;margin:20px 0 20px 0;background-color:#eee">';
+        $output .= '<div id="get">';       
+        $output .= "\n\n<table class=\"tableborder\">\n";
+        $output .= "<tr><th>".lang_item('profiler_get_data')."</th></tr>";
         $output .= "\n";
-        $output .= '<legend style="color:#cd6e00;">&nbsp;&nbsp;'.lang_item('profiler_get_data').'&nbsp;&nbsp;</legend>';
-        $output .= "\n";
-                
+
         if (count($_GET) == 0)
         {
-            $output .= "<div style='color:#cd6e00;font-weight:normal;padding:4px 0 4px 0'>".lang_item('profiler_no_get')."</div>";
+            $output .= "<tr><td class='td'>".lang_item('profiler_no_get')."</td></tr>";
+            $output .= "\n";
         }
-        else
+            else
         {
-            $output .= "\n\n<table cellpadding='4' cellspacing='1' border='0' width='100%'>\n";
-        
             foreach ($_GET as $key => $val)
             {
                 if ( ! is_numeric($key))
@@ -207,7 +204,7 @@ Class OB_Profiler {
                     $key = "'".$key."'";
                 }
             
-                $output .= "<tr><td width='50%' style='color:#000;background-color:#ddd;'>&#36;_GET[".$key."]&nbsp;&nbsp; </td><td width='50%' style='color:#cd6e00;font-weight:normal;background-color:#ddd;'>";
+                $output .= "<tr><td class='td'>&#36;_GET[".$key."]&nbsp;&nbsp;</td><td class='td'>";
                 if (is_array($val))
                 {
                     $output .= "<pre>" . htmlspecialchars(stripslashes(print_r($val, true))) . "</pre>";
@@ -219,9 +216,10 @@ Class OB_Profiler {
                 $output .= "</td></tr>\n";
             }
             
-            $output .= "</table>\n";
         }
-        $output .= "</fieldset>";
+        
+        $output .= "</table>\n";
+        $output .= "</div>";
 
         return $output;    
     }
@@ -237,19 +235,18 @@ Class OB_Profiler {
     private function _compile_post()
     {    
         $output  = "\n\n";
-        $output .= '<fieldset style="border:1px solid #009900;padding:6px 10px 10px 10px;margin:20px 0 20px 0;background-color:#eee">';
-        $output .= "\n";
-        $output .= '<legend style="color:#009900;">&nbsp;&nbsp;'.lang_item('profiler_post_data').'&nbsp;&nbsp;</legend>';
+        $output .= '<div id="post">';       
+        $output .= "\n\n<table class=\"tableborder\">\n";
+        $output .= "<tr><th>".lang_item('profiler_post_data')."</th></tr>";
         $output .= "\n";
                 
         if (count($_POST) == 0)
         {
-            $output .= "<div style='color:#009900;font-weight:normal;padding:4px 0 4px 0'>".lang_item('profiler_no_post')."</div>";
+            $output .= "<tr><td class='td'>".lang_item('profiler_no_post')."</td></tr>";
+            $output .= "\n";
         }
         else
         {
-            $output .= "\n\n<table cellpadding='4' cellspacing='1' border='0' width='100%'>\n";
-        
             foreach ($_POST as $key => $val)
             {
                 if ( ! is_numeric($key))
@@ -257,7 +254,7 @@ Class OB_Profiler {
                     $key = "'".$key."'";
                 }
             
-                $output .= "<tr><td width='50%' style='color:#000;background-color:#ddd;'>&#36;_POST[".$key."]&nbsp;&nbsp; </td><td width='50%' style='color:#009900;font-weight:normal;background-color:#ddd;'>";
+                $output .= "<tr><td class='td'>&#36;_POST[".$key."]&nbsp;&nbsp;</td><td class='td'>";
                 if (is_array($val))
                 {
                     $output .= "<pre>" . htmlspecialchars(stripslashes(print_r($val, true))) . "</pre>";
@@ -269,9 +266,10 @@ Class OB_Profiler {
                 $output .= "</td></tr>\n";
             }
             
-            $output .= "</table>\n";
         }
-        $output .= "</fieldset>";
+        
+        $output .= "</table>\n";
+        $output .= "</div>";
 
         return $output;    
     }
@@ -289,21 +287,24 @@ Class OB_Profiler {
         $ob = ob::instance();
         
         $output  = "\n\n";
-        $output .= '<fieldset style="border:1px solid #000;padding:6px 10px 10px 10px;margin:20px 0 20px 0;background-color:#eee">';
-        $output .= "\n";
-        $output .= '<legend style="color:#000;">&nbsp;&nbsp;'.lang_item('profiler_uri_string').'&nbsp;&nbsp;</legend>';
+        $output .= '<div id="uri_string">';       
+        $output .= "\n\n<table class=\"tableborder\">\n";
+        $output .= "<tr><th>".lang_item('profiler_uri_string')."</th></tr>";
         $output .= "\n";
         
         if ($ob->uri->uri_string == '')
         {
-            $output .= "<div style='color:#000;font-weight:normal;padding:4px 0 4px 0'>".lang_item('profiler_no_uri')."</div>";
+            $output .= "<tr><td class='td'>".lang_item('profiler_no_uri')."</td></tr>";
+            $output .= "\n";
         }
         else
         {
-            $output .= "<div style='color:#000;font-weight:normal;padding:4px 0 4px 0'>".$ob->uri->uri_string."</div>";                
+            $output .= "<tr><td class='td'>".$ob->uri->uri_string."</td></tr>";
+            $output .= "\n";
         }
         
-        $output .= "</fieldset>";
+        $output .= "</table>\n";
+        $output .= "</div>";
 
         return $output;    
     }
@@ -317,18 +318,18 @@ Class OB_Profiler {
      * @return    string
      */    
     private function _compile_controller_info()
-    {    
+    {            
         $output  = "\n\n";
-        $output .= '<fieldset style="border:1px solid #995300;padding:6px 10px 10px 10px;margin:20px 0 20px 0;background-color:#eee">';
-        $output .= "\n";
-        $output .= '<legend style="color:#995300;">&nbsp;&nbsp;'.lang_item('profiler_controller_info').'&nbsp;&nbsp;</legend>';
+        $output .= '<div id="controller_info">';       
+        $output .= "\n\n<table class=\"tableborder\">\n";
+        $output .= "<tr><th>".lang_item('profiler_controller_info')."</th></tr>";
         $output .= "\n";
         
-        $output .= "<div style='color:#995300;font-weight:normal;padding:4px 0 4px 0'>".$GLOBALS['d'].' / '.$GLOBALS['c'].' / '.$GLOBALS['m'].'</div>';                
-
+        $output .= "<tr><td class='td'>".$GLOBALS['d'].' / '.$GLOBALS['c'].' / '.$GLOBALS['m']."</td></tr>";
+        $output .= "\n";
         
-        $output .= "</fieldset>";
-
+        $output .= "</table>\n";
+        $output .= "</div>";
         return $output;    
     }
     // --------------------------------------------------------------------
@@ -373,8 +374,7 @@ Class OB_Profiler {
      */    
     public function run()
     {
-        $output = "<div id='codeigniter_profiler' style='clear:both;background-color:#fff;padding:10px;'>";
-
+        $output = "<div id='obullo_profiler' style='clear:both;background-color:#fff;padding:10px;'>";
         $output .= $this->_compile_uri_string();
         $output .= $this->_compile_controller_info();
         $output .= $this->_compile_memory_usage();

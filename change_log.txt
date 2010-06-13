@@ -1,0 +1,13 @@
+CHANGE LOG:
+
+Beta 1.0.1
+
+- Deleted old session.php from libraries folder.
+- Global_controller meta tags moved to view_base_layout.php
+- Added $params_or_no_ins instantiate switch to loader::model(); function. User can
+switch off Model instantiate usign by boolean like loader::model('model_name', false);
+- Added $params_or_no_ins Instantiate switch for all Loader Library functions.  
+- Removed "use_bind_value" constant from constants/db.php file.
+
+- Added source_url() function to Config.php class.
+- Added Profiler Class.

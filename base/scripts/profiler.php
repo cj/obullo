@@ -18,7 +18,7 @@ ob_profiler_window = window.open ("", "mywindow", "menubar=0, resizable=1, locat
 ob_profiler_window.document.write("<html><head>");
 ob_profiler_window.document.write("</head>");
 ob_profiler_window.document.write("<body>");
-ob_profiler_window.document.write("<h1>test</h1> kjasdkdjfkdf asd as<b>asdas</b>");
+ob_profiler_window.document.write("<?php echo $output; ?>");
 ob_profiler_window.document.write("</body></html>");
 ob_profiler_window.moveTo(260,0);
 

@@ -54,7 +54,7 @@ function anchor($uri = '', $title = '', $attributes = '')
     $title = (string) $title;
     $sharp = FALSE;
 
-    // ' # ' sharp support for anchors. Obullo changes..
+    // ' # ' sharp support for anchors. ( Obullo changes )..
     if(strpos($uri, '#') > 0)
     {
         $sharp_uri = explode('#', $uri);
