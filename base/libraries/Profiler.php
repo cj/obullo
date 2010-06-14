@@ -72,18 +72,17 @@ Class OB_Profiler {
         // Note: At some point we should turn this into a template that can
         // be modified.  We also might want to make this data available to be logged
     
-        $output  = "\n\n";
-        $output .= '<div id="benchmark">';       
-        $output .= "\n\n<table class=\"tableborder\">\n";
+        $output  = '<div id="benchmark">';       
+        $output .= "<table class=\"tableborder\">";
         $output .= "<tr><th>".lang_item('profiler_benchmarks')."</th></tr>";
         
         foreach ($profile as $key => $val)
         {
             $key = ucwords(str_replace(array('_', '-'), ' ', $key));
-            $output .= "<tr><td class='td'>".$key."&nbsp;&nbsp;</td><td class='td'>".$val."</td></tr>\n";
+            $output .= "<tr><td class=\"td\">".$key."&nbsp;&nbsp;</td><td class=\"td\">".$val."</td></tr>";
         }
         
-        $output .= "</table>\n";
+        $output .= "</table>";
         $output .= "</div>";
          
         return $output;
@@ -184,16 +183,13 @@ Class OB_Profiler {
      */    
     public function _compile_get()
     {    
-        $output  = "\n\n";
-        $output .= '<div id="get">';       
-        $output .= "\n\n<table class=\"tableborder\">\n";
+        $output  = '<div id="get">';       
+        $output .= "<table class=\"tableborder\">";
         $output .= "<tr><th>".lang_item('profiler_get_data')."</th></tr>";
-        $output .= "\n";
 
         if (count($_GET) == 0)
         {
-            $output .= "<tr><td class='td'>".lang_item('profiler_no_get')."</td></tr>";
-            $output .= "\n";
+            $output .= "<tr><td class=\"td\">".lang_item('profiler_no_get')."</td></tr>";
         }
             else
         {
@@ -204,7 +200,7 @@ Class OB_Profiler {
                     $key = "'".$key."'";
                 }
             
-                $output .= "<tr><td class='td'>&#36;_GET[".$key."]&nbsp;&nbsp;</td><td class='td'>";
+                $output .= "<tr><td class=\"td\">&#36;_GET[".$key."]&nbsp;&nbsp;</td><td class=\"td\">";
                 if (is_array($val))
                 {
                     $output .= "<pre>" . htmlspecialchars(stripslashes(print_r($val, true))) . "</pre>";
@@ -213,12 +209,12 @@ Class OB_Profiler {
                 {
                     $output .= htmlspecialchars(stripslashes($val));
                 }
-                $output .= "</td></tr>\n";
+                $output .= "</td></tr>";
             }
             
         }
         
-        $output .= "</table>\n";
+        $output .= "</table>";
         $output .= "</div>";
 
         return $output;    
@@ -234,16 +230,13 @@ Class OB_Profiler {
      */     
     private function _compile_post()
     {    
-        $output  = "\n\n";
-        $output .= '<div id="post">';       
-        $output .= "\n\n<table class=\"tableborder\">\n";
+        $output  = '<div id="post">';       
+        $output .= "<table class=\"tableborder\">";
         $output .= "<tr><th>".lang_item('profiler_post_data')."</th></tr>";
-        $output .= "\n";
                 
         if (count($_POST) == 0)
         {
-            $output .= "<tr><td class='td'>".lang_item('profiler_no_post')."</td></tr>";
-            $output .= "\n";
+            $output .= "<tr><td class=\"td\">".lang_item('profiler_no_post')."</td></tr>";
         }
         else
         {
@@ -254,7 +247,7 @@ Class OB_Profiler {
                     $key = "'".$key."'";
                 }
             
-                $output .= "<tr><td class='td'>&#36;_POST[".$key."]&nbsp;&nbsp;</td><td class='td'>";
+                $output .= "<tr><td class=\"td\">&#36;_POST[".$key."]&nbsp;&nbsp;</td><td class=\"td\">";
                 if (is_array($val))
                 {
                     $output .= "<pre>" . htmlspecialchars(stripslashes(print_r($val, true))) . "</pre>";
@@ -263,12 +256,12 @@ Class OB_Profiler {
                 {
                     $output .= htmlspecialchars(stripslashes($val));
                 }
-                $output .= "</td></tr>\n";
+                $output .= "</td></tr>";
             }
             
         }
         
-        $output .= "</table>\n";
+        $output .= "</table>";
         $output .= "</div>";
 
         return $output;    
@@ -285,25 +278,21 @@ Class OB_Profiler {
     private function _compile_uri_string()
     {    
         $ob = ob::instance();
-        
-        $output  = "\n\n";
-        $output .= '<div id="uri_string">';       
-        $output .= "\n\n<table class=\"tableborder\">\n";
+
+        $output  = '<div id="uri_string">';       
+        $output .= "<table class=\"tableborder\">";
         $output .= "<tr><th>".lang_item('profiler_uri_string')."</th></tr>";
-        $output .= "\n";
         
         if ($ob->uri->uri_string == '')
         {
-            $output .= "<tr><td class='td'>".lang_item('profiler_no_uri')."</td></tr>";
-            $output .= "\n";
+            $output .= "<tr><td class=\"td\">".lang_item('profiler_no_uri')."</td></tr>";
         }
         else
         {
-            $output .= "<tr><td class='td'>".$ob->uri->uri_string."</td></tr>";
-            $output .= "\n";
+            $output .= "<tr><td class=\"td\">".$ob->uri->uri_string."</td></tr>";
         }
         
-        $output .= "</table>\n";
+        $output .= "</table>";
         $output .= "</div>";
 
         return $output;    
@@ -319,16 +308,13 @@ Class OB_Profiler {
      */    
     private function _compile_controller_info()
     {            
-        $output  = "\n\n";
-        $output .= '<div id="controller_info">';       
-        $output .= "\n\n<table class=\"tableborder\">\n";
+        $output  = '<div id="controller_info">';       
+        $output .= "<table class=\"tableborder\">";
         $output .= "<tr><th>".lang_item('profiler_controller_info')."</th></tr>";
-        $output .= "\n";
+
+        $output .= "<tr><td class=\"td\">".$GLOBALS['d'].' / '.$GLOBALS['c'].' / '.$GLOBALS['m']."</td></tr>";
         
-        $output .= "<tr><td class='td'>".$GLOBALS['d'].' / '.$GLOBALS['c'].' / '.$GLOBALS['m']."</td></tr>";
-        $output .= "\n";
-        
-        $output .= "</table>\n";
+        $output .= "</table>";
         $output .= "</div>";
         return $output;    
     }
@@ -344,24 +330,22 @@ Class OB_Profiler {
      */
     function _compile_memory_usage()
     {
-        $output  = "\n\n";
-        $output .= '<fieldset style="border:1px solid #5a0099;padding:6px 10px 10px 10px;margin:20px 0 20px 0;background-color:#eee">';
-        $output .= "\n";
-        $output .= '<legend style="color:#5a0099;">&nbsp;&nbsp;'.lang_item('profiler_memory_usage').'&nbsp;&nbsp;</legend>';
-        $output .= "\n";
+        $output  = '<div id="controller_info">';       
+        $output .= "<table class=\"tableborder\">";
+        $output .= "<tr><th>".lang_item('profiler_memory_usage')."</th></tr>";
         
         if (function_exists('memory_get_usage') && ($usage = memory_get_usage()) != '')
         {
-            $output .= "<div style='color:#5a0099;font-weight:normal;padding:4px 0 4px 0'>".number_format($usage).' bytes</div>';
+            $output .= "<tr><td class=\"td\">".number_format($usage)." bytes</td></tr>";
         }
         else
         {
-            $output .= "<div style='color:#5a0099;font-weight:normal;padding:4px 0 4px 0'>".lang_item('profiler_no_memory_usage')."</div>";                
+            $output .= "<tr><td class=\"td\">".lang_item('profiler_no_memory_usage')."</td></tr>";
         }
         
-        $output .= "</fieldset>";
-
-        return $output;
+        $output .= "</table>";
+        $output .= "</div>";
+        return $output;  
     }
 
     // --------------------------------------------------------------------
@@ -374,7 +358,7 @@ Class OB_Profiler {
      */    
     public function run()
     {
-        $output = "<div id='obullo_profiler' style='clear:both;background-color:#fff;padding:10px;'>";
+        $output = "<div id=\"obullo_profiler\" style=\"clear:both;background-color:#fff;padding:10px;\">";
         $output .= $this->_compile_uri_string();
         $output .= $this->_compile_controller_info();
         $output .= $this->_compile_memory_usage();

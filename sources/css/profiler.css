@@ -10,9 +10,9 @@ html, body {
 
 body {
  background-color: #fff;
- margin: 40px;
+ margin: 5px;
  font-family: Arial;
- font-size: 10px;
+ font-size: 13px;
  color: #000;
 }
 
@@ -29,6 +29,7 @@ h1 {
 .tableborder {
   border-collapse: collapse;
   border-spacing: 0;
+  margin-bottom: 20px;
 }
 
 th {
@@ -41,6 +42,7 @@ th {
  padding: 0px;
  padding-top: 5px;
  padding-bottom: 5px;
+ border-top: 1px dotted #ccc;
  /*
  border-top: 1px dotted #ccc;
  border-left: 1px dotted #ccc;
@@ -50,7 +52,7 @@ th {
 .td {
  border: 1px solid #ccc; 
  font-weight: normal;
- font-size: 12px;
+ font-size: 14px;
  padding: 6px;
  background-color: #fff;
  padding: 5px;
