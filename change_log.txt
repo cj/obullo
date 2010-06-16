@@ -11,3 +11,6 @@ switch off Model instantiate usign by boolean like loader::model('model_name', f
 
 - Added source_url() function to Config.php class.
 - Added Profiler Class.
+
+
+@todo .. add id attributes to form_hidden(); function.
