@@ -51,8 +51,9 @@ defined('BASE') or exit('Access Denied!');
 | this "Foo_controller";
 | 
 */
-$parents['test.bar']  =  'Foo_controller';
-$parents['rest.xml']  =  'Rest_controller';
+$parents['test.bar']     =  'Foo_controller';
+$parents['rest.xml']     =  'Rest_controller';
+$parents['codebullo.*']  =  'Codebullo_controller';
 
 //-------------------------------------------------------------------------
 

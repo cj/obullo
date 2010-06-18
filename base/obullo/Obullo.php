@@ -41,6 +41,12 @@ $_parents = get_config('parents');
 
 $_controller = $GLOBALS['d'].'.'.$GLOBALS['c'];
 
+// @todo $parents['codebullo.*'] extend support 
+// for all controllers in current directory.
+// $parents['codebullo.*'] must be at the top.
+// forexample if we want to call $parents['codebullo.rest'] this config must be under the
+// $parents['codebullo.*'] config. 
+
 if(isset($_parents[$_controller]))
 {
     if( ! file_exists(APP .'parents'. DS .$_parents[$_controller]. EXT))
