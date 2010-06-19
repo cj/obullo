@@ -99,6 +99,7 @@ Abstract Class OB_DBAdapter extends OB_DB {
         }  
         
         if( ! is_array($this->options) ) $this->options = array();
+        
     }
                           
     /**

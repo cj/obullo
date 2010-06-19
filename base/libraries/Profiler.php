@@ -79,7 +79,7 @@ Class OB_Profiler {
         foreach ($profile as $key => $val)
         {
             $key = ucwords(str_replace(array('_', '-'), ' ', $key));
-            $output .= "<tr><td class=\"td\">".$key."&nbsp;&nbsp;</td><td class=\"td\">".$val."</td></tr>";
+            $output .= "<tr><td class=\"td\">".$key."&nbsp;&nbsp;</td><td class=\"td_val\">".$val."</td></tr>";
         }
         
         $output .= "</table>";
@@ -99,79 +99,80 @@ Class OB_Profiler {
      */    
     private function _compile_queries()
     {
-        $dbs = array();
-
-        /*
-        // Let's determine which databases are currently connected to
-        foreach (get_object_vars($this->CI) as $CI_object)
-        {
-            if (is_object($CI_object) && is_subclass_of(get_class($CI_object), 'CI_DB') )
-            {
-                $dbs[] = $CI_object;
-            }
-        }
-                    
-        if (count($dbs) == 0)
-        {
-            $output  = "\n\n";
-            $output .= '<fieldset style="border:1px solid #0000FF;padding:6px 10px 10px 10px;margin:20px 0 20px 0;background-color:#eee">';
-            $output .= "\n";
-            $output .= '<legend style="color:#0000FF;">&nbsp;&nbsp;'.$this->CI->lang->line('profiler_queries').'&nbsp;&nbsp;</legend>';
-            $output .= "\n";        
-            $output .= "\n\n<table cellpadding='4' cellspacing='1' border='0' width='100%'>\n";
-            $output .="<tr><td width='100%' style='color:#0000FF;font-weight:normal;background-color:#eee;'>".$this->CI->lang->line('profiler_no_db')."</td></tr>\n";
-            $output .= "</table>\n";
-            $output .= "</fieldset>";
+        $ob = ob::instance();
+        
+        // Let's determine which databases are currently connected to         
+        if (count($ob->_dbs) == 0)
+        {    
+            $output  = '<div id="queries">';       
+            $output .= "<table class=\"tableborder\">";
+            $output .= "<tr><th>".lang_item('profiler_queries')."</th></tr>";
             
+            $output .= "<tr><td class=\"td_val\">".lang_item('profiler_no_db')."</td></tr>";
+
+            $output .= "</table>";
+            $output .= "</div>";
+        
             return $output;
         }
         
         // Load the text helper so we can highlight the SQL
-        $this->CI->load->helper('text');
+        loader::base_helper('text');
 
         // Key words we want bolded
         $highlight = array('SELECT', 'DISTINCT', 'FROM', 'WHERE', 'AND', 'LEFT&nbsp;JOIN', 'ORDER&nbsp;BY', 'GROUP&nbsp;BY', 'LIMIT', 'INSERT', 'INTO', 'VALUES', 'UPDATE', 'OR', 'HAVING', 'OFFSET', 'NOT&nbsp;IN', 'IN', 'LIKE', 'NOT&nbsp;LIKE', 'COUNT', 'MAX', 'MIN', 'ON', 'AS', 'AVG', 'SUM', '(', ')');
 
-        $output  = "\n\n";
+        $output  = "";
             
-        foreach ($dbs as $db)
+        foreach ($ob->_dbs as $db)
         {
-            $output .= '<fieldset style="border:1px solid #0000FF;padding:6px 10px 10px 10px;margin:20px 0 20px 0;background-color:#eee">';
-            $output .= "\n";
-            $output .= '<legend style="color:#0000FF;">&nbsp;&nbsp;'.$this->CI->lang->line('profiler_database').':&nbsp; '.$db->database.'&nbsp;&nbsp;&nbsp;'.$this->CI->lang->line('profiler_queries').': '.count($this->CI->db->queries).'&nbsp;&nbsp;&nbsp;</legend>';
-            $output .= "\n";        
-            $output .= "\n\n<table cellpadding='4' cellspacing='1' border='0' width='100%'>\n";
-        
-            if (count($db->queries) == 0)
+            $output .= '<div id="queries">';
+            $output .= "<table class=\"tableborder\">"; 
+            $output .= "<tr><th>Database ".lang_item('profiler_queries').": ".count($ob->{$db}->queries)."&nbsp;&nbsp;&nbsp;</th></tr>";
+            
+            
+            if (count($ob->{$db}->queries) == 0)
             {
-                $output .= "<tr><td width='100%' style='color:#0000FF;font-weight:normal;background-color:#eee;'>".$this->CI->lang->line('profiler_no_queries')."</td></tr>\n";
+                $output .= "<tr><td class=\"td_val\">".lang_item('profiler_no_queries')."</td></tr>";
             }
             else
-            {                
-                foreach ($db->queries as $key => $val)
-                {                    
-                    $time = number_format($db->query_times[$key], 4);
-
-                    $val = highlight_code($val, ENT_QUOTES);
-    
+            {   
+                $output .= "<tr><td valign='top' class=\"td\">Db Variable</td><td class=\"td_val\">".$db."</td></tr>";
+                         
+                foreach ($ob->{$db}->queries as $key => $val)
+                {   
+                
+                    if(isset($ob->{$db}->query_times[$key])) 
+                    {
+                        $time = number_format($ob->{$db}->query_times[$key], 4);
+                    } 
+                     else 
+                    {
+                        $time = 'exec not exist';
+                    } 
+                    
+                    $val  = highlight_code($val, ENT_QUOTES);
+                    
+                    // remove all spaces and newlines.
+                    $val  = preg_replace('/[\t\s]+/s', ' ', $val);   // ( Obullo Changes )
+                    $val  = preg_replace('/[\r\n]/', '<br />', $val);
+                    
                     foreach ($highlight as $bold)
                     {
                         $val = str_replace($bold, '<strong>'.$bold.'</strong>', $val);    
                     }
                     
-                    $output .= "<tr><td width='1%' valign='top' style='color:#990000;font-weight:normal;background-color:#ddd;'>".$time."&nbsp;&nbsp;</td><td style='color:#000;font-weight:normal;background-color:#ddd;'>".$val."</td></tr>\n";
+                    $output .= "<tr><td valign='top' class=\"td\">".$time."&nbsp;&nbsp;</td><td class=\"td_val\">".$val."</td></tr>";
                 }
             }
             
-            $output .= "</table>\n";
+            $output .= "</table>";
             $output .= "</fieldset>";
-            
+            $output .= "</div>";
         }
         
-        return $output;
-        */
+        return $output; 
     }
-
     
     // --------------------------------------------------------------------
 
@@ -189,7 +190,7 @@ Class OB_Profiler {
 
         if (count($_GET) == 0)
         {
-            $output .= "<tr><td class=\"td\">".lang_item('profiler_no_get')."</td></tr>";
+            $output .= "<tr><td class=\"td_val\">".lang_item('profiler_no_get')."</td></tr>";
         }
             else
         {
@@ -200,7 +201,7 @@ Class OB_Profiler {
                     $key = "'".$key."'";
                 }
             
-                $output .= "<tr><td class=\"td\">&#36;_GET[".$key."]&nbsp;&nbsp;</td><td class=\"td\">";
+                $output .= "<tr><td class=\"td\">&#36;_GET[".$key."]&nbsp;&nbsp;</td><td class=\"td_val\">";
                 if (is_array($val))
                 {
                     $output .= "<pre>" . htmlspecialchars(stripslashes(print_r($val, true))) . "</pre>";
@@ -236,7 +237,7 @@ Class OB_Profiler {
                 
         if (count($_POST) == 0)
         {
-            $output .= "<tr><td class=\"td\">".lang_item('profiler_no_post')."</td></tr>";
+            $output .= "<tr><td class=\"td_val\">".lang_item('profiler_no_post')."</td></tr>";
         }
         else
         {
@@ -247,7 +248,7 @@ Class OB_Profiler {
                     $key = "'".$key."'";
                 }
             
-                $output .= "<tr><td class=\"td\">&#36;_POST[".$key."]&nbsp;&nbsp;</td><td class=\"td\">";
+                $output .= "<tr><td class=\"td\">&#36;_POST[".$key."]&nbsp;&nbsp;</td><td class=\"td_val\">";
                 if (is_array($val))
                 {
                     $output .= "<pre>" . htmlspecialchars(stripslashes(print_r($val, true))) . "</pre>";
@@ -285,11 +286,11 @@ Class OB_Profiler {
         
         if ($ob->uri->uri_string == '')
         {
-            $output .= "<tr><td class=\"td\">".lang_item('profiler_no_uri')."</td></tr>";
+            $output .= "<tr><td class=\"td_val\">".lang_item('profiler_no_uri')."</td></tr>";
         }
         else
         {
-            $output .= "<tr><td class=\"td\">".$ob->uri->uri_string."</td></tr>";
+            $output .= "<tr><td class=\"td_val\">".$ob->uri->uri_string."</td></tr>";
         }
         
         $output .= "</table>";
@@ -312,7 +313,7 @@ Class OB_Profiler {
         $output .= "<table class=\"tableborder\">";
         $output .= "<tr><th>".lang_item('profiler_controller_info')."</th></tr>";
 
-        $output .= "<tr><td class=\"td\">".$GLOBALS['d'].' / '.$GLOBALS['c'].' / '.$GLOBALS['m']."</td></tr>";
+        $output .= "<tr><td class=\"td_val\">".$GLOBALS['d'].' / '.$GLOBALS['c'].' / '.$GLOBALS['m']."</td></tr>";
         
         $output .= "</table>";
         $output .= "</div>";
@@ -330,17 +331,17 @@ Class OB_Profiler {
      */
     function _compile_memory_usage()
     {
-        $output  = '<div id="controller_info">';       
+        $output  = '<div id="memory">';       
         $output .= "<table class=\"tableborder\">";
         $output .= "<tr><th>".lang_item('profiler_memory_usage')."</th></tr>";
         
         if (function_exists('memory_get_usage') && ($usage = memory_get_usage()) != '')
         {
-            $output .= "<tr><td class=\"td\">".number_format($usage)." bytes</td></tr>";
+            $output .= "<tr><td class=\"td_val\">".number_format($usage)." bytes</td></tr>";
         }
         else
         {
-            $output .= "<tr><td class=\"td\">".lang_item('profiler_no_memory_usage')."</td></tr>";
+            $output .= "<tr><td class=\"td_val\">".lang_item('profiler_no_memory_usage')."</td></tr>";
         }
         
         $output .= "</table>";
@@ -351,6 +352,81 @@ Class OB_Profiler {
     // --------------------------------------------------------------------
     
     /**
+     * Compile memory usage
+     *
+     * Display total used memory
+     *
+     * @access    public
+     * @return    string
+     */
+    function _compile_loaded_files()
+    {          
+        $ob  = ob::instance();
+        $ssc = ssc::instance();
+        
+        $output  = '<div id="loaded_files">';       
+        $output .= "<table class=\"tableborder\">";
+        $output .= "<tr><th>".lang_item('profiler_loaded_files')."</th></tr>";
+        
+        $base_helpers  = '';
+        foreach(loader::$_base_helpers as $base_helper) { $base_helpers .= $base_helper .', '; }
+                    
+        $app_helpers  = '';
+        foreach(loader::$_app_helpers as $app_helper) { $app_helpers .= $app_helper .', '; }
+        
+        $helpers  = '';
+        foreach(loader::$_helpers as $helper) { $helpers .= $helper .', '; }
+        
+        $libraries  = '';
+        foreach($ssc->_profiler_libs as $lib) { $libraries .= $lib .', '; }
+        
+        $models  = '';
+        foreach($ssc->_profiler_mods as $mod) { $models .= $mod .', '; }
+              
+        $databases  = '';
+        foreach($ob->_dbs as $db) { $databases .= $db .', '; }
+        
+        $scripts  = '';
+        foreach($ssc->_profiler_scripts as $scr) { $scripts .= $scr .', '; }
+        
+        $files  = '';              
+        foreach($ssc->_profiler_files as $file) { $files .= $file .', '; }
+        
+        $local_views  = '';
+        foreach($ssc->_profiler_local_views as $view) { $local_views .= $view .'<br /> '; }
+    
+        $app_views  = '';
+        foreach($ssc->_profiler_app_views as $view) { $app_views .= $view .'<br /> '; }
+        
+        $base_helpers = (isset($base_helpers{2})) ? substr($base_helpers, 0, -2) : '-';
+        $app_helpers  = (isset($app_helpers{2})) ? substr($app_helpers, 0, -2) : '-';
+        $helpers      = (isset($helpers{2})) ? substr($helpers, 0, -2) : '-';
+        $libraries    = (isset($libraries{2})) ? substr($libraries, 0, -2) : '-';
+        $models       = (isset($models{2})) ? substr($models, 0, -2) : '-';
+        $databases    = (isset($databases{2})) ? substr($databases, 0, -2) : '-';
+        $scripts      = (isset($scripts{2})) ? substr($scripts, 0, -2) : '-';
+        $files        = (isset($files{2})) ? substr($files, 0, -2) : '-';
+        
+        $output .= "<tr><td class=\"td\">Base Helpers&nbsp;&nbsp;</td><td class=\"td_val\">".$base_helpers."</td></tr>";  
+        $output .= "<tr><td class=\"td\">Application Helpers&nbsp;&nbsp;</td><td class=\"td_val\">".$app_helpers."</td></tr>";    
+        $output .= "<tr><td class=\"td\">Local Helpers&nbsp;&nbsp;</td><td class=\"td_val\">".$helpers."</td></tr>";    
+        $output .= "<tr><td class=\"td\">Libraries&nbsp;&nbsp;</td><td class=\"td_val\">".$libraries."</td></tr>";    
+        $output .= "<tr><td class=\"td\">Models&nbsp;&nbsp;</td><td class=\"td_val\">".$models."</td></tr>";    
+        $output .= "<tr><td class=\"td\">Databases&nbsp;&nbsp;</td><td class=\"td_val\">".$databases."</td></tr>";    
+        $output .= "<tr><td class=\"td\">Scripts&nbsp;&nbsp;</td><td class=\"td_val\">".$scripts."</td></tr>";    
+        $output .= "<tr><td class=\"td\">Local Views&nbsp;&nbsp;</td><td class=\"td_val\">".$local_views."</td></tr>";    
+        $output .= "<tr><td class=\"td\">Application Views&nbsp;&nbsp;</td><td class=\"td_val\">".$app_views."</td></tr>";    
+        $output .= "<tr><td class=\"td\">External Files&nbsp;&nbsp;</td><td class=\"td_val\">".$files."</td></tr>";    
+        
+        $output .= "</table>";
+        $output .= "</div>";
+         
+        return $output;  
+    }
+    
+    // --------------------------------------------------------------------
+    
+    /**
      * Run the Profiler
      *
      * @access    public
@@ -358,19 +434,37 @@ Class OB_Profiler {
      */    
     public function run()
     {
-        $output = "<div id=\"obullo_profiler\" style=\"clear:both;background-color:#fff;padding:10px;\">";
+        $output  = "<div id=\"obullo_profiler\">";
         $output .= $this->_compile_uri_string();
         $output .= $this->_compile_controller_info();
         $output .= $this->_compile_memory_usage();
         $output .= $this->_compile_benchmarks();
         $output .= $this->_compile_get();
         $output .= $this->_compile_post();
+        $output .= $this->_compile_loaded_files();
         $output .= $this->_compile_queries();
-
         $output .= '</div>';
 
         return $output;
     }
+    
+    
+    /**
+    * Replace single quotes and
+    * prevent javascript errors.
+    * 
+    * @param mixed $string
+    */
+    private function _replace_single_quotes($string)
+    {
+        $patterns[0]     = "/'/";
+        $patterns[1]     = "/\s/";
+        $replacements[0] = '"';
+        $replacements[1] = '&nbsp;';
+        
+        return preg_replace($patterns, $replacements, $string);
+    }
+    
 
 }
 

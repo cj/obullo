@@ -87,7 +87,7 @@ function base_register($class, $params_or_no_ins = '', $dir = '')
         
         if($params_or_no_ins === FALSE) 
         {
-            ob::instance()->_libs['php_'.$class.'_no_instantiate'] = $Class; 
+            ssc::instance()->_profiler_libs['php_'.$class.'_no_instantiate'] = $Class;
             return TRUE;
         }
         
@@ -185,7 +185,7 @@ function register_autoload($real_name)
         {
             require(DIR .$GLOBALS['d']. DS .'libraries'. DS .'php5'. DS .$class. EXT);
             
-            ob::instance()->_libs['php5_local_'.$class.'_loaded'] = $class;
+            ssc::instance()->_profiler_libs['php5_local_'.$class.'_loaded'] = $class;
             return;
         } 
         
@@ -199,7 +199,7 @@ function register_autoload($real_name)
             if(file_exists(BASE .'libraries'. DS .'php5'. DS .ucfirst($class). EXT))
             $replaced = '_replaced';
             
-            ob::instance()->_libs['php5_'.$class.$replaced] = $class;
+            ssc::instance()->_profiler_libs['php5_'.$class.$replaced] = $class;
             return;            
         } 
                                           
@@ -209,7 +209,7 @@ function register_autoload($real_name)
         {
             require(APP .'libraries'. DS .'php5'. DS . config_item('subclass_prefix') .$class. EXT);
             
-            ob::instance()->_libs['php5_'.$class.'_overridden'] = $class;
+            ssc::instance()->_profiler_libs['php5_'.$class.'_overridden'] = $class;
             return;            
         } 
 
@@ -221,7 +221,7 @@ function register_autoload($real_name)
             
             require(BASE .'libraries'. DS .'php5'. DS .ucfirst($name[0]). EXT);
         
-            ob::instance()->_libs['php5_'.$class] = $class;
+            ssc::instance()->_profiler_libs['php5_'.$class] = $class;
             return;
         }  
 
@@ -233,7 +233,7 @@ function register_autoload($real_name)
             
             eval('Class '.$class.' extends '.$class.'_CORE {}');
             
-            ob::instance()->_libs['php5_'.$class.'_loaded'] = $class;
+            ssc::instance()->_profiler_libs['php5_'.$class.'_loaded'] = $class;
             return;
         }
         

@@ -70,23 +70,7 @@ if(isset($_parents[$_controller]))
 * @author   Ersin Guvenc
 */
 Class ob extends Controller_CORE
-{   
-    /**
-    * Obullo Models
-    * Store all loaded Models
-    * 
-    * @var array
-    */
-    public $_mods = array();
-    
-    /**
-    * Obullo Libraries
-    * Store all loaded Libraries
-    * 
-    * @var array
-    */
-    public $_libs = array();
-    
+{       
     /**
     * Obullo Databases
     * Store all loaded Database Objects

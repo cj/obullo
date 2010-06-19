@@ -32,12 +32,6 @@ cssNode.media   = 'screen';
 headID.appendChild(cssNode);
 
 ob_profiler_window.document.close(); /* Close the document session */
-  
-/*
-var newScript   = document.createElement('script'); 
-newScript.type  = 'text/javascript';
-newScript.src   = '/js/profiler.js';
-headID.appendChild(newScript);
-*/
+
 //-->
 </script>

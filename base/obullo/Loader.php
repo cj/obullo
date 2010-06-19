@@ -180,7 +180,7 @@ Class loader {
         if($OB->$class_var === NULL)
         throw new LoaderException('Unable to locate the '.$type.' library file: '. $class_var);
     
-        $OB->_libs[$class_var] = $class_var;    
+        ssc::instance()->_profiler_libs[$class_var] = $class_var;   
     }
         
     // --------------------------------------------------------------------
@@ -273,7 +273,7 @@ Class loader {
 
         if($params_or_no_ins === FALSE)
         {
-            $OB->_mods[$model_var.'_no_instantiate'] = $model_name;
+            ssc::instance()->_profiler_mods[$model_var.'_no_instantiate'] = $model_name;
             return; 
         }
         
@@ -289,7 +289,7 @@ Class loader {
         $OB->$model_var->_assign_db_objects();
         
         // store loaded obullo models
-        $OB->_mods[$model_var] = $model_var;  
+        ssc::instance()->_profiler_mods[$model_var] = $model_var; 
     }
 
     // --------------------------------------------------------------------
@@ -552,6 +552,9 @@ Class loader {
             
             log_message('debug', 'External file loaded: '.$path. EXT);
        
+            // store into profiler
+            ssc::instance()->_profiler_files[] = $path;
+        
             if($string === TRUE)
             {
                 ob_start();
@@ -580,16 +583,18 @@ Class loader {
     *
     * @version 0.1
     * @version 0.2  @deprecated old functions, we assign
-    *               just db objects .. 
+    *               just db objects ..
+    * @version 0.3  changed ob::instance()->_mods as 
+    *               ssc::instance(); 
     * @return  void
     */
     private static function _assign_db_objects($db_var = '')
     {
-        $OB = ob::instance();
+        $ssc = ssc::instance();
         
-        if (count($OB->_mods) == 0) return;
+        if (count($ssc->_profiler_mods) == 0) return;
 
-        foreach ($OB->_mods as $model_name)
+        foreach ($ssc->_profiler_mods as $model_name)
         {
             $OB->$model_name->$db_var = &$OB->$db_var;
         }

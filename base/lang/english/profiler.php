@@ -1,13 +1,14 @@
 <?php
                                                  
-$lang['profiler_database']          = 'DATABASE';
-$lang['profiler_controller_info']   = 'DIRECTORY / CLASS / METHOD';
-$lang['profiler_benchmarks']        = 'BENCHMARKS';
-$lang['profiler_queries']           = 'QUERIES';
-$lang['profiler_get_data']          = 'GET DATA';
-$lang['profiler_post_data']         = 'POST DATA';
-$lang['profiler_uri_string']        = 'URI STRING';
-$lang['profiler_memory_usage']      = 'MEMORY USAGE';
+$lang['profiler_database_var']      = 'Database Variable';
+$lang['profiler_controller_info']   = 'Directory / Class / Method';
+$lang['profiler_benchmarks']        = 'Benchmarks';
+$lang['profiler_queries']           = 'Queries';
+$lang['profiler_get_data']          = 'GET Data';
+$lang['profiler_post_data']         = 'POST Data';
+$lang['profiler_uri_string']        = 'URI String';
+$lang['profiler_memory_usage']      = 'Memory Usage';
+$lang['profiler_loaded_files']      = 'Loaded Files';    // ( Obullo changes ) ..
 $lang['profiler_no_db']             = 'Database driver is not currently loaded';
 $lang['profiler_no_queries']        = 'No queries were run';
 $lang['profiler_no_post']           = 'No POST data exists';

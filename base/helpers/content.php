@@ -128,7 +128,11 @@ function content_view($filename, $data = '', $string = TRUE)
 
     if(isset($cont->_ent->view_folder{1})) { $return = TRUE; } // if view folder changed don't show errors ..
 
-    return _load_view(DIR .$GLOBALS['d']. DS .'views'. $cont->_ent->view_folder, $filename, $data, $string, $return);
+    $path =  DIR .$GLOBALS['d']. DS .'views'. $cont->_ent->view_folder;
+    
+    $cont->_profiler_local_views[$filename] = $path . $filename .EXT; 
+    
+    return _load_view($path, $filename, $data, $string, $return);
 }
 
 // ------------------------------------------------------------------------
@@ -148,7 +152,11 @@ function content_app_view($filename, $data = '', $string = FALSE)
     
     if(isset($cont->_ent->app_view_folder{1})) { $return = TRUE; }  // if view folder changed don't show errors ..
     
-    return _load_view(APP .'views'. $cont->_ent->app_view_folder, $filename, $data, $string, $return); 
+    $path = APP .'views'. $cont->_ent->app_view_folder;
+    
+    $cont->_profiler_app_views[$filename] = $path . $filename .EXT; 
+    
+    return _load_view($path, $filename, $data, $string, $return); 
 }
 
 // ------------------------------------------------------------------------
@@ -181,8 +189,10 @@ function _load_script($path, $filename, $data = '')
     $content = ob_get_contents();
     
     ob_end_clean();
-
+                           
     log_message('debug', 'Script file loaded: '.$path . $filename . EXT); 
+    
+    ssc::instance()->_profiler_scripts[] = $filename;
     
     return "\n".$content; 
 }

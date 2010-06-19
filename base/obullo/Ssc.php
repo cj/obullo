@@ -31,6 +31,13 @@ Class ssc {
     public $_sion = NULL; // ses_sion
     public $_mark = NULL; // bench_mark
     
+    public $_profiler_mods  = array(); // profiler models
+    public $_profiler_libs  = array(); // profiler libs
+    public $_profiler_files = array(); // profiler files
+    public $_profiler_scripts     = array(); // profiler scripts
+    public $_profiler_app_views   = array(); // profiler app views
+    public $_profiler_local_views = array(); // profiler local views
+    
     public static function instance()
     {
         if( ! isset(self::$instance))

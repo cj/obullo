@@ -31,6 +31,7 @@ Class DBException extends CommonException {}
  * @version         0.2 added active record class
  * @version         0.3 beta 1.0 rc1 changes ( direct query bug fixed ) removed auto bind value, 
  *                  last query bug fixed.
+ * @version         0.4 added profiler class variables, queries, $query_times
  */
  
 Class OB_DB extends OB_DBAc_sw {
@@ -39,8 +40,12 @@ Class OB_DB extends OB_DBAc_sw {
     public $p_opt                   = array();  // prepare options
     public $last_sql                = NULL;     // store last queried sql 
     public $last_values             = array();  // store last executed PDO values by exec_count
+    
     public $query_count             = 0;        // count all queries.
-    public $exec_count              = 0;        // count exec method.
+    public $exec_count              = 0;        // count exec methods.
+    public $queries                 = array();  // store queries for profiler
+    public $query_times             = array();  // query time for profiler
+    public $benchmark               = '';       // store benchmark info
     
     public $use_bind_values         = FALSE;    // bind value usage switch
     public $use_bind_params         = FALSE;    // bind param usage switch
@@ -61,7 +66,7 @@ Class OB_DB extends OB_DBAc_sw {
     */
     public $_conn = NULL;  
     // --------------------------------------------------------------------
-    
+       
     /**
     * Connect to PDO
     * 
@@ -77,7 +82,7 @@ Class OB_DB extends OB_DBAc_sw {
         lang_load('db');
         
         $this->_conn = new PDO($dsn, $user, $pass, $options);
-    
+                                       
         return $this;
     }  
     
@@ -109,18 +114,37 @@ Class OB_DB extends OB_DBAc_sw {
     public function query($sql = NULL)
     {  
         $this->last_sql = $sql;
-    
+       
         if($this->prepare)
         {
             $this->Stmt = $this->_conn->prepare($sql, $this->p_opt);
+            
+            // Save the  query for debugging 
+            $this->queries[] = $sql;
             
             ++$this->query_count;
                         
             return $this;   // beta 1.0 rc1 changes ( direct query bug fixed )
         }
-        
+                  
+        // Start the Query Timer
+        //------------------------------------------------------
+        $time_start = list($sm, $ss) = explode(' ', microtime());
+        //------------------------------------------------------
+                                  
         $this->Stmt = $this->_conn->query($sql);
 
+        // Save the  query for debugging 
+        $this->queries[] = $sql;
+        
+        // Stop and aggregate the query time results
+        //------------------------------------------------------
+        $time_end = list($em, $es) = explode(' ', microtime());
+        $this->benchmark += ($em + $es) - ($sm + $ss);
+        
+        $this->query_times[] = ($em + $es) - ($sm + $ss);
+        //------------------------------------------------------
+        
         ++$this->query_count;
         
         return $this;
@@ -193,15 +217,29 @@ Class OB_DB extends OB_DBAc_sw {
     * @return   object  | void 
     */
     public function exec($array = NULL)
-    {                                                                                
+    {                                                                                  
         if(is_array($array))
         {                       
             if( ! self::_is_assoc($array))
             throw new DBException(lang_item('db_bind_data_must_assoc'));
         }
         
+        // Start the Query Timer
+        //------------------------------------------------------
+        $time_start = list($sm, $ss) = explode(' ', microtime());
+        //------------------------------------------------------
+                              
         // switch to pdo::statement
         $this->Stmt->execute($array);
+                                     
+        // Stop and aggregate the query time results
+        //------------------------------------------------------
+        $time_end = list($em, $es) = explode(' ', microtime());
+        $this->benchmark += ($em + $es) - ($sm + $ss);
+        
+        $this->query_times[] = ($em + $es) - ($sm + $ss);
+        //------------------------------------------------------
+        
         
         // reset prepare variable and prevent collision to next query ..
         $this->prepare = FALSE;
@@ -252,7 +290,25 @@ Class OB_DB extends OB_DBAc_sw {
     {
         $this->last_sql = &$sql;
         
-        return $this->_conn->exec($sql);
+        // Start the Query Timer
+        //------------------------------------------------------
+        $time_start = list($sm, $ss) = explode(' ', microtime());
+        //------------------------------------------------------
+        
+        // Save the  query for debugging 
+        $this->queries[] = $sql;
+        
+        $affected_rows = $this->_conn->exec($sql);
+                                     
+        // Stop and aggregate the query time results
+        //------------------------------------------------------
+        $time_end = list($em, $es) = explode(' ', microtime());
+        $this->benchmark += ($em + $es) - ($sm + $ss);
+        
+        $this->query_times[] = ($em + $es) - ($sm + $ss);
+        //------------------------------------------------------
+        
+        return $affected_rows;
     }
     
     // --------------------------------------------------------------------

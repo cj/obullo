@@ -16,7 +16,14 @@ body {
  color: #000;
 }
 
-h1 {
+/* ---------------- Common -------------------*/  
+#obullo_profiler {
+  clear: both;
+  background-color: #fff;
+  padding: 10px;
+}
+
+#obullo_profiler h1 {
  color: #808080;
  background-color: transparent;
  border-bottom: 1px solid #D0D0D0;
@@ -26,34 +33,181 @@ h1 {
  padding: 5px 0 6px 0;
 }
 
-.tableborder {
+#obullo_profiler table {
   border-collapse: collapse;
   border-spacing: 0;
   margin-bottom: 20px;
 }
 
-th {
+#obullo_profiler table th {
  font-weight: bold;
  text-align: left;
- font-size: 14px;
- background-color: #fff;
- color: #666666;
-
- padding: 0px;
  padding-top: 5px;
  padding-bottom: 5px;
- border-top: 1px dotted #ccc;
- /*
- border-top: 1px dotted #ccc;
- border-left: 1px dotted #ccc;
- border-right: 1px dotted #ccc;*/
- }
-
-.td {
+ border-top: 1px solid #ccc;
+}
+ 
+#obullo_profiler table .td {
  border: 1px solid #ccc; 
  font-weight: normal;
- font-size: 14px;
- padding: 6px;
- background-color: #fff;
  padding: 5px;
+}
+
+#obullo_profiler table .td_val {
+ border: 1px solid #ccc; 
+ font-weight: normal;
+ padding: 5px;
+}
+ 
+/* ---------------- Benchmark -------------------*/
+#benchmark table th {
+ background-color: #fff;
+ font-size: 14px;
+ color: #666666; 
+}
+
+#benchmark table .td {
+ background-color: #EFEFEF;
+ font-size: 14px;
+ color: brown;
+}
+
+#benchmark table .td_val {
+ background-color: #EFEFEF;
+ font-size: 14px;
+ color: blue;
+}
+
+/* ---------------- Queries -------------------*/
+#queries table th {
+ background-color: #fff;
+ font-size: 14px;
+ color: #666666; 
+}
+
+#queries table .td {
+ background-color: #EFEFEF;
+ font-size: 14px; 
+ color: brown;
+}
+
+#queries table .td_val {
+ background-color: #ddd;
+ font-size: 14px;   
+ font-weight: normal;
+ color: #0000FF;
+}
+
+/* ---------------- GET -------------------*/
+#get table th {
+ background-color: #fff;
+ font-size: 14px;
+ color: #666666; 
+}
+
+#get table .td {
+ background-color: #EFEFEF;
+ font-size: 14px; 
+ color: black;
+}
+
+#get table .td_val {
+ background-color: #EFEFEF;
+ font-size: 14px;
+ color: green;
+}
+
+/* ---------------- POST -------------------*/
+#post table th {
+ background-color: #fff;
+ font-size: 14px;
+ color: #666666; 
+}
+
+#post table .td {
+ background-color: #EFEFEF;
+ font-size: 14px; 
+ color: black;
+}
+
+#post table .td_val {
+ background-color: #EFEFEF;
+ font-size: 14px;
+ color: green;
+}
+
+/* ---------------- Uri String -------------------*/
+#uri_string table th {
+ background-color: #fff;
+ font-size: 14px;
+ color: #666666; 
+}
+
+#uri_string .td {
+ background-color: #EFEFEF;
+ font-size: 14px; 
+ color: black;
+}
+
+#uri_string .td_val {
+ background-color: #EFEFEF;
+ font-size: 14px;
+ color: #800080;
+}
+
+/* ---------------- Controller Info -------------------*/
+#controller_info table th {
+ background-color: #fff;
+ font-size: 14px;
+ color: #666666; 
+}
+
+#controller_info table .td {
+ background-color: #EFEFEF;
+ font-size: 14px; 
+ color: black;
+}
+
+#controller_info table .td_val {
+ background-color: #EFEFEF;
+ font-size: 14px;
+ color: #000080;
+}
+
+/* ---------------- Memory Info -------------------*/
+#memory table th {
+ background-color: #fff;
+ font-size: 14px;
+ color: #666666; 
+}
+
+#memory table .td {
+ background-color: #EFEFEF;
+ font-size: 14px; 
+ color: black;
+}
+
+#memory table .td_val {
+ background-color: #EFEFEF;
+ font-size: 14px;
+ color: green;
+}
+
+/* ---------------- Loaded Files -------------------*/
+#loaded_files table th {
+ background-color: #fff;
+ font-size: 14px;
+ color: #666666; 
+}
+
+#loaded_files table .td {
+ background-color: #EFEFEF;
+ font-size: 14px;  
+ color: brown;
+}
+
+#loaded_files table .td_val {
+ background-color: #EFEFEF;
+ font-size: 14px;
+ color: #800080;
 }
