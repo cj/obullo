@@ -4,7 +4,7 @@
 
 <?php 
 // Important: Don't change the 404 page css names (body, content, h1) 
-// Some browsers does not support different css names for 404 errors.        
+// Some browsers does not support different css names for 404 error pages.        
 ?>
 
 <style type="text/css">

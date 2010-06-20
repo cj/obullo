@@ -9,7 +9,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @package         obullo        
  * @author          obullo.com
  * @copyright       Ersin Guvenc (c) 2009 - 2010.
- * @since           Version 1.0
+ * @since           Version 1.0 
  * @filesource
  * @license
  */
@@ -21,6 +21,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @package         Obullo   
  * @subpackage      Base.obullo  
  * @category        Controller
+ * @author          Global Controllers Pattern (c) Ersin Guvenc
  * 
  * @version 0.1
  * @version 0.2 added core functions like ob::register
@@ -31,6 +32,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @version 0.5 added 'Obullo MVC2 Global controller' functionality
  * @version 0.6 added this() shortcut function, added get_config();
  * @version 0.7 !! Returns of the SSC pattern !! :), added SSC class.
+ * @version 0.8 Moved ssc to ssc.php , added extend switch support foreach folders.
  */
 
 define('OBULLO_VERSION', 'Obullo Beta 1.0 rc1');
@@ -39,31 +41,33 @@ define('OBULLO_VERSION', 'Obullo Beta 1.0 rc1');
 
 $_parents = get_config('parents');
 
-$_controller = $GLOBALS['d'].'.'.$GLOBALS['c'];
+$_Global_controller = 'Global_controller';    // default Global controller
 
-// @todo $parents['codebullo.*'] extend support 
-// for all controllers in current directory.
-// $parents['codebullo.*'] must be at the top.
-// forexample if we want to call $parents['codebullo.rest'] this config must be under the
-// $parents['codebullo.*'] config. 
-
-if(isset($_parents[$_controller]))
+if(isset($_parents[$GLOBALS['d']])) 
 {
-    if( ! file_exists(APP .'parents'. DS .$_parents[$_controller]. EXT))
-    throw new CommonException('Unable locate to parent controller file: '.$_controller. EXT);
-    
-    require(APP .'parents'. DS .$_parents[$_controller]. EXT); 
+     if( isset($_parents[$GLOBALS['d']][$GLOBALS['c']]) )
+     {
+         $_Global_controller = (string)$_parents[$GLOBALS['d']][$GLOBALS['c']];
+          
+     } 
+     elseif( isset($_parents[$GLOBALS['d']]['*']) )  // default Gc.
+     {
+         $_Global_controller = (string)$_parents[$GLOBALS['d']]['*'];
+         
+     }
+} 
 
-    eval('Class Controller_CORE extends '.$_parents[$_controller].'{}');
-      
-} else 
-{   
-    require(APP .'parents'. DS .'Global_controller'. EXT);
-    
-    eval('Class Controller_CORE extends Global_controller{}');   
+if( ! file_exists(APP .'parents'. DS .$_Global_controller. EXT)) 
+{
+     throw new CommonException('Unable locate to Global Controller file: '.$_Global_controller. EXT);
 }
 
-//------------- Global Controller Pattern Extend Switch --------------//
+require(APP .'parents'. DS .$_Global_controller. EXT); 
+
+eval('Class Controller_CORE extends '.$_Global_controller.'{}'); 
+
+//------------- Global Controller Pattern Extend Switch --------------// 
+
 
 /**
 * Obullo Core Class (Super Object) (c) 2010.

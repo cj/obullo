@@ -34,27 +34,32 @@ defined('BASE') or exit('Access Denied!');
 | Example     
 |                  - extends -
 |
-| $parents['test.bar']  =  'Foo_controller'; 
-|            |     |                   |
-|            |     |                   |
-|          ---   ---                 ---
-| Test directory   Bar controller   parent controller  (Global Controller)
+| $parents['test']  =  array('bar'  => 'Foo_controller');
+|            |                |                   |
+|            |                |                   |
+|          ---               ---                 ---
+| Test directory        Bar controller          Global Controller
 |
 |
 | Description:
  
-| If router request "index.php/test/foo" equal to $parents['test.foo'] value
-| then the "Bar" Controller which located in "Test" directory, will extend
-| to Foo controller .
+| If router request equal to "index.php/test/bar"
+| then the "Bar" Controller will extend
+| to Global Foo controller .
 |
 | Warning !: A Global Controller name writing style must be like
 | this "Foo_controller";
 | 
 */
-$parents['test.bar']     =  'Foo_controller';
-$parents['rest.xml']     =  'Rest_controller';
-$parents['codebullo.*']  =  'Codebullo_controller';
+$parents['test']        =  array('bar'  => 'Foo_controller');
+$parents['rest']        =  array('foo'  => 'Rest_controller');
 
+// Extend rules for this folder.
+// All of the controllers will extend to Codebullo_controller in Codebullo folder.
+$parents['codebullo']   = array(
+                                 '*'    => 'Codebullo_controller',  // default controller
+                                 );
+                                     
 //-------------------------------------------------------------------------
 
 /* End of file parents.php */

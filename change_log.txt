@@ -5,12 +5,17 @@ Beta 1.0.1
 - Deleted old session.php from libraries folder.
 - Global_controller meta tags moved to view_base_layout.php
 - Added $params_or_no_ins instantiate switch to loader::model(); function. User can
-switch off Model instantiate usign by boolean like loader::model('model_name', false);
+switch off Model instantiate using by boolean like loader::model('model_name', false);
 - Added $params_or_no_ins Instantiate switch for all Loader Library functions.  
 - Removed "use_bind_value" constant from constants/db.php file.
 
 - Added source_url() function to Config.php class.
 - Added Profiler Class.
+- config/parents.php extend rules changed. Rules turned into associative arrays.
+- Obullo Mvc2 changes: updated obullo.php, Global Controller extend rule changed belonging to 
+$GLOBAL['d'] variable (directory request). Added '*' rule , All controllers in a folder which have the '*' rule before 
+defined in parents.php can extend to its own Global Controller.
 
 
 @todo .. add id attributes to form_hidden(); function..
+@todo .. output cache filemtime

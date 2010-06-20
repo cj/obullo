@@ -13,10 +13,9 @@ echo meta('author', '');
 
 <base href="<?php echo this()->base; ?>" />
 
-<?php 
-echo css('welcome.css');
-echo this()->head;
-?>
+<?php echo css('welcome.css'); ?>
+
+<?php echo this()->head; ?>
 </head>
 
 <body <?php echo this()->body_attributes; ?>>
