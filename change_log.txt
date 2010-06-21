@@ -19,3 +19,4 @@ defined in parents.php can extend to its own Global Controller.
 
 @todo .. add id attributes to form_hidden(); function..
 @todo .. output cache filemtime
+@todo .. firewall class (integer, string validate for requests, login attempts for captcha)
