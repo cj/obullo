@@ -21,3 +21,5 @@ defined in parents.php can extend to its own Global Controller.
 @todo .. output cache filemtime
 @todo .. firewall class (integer, string validate for requests, login attempts for captcha)
 @todo .. remove _SESSION global from input
+@todo .. change validation_errors() function as form_validate_errors();
+@todo .. change create_captcha() function as captcha_create();
