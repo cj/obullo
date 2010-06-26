@@ -24,8 +24,8 @@ Class ContentException extends CommonException {}
  * @author      Ersin Guvenc
  * @version     0.1
  * @version     0.2 added empty $data string support
- * @version     0.3 added set_view_folder function
- * @version     0.3 added return , fail gracefully function for views.
+ * @version     0.3 added set_view_folder function, added return , fail gracefully function for views.
+ * @version     0.4 added img_folder to content_set_folder() function.
  * @link        
  */
  
@@ -35,6 +35,7 @@ $_cont->_ent = new stdClass();
 $_cont->_ent->view_folder     = DS. '';
 $_cont->_ent->app_view_folder = DS. '';
 $_cont->_ent->css_folder      = '/';
+$_cont->_ent->img_folder      = '/';
                                            
 log_message('debug', "Content Helper Initialized");
 
@@ -46,9 +47,11 @@ log_message('debug', "Content Helper Initialized");
 * supporting multiple interfaces (iphone interface, xml services
 * etc ..)
 * 
-* @author  Ersin Guvenc
-* @param   string $func view function
-* @param   string $folder view folder (no trailing slash)
+* @author   Ersin Guvenc
+* @param    string $func view function
+* @param    string $folder view folder (no trailing slash)
+* @version  0.1                 
+* @version  0.2 added img folder
 */
 function content_set_folder($func = 'view', $folder = '')
 {
@@ -66,7 +69,11 @@ function content_set_folder($func = 'view', $folder = '')
          break;
          
        case 'css':
-         $cont->_ent->css_folder      = '/'. $folder;  
+         $cont->_ent->css_folder      = $folder;  
+         break;
+         
+       case 'img':
+         $cont->_ent->img_folder      = $folder;  
          break;
     }
     
@@ -116,9 +123,9 @@ function content_base_script($filename, $data = '')
 /**
 * Load local view file
 * 
-* @param mixed $filename
-* @param mixed $data
-* @param mixed $string
+* @param string  $filename
+* @param array   $data
+* @param boolean $string
 * @return void
 */
 function content_view($filename, $data = '', $string = TRUE)
@@ -140,9 +147,9 @@ function content_view($filename, $data = '', $string = TRUE)
 /**
 * Load global view file
 * 
-* @param mixed $filename
-* @param mixed $data
-* @param mixed $string
+* @param string  $filename
+* @param array   $data
+* @param boolean $string
 * @return void
 */
 function content_app_view($filename, $data = '', $string = FALSE)
@@ -166,8 +173,10 @@ function content_app_view($filename, $data = '', $string = FALSE)
 * like fetch view files as string
 * 
 * @author   Ersin Guvenc
-* @param    string $path
-* @param    string $filename
+* @access   private
+* @param    string  $path
+* @param    string  $filename
+* @param    array   $data
 * @version  0.1
 * @version  0.2 added empty $data
 * @param    array  $data
@@ -202,7 +211,8 @@ function _load_script($path, $filename, $data = '')
 /**
 * Main view function        
 * 
-* @author   Ersin Guvenc          
+* @author   Ersin Guvenc
+* @access   private          
 * @param    string   $path file path 
 * @param    string   $filename 
 * @param    array    $data template vars
@@ -211,6 +221,7 @@ function _load_script($path, $filename, $data = '')
 * @version  0.1
 * @version  0.2 added empty $data
 * @version  0.3 added $return param
+* @version  0.4 added log_message()
 * @return   void
 */
 function _load_view($path, $filename, $data = '', $string = FALSE, $return = FALSE)
@@ -219,9 +230,14 @@ function _load_view($path, $filename, $data = '', $string = FALSE, $return = FAL
 
     if ( ! file_exists($path . $filename . EXT) )
     {
-        if($return) return;  // fail gracefully for different interfaces ..
-                             // iphone etc..
-        
+        if($return) 
+        { 
+            log_message('debug', 'View file not found: '. $path . $filename . EXT);
+            
+            return;     // fail gracefully for different interfaces ..
+                        // iphone etc..
+        }  
+                             
         throw new ContentException('Unable locate the view file: '. $filename . EXT);
     } 
     

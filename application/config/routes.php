@@ -44,7 +44,17 @@ defined('BASE') or exit('Access Denied!');
 | this pattern example.com/directory/class/method/id/ 
 |
 */
-$routes['default_controller']    = "welcome/start";   
+$routes['default_controller']    = "welcome/start";
+
+/*
+|--------------------------------------------------------------------------
+| Codebullo Routes
+|--------------------------------------------------------------------------
+|
+| This is for "Codebullo Code Network" Application.
+|
+*/
+$routes['codebullo']             = "codebullo/start";  
 
 /*
 |--------------------------------------------------------------------------

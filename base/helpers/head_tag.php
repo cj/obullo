@@ -30,32 +30,36 @@ defined('BASE') or exit('Access Denied!');
 * 
 * @author   Ersin Guvenc
 * @param    mixed   $filename array or string
+* @param    string  $title
 * @param    string  $media  'all' or 'print' etc..
-* @param    string  $arguments add argument
-* @param    string  $dir application or directory css
 * @version  0.1
 * @version  0.2 added $path variable
 * @version  0.2 added _ent->css_folder variable
+* @version  0.3 deprecated $path param
 * @return   string
 */
-function css($filename, $path = 'css', $title = '', $media = '')
+function css($filename, $title = '', $media = '')
 {
     if( ! is_array($filename))
     $filename = array($filename);
     
     $_cont = ssc::instance();
     
+    // When user use content_set_folder('css');
+    // this will not effect to Codebullo or other extensions
+    // because of each extension should use different Global Controller file.
+    $path = '';
     if(isset($_cont->_ent->css_folder{1}))
     {
-        $path = $path . $_cont->_ent->css_folder; 
+        $path = $_cont->_ent->css_folder.'/'; 
     }
 
-    $url = ob::instance()->config->slash_item('source_url').$path;
+    $url = ob::instance()->config->slash_item('source_url'). $path;
     
     $style = '';
     foreach($filename as $key => $css)
     {    
-        $style .= link_tag($url.'/'.$css, 'stylesheet', 'text/css', $title, $media)."\n";
+        $style .= link_tag($url . $css, 'stylesheet', 'text/css', $title, $media)."\n";
     }
     
     return $style;   
@@ -67,22 +71,24 @@ function css($filename, $path = 'css', $title = '', $media = '')
 * Build js files in <head> tags
 * 
 * @author   Ersin Guvenc
-* @param    string $filename
+* @param    string $filename  it can be via a path
 * @param    string $arguments
-* @param    string $dir
 * @param    string $type
+* @version  0.1
+* @version  0.2 removed /js dir added path support 
+* 
 */
 function js($filename, $arguments = '', $type = 'text/javascript')
 {
     if( ! is_array($filename))
     $filename = array($filename);
     
-    $url = ob::instance()->config->slash_item('source_url').'js/';
+    $url = ob::instance()->config->slash_item('source_url');
 
     $js = '';
     foreach($filename as $key => $file)
     {
-        $js.= "\n".'<script type="'.$type.'" src="'.$url.$file.'" '.$arguments.'></script>';  
+        $js.= "\n".'<script type="'.$type.'" src="'.$url . $file.'" '.$arguments.'></script>';  
     }
     
     return $js;
@@ -148,7 +154,7 @@ function link_tag($href = '', $rel = 'stylesheet', $type = 'text/css', $title = 
 {
     $OB = ob::instance();
 
-    $link = '<link ';
+    $link = '<link '; 
 
     if (is_array($href))
     {

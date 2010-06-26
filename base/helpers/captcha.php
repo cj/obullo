@@ -57,7 +57,7 @@ function html2rgb($color)    // Obullo changes ...
 |==========================================================
 |
 */
-function create_captcha($data = '', $img_path = '', $img_url = '', $font_path = '')
+function captcha_create($data = '', $img_path = '', $img_url = '', $font_path = '')
 {        
     $defaults = array(           // Obullo changes ...
     'word'      => '',

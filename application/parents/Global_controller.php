@@ -20,8 +20,8 @@ Class Global_controller extends __autoloader
           parent::__construct();
           
           $this->base     = config_item('base_url');
-          $this->base_url = config_item('base_url')  . config_item('index_page');
-          $this->base_img = config_item('source_url').'/images/';                                                
+          $this->base_url = $this->config->site_url();
+          $this->base_img = $this->config->source_url().'images/';                                                
       }
       
 }

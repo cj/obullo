@@ -173,7 +173,10 @@ function br($num = 1)
  * Generates an <img /> element
  *
  * @access   public
- * @param    mixed
+ * @param    mixed    $src  sources folder image path via filename
+ * @param    boolean  $index_page
+ * @version  0.1
+ * @version  0.2      added content_set_folder('img'); support
  * @return   string
  */
 function img($src = '', $index_page = FALSE)
@@ -183,9 +186,20 @@ function img($src = '', $index_page = FALSE)
         $src = array('src' => $src);
     }
 
+    $_cont = ssc::instance();
+            
+    // When user use content_set_folder('img');
+    // this will not effect to Codebullo or other extensions
+    // because of each extension should use different Global Controller file.
+    $path = '';
+    if(isset($_cont->_ent->img_folder{1}))
+    {
+        $path = $_cont->_ent->img_folder.'/'; 
+    }
+    
     $img = '<img';
 
-    foreach ($src as $k=>$v)
+    foreach ($src as $k => $v)
     {
 
         if ($k == 'src' AND strpos($v, '://') === FALSE)
@@ -198,12 +212,12 @@ function img($src = '', $index_page = FALSE)
             }
             else
             {
-                $img .= ' src="'.$OB->config->slash_item('source_url').$v.'" ';   // Obullo changes..
+                $img .= ' src="'.$OB->config->slash_item('source_url'). $path . $v .'" ';   // Obullo changes..
             }
         }
         else
         {
-            $img .= " $k=\"$v\" ";
+            $img .= " $k=\"$v\" ";   // for http://
         }
     }
 

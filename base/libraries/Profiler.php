@@ -8,7 +8,7 @@ defined('BASE') or exit('Access Denied!');
  * 
  * @package         obullo       
  * @author          obullo.com
- * @copyright       Ersin Guvenc (c) 2009.
+ * @copyright       Ersin Guvenc (c) 2010.
  * @filesource
  * @license
  */
@@ -19,8 +19,6 @@ defined('BASE') or exit('Access Denied!');
  * Obullo Profiler Class
  *
  * This class enables you to display benchmark, query, and other data.
- *
- * @todo  Html codes will come from template
  * 
  * @package     Obullo
  * @subpackage  Libraries

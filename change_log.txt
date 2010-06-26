@@ -8,18 +8,20 @@ Beta 1.0.1
 switch off Model instantiate using by boolean like loader::model('model_name', false);
 - Added $params_or_no_ins Instantiate switch for all Loader Library functions.  
 - Removed "use_bind_value" constant from constants/db.php file.
+- changed form helper validation_errors() function name as "form_validate_errors();"
+- changed captcha helper create_captcha() function name as "captcha_create();"
 
 - Added source_url() function to Config.php class.
-- Added Profiler Class.
+- Added Profiler Class. Removed some controller reserved variables (_libs and _mods)  from obullo/ob class.
 - config/parents.php extend rules changed. Rules turned into associative arrays.
 - Obullo Mvc2 changes: updated obullo.php, Global Controller extend rule changed belonging to 
 $GLOBAL['d'] variable (directory request). Added '*' rule , All controllers in a folder which have the '*' rule before 
 defined in parents.php can extend to its own Global Controller.
-
+- removed $path param from css(); function , we use css('css/filename.css') instead of css('filename', $path = 'css');
+- removed path from js(); function , we use js('js/welcome.js'); instead of js('filename') , added content_set_folder('img') support
+to content_set_folder() and img() functions.
 
 @todo .. add id attributes to form_hidden(); function..
 @todo .. output cache filemtime
 @todo .. firewall class (integer, string validate for requests, login attempts for captcha)
 @todo .. remove _SESSION global from input
-@todo .. change validation_errors() function as form_validate_errors();
-@todo .. change create_captcha() function as captcha_create();

@@ -795,7 +795,7 @@ function form_error($field = '', $prefix = '', $suffix = '')
  * @param	string
  * @return	string
  */
-function validation_errors($prefix = '', $suffix = '')
+function form_validate_errors($prefix = '', $suffix = '')
 {
 	if (FALSE === ($OBJ = _get_validation_object()))
 	{
