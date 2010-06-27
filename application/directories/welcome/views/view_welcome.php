@@ -1,3 +1,9 @@
+<?php
+
+this()->head .= js('js/welcome.js');  
+this()->head .= content_script('welcome');
+
+?>
 <!-- body tag content -->
 
 <h1>Welcome to Obullo Framework !</h1> 

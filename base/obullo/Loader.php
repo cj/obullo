@@ -46,6 +46,7 @@ defined('BASE') or exit('Access Denied!');
  * @version         1.7 added $x_helpers .. private static vars and added self::$_x_helpers static functions.
  * @version         1.8 updated db functions, @deprecated register_static(),
  *                      we use spl_autoload_register() func. because of performance :), added loader::file() func.
+ * @version         1.9 added profiler class ssc::instance()->_profiler_ functions.
  */
 
 Class LoaderException extends CommonException {}
@@ -58,7 +59,7 @@ Class loader {
     * 
     * @var array
     */
-    public static $_helpers = array();
+    public static $_helpers      = array();
     
     /**
     * Prevent Duplication 
@@ -74,7 +75,7 @@ Class loader {
     * 
     * @var array
     */
-    public static $_app_helpers = array();
+    public static $_app_helpers  = array();
     
     /**
     * Prevent Duplication 
@@ -82,7 +83,7 @@ Class loader {
     * 
     * @var array
     */
-    public static $_files = array();
+    public static $_files        = array();
     
     /**
     * loader::lib();
@@ -252,7 +253,7 @@ Class loader {
     * @param     string $file
     * @param     string $model_name
     * @version   0.1  
-    * @version   0.2 added params_or_no_ins instantiate switch.  
+    * @version   0.2 added params_or_no_ins instantiate switch ,added ssc::instance()->_profiler_mods 
     */
     private static function _model($file, $model_name, $object_name = '', $params_or_no_ins = '')
     {
@@ -535,10 +536,12 @@ Class loader {
     // --------------------------------------------------------------------
     
     /**
-    * Load a file from application directory.
+    * Load a file from ROOT directory.
     *
     * @access   public
     * @param    string $file filename
+    * @version  0.1
+    * @version  0.2  added storing files to profiler class functionality.
     * @return   void
     */                                 
     public static function file($path, $string = FALSE, $ROOT = APP)    
@@ -585,7 +588,7 @@ Class loader {
     * @version 0.2  @deprecated old functions, we assign
     *               just db objects ..
     * @version 0.3  changed ob::instance()->_mods as 
-    *               ssc::instance(); 
+    *               ssc::instance()->_profiler_mods; 
     * @return  void
     */
     private static function _assign_db_objects($db_var = '')

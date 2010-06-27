@@ -23,16 +23,6 @@ body {
   padding: 10px;
 }
 
-#obullo_profiler h1 {
- color: #808080;
- background-color: transparent;
- border-bottom: 1px solid #D0D0D0;
- font-size: 20px;
- font-weight: bold;
- margin: 24px 0 12px 0;
- padding: 5px 0 6px 0;
-}
-
 #obullo_profiler table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -44,7 +34,6 @@ body {
  text-align: left;
  padding-top: 5px;
  padding-bottom: 5px;
- border-top: 1px solid #ccc;
 }
  
 #obullo_profiler table .td {
@@ -63,7 +52,8 @@ body {
 #benchmark table th {
  background-color: #fff;
  font-size: 14px;
- color: #666666; 
+ color: #666666;
+ border-top: 1px solid #ccc;  
 }
 
 #benchmark table .td {
@@ -82,7 +72,8 @@ body {
 #queries table th {
  background-color: #fff;
  font-size: 14px;
- color: #666666; 
+ color: #666666;
+ border-top: 1px solid #ccc; 
 }
 
 #queries table .td {
@@ -102,7 +93,8 @@ body {
 #get table th {
  background-color: #fff;
  font-size: 14px;
- color: #666666; 
+ color: #666666;
+ border-top: 1px solid #ccc; 
 }
 
 #get table .td {
@@ -121,7 +113,8 @@ body {
 #post table th {
  background-color: #fff;
  font-size: 14px;
- color: #666666; 
+ color: #666666;
+ border-top: 1px solid #ccc;  
 }
 
 #post table .td {
@@ -159,7 +152,8 @@ body {
 #controller_info table th {
  background-color: #fff;
  font-size: 14px;
- color: #666666; 
+ color: #666666;
+ border-top: 1px solid #ccc; 
 }
 
 #controller_info table .td {
@@ -178,7 +172,8 @@ body {
 #memory table th {
  background-color: #fff;
  font-size: 14px;
- color: #666666; 
+ color: #666666;
+ border-top: 1px solid #ccc;  
 }
 
 #memory table .td {
@@ -197,7 +192,8 @@ body {
 #loaded_files table th {
  background-color: #fff;
  font-size: 14px;
- color: #666666; 
+ color: #666666;
+ border-top: 1px solid #ccc; 
 }
 
 #loaded_files table .td {

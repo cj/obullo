@@ -445,24 +445,6 @@ Class OB_Profiler {
 
         return $output;
     }
-    
-    
-    /**
-    * Replace single quotes and
-    * prevent javascript errors.
-    * 
-    * @param mixed $string
-    */
-    private function _replace_single_quotes($string)
-    {
-        $patterns[0]     = "/'/";
-        $patterns[1]     = "/\s/";
-        $replacements[0] = '"';
-        $replacements[1] = '&nbsp;';
-        
-        return preg_replace($patterns, $replacements, $string);
-    }
-    
 
 }
 
