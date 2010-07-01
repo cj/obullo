@@ -55,7 +55,7 @@ interface PHP5_Library
 * @return   object  | NULL
 */
 function base_register($class, $params_or_no_ins = '', $dir = '')
-{
+{                  
     $registry  = OB_Registry::instance();
     $Class     = strtolower($class);
       
@@ -76,7 +76,7 @@ function base_register($class, $params_or_no_ins = '', $dir = '')
     }        
 
     $getObject = $registry->get_object($Class);
-    
+                              
     if ($getObject !== NULL)
     return $getObject;
 
@@ -386,6 +386,7 @@ function log_message($level = 'error', $message, $php_error = FALSE)
     
     log_write($level, $message, $php_error);
 }
+
 
 // -------------------------------------------------------------------- 
 

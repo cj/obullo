@@ -1,9 +1,6 @@
-<?php
 
-this()->head .= js('js/welcome.js');  
-this()->head .= content_script('welcome');
+<?php this()->head .= js('js/welcome.js'); ?>
 
-?>
 <!-- body tag content -->
 
 <h1>Welcome to Obullo Framework !</h1> 
@@ -32,7 +29,7 @@ this()->head .= content_script('welcome');
 <code>application/views/view_base_layout.php</code>
 
 <p><b>Note:</b> If you are new to Obullo Framework, you should start by 
-reading the <a href="http://obullo.com/user_guide/show.html">User Guide</a>.</p>
+reading the <a href="http://obullo.com/user_guide/index.html">User Guide</a>.</p>
 
 <p><br />Page rendered in {elapsed_time} seconds <?php if(function_exists('memory_get_usage')) {?> using {memory_usage} of memory <?php } ?> (Used Head_tag helper, Script file and Global Controller).</p>
 

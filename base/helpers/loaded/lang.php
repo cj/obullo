@@ -46,13 +46,14 @@ log_message('debug', "Language Helper Initialized");
 function lang_load($langfile = '', $idiom = '', $dir = 'base', $return = FALSE)
 {     
     $_la = ssc::instance();
+    $ob  = ob::instance();
     
     if (in_array($langfile, $_la->_ng->is_loaded, TRUE))
     return;  
     
     if ($idiom == '')
     {
-        $deft_lang = ob::instance()->config->item('language');
+        $deft_lang = $ob->config->item('language');
         $idiom = ($deft_lang == '') ? 'english' : $deft_lang;
     }
     

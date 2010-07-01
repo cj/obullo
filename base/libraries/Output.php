@@ -138,7 +138,7 @@ Class OB_Output {
      * Enable/disable Profiler
      *
      * @access   public
-     * @param    bool
+     * @param    bool  $val
      * @return   void
      */    
     public function profiler($val = TRUE)
@@ -247,6 +247,7 @@ Class OB_Output {
             return TRUE;
         }
     
+        // Profiler
         // --------------------------------------------------------------------
         
         // Do we need to generate profile data?        
@@ -259,7 +260,7 @@ Class OB_Output {
             
                                  
             // If the output data contains closing </body> and </html> tags
-            // we will remove them and add them back after we insert the profile script
+            // we will remove them and add them back after we insert the profiler script
             if (preg_match("|</body>.*?</html>|is", $output))
             {
                 $output  = preg_replace("|</body>.*?</html>|is", '', $output);
@@ -272,10 +273,8 @@ Class OB_Output {
             {
                 $output .= content_base_script('profiler', $data);
             }
-        }
+        } 
         
-        // --------------------------------------------------------------------
-
         // Does the controller contain a function named _output()?
         // If so send the output there.  Otherwise, echo it.
         $ob = ob::instance();

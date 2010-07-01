@@ -423,7 +423,7 @@ Class OB_Profiler {
     }
     
     // --------------------------------------------------------------------
-    
+   
     /**
      * Run the Profiler
      *
@@ -443,8 +443,10 @@ Class OB_Profiler {
         $output .= $this->_compile_queries();
         $output .= '</div>';
 
+
         return $output;
     }
+
 
 }
 

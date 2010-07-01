@@ -14,7 +14,7 @@
 * Class.
 */
 
-ob_profiler_window = window.open ("", "mywindow", "menubar=0, resizable=1, location=0, status=0, scrollbars=1, width=650, height=600");
+ob_profiler_window = window.open ("", "mywindow", "menubar=0, resizable=1, location=0, status=0, scrollbars=1, width=700, height=600");
 ob_profiler_window.document.write("<html><head>");
 ob_profiler_window.document.write("</head>");
 ob_profiler_window.document.write("<body>");

@@ -34,11 +34,11 @@ defined('BASE') or exit('Access Denied!');
 | Example     
 |                  - extends -
 |
-| $parents['test']  =  array('bar'  => 'Foo_controller');
-|            |                |                   |
-|            |                |                   |
-|          ---               ---                 ---
-| Test directory        Bar controller          Global Controller
+| $parents['test']  =  array('bar'      =>      'Foo_controller');
+|            |                |                          |
+|            |                |                          |
+|          ---               ---                        ---
+| Test directory        Bar controller  (extends to)   Global Controller
 |
 |
 | Description:
@@ -51,14 +51,20 @@ defined('BASE') or exit('Access Denied!');
 | this "Foo_controller";
 | 
 */
-$parents['test']        =  array('bar'  => 'Foo_controller');
-$parents['rest']        =  array('foo'  => 'Rest_controller');
+$parents['test']          =  array('bar'  => 'Foo_controller');
 
-// Extend rules for this folder.
-// All of the controllers will extend to Codebullo_controller in Codebullo folder.
-$parents['codebullo']   = array(
-                                 '*'    => 'Codebullo_controller',  // default controller
-                                 );
+/*
+|--------------------------------------------------------------------------
+| Global Controller Names - ( Directory Extends )
+|--------------------------------------------------------------------------
+| You can assign Global Controllers to Folders.
+| Forexample You have a Folder called Dummy
+| when you use '*' symbol all of the controllers which located in
+| Dummy, will extend to Dummy_controller   
+*/
+$parents['directoryname'] = array(
+                                     '*'    => 'Dummy_controller',  // default
+                                   );
                                      
 //-------------------------------------------------------------------------
 
