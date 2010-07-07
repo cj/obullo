@@ -58,9 +58,10 @@ $parents['test']          =  array('bar'  => 'Foo_controller');
 | Global Controller Names - ( Directory Extends )
 |--------------------------------------------------------------------------
 | You can assign Global Controllers to Folders.
-| Forexample You have a Folder called Dummy
-| when you use '*' symbol all of the controllers which located in
-| Dummy, will extend to Dummy_controller   
+| Forexample You have a Folder called /Dummy
+| when you use the '*' symbol , all of the controllers of
+| /Dummy folder will extend to Dummy Global Controller.
+|
 */
 $parents['directoryname'] = array(
                                      '*'    => 'Dummy_controller',  // default
