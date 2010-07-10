@@ -25,7 +25,7 @@ Class Global_controller extends __autoloader
       {
           parent::__construct();
           
-          // You can change Super_controller variables ..
+          // You can change App_controller variables ..
           $this->base_img = $this->config->source_url().'images/';                                                
       }
       

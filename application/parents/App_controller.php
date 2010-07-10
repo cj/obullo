@@ -23,6 +23,6 @@ Class App_controller
     } 
 }
 
-/* End of file Super_controller.php */
-/* Location: ./application/parents/Super_controller.php */
+/* End of file App_controller.php */
+/* Location: ./application/parents/App_controller.php */
 ?>
