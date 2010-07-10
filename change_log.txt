@@ -16,12 +16,15 @@ switch off Model instantiate using by boolean like loader::model('model_name', f
 - config/parents.php extend rules changed. Rules turned into associative arrays.
 - Obullo Mvc2 changes: updated obullo.php, Global Controller extend rule changed belonging to 
 $GLOBAL['d'] variable (directory request). Added '*' rule , All controllers in a folder which have the '*' rule before 
-defined in parents.php can extend to its own Global Controller.
+defined in parents.php will extend to its own Global Controller.
 - removed $path param from css(); function , we use css('css/filename.css') instead of css('filename', $path = 'css');
 - removed path from js(); function , we use js('js/welcome.js'); instead of js('filename') , added content_set_folder('img') support
 to content_set_folder() and img() functions.
+- mvc2 pattern improvements: added Super_controller class to /parents folder. A Super Contoller Class will control your
+Global Controller files from now on.
+- changed loader::file('folder/file') as loader::file('folder/file'.EXT)
 
 @todo .. add id attributes to form_hidden(); function..
 @todo .. output cache filemtime
 @todo .. firewall class (integer, string validate for requests, login attempts for captcha)
-@todo .. remove _SESSION global from input
+@todo .. remove _SESSION global from input helper

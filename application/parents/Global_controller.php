@@ -1,26 +1,25 @@
 <?php
 defined('BASE') or exit('Access Denied!');
 
-Class __autoloader {
+loader::file('parents'. DS .'Super_controller'. EXT);
+
+Class __autoloader extends Super_controller {
     
-    function __construct()
+    function __autoloader()
     {         
-        loader::base_helper('content');   
-        loader::base_helper('head_tag');   
+        parent::__autoloader();
+        
+        loader::base_helper('head_tag');  
     } 
 }
+
 Class Global_controller extends __autoloader
-{
-      public $base, $base_url, $base_img;
-      public $title, $head, $meta, $body;
-      public $body_attributes = '';
-                                              
+{                                     
       public function __global()
       {
           parent::__construct();
           
-          $this->base     = config_item('base_url');
-          $this->base_url = $this->config->site_url();
+          // You can change Super_controller variables ..
           $this->base_img = $this->config->source_url().'images/';                                                
       }
       

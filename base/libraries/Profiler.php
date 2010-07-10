@@ -367,28 +367,28 @@ Class OB_Profiler {
         $output .= "<tr><th>".lang_item('profiler_loaded_files')."</th></tr>";
         
         $base_helpers  = '';
-        foreach(loader::$_base_helpers as $base_helper) { $base_helpers .= $base_helper .', '; }
+        foreach(loader::$_base_helpers as $base_helper) { $base_helpers .= $base_helper .'<br />'; }
                     
         $app_helpers  = '';
-        foreach(loader::$_app_helpers as $app_helper) { $app_helpers .= $app_helper .', '; }
+        foreach(loader::$_app_helpers as $app_helper) { $app_helpers .= $app_helper .'<br />'; }
         
         $helpers  = '';
-        foreach(loader::$_helpers as $helper) { $helpers .= $helper .', '; }
+        foreach(loader::$_helpers as $helper) { $helpers .= $helper .'<br />'; }
         
         $libraries  = '';
-        foreach($ssc->_profiler_libs as $lib) { $libraries .= $lib .', '; }
+        foreach($ssc->_profiler_libs as $lib) { $libraries .= $lib .'<br />'; }
         
         $models  = '';
-        foreach($ssc->_profiler_mods as $mod) { $models .= $mod .', '; }
+        foreach($ssc->_profiler_mods as $mod) { $models .= $mod .'<br />'; }
               
         $databases  = '';
-        foreach($ob->_dbs as $db) { $databases .= $db .', '; }
+        foreach($ob->_dbs as $db) { $databases .= $db .'<br />'; }
         
         $scripts  = '';
-        foreach($ssc->_profiler_scripts as $scr) { $scripts .= $scr .', '; }
+        foreach($ssc->_profiler_scripts as $scr) { $scripts .= $scr .'<br />'; }
         
         $files  = '';              
-        foreach($ssc->_profiler_files as $file) { $files .= $file .', '; }
+        foreach($ssc->_profiler_files as $file) { $files .= $file .'<br />'; }
         
         $local_views  = '';
         foreach($ssc->_profiler_local_views as $view) { $local_views .= $view .'<br /> '; }
@@ -396,14 +396,14 @@ Class OB_Profiler {
         $app_views  = '';
         foreach($ssc->_profiler_app_views as $view) { $app_views .= $view .'<br /> '; }
         
-        $base_helpers = (isset($base_helpers{2})) ? substr($base_helpers, 0, -2) : '-';
-        $app_helpers  = (isset($app_helpers{2})) ? substr($app_helpers, 0, -2) : '-';
-        $helpers      = (isset($helpers{2})) ? substr($helpers, 0, -2) : '-';
-        $libraries    = (isset($libraries{2})) ? substr($libraries, 0, -2) : '-';
-        $models       = (isset($models{2})) ? substr($models, 0, -2) : '-';
-        $databases    = (isset($databases{2})) ? substr($databases, 0, -2) : '-';
-        $scripts      = (isset($scripts{2})) ? substr($scripts, 0, -2) : '-';
-        $files        = (isset($files{2})) ? substr($files, 0, -2) : '-';
+        $base_helpers = (isset($base_helpers{2}))   ? $base_helpers : '-';
+        $app_helpers  = (isset($app_helpers{2}))    ? $app_helpers : '-';
+        $helpers      = (isset($helpers{2}))        ? $helpers : '-';
+        $libraries    = (isset($libraries{2}))      ? $libraries : '-';
+        $models       = (isset($models{2}))         ? $models : '-';
+        $databases    = (isset($databases{2}))      ? $databases : '-';
+        $scripts      = (isset($scripts{2}))        ? $scripts : '-';
+        $files        = (isset($files{2}))          ? $files : '-';
         
         $output .= "<tr><td class=\"td\">Base Helpers&nbsp;&nbsp;</td><td class=\"td_val\">".$base_helpers."</td></tr>";  
         $output .= "<tr><td class=\"td\">Application Helpers&nbsp;&nbsp;</td><td class=\"td_val\">".$app_helpers."</td></tr>";    

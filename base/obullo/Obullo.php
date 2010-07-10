@@ -62,7 +62,7 @@ if( ! file_exists(APP .'parents'. DS .$_Global_controller. EXT))
      throw new CommonException('Unable locate to Global Controller file: '.$_Global_controller. EXT);
 }
 
-require(APP .'parents'. DS .$_Global_controller. EXT); 
+loader::file('parents'. DS .$_Global_controller. EXT);
 
 eval('Class Controller_CORE extends '.$_Global_controller.'{}'); 
 

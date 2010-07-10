@@ -542,6 +542,7 @@ Class loader {
     * @param    string $file filename
     * @version  0.1
     * @version  0.2  added storing files to profiler class functionality.
+    *                removed EXT constant
     * @return   void
     */                                 
     public static function file($path, $string = FALSE, $ROOT = APP)    
@@ -549,19 +550,19 @@ Class loader {
         if( isset(self::$_files[$path]) )
         return;
         
-        if(file_exists($ROOT .$path. EXT)) 
+        if(file_exists($ROOT .$path)) 
         { 
             self::$_files[$path] = $path;
             
-            log_message('debug', 'External file loaded: '.$path. EXT);
+            log_message('debug', 'External file loaded: '.$path);
        
             // store into profiler
-            ssc::instance()->_profiler_files[] = $path;
+            ssc::instance()->_profiler_files[] = $ROOT . $path;
         
             if($string === TRUE)
             {
                 ob_start();
-                include($ROOT .$path. EXT);
+                include($ROOT .$path);
             
                 $content = ob_get_contents();
                 @ob_end_clean();
@@ -569,11 +570,11 @@ Class loader {
                 return $content;
             }
             
-            require($ROOT .$path. EXT);
+            require($ROOT .$path);
             return;
         }
         
-        throw new LoaderException('Unable to locate the external file: ' .$path. EXT);
+        throw new LoaderException('Unable to locate the external file: ' .$path);
     }
     
     // --------------------------------------------------------------------
