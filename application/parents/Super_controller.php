@@ -2,9 +2,9 @@
 defined('BASE') or exit('Access Denied!');
                                   
 /**
-* Application Global Controller
+* Global Application Controller
 */
-Class Application_controller 
+Class App_controller 
 {
     public $base, $base_url, $base_img;
     public $title, $head, $meta, $body;
