@@ -1,10 +1,13 @@
 <?php
 defined('BASE') or exit('Access Denied!');
 
-loader::file('parents'. DS .'Super_controller'. EXT);
+loader::file('parents'. DS .'App_controller'. EXT);
 
-Class __autoloader extends Super_controller {
-    
+/**
+* Local Autoloader
+*/
+Class __autoloader extends App_controller 
+{
     function __autoloader()
     {         
         parent::__autoloader();
@@ -13,6 +16,9 @@ Class __autoloader extends Super_controller {
     } 
 }
 
+/**
+* Global Controller
+*/
 Class Global_controller extends __autoloader
 {                                     
       public function __global()

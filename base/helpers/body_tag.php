@@ -189,8 +189,8 @@ function img($src = '', $index_page = FALSE)
     $_cont = ssc::instance();
             
     // When user use content_set_folder('img');
-    // this will not effect to Codebullo or other extensions
-    // because of each extension should use different Global Controller file.
+    // this will not effect to other Packages (e.g. forum)
+    // because of each Package should use different Global Controller file.
     $path = '';
     if(isset($_cont->_ent->img_folder{1}))
     {
