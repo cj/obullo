@@ -15,8 +15,6 @@ Class App_controller
     */
     function __autoloader()
     {         
-        loader::base_helper('content');
-        
         $this->base     = config_item('base_url');
         $this->base_url = $this->config->site_url();
         $this->base_img = $this->config->source_url().'images/';   

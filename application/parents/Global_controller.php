@@ -12,6 +12,7 @@ Class __autoloader extends App_controller
     {         
         parent::__autoloader();
         
+        loader::base_helper('content');
         loader::base_helper('head_tag');  
     } 
 }
