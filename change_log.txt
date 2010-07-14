@@ -25,6 +25,7 @@ Global Controller files from now on.
 - changed loader::file('folder/file') as loader::file('folder/file'.EXT)
 
 @todo .. base helpers extend support
+@todo .. config source url changes image internal alt tag
 @todo .. add id attributes to form_hidden(); function..
 @todo .. output cache filemtime
 @todo .. firewall class (integer, string validate for requests, login attempts for captcha)
