@@ -22,7 +22,9 @@ defined in parents.php will extend to its own Global Controller.
 to content_set_folder() and img() functions.
 - mvc2 pattern improvements: added Super_controller class to /parents folder. A Super Contoller Class will control your
 Global Controller files from now on.
-- changed loader::file('folder/file') as loader::file('folder/file'.EXT)
+- changed loader::file('folder/file') as loader::file('folder/file'.EXT) .
+- added current_dir() function to Url helper.
+- loading model from another path bug fixed. added 'models' string and DS.  
 
 @todo .. base helpers extend support
 @todo .. config source url changes image internal alt tag

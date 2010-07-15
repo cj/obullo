@@ -175,11 +175,13 @@ function br($num = 1)
  * @access   public
  * @param    mixed    $src  sources folder image path via filename
  * @param    boolean  $index_page
+ * @param    string   $attributes
  * @version  0.1
  * @version  0.2      added content_set_folder('img'); support
+ * @version  0.2      added $attributes variable
  * @return   string
  */
-function img($src = '', $index_page = FALSE)
+function img($src = '', $attributes = '', $index_page = FALSE)
 {
     if ( ! is_array($src) )
     {
@@ -189,7 +191,7 @@ function img($src = '', $index_page = FALSE)
     $_cont = ssc::instance();
             
     // When user use content_set_folder('img');
-    // this will not effect to other Packages (e.g. forum)
+    // this will not effect to other Packages ..
     // because of each Package should use different Global Controller file.
     $path = '';
     if(isset($_cont->_ent->img_folder{1}))
@@ -212,7 +214,7 @@ function img($src = '', $index_page = FALSE)
             }
             else
             {
-                $img .= ' src="'.$OB->config->slash_item('source_url'). $path . $v .'" ';   // Obullo changes..
+                $img .= ' src="'.$OB->config->source_url(). $path . $v .'" ';   // Obullo changes..
             }
         }
         else
@@ -221,7 +223,7 @@ function img($src = '', $index_page = FALSE)
         }
     }
 
-    $img .= '/>';
+    $img .= $attributes . ' />';
 
     return $img;
 }

@@ -27,11 +27,30 @@ defined('BASE') or exit('Access Denied!');
  * @link        
  */
 
-// ------------------------------------------------------------------------
-
+/**
+* Get current url
+* 
+* @access   public
+* @return   string
+*/
 function current_url()
 {
-	return ob::instance()->config->site_url(ob::instance()->uri->uri_string());
+    $ob = ob::instance();
+    
+	return $ob->config->site_url($ob->uri->uri_string());
+}
+
+// ------------------------------------------------------------------------
+
+/**
+* Get current directory
+* 
+* @access   public
+* @return   string
+*/
+function current_dir()
+{
+    return (string)$GLOBALS['d'];
 }
 
 // ------------------------------------------------------------------------
@@ -81,8 +100,8 @@ function anchor($uri = '', $title = '', $attributes = '')
         $attributes = _parse_attributes($attributes);
     }
     
-    if($sharp) // Obullo changes..
-    $site_url = $site_url.'#'.$sharp_uri[1];
+    if($sharp) 
+    $site_url = $site_url.'#'.$sharp_uri[1];  // Obullo changes..
     
     return '<a href="'.$site_url.'"'.$attributes.'>'.$title.'</a>';
 }

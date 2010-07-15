@@ -218,6 +218,7 @@ Class loader {
     * @version   0.5 added multiple load support
     * @version   0.5 added $object_name and $params variables 
     * @version   0.6 changed $params as $params_or_no_ins
+    * @version   0.7 loading from another path bug fixed. added 'models' string and DS.
     * @return    void
     */
     public static function model($model, $params_or_no_ins = '', $object_name = '')
@@ -231,9 +232,9 @@ Class loader {
         {
             $paths = explode('/',$model_name); // path[0] = controller name
             $model_name = array_pop($paths);
-            $path  = implode('/',$paths).'/';
+            $path  = implode('/', $paths) . DS;
             
-            $file = DIR .$path.$model_name. EXT;
+            $file = DIR .$path. 'models'. DS .$model_name. EXT;
         } 
         else
         {
