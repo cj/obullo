@@ -26,6 +26,17 @@ Global Controller files from now on.
 - added current_dir() function to Url helper.
 - loading model from another path bug fixed. added 'models' string and DS.  
 
+//-----------------------------------------------------------------------------
+
+@todo .. for the framework portability we should use fetchAll instead fetch() function.
+
+/* Fetch all of the values of the first column */
+$result = $sth->fetchAll(PDO::FETCH_COLUMN, 0);
+var_dump($result);
+http://php.net/manual/en/pdostatement.fetchall.php
+
+so user no need to use unbuffreed queries http://php.net/manual/en/ref.pdo-mysql.php
+
 @todo .. rename text helper word helper , functions name must be have word_ prefix
 @todo .. base helpers extend support
 @todo .. config source url changes image internal alt tag
