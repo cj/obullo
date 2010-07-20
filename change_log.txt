@@ -46,5 +46,6 @@ so user no need to use unbuffreed queries http://php.net/manual/en/ref.pdo-mysql
 @todo .. Pdo has mysql_free_result solution ?
 @todo .. add chapter topics to user_guide. general topics - advanced topics - php5 libraries - php libraries
 @todo .. upload class security
+@todo .. add config load and lang load track support for profiler class
 
 @next version todo .. firewall class (integer, string validate for requests, login attempts for captcha) 
