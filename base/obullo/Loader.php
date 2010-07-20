@@ -17,7 +17,7 @@ defined('BASE') or exit('Access Denied!');
 /**
  * Loader Class (Obullo Loader) (c) 2009 - 2010
  *
- * Load obullo library, model, view, shorcut, lang.. files
+ * Load obullo library, model, view, config and lang.. files
  *
  * @package         Obullo 
  * @subpackage      Base.obullo     
@@ -47,6 +47,7 @@ defined('BASE') or exit('Access Denied!');
  * @version         1.8 updated db functions, @deprecated register_static(),
  *                      we use spl_autoload_register() func. because of performance :), added loader::file() func.
  * @version         1.9 added profiler class ssc::instance()->_profiler_ functions.
+ * @version         2.0 loader::model('blog/model_filename'); bug fixed.
  */
 
 Class LoaderException extends CommonException {}
@@ -526,7 +527,7 @@ Class loader {
     * Loads a config file
     *
     * @access   public
-    * @param    array
+    * @param    string filename
     * @return   void
     */                                 
     public static function config($file)    
