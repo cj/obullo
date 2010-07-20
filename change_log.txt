@@ -45,5 +45,6 @@ so user no need to use unbuffreed queries http://php.net/manual/en/ref.pdo-mysql
 @todo .. remove _SESSION global from input helper
 @todo .. Pdo has mysql_free_result solution ?
 @todo .. add chapter topics to user_guide. general topics - advanced topics - php5 libraries - php libraries
+@todo .. upload class security
 
 @next version todo .. firewall class (integer, string validate for requests, login attempts for captcha) 
