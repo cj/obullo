@@ -4,7 +4,7 @@ defined('BASE') or exit('Access Denied!');
 loader::file('parents'. DS .'App_controller'. EXT);
 
 /**
-* Local Autoloader
+* Autoloader for Global Controller
 */
 Class __autoloader extends App_controller 
 {
@@ -16,7 +16,6 @@ Class __autoloader extends App_controller
         loader::base_helper('head_tag');  
     } 
 }
-
 /**
 * Global Controller
 */
