@@ -530,15 +530,31 @@ function sess_keep_flash($key) // obullo changes ...
 * Fetch a specific flashdata item from the session array
 *
 * @access   public
-* @param    string
+* @param    string  $key you want to fetch
+* @param    string  $prefix html open tag
+* @param    string  $suffix html close tag
+* 
+* @version  0.1
+* @version  0.2     added prefix and suffix parameters.
+* 
 * @return   string
 */    
-function sess_get_flash($key) // obullo changes ...
+function sess_get_flash($key, $prefix = '', $suffix = '')  // obullo changes ...
 {
     $ses = ssc::instance();
     $flashdata_key = $ses->_sion->flashdata_key.':old:'.$key;
-    return sess_get($flashdata_key);
+    
+    $value = sess_get($flashdata_key);
+    
+    if($value == '')
+    {
+        $prefix = '';
+        $suffix = '';
+    }
+    
+    return $prefix.$value.$suffix;
 }
+
 
 // ------------------------------------------------------------------------
 
