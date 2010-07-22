@@ -53,6 +53,30 @@ function current_dir()
     return (string)$GLOBALS['d'];
 }
 
+// ------------------------------------------------------------------------ 
+
+/**
+* Get current class
+* 
+* @access   public
+* @return   string
+*/
+function current_class()
+{
+    return (string)$GLOBALS['c'];
+}
+
+/**
+* Get current directory
+* 
+* @access   public
+* @return   string
+*/
+function current_method()
+{
+    return (string)$GLOBALS['m'];
+}
+
 // ------------------------------------------------------------------------
 
 /**
