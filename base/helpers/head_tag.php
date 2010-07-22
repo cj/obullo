@@ -38,33 +38,35 @@ defined('BASE') or exit('Access Denied!');
 * @version  0.3 deprecated $path param
 * @return   string
 */
-function css($filename, $title = '', $media = '')
+if( ! function_exists('css') ) 
 {
-    if( ! is_array($filename))
-    $filename = array($filename);
-    
-    $_cont = ssc::instance();
-    
-    // When user use content_set_folder('css');
-    // this will not effect to Codebullo or other extensions
-    // because of each extension should use different Global Controller file.
-    $path = '';
-    if(isset($_cont->_ent->css_folder{1}))
+    function css($filename, $title = '', $media = '')
     {
-        $path = $_cont->_ent->css_folder.'/'; 
-    }
+        if( ! is_array($filename))
+        $filename = array($filename);
+        
+        $_cont = ssc::instance();
+        
+        // When user use content_set_folder('css');
+        // this will not effect other packages
+        // because of each package should use different Global Controller file.
+        $path = '';
+        if(isset($_cont->_ent->css_folder{1}))
+        {
+            $path = $_cont->_ent->css_folder.'/'; 
+        }
 
-    $url = ob::instance()->config->slash_item('source_url'). $path;
-    
-    $style = '';
-    foreach($filename as $key => $css)
-    {    
-        $style .= link_tag($url . $css, 'stylesheet', 'text/css', $title, $media)."\n";
+        $url = ob::instance()->config->slash_item('source_url'). $path;
+        
+        $style = '';
+        foreach($filename as $key => $css)
+        {    
+            $style .= link_tag($url . $css, 'stylesheet', 'text/css', $title, $media)."\n";
+        }
+        
+        return $style;   
     }
-    
-    return $style;   
 }
-
 // ------------------------------------------------------------------------
 
 /**
@@ -78,22 +80,24 @@ function css($filename, $title = '', $media = '')
 * @version  0.2 removed /js dir added path support 
 * 
 */
-function js($filename, $arguments = '', $type = 'text/javascript')
+if( ! function_exists('js') ) 
 {
-    if( ! is_array($filename))
-    $filename = array($filename);
-    
-    $url = ob::instance()->config->slash_item('source_url');
-
-    $js = '';
-    foreach($filename as $key => $file)
+    function js($filename, $arguments = '', $type = 'text/javascript')
     {
-        $js.= "\n".'<script type="'.$type.'" src="'.$url . $file.'" '.$arguments.'></script>';  
-    }
-    
-    return $js;
-}
+        if( ! is_array($filename))
+        $filename = array($filename);
+        
+        $url = ob::instance()->config->slash_item('source_url');
 
+        $js = '';
+        foreach($filename as $key => $file)
+        {
+            $js.= "\n".'<script type="'.$type.'" src="'.$url . $file.'" '.$arguments.'></script>';  
+        }
+        
+        return $js;
+    }
+}
 // ------------------------------------------------------------------------ 
 
 /**
@@ -103,35 +107,38 @@ function js($filename, $arguments = '', $type = 'text/javascript')
 * @param    array
 * @return   string
 */
-function meta($name = '', $content = '', $type = 'name', $newline = "\n")
+if( ! function_exists('meta') ) 
 {
-    // Since we allow the data to be passes as a string, a simple array
-    // or a multidimensional one, we need to do a little prepping.
-    if ( ! is_array($name))
+    function meta($name = '', $content = '', $type = 'name', $newline = "\n")
     {
-        $name = array(array('name' => $name, 'content' => $content, 'type' => $type, 'newline' => $newline));
-    }
-    else
-    {
-        // Turn single array into multidimensional
-        if (isset($name['name']))
+        // Since we allow the data to be passes as a string, a simple array
+        // or a multidimensional one, we need to do a little prepping.
+        if ( ! is_array($name))
         {
-            $name = array($name);
+            $name = array(array('name' => $name, 'content' => $content, 'type' => $type, 'newline' => $newline));
         }
+        else
+        {
+            // Turn single array into multidimensional
+            if (isset($name['name']))
+            {
+                $name = array($name);
+            }
+        }
+
+        $str = '';
+        foreach ($name as $meta)
+        {
+            $type       = ( ! isset($meta['type']) OR $meta['type'] == 'name') ? 'name' : 'http-equiv';
+            $name       = ( ! isset($meta['name']))     ? ''     : $meta['name'];
+            $content    = ( ! isset($meta['content']))    ? ''     : $meta['content'];
+            $newline    = ( ! isset($meta['newline']))    ? "\n"    : $meta['newline'];
+
+            $str .= '<meta '.$type.'="'.$name.'" content="'.$content.'" />'.$newline;
+        }
+
+        return $str;
     }
-
-    $str = '';
-    foreach ($name as $meta)
-    {
-        $type       = ( ! isset($meta['type']) OR $meta['type'] == 'name') ? 'name' : 'http-equiv';
-        $name       = ( ! isset($meta['name']))     ? ''     : $meta['name'];
-        $content    = ( ! isset($meta['content']))    ? ''     : $meta['content'];
-        $newline    = ( ! isset($meta['newline']))    ? "\n"    : $meta['newline'];
-
-        $str .= '<meta '.$type.'="'.$name.'" content="'.$content.'" />'.$newline;
-    }
-
-    return $str;
 }
 
 // ------------------------------------------------------------------------
@@ -150,66 +157,69 @@ function meta($name = '', $content = '', $type = 'name', $newline = "\n")
  * @param    boolean  should index_page be added to the css path
  * @return   string
  */
-function link_tag($href = '', $rel = 'stylesheet', $type = 'text/css', $title = '', $media = '', $index_page = FALSE)
+if( ! function_exists('link_tag') ) 
 {
-    $OB = ob::instance();
-
-    $link = '<link '; 
-
-    if (is_array($href))
+    function link_tag($href = '', $rel = 'stylesheet', $type = 'text/css', $title = '', $media = '', $index_page = FALSE)
     {
-        foreach ($href as $k=>$v)
+        $OB = ob::instance();
+
+        $link = '<link '; 
+
+        if (is_array($href))
         {
-            if ($k == 'href' AND strpos($v, '://') === FALSE)
+            foreach ($href as $k=>$v)
             {
-                if ($index_page === TRUE)
+                if ($k == 'href' AND strpos($v, '://') === FALSE)
                 {
-                    $link .= ' href="'.$OB->config->site_url($v).'" ';
+                    if ($index_page === TRUE)
+                    {
+                        $link .= ' href="'.$OB->config->site_url($v).'" ';
+                    }
+                    else
+                    {
+                        $link .= ' href="'.$OB->config->slash_item('base_url').$v.'" ';
+                    }
                 }
                 else
                 {
-                    $link .= ' href="'.$OB->config->slash_item('base_url').$v.'" ';
+                    $link .= "$k=\"$v\" ";
                 }
             }
-            else
-            {
-                $link .= "$k=\"$v\" ";
-            }
-        }
 
-        $link .= "/>";
-    }
-    else
-    {
-        if ( strpos($href, '://') !== FALSE)
-        {
-            $link .= ' href="'.$href.'" ';
-        }
-        elseif ($index_page === TRUE)
-        {
-            $link .= ' href="'.$OB->config->site_url($href).'" ';
+            $link .= "/>";
         }
         else
         {
-            $link .= ' href="'.$OB->config->slash_item('base_url').$href.'" ';
+            if ( strpos($href, '://') !== FALSE)
+            {
+                $link .= ' href="'.$href.'" ';
+            }
+            elseif ($index_page === TRUE)
+            {
+                $link .= ' href="'.$OB->config->site_url($href).'" ';
+            }
+            else
+            {
+                $link .= ' href="'.$OB->config->slash_item('base_url').$href.'" ';
+            }
+
+            $link .= 'rel="'.$rel.'" type="'.$type.'" ';
+
+            if ($media    != '')
+            {
+                $link .= 'media="'.$media.'" ';
+            }
+
+            if ($title    != '')
+            {
+                $link .= 'title="'.$title.'" ';
+            }
+
+            $link .= '/>';
         }
-
-        $link .= 'rel="'.$rel.'" type="'.$type.'" ';
-
-        if ($media    != '')
-        {
-            $link .= 'media="'.$media.'" ';
-        }
-
-        if ($title    != '')
-        {
-            $link .= 'title="'.$title.'" ';
-        }
-
-        $link .= '/>';
+        
+        return $link;
     }
-    
-    return $link;
 }
 
 /* End of file head_tag.php */

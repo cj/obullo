@@ -131,6 +131,17 @@ $config['subclass_prefix']       = 'MY_';
 
 /*
 |--------------------------------------------------------------------------
+| Helper Extension Prefix
+|--------------------------------------------------------------------------
+|
+| This item allows you to set the filename prefix when extending
+| native helpers.  For more information please see the user guide.
+|
+*/
+$config['subhelper_prefix']       = 'my_';
+
+/*
+|--------------------------------------------------------------------------
 | Allowed URL Characters
 |--------------------------------------------------------------------------
 |

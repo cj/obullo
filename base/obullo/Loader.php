@@ -454,10 +454,11 @@ Class loader {
     * @param    string $helper
     * @version  0.1
     * @version  0.2 added self::$_base_helpers static var
+    * @version  0.3 added extend support for base helpers
     * @return   void
     */
     public static function base_helper($helper)
-    {        
+    {   
         if( isset(self::$_base_helpers[$helper]) )
         {
             return; 
@@ -465,6 +466,14 @@ Class loader {
         
         if(file_exists(BASE .'helpers'. DS .$helper. EXT)) 
         { 
+            $prefix = config_item('subhelper_prefix');
+        
+            // If user helper file exist ..
+            if(file_exists(APP .'helpers'. DS .$prefix.$helper. EXT))
+            {
+                include(APP .'helpers'. DS .$prefix.$helper. EXT); 
+            }
+            
             include(BASE .'helpers'. DS .$helper. EXT);
             
             self::$_base_helpers[$helper] = $helper;

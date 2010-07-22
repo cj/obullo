@@ -16,7 +16,8 @@ if( !defined('BASE') ) exit('Access Denied!');
  
 /**
 * Super Static Controllers (SSC). (c) 2010.
-* Control the Procedural Functions.
+* Control the Procedural (static) Functions.
+* 
 * @author   Ersin Guvenc
 */
 Class ssc {

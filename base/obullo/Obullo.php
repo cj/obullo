@@ -35,7 +35,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @version 0.8 Moved ssc to ssc.php , added extend switch support foreach folders.
  */
 
-define('OBULLO_VERSION', 'Obullo Beta 1.0 rc1');
+define('OBULLO_VERSION', '1.0.1');
 
 //------------- Global Controller Pattern Extend Switch --------------//
 
