@@ -62,4 +62,12 @@ so user no need to use unbuffered queries http://php.net/manual/en/ref.pdo-mysql
          
          try it xss_clean(, $allowed_characters = array('%', '&');)
          
+         -------------------------------------
+         forget it this make sense..
+         
+         there is a xss config file
+         password fields rules => ''
+         textarea fields rules => ''
+         custom   fields rules => ''
+         
 @next version todo .. firewall class (integer, string validate for requests, login attempts for captcha) 
