@@ -58,4 +58,8 @@ so user no need to use unbuffered queries http://php.net/manual/en/ref.pdo-mysql
          $input = xss_clean($input);
          $input = htmlspecialchars_decode($input);
 
+         or 
+         
+         try it xss_clean(, $allowed_characters = array('%', '&');)
+         
 @next version todo .. firewall class (integer, string validate for requests, login attempts for captcha) 
