@@ -53,21 +53,11 @@ so user no need to use unbuffered queries http://php.net/manual/en/ref.pdo-mysql
 
 @todo .. add to user guide under the security heading
          
+         first check it .. http://obullo.com/user_guide/form-validate-class.html (prep_form)
+         
          xss cleans .. for native  % characters try it ..!!
          $input = htmlspceialchars(i_post());
          $input = xss_clean($input);
          $input = htmlspecialchars_decode($input);
-
-         or 
-         
-         try it xss_clean(, $allowed_characters = array('%', '&');)
-         
-         -------------------------------------
-         forget it this make sense..
-         
-         there is a xss config file
-         password fields rules => ''
-         textarea fields rules => ''
-         custom   fields rules => ''
          
 @next version todo .. firewall class (integer, string validate for requests, login attempts for captcha) 
