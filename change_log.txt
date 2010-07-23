@@ -49,5 +49,13 @@ so user no need to use unbuffered queries http://php.net/manual/en/ref.pdo-mysql
 @todo .. add chapter topics to user_guide. general topics - advanced topics - php5 libraries - php libraries
 @todo .. upload class security
 @todo .. add config load and lang load track support for profiler class
+@todo .. xss_clean(, 'callback_user_function'); , i_post('', 'callback_xss_user_function');
+
+@todo .. add to user guide under the security heading
+         
+         xss cleans .. for native  % characters try it ..!!
+         $input = htmlspceialchars(i_post());
+         $input = xss_clean($input);
+         $input = htmlspecialchars_decode($input);
 
 @next version todo .. firewall class (integer, string validate for requests, login attempts for captcha) 
