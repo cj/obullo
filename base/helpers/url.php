@@ -28,21 +28,33 @@ defined('BASE') or exit('Access Denied!');
  */
 
 /**
-* Current base url for host 
-* Online or Localhost.
-* 
-* @return   string
-*/
-function current_base_url()
+ * Base URL
+ *
+ * Returns the "base_url" item from your config file
+ *
+ * @access    public
+ * @return    string
+ */
+if ( ! function_exists('base_url'))
 {
-    $url  = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http');
+    function base_url($host_based = FALSE)
+    {
+        if($host_based) 
+        {
+            $url  = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http');
+            
+            $url .= '://'.$_SERVER['HTTP_HOST'];
+            
+            $url .= str_replace(basename($_SERVER['SCRIPT_NAME']), '' ,$_SERVER['SCRIPT_NAME']);
+            
+            return $url . '/';
+        }
     
-    $url .= '://'.$_SERVER['HTTP_HOST'];
-    
-    $url .= str_replace(basename($_SERVER['SCRIPT_NAME']), '' ,$_SERVER['SCRIPT_NAME']);
-    
-    return $url . '/';
+        return this()->config->slash_item('base_url');
+    }
 }
+
+
 
 // ------------------------------------------------------------------------
  
@@ -54,8 +66,7 @@ function current_base_url()
 */
 function current_url()
 {
-    $ob = ob::instance();
-	return $ob->config->site_url($ob->uri->uri_string());
+	return this()->config->site_url(this()->uri->uri_string());
 }
                       
 // ------------------------------------------------------------------------
