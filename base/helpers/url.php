@@ -28,6 +28,25 @@ defined('BASE') or exit('Access Denied!');
  */
 
 /**
+* Current base url for host 
+* Online or Localhost.
+* 
+* @return   string
+*/
+function current_base_url()
+{
+    $url  = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http');
+    
+    $url .= '://'.$_SERVER['HTTP_HOST'];
+    
+    $url .= str_replace(basename($_SERVER['SCRIPT_NAME']), '' ,$_SERVER['SCRIPT_NAME']);
+    
+    return $url . '/';
+}
+
+// ------------------------------------------------------------------------
+ 
+/**
 * Get current url
 * 
 * @access   public
@@ -36,10 +55,9 @@ defined('BASE') or exit('Access Denied!');
 function current_url()
 {
     $ob = ob::instance();
-    
 	return $ob->config->site_url($ob->uri->uri_string());
 }
-
+                      
 // ------------------------------------------------------------------------
 
 /**
@@ -66,6 +84,8 @@ function current_class()
     return (string)$GLOBALS['c'];
 }
 
+// ------------------------------------------------------------------------ 
+
 /**
 * Get current directory
 * 
@@ -77,7 +97,7 @@ function current_method()
     return (string)$GLOBALS['m'];
 }
 
-// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------ 
 
 /**
  * Anchor Link

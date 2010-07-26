@@ -26,7 +26,8 @@ Global Controller files from now on.
 - added current_dir(), current_class(), current_method() functions to Url helper.
 - loading model from another path bug fixed. added 'models' string and DS.
 - added $config['subhelper_prefix'] = 'my_';  to config.php file. 
-- added sess_get_flash( $prefix = '', $suffix = '') func. parameters to session drivers. 
+- added sess_get_flash( $prefix = '', $suffix = '') func. parameters to session drivers.
+- added current_base_url() function to url helper.
 
 //-----------------------------------------------------------------------------
 
@@ -50,7 +51,7 @@ so user no need to use unbuffered queries http://php.net/manual/en/ref.pdo-mysql
 @todo .. upload class security
 @todo .. add config load and lang load track support for profiler class
 @todo .. xss_clean(, 'callback_user_function'); , i_post('', 'callback_xss_user_function');
-
+@todo .. pager class
 @todo .. add to user guide under the security heading
          
          first check it .. http://obullo.com/user_guide/form-validate-class.html (prep_form)
