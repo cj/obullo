@@ -28,8 +28,9 @@ Class ConfigException extends CommonException {}
  */
 Class OB_Config {
     
-    public $config    = array();
-    public $is_loaded = array();
+    public $config        = array();
+    public $is_loaded     = array();
+    public $auto_base_url = FALSE;
 
     /**
      * Constructor
@@ -152,6 +153,19 @@ Class OB_Config {
     }
       
     // --------------------------------------------------------------------
+    
+    /**
+    * Set host based auto base url
+    * 
+    * @param    boolean  on / off
+    * @return   void
+    */
+    public function auto_base_url($bool = TRUE)     // Obullo changes ..
+    {
+        $this->auto_base_url = $bool;
+    }
+    
+    // --------------------------------------------------------------------
 
     /**
     * Fetch a config file item - adds slash after item
@@ -199,14 +213,43 @@ Class OB_Config {
 
         if ($uri == '')
         {
-            return $this->slash_item('base_url').$this->item('index_page');
+            return $this->base_url() . $this->item('index_page');
         }
         else
         {
             $suffix = ($this->item('url_suffix') == FALSE) ? '' : $this->item('url_suffix');
-            return $this->slash_item('base_url').$this->slash_item('index_page').preg_replace("|^/*(.+?)/*$|", "\\1", $uri).$suffix;
+            
+            return $this->base_url() . $this->slash_item('index_page'). preg_replace("|^/*(.+?)/*$|", "\\1", $uri). $suffix;
         }
     }
+    
+    // --------------------------------------------------------------------
+    
+    /**
+    * Get the real base url.
+    * 
+    * @return    string
+    */
+    public function base_url()
+    {
+        if($this->auto_base_url)  // Obullo changes ..
+        {
+            $https      = i_server('HTTPS');
+            $http_host  = i_server('HTTP_HOST');
+            $scrpt_name = i_server('SCRIPT_NAME');
+            
+            $url  = ((isset($https) && $https == 'on') ? 'https' : 'http');
+            
+            $url .= '://' . $http_host;
+            
+            $url .= str_replace(basename($scrpt_name), '', $scrpt_name);
+            
+            return $url;
+        }
+    
+        return $this->slash_item('base_url');
+    }
+    
     
     // --------------------------------------------------------------------
 
@@ -214,10 +257,16 @@ Class OB_Config {
     * Source URL (Get the url for static media files)
     *
     * @access   public
+    * @param    boolean   host based portable url or not
     * @return   string
     */
-    public function source_url()
+    public function source_url($auto_base_url = TRUE)
     {
+        if($this->auto_base_url AND $auto_base_url)    // Obullo changes ..
+        {
+            return $this->base_url() . 'sources/';
+        }
+        
         return $this->slash_item('source_url');
     }
     

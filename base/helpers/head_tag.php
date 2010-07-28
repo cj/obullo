@@ -56,7 +56,7 @@ if( ! function_exists('css') )
             $path = $_cont->_ent->css_folder.'/'; 
         }
 
-        $url = ob::instance()->config->slash_item('source_url'). $path;
+        $url = this()->config->source_url() . $path;
         
         $style = '';
         foreach($filename as $key => $css)
@@ -87,7 +87,7 @@ if( ! function_exists('js') )
         if( ! is_array($filename))
         $filename = array($filename);
         
-        $url = ob::instance()->config->slash_item('source_url');
+        $url = this()->config->source_url();
 
         $js = '';
         foreach($filename as $key => $file)
@@ -161,7 +161,7 @@ if( ! function_exists('link_tag') )
 {
     function link_tag($href = '', $rel = 'stylesheet', $type = 'text/css', $title = '', $media = '', $index_page = FALSE)
     {
-        $OB = ob::instance();
+        $ob = this();
 
         $link = '<link '; 
 
@@ -173,11 +173,11 @@ if( ! function_exists('link_tag') )
                 {
                     if ($index_page === TRUE)
                     {
-                        $link .= ' href="'.$OB->config->site_url($v).'" ';
+                        $link .= ' href="'.$ob->config->site_url($v).'" ';
                     }
                     else
                     {
-                        $link .= ' href="'.$OB->config->slash_item('base_url').$v.'" ';
+                        $link .= ' href="'.$ob->config->base_url() .$v.'" ';
                     }
                 }
                 else
@@ -196,11 +196,11 @@ if( ! function_exists('link_tag') )
             }
             elseif ($index_page === TRUE)
             {
-                $link .= ' href="'.$OB->config->site_url($href).'" ';
+                $link .= ' href="'. $ob->config->site_url($href) .'" ';
             }
             else
             {
-                $link .= ' href="'.$OB->config->slash_item('base_url').$href.'" ';
+                $link .= ' href="'. $ob->config->base_url() .$href.'" ';
             }
 
             $link .= 'rel="'.$rel.'" type="'.$type.'" ';

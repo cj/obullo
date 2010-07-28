@@ -37,36 +37,44 @@ defined('BASE') or exit('Access Denied!');
  */
 if ( ! function_exists('base_url'))
 {
-    function base_url($host_based = FALSE)
+    function base_url()
     {
-        if($host_based) 
-        {
-            $url  = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http');
-            
-            $url .= '://'.$_SERVER['HTTP_HOST'];
-            
-            $url .= str_replace(basename($_SERVER['SCRIPT_NAME']), '' ,$_SERVER['SCRIPT_NAME']);
-            
-            return $url . '/';
-        }
-    
-        return this()->config->slash_item('base_url');
+        return this()->config->base_url();
     }
 }
 
-
-
 // ------------------------------------------------------------------------
+
+/**
+ * Site URL
+ *
+ * Create a local URL based on your basepath. Segments can be passed via the
+ * first parameter either as a string or an array.
+ *
+ * @access    public
+ * @param     string
+ * @return    string
+ */
+if ( ! function_exists('site_url'))
+{
+    function site_url($uri = '')
+    {
+        return this()->config->site_url($uri);
+    }
+}
  
 /**
 * Get current url
 * 
 * @access   public
+* @param    
 * @return   string
 */
 function current_url()
 {
-	return this()->config->site_url(this()->uri->uri_string());
+    $ob = this();
+    
+	return $ob->config->site_url($ob->uri->uri_string());
 }
                       
 // ------------------------------------------------------------------------
@@ -179,7 +187,7 @@ function anchor_popup($uri = '', $title = '', $attributes = FALSE)
 {
 	$title = (string) $title;
 
-	$site_url = ( ! preg_match('!^\w+://! i', $uri)) ? ob::instance()->config->site_url($uri) : $uri;
+	$site_url = ( ! preg_match('!^\w+://! i', $uri)) ? this()->config->site_url($uri) : $uri;
 
 	if ($title == '')
 	{
@@ -493,7 +501,7 @@ function redirect($uri = '', $method = 'location', $http_response_code = 302)
 {
 	if ( ! preg_match('#^https?://#i', $uri))
 	{
-		$uri = ob::instance()->config->site_url($uri); 
+		$uri = this()->config->site_url($uri); 
 	}
 	
 	switch($method)

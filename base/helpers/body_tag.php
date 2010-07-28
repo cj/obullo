@@ -188,7 +188,7 @@ function img($src = '', $attributes = '', $index_page = FALSE)
         $src = array('src' => $src);
     }
 
-    $_cont = ssc::instance();
+    $_cont = ssc::instance();       // obullo changes ..
             
     // When user use content_set_folder('img');
     // this will not effect to other Packages ..
@@ -196,7 +196,7 @@ function img($src = '', $attributes = '', $index_page = FALSE)
     $path = '';
     if(isset($_cont->_ent->img_folder{1}))
     {
-        $path = $_cont->_ent->img_folder.'/'; 
+        $path = $_cont->_ent->img_folder . '/'; 
     }
     
     $img = '<img';
@@ -206,15 +206,15 @@ function img($src = '', $attributes = '', $index_page = FALSE)
 
         if ($k == 'src' AND strpos($v, '://') === FALSE)
         {
-            $OB = ob::instance();
+            $ob = this();
 
             if ($index_page === TRUE)
             {
-                $img .= ' src="'.$OB->config->site_url($v).'" ';
+                $img .= ' src="'.$ob->config->site_url($v).'" ';
             }
             else
             {
-                $img .= ' src="'.$OB->config->source_url(). $path . $v .'" ';   // Obullo changes..
+                $img .= ' src="'.$ob->config->source_url(). $path . $v .'" ';   // Obullo changes..
             }
         }
         else

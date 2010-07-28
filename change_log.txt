@@ -12,7 +12,7 @@ switch off Model instantiate using by boolean like loader::model('model_name', f
 - changed captcha helper create_captcha() function name as "captcha_create();"
 
 - Added source_url() function to Config.php class.
-- Added Profiler Class. Removed some controller reserved variables (_libs and _mods)  from obullo/ob class.
+- Added Profiler Class. Removed some reserved controller variables (_libs and _mods)  from obullo/ob class.
 - config/parents.php extend rules changed. Rules turned into associative arrays.
 - Obullo Mvc2 changes: updated obullo.php, Global Controller extend rule changed belonging to 
 $GLOBAL['d'] variable (directory request). Added '*' rule , All controllers in a folder which have the '*' rule before 
@@ -23,11 +23,12 @@ to content_set_folder() and img() functions.
 - mvc2 pattern improvements: added Super_controller class to /parents folder. A Super Contoller Class will control your
 Global Controller files from now on.
 - changed loader::file('folder/file') as loader::file('folder/file'.EXT) .
-- added current_dir(), current_class(), current_method() functions to Url helper.
+- added current_url(), current_dir(), current_class(), current_method() functions to Url helper.
 - loading model from another path bug fixed. added 'models' string and DS.
 - added $config['subhelper_prefix'] = 'my_';  to config.php file. 
 - added sess_get_flash( $prefix = '', $suffix = '') func. parameters to session drivers.
-- added current_base_url() function to url helper.
+- added base_url(), site_url() functions to url helper file.,
+- added set  auto_base_url() , base_url and source_url functions to config class, updated source_url() function.
 
 //-----------------------------------------------------------------------------
 
@@ -40,7 +41,7 @@ http://php.net/manual/en/pdostatement.fetchall.php
 
 so user no need to use unbuffered queries http://php.net/manual/en/ref.pdo-mysql.php
 
-@todo .. rename text helper word helper , functions name must be have word_ prefix
+@todo .. add content_view('', (object)$data); support .. db objects should pass to view files.
 @todo .. base helpers extend support
 @todo .. config source url changes image internal alt tag
 @todo .. add id attributes to form_hidden(); function..

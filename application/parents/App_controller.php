@@ -15,9 +15,11 @@ Class App_controller
     */
     function __autoloader()
     {         
-        $this->base     = $this->config->item('base_url');
-        $this->base_url = $this->config->site_url();      // @todo base_url(true);
-        $this->base_img = $this->config->source_url().'images/';   
+        $this->config->auto_base_url(true);
+        
+        $this->base     = $this->config->base_url();
+        $this->base_url = $this->config->site_url();
+        $this->base_img = $this->config->source_url() . 'images/';   
     } 
 }
 

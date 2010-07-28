@@ -313,7 +313,7 @@ Class OB_Output {
             return;
         }
         
-        $uri =  $OB->config->item('base_url').$OB->config->item('index_page').$OB->uri->uri_string();
+        $uri =  $OB->config->base_url() . $OB->config->item('index_page'). $OB->uri->uri_string();
         $cache_path .= md5($uri);
 
         if ( ! $fp = @fopen($cache_path, FOPEN_WRITE_CREATE_DESTRUCTIVE))
@@ -353,7 +353,7 @@ Class OB_Output {
         $cache_path = (config_item('cache_path', 'cache') == '') ? APP.'system'.DS.'cache'.DS : config_item('cache_path', 'cache');
           
         // Build the file path.  The file name is an MD5 hash of the full URI
-        $uri =  $config->item('base_url').$config->item('index_page').$URI->uri_string;
+        $uri =  $config->base_url() . $config->item('index_page') . $URI->uri_string;
           
         $filepath = $cache_path . md5($uri);
                 

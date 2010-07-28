@@ -1,7 +1,7 @@
 
 <?php this()->head .= js('js/welcome.js'); ?>
 
-<!-- body tag content -->
+<!-- $this->body content -->
 
 <h1>Welcome to Obullo Framework !</h1> 
 
@@ -15,8 +15,9 @@
 <p>The corresponding <b>Controller</b> for this page is found at:</p>
 <code>application/directories/welcome/controllers/start.php</code>
 
-<p>The corresponding <b>Global controller</b> for this page is found at:</p>
-<code>application/parents/Global_controller.php</code>
+<p>The corresponding <b>Global</b> and <b>Application Controller</b> for this page is found at:</p>
+<code>application/parents/Global_controller.php , App_controller.php
+</code>
 
 <code>
 <input type="button" onclick="test_me();" value="Script Test !"/>
@@ -33,4 +34,4 @@ reading the <a href="http://obullo.com/user_guide/<?php echo OBULLO_VERSION; ?>/
 
 <p><br />Page rendered in {elapsed_time} seconds <?php if(function_exists('memory_get_usage')) {?> using {memory_usage} of memory <?php } ?> (Used Head_tag helper, Script file and Global Controller).</p>
 
-<!-- body tag content -->
+<!-- $this->body tag content -->

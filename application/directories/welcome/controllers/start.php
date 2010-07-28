@@ -7,7 +7,7 @@ Class Start extends Controller {
         parent::__construct();
         parent::__global();
         
-        echo $this->output->profiler();
+        // echo $this->output->profiler();
     }                                      
 
     public function index()
