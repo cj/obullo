@@ -41,7 +41,8 @@ http://php.net/manual/en/pdostatement.fetchall.php
 
 so user no need to use unbuffered queries http://php.net/manual/en/ref.pdo-mysql.php
 
-@todo .. add content_view('', (object)$data); support .. db objects should pass to view files.
+@todo .. add http:// https:// support for css and js tags. 
+@todo .. add content_view('', (object)$data); support .. object in array support (fetchall). db objects should pass to view files.
 @todo .. base helpers extend support
 @todo .. config source url changes image internal alt tag
 @todo .. add id attributes to form_hidden(); function..

@@ -52,7 +52,7 @@ if ( ! function_exists('base_url'))
  * first parameter either as a string or an array.
  *
  * @access    public
- * @param     string
+ * @param     string url
  * @return    string
  */
 if ( ! function_exists('site_url'))
@@ -67,7 +67,6 @@ if ( ! function_exists('site_url'))
 * Get current url
 * 
 * @access   public
-* @param    
 * @return   string
 */
 function current_url()
@@ -83,11 +82,12 @@ function current_url()
 * Get current directory
 * 
 * @access   public
+* @param    string url
 * @return   string
 */
-function current_dir()
+function current_dir($uri = '')
 {
-    return (string)$GLOBALS['d'];
+    return (string)$GLOBALS['d'] . $uri;
 }
 
 // ------------------------------------------------------------------------ 
