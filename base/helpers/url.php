@@ -82,12 +82,14 @@ function current_url()
 * Get current directory
 * 
 * @access   public
-* @param    string url
+* @param    string uri
 * @return   string
 */
 function current_dir($uri = '')
 {
-    return (string)$GLOBALS['d'] . $uri;
+    $separator = ($uri{0} == '/') ? '' : '/';
+    
+    return (string)$GLOBALS['d'] . $separator . $uri;
 }
 
 // ------------------------------------------------------------------------ 

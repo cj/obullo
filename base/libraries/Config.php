@@ -226,7 +226,7 @@ Class OB_Config {
     // --------------------------------------------------------------------
     
     /**
-    * Get the real base url.
+    * Get the base url automatically.
     * 
     * @return    string
     */

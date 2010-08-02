@@ -153,6 +153,14 @@ function register_autoload($real_name)
     try // __autoload func. does not catch exceptions ...
     {   // try to catch it and show user friendly errors ..
     
+        // App_controller
+        // -------------------------------------------------------------------- 
+        if($real_name == 'App_controller')
+        {
+            require(APP .'parents'. DS .'App_controller'. EXT);
+            return;
+        }
+        
         // Database files. 
         // -------------------------------------------------------------------- 
         if(strpos($real_name, 'OB_DB') === 0)
@@ -163,7 +171,7 @@ function register_autoload($real_name)
         
         if(strpos($real_name, 'Obullo_DB_Driver_') === 0)
         {
-            $exp = explode('_',$real_name);
+            $exp   = explode('_', $real_name);
             $class = strtolower(array_pop($exp));
             
             require(BASE .'database'. DS .'drivers'. DS .$class.'_driver'. EXT);
@@ -172,7 +180,7 @@ function register_autoload($real_name)
                 
         // Shortcut support. 
         // --------------------------------------------------------------------       
-        $class = strtolower($real_name); // lowercase classname.
+        $class  = strtolower($real_name); // lowercase classname.
         
         // When enable_query_strings = true there are some isset errors ...
         // we need to set directory again.  
