@@ -41,7 +41,7 @@ http://php.net/manual/en/pdostatement.fetchall.php
 
 so user no need to use unbuffered queries http://php.net/manual/en/ref.pdo-mysql.php
 
-@todo .. preg_match('/(<|>)/', $text); add [no_html] rule to form_validate class.
+@todo .. preg_match('/(<*>)/', $text); add [no_html] rule to form_validate class.
 @todo .. idea ! add set_callback('function', param1, param1..) instead of set_rules('|callback_function')
 @todo .. add http:// https:// support for css and js tags. 
 @todo .. add content_view('', (object)$data); support .. object in array support (fetchall). db objects should pass to view files.
