@@ -41,6 +41,7 @@ http://php.net/manual/en/pdostatement.fetchall.php
 
 so user no need to use unbuffered queries http://php.net/manual/en/ref.pdo-mysql.php
 
+@todo .. change css path if strpos(filename, '/') $url = filename else $url = this()->config->source_url() . $path;
 @todo .. $form->set_rules('fieldname', 'Field', 'required|message[you should fill]');
 @todo .. idea ! add set_callback('function', param1, param1..) instead of set_rules('|callback_function')
 @todo .. add http:// https:// support for css and js tags. 
