@@ -51,12 +51,7 @@ if( ! function_exists('ob_set_headers'))
     {
         // Kill magic quotes
         if ( ! is_php('5.3')) { @set_magic_quotes_runtime(0); }
-        
-        $config    = base_register('Config');
-        
-        ini_set('display_errors', $config->item('display_errors'));
-        date_default_timezone_set($config->item('timezone_set'));
-        
+                
         // system helpers
         if (config_item('log_threshold') > 0)
         require (BASE .'helpers'. DS .'loaded'. DS .'log'. EXT); 

@@ -1,11 +1,12 @@
-
 <?php 
-this()->head .= js('js/welcome.js');
+
+this()->head .= js('welcome.js');
 this()->meta .= meta('keywords', 'obullo, php5, framework');   // You can manually set head tags
-this()->head .= content_script('welcome');                     // in controller or in view files.   
+this()->head .= script('welcome');                             // in controller or in view files.   
+
 ?>
 
-<!-- $this->body content -->
+<!-- body content -->
 
 <h1>Welcome to Obullo Framework !</h1> 
 
@@ -36,6 +37,10 @@ this()->head .= content_script('welcome');                     // in controller 
 <p><b>Note:</b> If you are new to Obullo Framework, you should start by 
 reading the <a href="http://obullo.com/user_guide/<?php echo OBULLO_VERSION; ?>/index.html">User Guide</a>.</p>
 
-<p><br />Page rendered in {elapsed_time} seconds <?php if(function_exists('memory_get_usage')) {?> using {memory_usage} of memory <?php } ?> (Used Head_tag helper, Script file and Global Controller).</p>
+<p>
+<br />Page rendered in {elapsed_time} seconds 
+<?php if(function_exists('memory_get_usage')) {?> using {memory_usage} of memory <?php } ?> 
+(Used Head_tag helper, Script file and Global Controller).
+</p>
 
-<!-- $this->body tag content -->
+<!-- body content -->

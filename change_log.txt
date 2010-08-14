@@ -8,8 +8,8 @@ Version 1.0.1 Changes
 switch off Model instantiate using by boolean like loader::model('model_name', false);
 - Added $params_or_no_ins Instantiate switch for all Loader Library functions.  
 - Removed "use_bind_value" constant from constants/db.php file.
-- changed form helper validation_errors() function name as "form_validate_errors();"
-- changed captcha helper create_captcha() function name as "captcha_create();"
+- renamed form helper validation_errors() function as "form_validate_errors();"
+- renamed captcha helper create_captcha() function as "captcha_create();"
 
 - Added source_url() function to Config.php class.
 - Added Profiler Class. Removed some reserved controller variables (_libs and _mods)  from obullo/ob class.
@@ -29,33 +29,22 @@ Global Controller files from now on.
 - added sess_get_flash( $prefix = '', $suffix = '') func. parameters to session drivers.
 - added base_url(), site_url() functions to url helper file.,
 - added set  auto_base_url() , base_url and source_url functions to config class, updated source_url() function.
-
+- changed css(filename.css), js(filename.js), img(filename.ext) functions as css(css/filename.css), js(js/filename.js), img(images/filename.ext);
+- added extra ='' (attributes) param to form_hidden(); function..
+- added content_view('', (object)$data); support ..
+- added script(), app_script(), base_script() functions to head tag helper.
+- ini_set('display_errors', ..); date_default_timezone_set(..); functions moved to App_controller
 //-----------------------------------------------------------------------------
 
-@todo .. for the framework portability we should use fetchAll instead fetch() function.
+@todo .. note to USERGUIDE for the framework portability YOU should use fetchAll instead fetch() function.
 
-/* Fetch all of the values of the first column */
-$result = $sth->fetchAll(PDO::FETCH_COLUMN, 0);
-var_dump($result);
-http://php.net/manual/en/pdostatement.fetchall.php
-
-so user no need to use unbuffered queries http://php.net/manual/en/ref.pdo-mysql.php
-
-@todo .. change css path if strpos(filename, '/') $url = filename else $url = this()->config->source_url() . $path;
-@todo .. $form->set_rules('fieldname', 'Field', 'required|message[you should fill]');
 @todo .. idea ! add set_callback('function', param1, param1..) instead of set_rules('|callback_function')
-@todo .. add http:// https:// support for css and js tags. 
-@todo .. add content_view('', (object)$data); support .. object in array support (fetchall). db objects should pass to view files.
 @todo .. base helpers extend support
-@todo .. config source url changes image internal alt tag
-@todo .. add id attributes to form_hidden(); function..
 @todo .. output cache filemtime
 @todo .. remove _SESSION global from input helper
 @todo .. Pdo has mysql_free_result solution ?
-@todo .. add chapter topics to user_guide. general topics - advanced topics - php5 libraries - php libraries
 @todo .. upload class security
 @todo .. add config load and lang load track support for profiler class
 @todo .. pager class
-@todo .. menu class (related with uri routing)
          
 @next version todo .. firewall class (integer, string validate for requests, login attempts for captcha) 

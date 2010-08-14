@@ -7,8 +7,6 @@ Class __autoloader extends App_controller
     function __autoloader()
     {         
         parent::__autoloader();
-        
-        loader::base_helper('content');
         loader::base_helper('head_tag');  
     } 
 }

@@ -133,7 +133,7 @@ function content_view($filename, $data = '', $string = TRUE)
     $cont = ssc::instance();
     $return = FALSE;
 
-    if(isset($cont->_ent->view_folder{1})) { $return = TRUE; } // if view folder changed don't show errors ..
+    if(isset($cont->_ent->view_folder{1})) { $return = TRUE; }    // if view folder changed don't show errors ..
 
     $path =  DIR .$GLOBALS['d']. DS .'views'. $cont->_ent->view_folder;
     
@@ -190,6 +190,8 @@ function _load_script($path, $filename, $data = '')
         throw new ContentException('Unable locate the script file: '. $path . $filename . EXT);
     } 
     
+    $data = _ob_object_to_array($data);
+    
     if(sizeof($data) > 0) { extract($data, EXTR_SKIP); }
     
     ob_start();
@@ -241,6 +243,8 @@ function _load_view($path, $filename, $data = '', $string = FALSE, $return = FAL
         throw new ContentException('Unable locate the view file: '. $filename . EXT);
     } 
     
+    $data = _ob_object_to_array($data);
+    
     if(sizeof($data) > 0) { extract($data, EXTR_SKIP); }
     
     ob_start();
@@ -265,6 +269,21 @@ function _load_view($path, $filename, $data = '', $string = FALSE, $return = FAL
     return;
     
     throw new LoaderException('Unable to locate the view: ' . $filename . EXT);
+}
+
+
+/**
+* Object to Array
+*
+* Takes an object as input and converts the class variables to array key/vals
+*
+* @access   private
+* @param    object
+* @return   array
+*/
+function _ob_object_to_array($object)
+{
+    return (is_object($object)) ? get_object_vars($object) : $object;
 }
 
 

@@ -101,7 +101,7 @@ function form_open_multipart($action, $attributes = array(), $hidden = array())
  * @param	string
  * @return	string
  */
-function form_hidden($name, $value = '', $recursing = FALSE)
+function form_hidden($name, $value = '', $extra = '', $recursing = FALSE)
 {
 	static $form;
 
@@ -114,21 +114,21 @@ function form_hidden($name, $value = '', $recursing = FALSE)
 	{
 		foreach ($name as $key => $val)
 		{
-			form_hidden($key, $val, TRUE);
+			form_hidden($key, $val, '', TRUE);
 		}
 		return $form;
 	}
 
 	if ( ! is_array($value))
 	{
-		$form .= '<input type="hidden" name="'.$name.'" value="'.form_prep($value, $name).'" />'."\n";
+		$form .= '<input type="hidden" name="'.$name.'" value="'.form_prep($value, $name).'"'. $extra . '/>'."\n";
 	}
 	else
 	{
 		foreach ($value as $k => $v)
 		{
 			$k = (is_int($k)) ? '' : $k; 
-			form_hidden($name.'['.$k.']', $v, TRUE);
+			form_hidden($name.'['.$k.']', $v, '', TRUE);
 		}
 	}
 

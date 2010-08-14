@@ -30,73 +30,77 @@ defined('BASE') or exit('Access Denied!');
 // ------------------------------------------------------------------------
 
 /**
- * Get "now" time
- *
- * Returns time() or its GMT equivalent based on the config file preference
- *
- * @access	public
- * @return	integer
- */	
-function now()
+* Get "now" time
+*
+* Returns time() or its GMT equivalent based on the config file preference
+*
+* @access	public
+* @return	integer
+*/
+if( ! function_exists('now') ) 
 {
-	if (strtolower(config_item('time_reference')) == 'gmt')
-	{
-		$now = time();
-		$system_time = mktime(
-                                gmdate("H", $now), 
-                                gmdate("i", $now), 
-                                gmdate("s", $now), 
-                                gmdate("m", $now), 
-                                gmdate("d", $now), 
-                                gmdate("Y", $now));
+    function now()
+    {
+	    if (strtolower(config_item('time_reference')) == 'gmt')
+	    {
+		    $now = time();
+		    $system_time = mktime(
+                                    gmdate("H", $now), 
+                                    gmdate("i", $now), 
+                                    gmdate("s", $now), 
+                                    gmdate("m", $now), 
+                                    gmdate("d", $now), 
+                                    gmdate("Y", $now));
 
-		if (strlen($system_time) < 10)
-		{
-			$system_time = time();
-			
-            log_message('error', 'The Date class could not set a proper GMT timestamp so the local time() value was used.');
-		}    
+		    if (strlen($system_time) < 10)
+		    {
+			    $system_time = time();
+			    
+                log_message('error', 'The Date class could not set a proper GMT timestamp so the local time() value was used.');
+		    }    
 
-		return $system_time;
-	}
-	else
-	{
-		return time();
-	}
+		    return $system_time;
+	    }
+	    else
+	    {
+		    return time();
+	    }
+    }
 }
-
 	
 // ------------------------------------------------------------------------
 
 /**
- * Convert MySQL Style Datecodes
- *
- * This function is identical to PHPs date() function,
- * except that it allows date codes to be formatted using
- * the MySQL style, where each code letter is preceded
- * with a percent sign:  %Y %m %d etc...
- *
- * The benefit of doing dates this way is that you don't
- * have to worry about escaping your text letters that
- * match the date codes.
- *
- * @access	public
- * @param	string
- * @param	integer
- * @return	integer
- */	
-function mdate($datestr = '', $time = '')
+* Convert MySQL Style Datecodes
+*
+* This function is identical to PHPs date() function,
+* except that it allows date codes to be formatted using
+* the MySQL style, where each code letter is preceded
+* with a percent sign:  %Y %m %d etc...
+*
+* The benefit of doing dates this way is that you don't
+* have to worry about escaping your text letters that
+* match the date codes.
+*
+* @access	public
+* @param	string
+* @param	integer
+* @return	integer
+*/
+if( ! function_exists('mdate') ) 
 {
-	if ($datestr == '')
-		return '';
+    function mdate($datestr = '', $time = '')
+    {
+	    if ($datestr == '')
+		    return '';
 
-	if ($time == '')
-		$time = now();
-	
-	$datestr = str_replace('%\\', '', preg_replace("/([a-z]+?){1}/i", "\\\\\\1", $datestr));
-	return date($datestr, $time);
+	    if ($time == '')
+		    $time = now();
+	    
+	    $datestr = str_replace('%\\', '', preg_replace("/([a-z]+?){1}/i", "\\\\\\1", $datestr));
+	    return date($datestr, $time);
+    }
 }
-
 	
 // ------------------------------------------------------------------------
 

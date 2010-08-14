@@ -21,6 +21,7 @@ defined('BASE') or exit('Access Denied!');
  * @category    Language
  * @author      Ersin Guvenc
  * @version     0.1
+ * @version     0.2 added script functions
  * @link        
  */
 // --------------------------------------------------------------------
@@ -42,29 +43,7 @@ if( ! function_exists('css') )
 {
     function css($filename, $title = '', $media = '')
     {
-        if( ! is_array($filename))
-        $filename = array($filename);
-        
-        $_cont = ssc::instance();
-        
-        // When user use content_set_folder('css');
-        // this will not effect other packages
-        // because of each package should use different Global Controller file.
-        $path = '';
-        if(isset($_cont->_ent->css_folder{1}))
-        {
-            $path = $_cont->_ent->css_folder.'/'; 
-        }
-
-        $url = this()->config->source_url() . $path;
-        
-        $style = '';
-        foreach($filename as $key => $css)
-        {    
-            $style .= link_tag($url . $css, 'stylesheet', 'text/css', $title, $media)."\n";
-        }
-        
-        return $style;   
+        return link_tag($filename, 'stylesheet', 'text/css', $title, $media)."\n";   
     }
 }
 // ------------------------------------------------------------------------
@@ -77,27 +56,95 @@ if( ! function_exists('css') )
 * @param    string $arguments
 * @param    string $type
 * @version  0.1
-* @version  0.2 removed /js dir added path support 
+* @version  0.2 removed /js dir 
 * 
 */
 if( ! function_exists('js') ) 
 {
-    function js($filename, $arguments = '', $type = 'text/javascript')
-    {
-        if( ! is_array($filename))
-        $filename = array($filename);
-        
-        $url = this()->config->source_url();
+    function js($src, $arguments = '', $type = 'text/javascript')
+    {        
+        $ob = this();
 
-        $js = '';
-        foreach($filename as $key => $file)
+        $link = '<script type="'.$type.'" '; 
+        
+        if (is_array($src))
         {
-            $js.= "\n".'<script type="'.$type.'" src="'.$url . $file.'" '.$arguments.'></script>';  
+            foreach ($src as $k => $v)
+            {
+                if ($k == 'src' AND strpos($v, '://') === FALSE)
+                {
+                    $link .= ' src="'.$ob->config->source_url()  . $v.'" ';
+                }
+                else
+                {
+                    $link .= "$k=\"$v\" ";
+                }
+            }
+
+            $link .= "></script>";
+        }
+        else
+        {
+            if ( strpos($src, '://') !== FALSE)
+            {
+                $link .= ' src="'.$src.'" ';
+            }
+            else
+            {
+                $link .= ' src="'. $ob->config->source_url() . $src.'" ';
+            }
+
+            $link .= $arguments;
+            $link .= "></script>";
         }
         
-        return $js;
+        return $link;
+        
     }
 }
+
+// ------------------------------------------------------------------------ 
+
+/**
+* Load inline script file from
+* local folder.
+* 
+* @param string $filename
+* @param array  $data
+*/
+function script($filename = '', $data = '')
+{
+    return _load_script(DIR .$GLOBALS['d']. DS .'scripts'. DS, $filename, $data);
+}
+
+// ------------------------------------------------------------------------ 
+
+/**
+* Load inline script file from
+* application folder.
+* 
+* @param string $filename
+* @param array  $data
+*/
+function app_script($filename = '', $data = '')
+{
+    return _load_script(APP .'scripts'. DS, $filename, $data);
+}
+
+// ------------------------------------------------------------------------ 
+
+/**
+* Load inline script file from
+* base folder.
+* 
+* @param string $filename
+* @param array  $data
+*/
+function base_script($filename = '', $data = '')
+{
+    return _load_script(BASE .'scripts'. DS, $filename, $data);
+}
+
 // ------------------------------------------------------------------------ 
 
 /**
@@ -165,9 +212,19 @@ if( ! function_exists('link_tag') )
 
         $link = '<link '; 
 
+        $_cont = ssc::instance();   // obullo changes ..
+        
+        // When user use content_set_folder('css'); ..
+        // /sources/iphone/css/welcome.css
+        $path = '';
+        if(isset($_cont->_ent->css_folder{1}))
+        {
+            $path = $_cont->_ent->css_folder .'/'; 
+        }
+        
         if (is_array($href))
         {
-            foreach ($href as $k=>$v)
+            foreach ($href as $k => $v)
             {
                 if ($k == 'href' AND strpos($v, '://') === FALSE)
                 {
@@ -177,7 +234,7 @@ if( ! function_exists('link_tag') )
                     }
                     else
                     {
-                        $link .= ' href="'.$ob->config->base_url() .$v.'" ';
+                        $link .= ' href="'.$ob->config->source_url() . $path . $v.'" ';
                     }
                 }
                 else
@@ -200,7 +257,7 @@ if( ! function_exists('link_tag') )
             }
             else
             {
-                $link .= ' href="'. $ob->config->base_url() .$href.'" ';
+                $link .= ' href="'. $ob->config->source_url() . $path . $href.'" ';
             }
 
             $link .= 'rel="'.$rel.'" type="'.$type.'" ';
