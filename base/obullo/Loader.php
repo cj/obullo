@@ -469,13 +469,13 @@ Class loader {
             $prefix = config_item('subhelper_prefix');
         
             // If user helper file exist ..
-            if(file_exists(APP .'helpers'. DS .$prefix.$helper. EXT))
+            if(file_exists(APP .'helpers'. DS .$prefix. $helper. EXT))
             {
-                include(APP .'helpers'. DS .$prefix.$helper. EXT); 
+                include(APP .'helpers'. DS .$prefix. $helper. EXT);
+                self::$_base_helpers[$prefix . $helper] = $prefix . $helper; 
             }
             
             include(BASE .'helpers'. DS .$helper. EXT);
-            
             self::$_base_helpers[$helper] = $helper;
             
             return; 

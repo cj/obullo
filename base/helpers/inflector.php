@@ -30,138 +30,149 @@ defined('BASE') or exit('Access Denied!');
 // ------------------------------------------------------------------------
 
 /**
- * Singular
- *
- * Takes a plural word and makes it singular
- *
- * @access	public
- * @param	string
- * @return	str
- */	
-function singular($str)
+* Singular
+*
+* Takes a plural word and makes it singular
+*
+* @access	public
+* @param	string
+* @return	str
+*/
+if( ! function_exists('singular') ) 
 {
-	$str = strtolower(trim($str));
-	$end = substr($str, -3);
+    function singular($str)
+    {
+	    $str = strtolower(trim($str));
+	    $end = substr($str, -3);
 
-	if ($end == 'ies')
-	{
-		$str = substr($str, 0, strlen($str)-3).'y';
-	}
-	elseif ($end == 'ses')
-	{
-		$str = substr($str, 0, strlen($str)-2);
-	}
-	else
-	{
-		$end = substr($str, -1);
-	
-		if ($end == 's')
-		{
-			$str = substr($str, 0, strlen($str)-1);
-		}
-	}
+	    if ($end == 'ies')
+	    {
+		    $str = substr($str, 0, strlen($str)-3).'y';
+	    }
+	    elseif ($end == 'ses')
+	    {
+		    $str = substr($str, 0, strlen($str)-2);
+	    }
+	    else
+	    {
+		    $end = substr($str, -1);
+	    
+		    if ($end == 's')
+		    {
+			    $str = substr($str, 0, strlen($str)-1);
+		    }
+	    }
 
-	return $str;
+	    return $str;
+    }
 }
-
 // --------------------------------------------------------------------
 
 /**
- * Plural
- *
- * Takes a singular word and makes it plural
- *
- * @access	public
- * @param	string
- * @param	bool
- * @return	str
- */	
-function plural($str, $force = FALSE)
+* Plural
+*
+* Takes a singular word and makes it plural
+*
+* @access	public
+* @param	string
+* @param	bool
+* @return	str
+*/
+if( ! function_exists('plural') ) 
 {
-    $str = strtolower(trim($str));
-    $end = substr($str, -1);
+    function plural($str, $force = FALSE)
+    {
+        $str = strtolower(trim($str));
+        $end = substr($str, -1);
 
-    if ($end == 'y')
-    {
-        // Y preceded by vowel => regular plural
-        $vowels = array('a', 'e', 'i', 'o', 'u');
-        $str = in_array(substr($str, -2, 1), $vowels) ? $str.'s' : substr($str, 0, -1).'ies';
-    }
-    elseif ($end == 'h')
-    {
-        if (substr($str, -2) == 'ch' || substr($str, -2) == 'sh')
+        if ($end == 'y')
         {
-            $str .= 'es';
+            // Y preceded by vowel => regular plural
+            $vowels = array('a', 'e', 'i', 'o', 'u');
+            $str = in_array(substr($str, -2, 1), $vowels) ? $str.'s' : substr($str, 0, -1).'ies';
+        }
+        elseif ($end == 'h')
+        {
+            if (substr($str, -2) == 'ch' || substr($str, -2) == 'sh')
+            {
+                $str .= 'es';
+            }
+            else
+            {
+                $str .= 's';
+            }
+        }
+        elseif ($end == 's')
+        {
+            if ($force == TRUE)
+            {
+                $str .= 'es';
+            }
         }
         else
         {
             $str .= 's';
         }
+
+        return $str;
     }
-    elseif ($end == 's')
-    {
-        if ($force == TRUE)
-        {
-            $str .= 'es';
-        }
-    }
-    else
-    {
-        $str .= 's';
-    }
-
-    return $str;
-}
-
-
-// --------------------------------------------------------------------
-
-/**
- * Camelize
- *
- * Takes multiple words separated by spaces or underscores and camelizes them
- *
- * @access	public
- * @param	string
- * @return	str
- */	
-function camelize($str)
-{		
-	$str = 'x'.strtolower(trim($str));
-	$str = ucwords(preg_replace('/[\s_]+/', ' ', $str));
-	return substr(str_replace(' ', '', $str), 1);
 }
 
 // --------------------------------------------------------------------
 
 /**
- * Underscore
- *
- * Takes multiple words separated by spaces and underscores them
- *
- * @access	public
- * @param	string
- * @return	str
- */	
-function underscore($str)
+* Camelize
+*
+* Takes multiple words separated by spaces or underscores and camelizes them
+*
+* @access	public
+* @param	string
+* @return	str
+*/
+if( ! function_exists('camelize') ) 
 {
-	return preg_replace('/[\s]+/', '_', strtolower(trim($str)));
+    function camelize($str)
+    {		
+	    $str = 'x'.strtolower(trim($str));
+	    $str = ucwords(preg_replace('/[\s_]+/', ' ', $str));
+	    return substr(str_replace(' ', '', $str), 1);
+    }
 }
-
 // --------------------------------------------------------------------
 
 /**
- * Humanize
- *
- * Takes multiple words separated by underscores and changes them to spaces
- *
- * @access	public
- * @param	string
- * @return	str
- */	
-function humanize($str)
+* Underscore
+*
+* Takes multiple words separated by spaces and underscores them
+*
+* @access	public
+* @param	string
+* @return	str
+*/
+if( ! function_exists('underscore') ) 
 {
-	return ucwords(preg_replace('/[_]+/', ' ', strtolower(trim($str))));
+    function underscore($str)
+    {
+	    return preg_replace('/[\s]+/', '_', strtolower(trim($str)));
+    }
+}
+// --------------------------------------------------------------------
+
+/**
+* Humanize
+*
+* Takes multiple words separated by underscores and changes them to spaces
+*
+* @access	public
+* @param	string
+* @return	str
+*/
+if( ! function_exists('humanize') ) 
+{
+    function humanize($str)
+    {
+	    return ucwords(preg_replace('/[_]+/', ' ', strtolower(trim($str))));
+    }
 }
 
 /* End of file inflector.php */

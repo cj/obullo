@@ -105,494 +105,516 @@ if( ! function_exists('mdate') )
 // ------------------------------------------------------------------------
 
 /**
- * Standard Date
- *
- * Returns a date formatted according to the submitted standard.
- *
- * @access	public
- * @param	string	the chosen format
- * @param	integer	Unix timestamp
- * @return	string
- */	
-function standard_date($fmt = 'DATE_RFC822', $time = '')
+* Standard Date
+*
+* Returns a date formatted according to the submitted standard.
+*
+* @access	public
+* @param	string	the chosen format
+* @param	integer	Unix timestamp
+* @return	string
+*/
+if( ! function_exists('standart_date') ) 
 {
-	$formats = array(
-					'DATE_ATOM'		=>	'%Y-%m-%dT%H:%i:%s%Q',
-					'DATE_COOKIE'	=>	'%l, %d-%M-%y %H:%i:%s UTC',
-					'DATE_ISO8601'	=>	'%Y-%m-%dT%H:%i:%s%O',
-					'DATE_RFC822'	=>	'%D, %d %M %y %H:%i:%s %O',
-					'DATE_RFC850'	=>	'%l, %d-%M-%y %H:%m:%i UTC',
-					'DATE_RFC1036'	=>	'%D, %d %M %y %H:%i:%s %O',
-					'DATE_RFC1123'	=>	'%D, %d %M %Y %H:%i:%s %O',
-					'DATE_RSS'		=>	'%D, %d %M %Y %H:%i:%s %O',
-					'DATE_W3C'		=>	'%Y-%m-%dT%H:%i:%s%Q'
-					);
+    function standard_date($fmt = 'DATE_RFC822', $time = '')
+    {
+	    $formats = array(
+					    'DATE_ATOM'		=>	'%Y-%m-%dT%H:%i:%s%Q',
+					    'DATE_COOKIE'	=>	'%l, %d-%M-%y %H:%i:%s UTC',
+					    'DATE_ISO8601'	=>	'%Y-%m-%dT%H:%i:%s%O',
+					    'DATE_RFC822'	=>	'%D, %d %M %y %H:%i:%s %O',
+					    'DATE_RFC850'	=>	'%l, %d-%M-%y %H:%m:%i UTC',
+					    'DATE_RFC1036'	=>	'%D, %d %M %y %H:%i:%s %O',
+					    'DATE_RFC1123'	=>	'%D, %d %M %Y %H:%i:%s %O',
+					    'DATE_RSS'		=>	'%D, %d %M %Y %H:%i:%s %O',
+					    'DATE_W3C'		=>	'%Y-%m-%dT%H:%i:%s%Q'
+					    );
 
-	if ( ! isset($formats[$fmt]))
-	{
-		return FALSE;
-	}
+	    if ( ! isset($formats[$fmt]))
+	    {
+		    return FALSE;
+	    }
 
-	return mdate($formats[$fmt], $time);
+	    return mdate($formats[$fmt], $time);
+    }
 }
 
 // ------------------------------------------------------------------------
 
 /**
- * Timespan
- *
- * Returns a span of seconds in this format:
- *	10 days 14 hours 36 minutes 47 seconds
- *
- * @access	public
- * @param	integer	a number of seconds
- * @param	integer	Unix timestamp
- * @return	integer
- */	
-function timespan($seconds = 1, $time = '')
+* Timespan
+*
+* Returns a span of seconds in this format:
+*	10 days 14 hours 36 minutes 47 seconds
+*
+* @access	public
+* @param	integer	a number of seconds
+* @param	integer	Unix timestamp
+* @return	integer
+*/
+if( ! function_exists('timespan') ) 
 {
-    lang_load('date');
+    function timespan($seconds = 1, $time = '')
+    {
+        lang_load('date');
 
-	if ( ! is_numeric($seconds))
-	{
-		$seconds = 1;
-	}
+	    if ( ! is_numeric($seconds))
+	    {
+		    $seconds = 1;
+	    }
 
-	if ( ! is_numeric($time))
-	{
-		$time = time();
-	}
+	    if ( ! is_numeric($time))
+	    {
+		    $time = time();
+	    }
 
-	if ($time <= $seconds)
-	{
-		$seconds = 1;
-	}
-	else
-	{
-		$seconds = $time - $seconds;
-	}
-	
-	$str = '';
-	$years = floor($seconds / 31536000);
+	    if ($time <= $seconds)
+	    {
+		    $seconds = 1;
+	    }
+	    else
+	    {
+		    $seconds = $time - $seconds;
+	    }
+	    
+	    $str = '';
+	    $years = floor($seconds / 31536000);
 
-	if ($years > 0)
-	{	
-		$str .= $years.' '.$OB->lang->line((($years	> 1) ? 'date_years' : 'date_year')).', ';
-	}	
+	    if ($years > 0)
+	    {	
+		    $str .= $years.' '.$OB->lang->line((($years	> 1) ? 'date_years' : 'date_year')).', ';
+	    }	
 
-	$seconds -= $years * 31536000;
-	$months = floor($seconds / 2628000);
+	    $seconds -= $years * 31536000;
+	    $months = floor($seconds / 2628000);
 
-	if ($years > 0 OR $months > 0)
-	{
-		if ($months > 0)
-		{	
-			$str .= $months.' '.lang_item((($months	> 1) ? 'date_months' : 'date_month')).', ';
-		}	
+	    if ($years > 0 OR $months > 0)
+	    {
+		    if ($months > 0)
+		    {	
+			    $str .= $months.' '.lang_item((($months	> 1) ? 'date_months' : 'date_month')).', ';
+		    }	
 
-		$seconds -= $months * 2628000;
-	}
+		    $seconds -= $months * 2628000;
+	    }
 
-	$weeks = floor($seconds / 604800);
+	    $weeks = floor($seconds / 604800);
 
-	if ($years > 0 OR $months > 0 OR $weeks > 0)
-	{
-		if ($weeks > 0)
-		{	
-			$str .= $weeks.' '.lang_item((($weeks	> 1) ? 'date_weeks' : 'date_week')).', ';
-		}
-	
-		$seconds -= $weeks * 604800;
-	}			
+	    if ($years > 0 OR $months > 0 OR $weeks > 0)
+	    {
+		    if ($weeks > 0)
+		    {	
+			    $str .= $weeks.' '.lang_item((($weeks	> 1) ? 'date_weeks' : 'date_week')).', ';
+		    }
+	    
+		    $seconds -= $weeks * 604800;
+	    }			
 
-	$days = floor($seconds / 86400);
+	    $days = floor($seconds / 86400);
 
-	if ($months > 0 OR $weeks > 0 OR $days > 0)
-	{
-		if ($days > 0)
-		{	
-			$str .= $days.' '.lang_item((($days	> 1) ? 'date_days' : 'date_day')).', ';
-		}
+	    if ($months > 0 OR $weeks > 0 OR $days > 0)
+	    {
+		    if ($days > 0)
+		    {	
+			    $str .= $days.' '.lang_item((($days	> 1) ? 'date_days' : 'date_day')).', ';
+		    }
 
-		$seconds -= $days * 86400;
-	}
+		    $seconds -= $days * 86400;
+	    }
 
-	$hours = floor($seconds / 3600);
+	    $hours = floor($seconds / 3600);
 
-	if ($days > 0 OR $hours > 0)
-	{
-		if ($hours > 0)
-		{
-			$str .= $hours.' '.lang_item((($hours	> 1) ? 'date_hours' : 'date_hour')).', ';
-		}
-	
-		$seconds -= $hours * 3600;
-	}
+	    if ($days > 0 OR $hours > 0)
+	    {
+		    if ($hours > 0)
+		    {
+			    $str .= $hours.' '.lang_item((($hours	> 1) ? 'date_hours' : 'date_hour')).', ';
+		    }
+	    
+		    $seconds -= $hours * 3600;
+	    }
 
-	$minutes = floor($seconds / 60);
+	    $minutes = floor($seconds / 60);
 
-	if ($days > 0 OR $hours > 0 OR $minutes > 0)
-	{
-		if ($minutes > 0)
-		{	
-			$str .= $minutes.' '.lang_item((($minutes	> 1) ? 'date_minutes' : 'date_minute')).', ';
-		}
-	
-		$seconds -= $minutes * 60;
-	}
+	    if ($days > 0 OR $hours > 0 OR $minutes > 0)
+	    {
+		    if ($minutes > 0)
+		    {	
+			    $str .= $minutes.' '.lang_item((($minutes	> 1) ? 'date_minutes' : 'date_minute')).', ';
+		    }
+	    
+		    $seconds -= $minutes * 60;
+	    }
 
-	if ($str == '')
-	{
-		$str .= $seconds.' '.lang_item((($seconds	> 1) ? 'date_seconds' : 'date_second')).', ';
-	}
-		
-	return substr(trim($str), 0, -1);
+	    if ($str == '')
+	    {
+		    $str .= $seconds.' '.lang_item((($seconds	> 1) ? 'date_seconds' : 'date_second')).', ';
+	    }
+		    
+	    return substr(trim($str), 0, -1);
+    }
 }
 	
 // ------------------------------------------------------------------------
 
 /**
- * Number of days in a month
- *
- * Takes a month/year as input and returns the number of days
- * for the given month/year. Takes leap years into consideration.
- *
- * @access	public
- * @param	integer a numeric month
- * @param	integer	a numeric year
- * @return	integer
- */	
-function days_in_month($month = 0, $year = '')
+* Number of days in a month
+*
+* Takes a month/year as input and returns the number of days
+* for the given month/year. Takes leap years into consideration.
+*
+* @access	public
+* @param	integer a numeric month
+* @param	integer	a numeric year
+* @return	integer
+*/
+if( ! function_exists('days_in_month') ) 
 {
-	if ($month < 1 OR $month > 12)
-	{
-		return 0;
-	}
+    function days_in_month($month = 0, $year = '')
+    {
+	    if ($month < 1 OR $month > 12)
+	    {
+		    return 0;
+	    }
 
-	if ( ! is_numeric($year) OR strlen($year) != 4)
-	{
-		$year = date('Y');
-	}
+	    if ( ! is_numeric($year) OR strlen($year) != 4)
+	    {
+		    $year = date('Y');
+	    }
 
-	if ($month == 2)
-	{
-		if ($year % 400 == 0 OR ($year % 4 == 0 AND $year % 100 != 0))
-		{
-			return 29;
-		}
-	}
+	    if ($month == 2)
+	    {
+		    if ($year % 400 == 0 OR ($year % 4 == 0 AND $year % 100 != 0))
+		    {
+			    return 29;
+		    }
+	    }
 
-	$days_in_month	= array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
-	return $days_in_month[$month - 1];
-}
-
-	
-// ------------------------------------------------------------------------
-
-/**
- * Converts a local Unix timestamp to GMT
- *
- * @access	public
- * @param	integer Unix timestamp
- * @return	integer
- */	
-function local_to_gmt($time = '')
-{
-	if ($time == '')
-		$time = time();
-
-	return mktime( 
-                    gmdate("H", $time), 
-                    gmdate("i", $time), 
-                    gmdate("s", $time), 
-                    gmdate("m", $time), 
-                    gmdate("d", $time), 
-                    gmdate("Y", $time));
+	    $days_in_month	= array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+	    return $days_in_month[$month - 1];
+    }
 }
 	
 // ------------------------------------------------------------------------
 
 /**
- * Converts GMT time to a localized value
- *
- * Takes a Unix timestamp (in GMT) as input, and returns
- * at the local value based on the timezone and DST setting
- * submitted
- *
- * @access	public
- * @param	integer Unix timestamp
- * @param	string	timezone
- * @param	bool	whether DST is active
- * @return	integer
- */	
-function gmt_to_local($time = '', $timezone = 'UTC', $dst = FALSE)
-{			
-	if ($time == '')
-	{
-		return now();
-	}
+* Converts a local Unix timestamp to GMT
+*
+* @access	public
+* @param	integer Unix timestamp
+* @return	integer
+*/	
+if( ! function_exists('local_to_gmt') ) 
+{
+    function local_to_gmt($time = '')
+    {
+	    if ($time == '')
+		    $time = time();
 
-	$time += timezones($timezone) * 3600;
-
-	if ($dst == TRUE)
-	{
-		$time += 3600;
-	}
-
-	return $time;
+	    return mktime( 
+                        gmdate("H", $time), 
+                        gmdate("i", $time), 
+                        gmdate("s", $time), 
+                        gmdate("m", $time), 
+                        gmdate("d", $time), 
+                        gmdate("Y", $time));
+    }
 }
-
-	
+    
 // ------------------------------------------------------------------------
 
 /**
- * Converts a MySQL Timestamp to Unix
- *
- * @access	public
- * @param	integer Unix timestamp
- * @return	integer
- */	
-function mysql_to_unix($time = '')
+* Converts GMT time to a localized value
+*
+* Takes a Unix timestamp (in GMT) as input, and returns
+* at the local value based on the timezone and DST setting
+* submitted
+*
+* @access	public
+* @param	integer Unix timestamp
+* @param	string	timezone
+* @param	bool	whether DST is active
+* @return	integer
+*/
+if( ! function_exists('gmt_to_local') ) 
 {
-	// We'll remove certain characters for backward compatibility
-	// since the formatting changed with MySQL 4.1
-	// YYYY-MM-DD HH:MM:SS
+    function gmt_to_local($time = '', $timezone = 'UTC', $dst = FALSE)
+    {			
+	    if ($time == '')
+	    {
+		    return now();
+	    }
 
-	$time = str_replace('-', '', $time);
-	$time = str_replace(':', '', $time);
-	$time = str_replace(' ', '', $time);
+	    $time += timezones($timezone) * 3600;
 
-	// YYYYMMDDHHMMSS
-	return  mktime(
-					substr($time, 8, 2),
-					substr($time, 10, 2),
-					substr($time, 12, 2),
-					substr($time, 4, 2),
-					substr($time, 6, 2),
-					substr($time, 0, 4)
-					);
-}
+	    if ($dst == TRUE)
+	    {
+		    $time += 3600;
+	    }
 
-	
-// ------------------------------------------------------------------------
-
-/**
- * Unix to "Human"
- *
- * Formats Unix timestamp to the following prototype: 2006-08-21 11:35 PM
- *
- * @access	public
- * @param	integer Unix timestamp
- * @param	bool	whether to show seconds
- * @param	string	format: us or euro
- * @return	string
- */	
-function unix_to_human($time = '', $seconds = FALSE, $fmt = 'us')
-{
-	$r  = date('Y', $time).'-'.date('m', $time).'-'.date('d', $time).' ';
-	
-	if ($fmt == 'us')
-	{
-		$r .= date('h', $time).':'.date('i', $time);
-	}
-	else
-	{
-		$r .= date('H', $time).':'.date('i', $time);
-	}
-
-	if ($seconds)
-	{
-		$r .= ':'.date('s', $time);
-	}
-
-	if ($fmt == 'us')
-	{
-		$r .= ' '.date('A', $time);
-	}
-	
-	return $r;
+	    return $time;
+    }
 }
 	
 // ------------------------------------------------------------------------
 
 /**
- * Convert "human" date to GMT
- *
- * Reverses the above process
- *
- * @access	public
- * @param	string	format: us or euro
- * @return	integer
- */	
-function human_to_unix($datestr = '')
+* Converts a MySQL Timestamp to Unix
+*
+* @access	public
+* @param	integer Unix timestamp
+* @return	integer
+*/	
+if( ! function_exists('mysql_to_unix') ) 
 {
-	if ($datestr == '')
-	{
-		return FALSE;
-	}
+    function mysql_to_unix($time = '')
+    {
+	    // We'll remove certain characters for backward compatibility
+	    // since the formatting changed with MySQL 4.1
+	    // YYYY-MM-DD HH:MM:SS
 
-	$datestr = trim($datestr);
-	$datestr = preg_replace("/\040+/", ' ', $datestr);
+	    $time = str_replace('-', '', $time);
+	    $time = str_replace(':', '', $time);
+	    $time = str_replace(' ', '', $time);
 
-	if ( ! preg_match('/^[0-9]{2,4}\-[0-9]{1,2}\-[0-9]{1,2}\s[0-9]{1,2}:[0-9]{1,2}(?::[0-9]{1,2})?(?:\s[AP]M)?$/i', $datestr))
-	{
-		return FALSE;
-	}
-
-    $split = explode(' ', $datestr);
-
-	$ex = explode("-", $split['0']);
-
-	$year  = (strlen($ex['0']) == 2) ? '20'.$ex['0'] : $ex['0'];
-	$month = (strlen($ex['1']) == 1) ? '0'.$ex['1']  : $ex['1'];
-	$day   = (strlen($ex['2']) == 1) ? '0'.$ex['2']  : $ex['2'];
-
-	$ex = explode(":", $split['1']);
-
-	$hour = (strlen($ex['0']) == 1) ? '0'.$ex['0'] : $ex['0'];
-	$min  = (strlen($ex['1']) == 1) ? '0'.$ex['1'] : $ex['1'];
-
-	if (isset($ex['2']) && preg_match('/[0-9]{1,2}/', $ex['2']))
-	{
-		$sec  = (strlen($ex['2']) == 1) ? '0'.$ex['2'] : $ex['2'];
-	}
-	else
-	{
-		// Unless specified, seconds get set to zero.
-		$sec = '00';
-	}
-
-	if (isset($split['2']))
-	{
-		$ampm = strtolower($split['2']);
-	
-		if (substr($ampm, 0, 1) == 'p' AND $hour < 12)
-			$hour = $hour + 12;
-		
-		if (substr($ampm, 0, 1) == 'a' AND $hour == 12)
-			$hour =  '00';
-		
-		if (strlen($hour) == 1)
-			$hour = '0'.$hour;
-	}
-		
-	return mktime($hour, $min, $sec, $month, $day, $year);
+	    // YYYYMMDDHHMMSS
+	    return  mktime(
+					    substr($time, 8, 2),
+					    substr($time, 10, 2),
+					    substr($time, 12, 2),
+					    substr($time, 4, 2),
+					    substr($time, 6, 2),
+					    substr($time, 0, 4)
+					    );
+    }
 }
-
 	
 // ------------------------------------------------------------------------
 
 /**
- * Timezone Menu
- *
- * Generates a drop-down menu of timezones.
- *
- * @access	public
- * @param	string	timezone
- * @param	string	classname
- * @param	string	menu name
- * @return	string
- */	
-function timezone_menu($default = 'UTC', $class = "", $name = 'timezones')
+* Unix to "Human"
+*
+* Formats Unix timestamp to the following prototype: 2006-08-21 11:35 PM
+*
+* @access	public
+* @param	integer Unix timestamp
+* @param	bool	whether to show seconds
+* @param	string	format: us or euro
+* @return	string
+*/
+if( ! function_exists('unix_to_human') ) 
+{	
+    function unix_to_human($time = '', $seconds = FALSE, $fmt = 'us')
+    {
+	    $r  = date('Y', $time).'-'.date('m', $time).'-'.date('d', $time).' ';
+	    
+	    if ($fmt == 'us')
+	    {
+		    $r .= date('h', $time).':'.date('i', $time);
+	    }
+	    else
+	    {
+		    $r .= date('H', $time).':'.date('i', $time);
+	    }
+
+	    if ($seconds)
+	    {
+		    $r .= ':'.date('s', $time);
+	    }
+
+	    if ($fmt == 'us')
+	    {
+		    $r .= ' '.date('A', $time);
+	    }
+	    
+	    return $r;
+    }
+}   
+// ------------------------------------------------------------------------
+
+/**
+* Convert "human" date to GMT
+*
+* Reverses the above process
+*
+* @access	public
+* @param	string	format: us or euro
+* @return	integer
+*/
+if( ! function_exists('human_to_unix') ) 
 {
-	lang_load('date');
+    function human_to_unix($datestr = '')
+    {
+	    if ($datestr == '')
+	    {
+		    return FALSE;
+	    }
 
-	if ($default == 'GMT')
-		$default = 'UTC';
+	    $datestr = trim($datestr);
+	    $datestr = preg_replace("/\040+/", ' ', $datestr);
 
-	$menu = '<select name="'.$name.'"';
+	    if ( ! preg_match('/^[0-9]{2,4}\-[0-9]{1,2}\-[0-9]{1,2}\s[0-9]{1,2}:[0-9]{1,2}(?::[0-9]{1,2})?(?:\s[AP]M)?$/i', $datestr))
+	    {
+		    return FALSE;
+	    }
 
-	if ($class != '')
-	{
-		$menu .= ' class="'.$class.'"';
-	}
+        $split = explode(' ', $datestr);
 
-	$menu .= ">\n";
+	    $ex = explode("-", $split['0']);
 
-	foreach (timezones() as $key => $val)
-	{
-		$selected = ($default == $key) ? " selected='selected'" : '';
-		$menu .= "<option value='{$key}'{$selected}>".lang_item($key)."</option>\n";
-	}
+	    $year  = (strlen($ex['0']) == 2) ? '20'.$ex['0'] : $ex['0'];
+	    $month = (strlen($ex['1']) == 1) ? '0'.$ex['1']  : $ex['1'];
+	    $day   = (strlen($ex['2']) == 1) ? '0'.$ex['2']  : $ex['2'];
 
-	$menu .= "</select>";
+	    $ex = explode(":", $split['1']);
 
-	return $menu;
+	    $hour = (strlen($ex['0']) == 1) ? '0'.$ex['0'] : $ex['0'];
+	    $min  = (strlen($ex['1']) == 1) ? '0'.$ex['1'] : $ex['1'];
+
+	    if (isset($ex['2']) && preg_match('/[0-9]{1,2}/', $ex['2']))
+	    {
+		    $sec  = (strlen($ex['2']) == 1) ? '0'.$ex['2'] : $ex['2'];
+	    }
+	    else
+	    {
+		    // Unless specified, seconds get set to zero.
+		    $sec = '00';
+	    }
+
+	    if (isset($split['2']))
+	    {
+		    $ampm = strtolower($split['2']);
+	    
+		    if (substr($ampm, 0, 1) == 'p' AND $hour < 12)
+			    $hour = $hour + 12;
+		    
+		    if (substr($ampm, 0, 1) == 'a' AND $hour == 12)
+			    $hour =  '00';
+		    
+		    if (strlen($hour) == 1)
+			    $hour = '0'.$hour;
+	    }
+		    
+	    return mktime($hour, $min, $sec, $month, $day, $year);
+    }
 }
-
 	
 // ------------------------------------------------------------------------
 
 /**
- * Timezones
- *
- * Returns an array of timezones.  This is a helper function
- * for various other ones in this library
- *
- * @access	public
- * @param	string	timezone
- * @return	string
- */	
-function timezones($tz = '')
+* Timezone Menu
+*
+* Generates a drop-down menu of timezones.
+*
+* @access	public
+* @param	string	timezone
+* @param	string	classname
+* @param	string	menu name
+* @return	string
+*/	
+if( ! function_exists('timezone_menu') ) 
 {
-	// Note: Don't change the order of these even though
-	// some items appear to be in the wrong order
-	
-	$zones = array( 
-					'UM12'		=> -12,
-					'UM11'		=> -11,
-					'UM10'		=> -10,
-					'UM95'		=> -9.5,
-					'UM9'		=> -9,
-					'UM8'		=> -8,
-					'UM7'		=> -7,
-					'UM6'		=> -6,
-					'UM5'		=> -5,
-					'UM45'		=> -4.5,
-					'UM4'		=> -4,
-					'UM35'		=> -3.5,
-					'UM3'		=> -3,
-					'UM2'		=> -2,
-					'UM1'		=> -1,
-					'UTC'		=> 0,
-					'UP1'		=> +1,
-					'UP2'		=> +2,
-					'UP3'		=> +3,
-					'UP35'		=> +3.5,
-					'UP4'		=> +4,
-					'UP45'		=> +4.5,
-					'UP5'		=> +5,
-					'UP55'		=> +5.5,
-					'UP575'		=> +5.75,
-					'UP6'		=> +6,
-					'UP65'		=> +6.5,
-					'UP7'		=> +7,
-					'UP8'		=> +8,
-					'UP875'		=> +8.75,
-					'UP9'		=> +9,
-					'UP95'		=> +9.5,
-					'UP10'		=> +10,
-					'UP105'		=> +10.5,
-					'UP11'		=> +11,
-					'UP115'		=> +11.5,
-					'UP12'		=> +12,
-					'UP1275'	=> +12.75,
-					'UP13'		=> +13,
-					'UP14'		=> +14
-				);
-			
-	if ($tz == '')
-	{
-		return $zones;
-	}
+    function timezone_menu($default = 'UTC', $class = "", $name = 'timezones')
+    {
+	    lang_load('date');
 
-	if ($tz == 'GMT')
-		$tz = 'UTC';
+	    if ($default == 'GMT')
+		    $default = 'UTC';
 
-	return ( ! isset($zones[$tz])) ? 0 : $zones[$tz];
+	    $menu = '<select name="'.$name.'"';
+
+	    if ($class != '')
+	    {
+		    $menu .= ' class="'.$class.'"';
+	    }
+
+	    $menu .= ">\n";
+
+	    foreach (timezones() as $key => $val)
+	    {
+		    $selected = ($default == $key) ? " selected='selected'" : '';
+		    $menu .= "<option value='{$key}'{$selected}>".lang_item($key)."</option>\n";
+	    }
+
+	    $menu .= "</select>";
+
+	    return $menu;
+    }
 }
+	
+// ------------------------------------------------------------------------
 
+/**
+* Timezones
+*
+* Returns an array of timezones.  This is a helper function
+* for various other ones in this library
+*
+* @access	public
+* @param	string	timezone
+* @return	string
+*/
+if( ! function_exists('timezones') ) 
+{
+    function timezones($tz = '')
+    {
+	    // Note: Don't change the order of these even though
+	    // some items appear to be in the wrong order
+	    
+	    $zones = array( 
+					    'UM12'		=> -12,
+					    'UM11'		=> -11,
+					    'UM10'		=> -10,
+					    'UM95'		=> -9.5,
+					    'UM9'		=> -9,
+					    'UM8'		=> -8,
+					    'UM7'		=> -7,
+					    'UM6'		=> -6,
+					    'UM5'		=> -5,
+					    'UM45'		=> -4.5,
+					    'UM4'		=> -4,
+					    'UM35'		=> -3.5,
+					    'UM3'		=> -3,
+					    'UM2'		=> -2,
+					    'UM1'		=> -1,
+					    'UTC'		=> 0,
+					    'UP1'		=> +1,
+					    'UP2'		=> +2,
+					    'UP3'		=> +3,
+					    'UP35'		=> +3.5,
+					    'UP4'		=> +4,
+					    'UP45'		=> +4.5,
+					    'UP5'		=> +5,
+					    'UP55'		=> +5.5,
+					    'UP575'		=> +5.75,
+					    'UP6'		=> +6,
+					    'UP65'		=> +6.5,
+					    'UP7'		=> +7,
+					    'UP8'		=> +8,
+					    'UP875'		=> +8.75,
+					    'UP9'		=> +9,
+					    'UP95'		=> +9.5,
+					    'UP10'		=> +10,
+					    'UP105'		=> +10.5,
+					    'UP11'		=> +11,
+					    'UP115'		=> +11.5,
+					    'UP12'		=> +12,
+					    'UP1275'	=> +12.75,
+					    'UP13'		=> +13,
+					    'UP14'		=> +14
+				    );
+			    
+	    if ($tz == '')
+	    {
+		    return $zones;
+	    }
 
+	    if ($tz == 'GMT')
+		    $tz = 'UTC';
+
+	    return ( ! isset($zones[$tz])) ? 0 : $zones[$tz];
+    }
+}
 
 /* End of file date.php */
 /* Location: ./base/helpers/date.php */

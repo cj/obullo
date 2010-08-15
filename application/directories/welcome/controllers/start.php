@@ -7,6 +7,12 @@ Class Start extends Controller {
         parent::__construct();
         parent::__global();
         // echo $this->output->profiler();
+        
+        loader::base_helper('security');
+        echo xss_clean('dfdf');
+        
+        $this->output->profiler();
+        
     }                                      
     
     public function index()

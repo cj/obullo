@@ -11,9 +11,8 @@ Class App_controller
     {         
         loader::base_helper('content');
         
-        ini_set('display_errors', config_item('display_errors'));
-        date_default_timezone_set(config_item('timezone_set'));
-        
+        // error_reporting(0); 
+                
         $this->base     = $this->config->base_url();
         $this->base_url = $this->config->site_url();
         $this->base_img = $this->config->source_url() . 'images/';

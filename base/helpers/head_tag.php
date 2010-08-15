@@ -112,11 +112,13 @@ if( ! function_exists('js') )
 * @param string $filename
 * @param array  $data
 */
-function script($filename = '', $data = '')
+if( ! function_exists('script') ) 
 {
-    return _load_script(DIR .$GLOBALS['d']. DS .'scripts'. DS, $filename, $data);
+    function script($filename = '', $data = '')
+    {
+        return _load_script(DIR .$GLOBALS['d']. DS .'scripts'. DS, $filename, $data);
+    }
 }
-
 // ------------------------------------------------------------------------ 
 
 /**
@@ -126,11 +128,13 @@ function script($filename = '', $data = '')
 * @param string $filename
 * @param array  $data
 */
-function app_script($filename = '', $data = '')
+if( ! function_exists('app_script') ) 
 {
-    return _load_script(APP .'scripts'. DS, $filename, $data);
+    function app_script($filename = '', $data = '')
+    {
+        return _load_script(APP .'scripts'. DS, $filename, $data);
+    }
 }
-
 // ------------------------------------------------------------------------ 
 
 /**
@@ -140,9 +144,12 @@ function app_script($filename = '', $data = '')
 * @param string $filename
 * @param array  $data
 */
-function base_script($filename = '', $data = '')
+if( ! function_exists('base_script') ) 
 {
-    return _load_script(BASE .'scripts'. DS, $filename, $data);
+    function base_script($filename = '', $data = '')
+    {
+        return _load_script(BASE .'scripts'. DS, $filename, $data);
+    }
 }
 
 // ------------------------------------------------------------------------ 

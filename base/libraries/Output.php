@@ -355,6 +355,8 @@ Class OB_Output {
         // Build the file path.  The file name is an MD5 hash of the full URI
         $uri =  $config->base_url() . $config->item('index_page') . $URI->uri_string;
           
+        // filemtime($cached_file) < filemtime($file = $globals[c]) overwrite to cached file.
+          
         $filepath = $cache_path . md5($uri);
                 
         if ( ! @file_exists($filepath))

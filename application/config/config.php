@@ -1,17 +1,6 @@
 <?php
 defined('BASE') or exit('Access Denied!');
 
-/*
-|--------------------------------------------------------------------------
-| On/Off error reporting.
-|--------------------------------------------------------------------------
-| 
-| Enter a value '0' off, '1'  on. When your files go online
-| set display errors to '0' for security reason.
-|
-*/
-$config['display_errors']        = 1; 
-
 /**
 |--------------------------------------------------------------------------
 | Set default time zone for php default date() function.

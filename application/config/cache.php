@@ -41,6 +41,14 @@ $cache['cache_path']             = '';
 |
 */
 $cache['compress_output']       = FALSE;
+
+/*
+|--------------------------------------------------------------------------
+| Output Compression Level
+|--------------------------------------------------------------------------
+| Set your Gzip compression level
+|
+*/
 $cache['compression_level']     = 8;
 
 /* End of file cache.php */

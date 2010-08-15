@@ -165,7 +165,6 @@ Class OB_Profiler {
             }
             
             $output .= "</table>";
-            $output .= "</fieldset>";
             $output .= "</div>";
         }
         
@@ -367,7 +366,18 @@ Class OB_Profiler {
         $output .= "<tr><th>".lang_item('profiler_loaded_files')."</th></tr>";
         
         $base_helpers  = '';
-        foreach(loader::$_base_helpers as $base_helper) { $base_helpers .= $base_helper .'<br />'; }
+        $helper_prefix = config_item('subhelper_prefix');
+        foreach(loader::$_base_helpers as $base_helper) 
+        { 
+            if(strpos($base_helper, $helper_prefix) == 0)
+            {
+                $base_helpers .= str_replace($helper_prefix, "<span class='subhelper_prefix'>$helper_prefix</span>", $base_helper).'<br />';
+            } 
+            else 
+            {
+                $base_helpers .= $base_helper .'<br />';
+            }
+        }
                     
         $app_helpers  = '';
         foreach(loader::$_app_helpers as $app_helper) { $app_helpers .= $app_helper .'<br />'; }

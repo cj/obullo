@@ -30,30 +30,34 @@ defined('BASE') or exit('Access Denied!');
 // ------------------------------------------------------------------------
 
 /**
- * Validate email address
- *
- * @access	public
- * @return	bool
- */	
-function valid_email($address)
+* Validate email address
+*
+* @access	public
+* @return	bool
+*/
+if( ! function_exists('valid_email') ) 
 {
-	return ( ! preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $address)) ? FALSE : TRUE;
+    function valid_email($address)
+    {
+	    return ( ! preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $address)) ? FALSE : TRUE;
+    }
 }
-
 
 // ------------------------------------------------------------------------
 
 /**
- * Send an email
- *
- * @access	public
- * @return	bool
- */	
-function send_email($recipient, $subject = 'Test email', $message = 'Hello World')
-{
-	return mail($recipient, $subject, $message);
+* Send an email
+*
+* @access	public
+* @return	bool
+*/
+if( ! function_exists('send_email') ) 
+{	
+    function send_email($recipient, $subject = 'Test email', $message = 'Hello World')
+    {
+	    return mail($recipient, $subject, $message);
+    }
 }
-
 
 /* End of file email.php */
 /* Location: ./base/helpers/email.php */

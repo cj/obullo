@@ -30,45 +30,48 @@ defined('BASE') or exit('Access Denied!');
 // ------------------------------------------------------------------------
 
 /**
- * Formats a numbers as bytes, based on size, and adds the appropriate suffix
- *
- * @access	public
- * @param   mixed  will be cast as int
- * @param	int	   precision
- * @return	string
- */
-function byte_format($num, $precision = 1)
+* Formats a numbers as bytes, based on size, and adds the appropriate suffix
+*
+* @access	public
+* @param   mixed  will be cast as int
+* @param	int	   precision
+* @return	string
+*/
+if( ! function_exists('byte_format') ) 
 {
-    lang_load('number');
+    function byte_format($num, $precision = 1)
+    {
+        lang_load('number');
 
-    if ($num >= 1000000000000) 
-    {
-        $num = round($num / 1099511627776, $precision);
-        $unit = lang_item('terabyte_abbr');
-    }
-    elseif ($num >= 1000000000) 
-    {
-        $num = round($num / 1073741824, $precision);
-        $unit = lang_item('gigabyte_abbr');
-    }
-    elseif ($num >= 1000000) 
-    {
-        $num = round($num / 1048576, $precision);
-        $unit = lang_item('megabyte_abbr');
-    }
-    elseif ($num >= 1000) 
-    {
-        $num = round($num / 1024, $precision);
-        $unit = lang_item('kilobyte_abbr');
-    }
-    else
-    {
-        $unit = lang_item('bytes');
-        return number_format($num).' '.$unit;
-    }
+        if ($num >= 1000000000000) 
+        {
+            $num = round($num / 1099511627776, $precision);
+            $unit = lang_item('terabyte_abbr');
+        }
+        elseif ($num >= 1000000000) 
+        {
+            $num = round($num / 1073741824, $precision);
+            $unit = lang_item('gigabyte_abbr');
+        }
+        elseif ($num >= 1000000) 
+        {
+            $num = round($num / 1048576, $precision);
+            $unit = lang_item('megabyte_abbr');
+        }
+        elseif ($num >= 1000) 
+        {
+            $num = round($num / 1024, $precision);
+            $unit = lang_item('kilobyte_abbr');
+        }
+        else
+        {
+            $unit = lang_item('bytes');
+            return number_format($num).' '.$unit;
+        }
 
-    return number_format($num, $precision).' '.$unit;
-}    
+        return number_format($num, $precision).' '.$unit;
+    }    
+}
 
 /* End of file number.php */
 /* Location: ./base/helpers/number.php */
