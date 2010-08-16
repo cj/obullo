@@ -25,7 +25,8 @@ Class ViewException extends CommonException {}
  * @version     0.1
  * @version     0.2 added empty $data string support
  * @version     0.3 added set_view_folder function, added return , fail gracefully function for views.
- * @version     0.4 added img_folder to content_set_folder() function.
+ * @version     0.4 added img_folder to view_set_folder() function.
+ * @version     0.5 renamed all function prefix as "view_".
  * @link        
  */
  
@@ -37,7 +38,7 @@ $_cont->_ent->app_view_folder = DS. '';
 $_cont->_ent->css_folder      = '/';
 $_cont->_ent->img_folder      = '/';
                                            
-log_message('debug', "Content Helper Initialized");
+log_message('debug', "View Helper Initialized");
 
 // ------------------------------------------------------------------------ 
 
@@ -287,6 +288,6 @@ function _ob_object_to_array($object)
 }
 
 
-/* End of file content.php */
-/* Location: ./base/helpers/content.php */
+/* End of file view.php */
+/* Location: ./base/helpers/view.php */
 ?>

@@ -221,7 +221,7 @@ if( ! function_exists('link_tag') )
 
         $_cont = ssc::instance();   // obullo changes ..
         
-        // When user use content_set_folder('css'); ..
+        // When user use view_set_folder('css'); ..
         // /sources/iphone/css/welcome.css
         $path = '';
         if(isset($_cont->_ent->css_folder{1}))

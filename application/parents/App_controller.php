@@ -9,7 +9,7 @@ Class App_controller
     
     function __autoloader()
     {         
-        loader::base_helper('content');
+        loader::base_helper('view');
         
         // error_reporting(0); 
                 

@@ -33,7 +33,9 @@ Global Controller files from now on.
 - added extra ='' (attributes) param to form_hidden(); function..
 - added content_view('', (object)$data); support ..
 - added script(), app_script(), base_script() functions to head tag helper.
-- ini_set('display_errors', ..); date_default_timezone_set(..); functions moved to App_controller
+- ini_set('display_errors', ..); removed from bootstrap and config.php
+- content helper renamed as view.php and all "content_" function prefix changed as "view_"
+
 //-----------------------------------------------------------------------------
 
 @todo .. note to USERGUIDE for the framework portability YOU should use fetchAll instead fetch() function.

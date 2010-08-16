@@ -31,7 +31,7 @@ Class OB_Profiler {
      public function __construct()
      {
          lang_load('profiler');
-         loader::base_helper('content');
+         loader::base_helper('view');
      }
      
     // --------------------------------------------------------------------
@@ -104,7 +104,7 @@ Class OB_Profiler {
         {    
             $output  = '<div id="queries">';       
             $output .= "<table class=\"tableborder\">";
-            $output .= "<tr><th>".lang_item('profiler_queries')."</th></tr>";
+            $output .= "<tr><th align='center'>".lang_item('profiler_queries')."</th></tr>";
             
             $output .= "<tr><td class=\"td_val\">".lang_item('profiler_no_db')."</td></tr>";
 
@@ -369,7 +369,7 @@ Class OB_Profiler {
         $helper_prefix = config_item('subhelper_prefix');
         foreach(loader::$_base_helpers as $base_helper) 
         { 
-            if(strpos($base_helper, $helper_prefix) == 0)
+            if(strpos($base_helper, $helper_prefix) === 0)
             {
                 $base_helpers .= str_replace($helper_prefix, "<span class='subhelper_prefix'>$helper_prefix</span>", $base_helper).'<br />';
             } 
@@ -386,7 +386,19 @@ Class OB_Profiler {
         foreach(loader::$_helpers as $helper) { $helpers .= $helper .'<br />'; }
         
         $libraries  = '';
-        foreach($ssc->_profiler_libs as $lib) { $libraries .= $lib .'<br />'; }
+        $subclass_prefix = config_item('subclass_prefix');
+        foreach($ssc->_profiler_libs as $lib_key => $lib) 
+        { 
+            if(strpos($lib, $subclass_prefix) === 0)
+            {
+                $libraries .= str_replace($subclass_prefix, "<span class='subclass_prefix'>$subclass_prefix</span>", $lib).'<br />';
+            } 
+            else
+            {
+                $libraries .= $lib .'<span class="class_operations"> (' . $lib_key . ') </span><br />'; 
+            }
+
+        }
         
         $models  = '';
         foreach($ssc->_profiler_mods as $mod) { $models .= $mod .'<br />'; }

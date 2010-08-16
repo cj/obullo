@@ -22,7 +22,7 @@ defined('BASE') or exit('Access Denied!');
 *              lib_factory function
 * @version 1.2 removed lib_factory function
 * @version 1.3 renamed base "libraries" folder as "base"
-* @version 1.4 added $var  and confi_name vars for get_config()
+* @version 1.4 added $var  and config_name vars for get_config()
 * @version 1.5 added PHP5 library interface class, added spl_autoload_register()
 *              renamed register_static() function, added replace support ..
 */
@@ -99,6 +99,8 @@ function base_register($class, $params_or_no_ins = '', $dir = '')
             {
                 require(APP .'libraries'. DS .$prefix. $Class. EXT);
                 $classname = $prefix. $Class;
+                
+                ssc::instance()->_profiler_libs['php_overridden_'. $prefix . $class] = $class;
             }
         }
         

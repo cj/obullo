@@ -84,7 +84,7 @@ Class OB_Agent {
      * @access    private
      * @return    bool
      */        
-    private function _load_agent_file()
+    public function _load_agent_file()
     {
         $user_agents = get_config('user_agents');  // obullo changes ..
         
@@ -129,7 +129,7 @@ Class OB_Agent {
      * @access    private
      * @return    bool
      */        
-    private function _compile_data()
+    public function _compile_data()
     {
         $this->_set_platform();
     
@@ -150,7 +150,7 @@ Class OB_Agent {
      * @access    private
      * @return    mixed
      */        
-    private function _set_platform()
+    public function _set_platform()
     {
         if (is_array($this->platforms) AND count($this->platforms) > 0)
         {
@@ -174,7 +174,7 @@ Class OB_Agent {
      * @access    private
      * @return    bool
      */        
-    private function _set_browser()
+    public function _set_browser()
     {
         if (is_array($this->browsers) AND count($this->browsers) > 0)
         {
@@ -201,7 +201,7 @@ Class OB_Agent {
      * @access    private
      * @return    bool
      */        
-    private function _set_robot()
+    public function _set_robot()
     {
         if (is_array($this->robots) AND count($this->robots) > 0)
         {        
@@ -226,7 +226,7 @@ Class OB_Agent {
      * @access    private
      * @return    bool
      */        
-    private function _set_mobile()
+    public function _set_mobile()
     {
         if (is_array($this->mobiles) AND count($this->mobiles) > 0)
         {        
@@ -251,7 +251,7 @@ Class OB_Agent {
      * @access    private
      * @return    void
      */            
-    private function _set_languages()
+    public function _set_languages()
     {
         if ((count($this->languages) == 0) AND isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) AND $_SERVER['HTTP_ACCEPT_LANGUAGE'] != '')
         {
@@ -274,7 +274,7 @@ Class OB_Agent {
      * @access    private
      * @return    void
      */            
-    private function _set_charsets()
+    public function _set_charsets()
     {    
         if ((count($this->charsets) == 0) AND isset($_SERVER['HTTP_ACCEPT_CHARSET']) AND $_SERVER['HTTP_ACCEPT_CHARSET'] != '')
         {

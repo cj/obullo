@@ -192,7 +192,7 @@ if( ! function_exists('br') )
 * @param    boolean  $index_page
 * @param    string   $attributes
 * @version  0.1
-* @version  0.2      added content_set_folder('img'); support
+* @version  0.2      added view_set_folder('img'); support
 * @version  0.2      added $attributes variable
 * @return   string
 */
@@ -207,7 +207,7 @@ if( ! function_exists('img') )
 
         $_cont = ssc::instance();       // obullo changes ..
                 
-        // When user use content_set_folder('img');
+        // When user use view_set_folder('img');
         $path = '';
         if(isset($_cont->_ent->img_folder{1}))
         {

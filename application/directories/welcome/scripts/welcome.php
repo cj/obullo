@@ -2,7 +2,7 @@
 <script type="text/javascript" language="Javascript">
 
     // We load inline javascript files as views
-    // This is the content_script(); function test
+    // This is the script(); function test
     // we will build it in <head> tags
     
     function test_me()

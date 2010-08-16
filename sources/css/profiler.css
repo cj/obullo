@@ -207,6 +207,14 @@ body {
  color: #FF0000;
 }
 
+#loaded_files table .td_val .subclass_prefix  {
+ color: #FF0000;
+}
+
+#loaded_files table .td_val .class_operations  {
+ color: #ACACAC;
+}
+
 #loaded_files table .td_val {
  background-color: #EFEFEF;
  font-size: 14px;
