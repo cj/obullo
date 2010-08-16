@@ -67,7 +67,7 @@ function smiley_js($alias = '', $field_id = '')
 		
 			$data['m'] = '{'.implode(',', $m).'}';      
             
-            $r .= content_base_script('smiley', $data);    // Obullo Changes ...
+            $r .= view_base_script('smiley', $data);    // Obullo Changes ...
 	}
 	else
 	{

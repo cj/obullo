@@ -335,7 +335,7 @@ function safe_mailto($email, $title = '', $attributes = '')
 
 	$data['x'] = array_reverse($x);
 
-    return content_base_script('safe_mail', $data);
+    return view_base_script('safe_mail', $data);
     
 }
 

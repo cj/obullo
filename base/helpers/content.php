@@ -13,7 +13,7 @@ defined('BASE') or exit('Access Denied!');
  * @license
  */
  
-Class ContentException extends CommonException {}  
+Class ViewException extends CommonException {}  
  
 /**
  * Obullo Content Builder Helper
@@ -53,7 +53,7 @@ log_message('debug', "Content Helper Initialized");
 * @version  0.1                 
 * @version  0.2 added img folder
 */
-function content_set_folder($func = 'view', $folder = '')
+function view_set_folder($func = 'view', $folder = '')
 {
     $cont = ssc::instance();
     $folder_path = empty($folder) ? DS : $folder. DS;
@@ -89,7 +89,7 @@ function content_set_folder($func = 'view', $folder = '')
 * @param string $filename
 * @param array  $data
 */
-function content_script($filename, $data = '')
+function view_script($filename, $data = '')
 {   
     return _load_script(DIR .$GLOBALS['d']. DS .'scripts'. DS, $filename, $data);
 }
@@ -103,7 +103,7 @@ function content_script($filename, $data = '')
 * @param string $filename
 * @param array  $data
 */
-function content_app_script($filename, $data = '')
+function view_app_script($filename, $data = '')
 {   
     return _load_script(APP .'scripts'. DS, $filename, $data);
 }
@@ -115,7 +115,7 @@ function content_app_script($filename, $data = '')
 * @param string $filename
 * @param array  $data
 */
-function content_base_script($filename, $data = '')
+function view_base_script($filename, $data = '')
 {   
     return _load_script(BASE .'scripts'. DS, $filename, $data);
 }
@@ -128,7 +128,7 @@ function content_base_script($filename, $data = '')
 * @param boolean $string
 * @return void
 */
-function content_view($filename, $data = '', $string = TRUE)
+function view($filename, $data = '', $string = TRUE)
 {               
     $cont = ssc::instance();
     $return = FALSE;
@@ -152,7 +152,7 @@ function content_view($filename, $data = '', $string = TRUE)
 * @param boolean $string
 * @return void
 */
-function content_app_view($filename, $data = '', $string = FALSE)
+function view_app($filename, $data = '', $string = FALSE)
 {
     $cont = ssc::instance(); 
     $return = FALSE;
