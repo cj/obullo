@@ -77,7 +77,7 @@ Class OB_Router {
     * @version   0.2 added query_sting = true var
     * @return    void
     */
-    private function _set_routing()
+    public function _set_routing()
     {
         // Are query strings enabled in the config file?
         // If so, we're done since segment based URIs are not used with query strings.
@@ -163,7 +163,7 @@ Class OB_Router {
     *           $segments[1] as $segments[2]
     * @return   void
     */
-    private function _set_request($segments = array())
+    public function _set_request($segments = array())
     {   
         $segments = $this->_validate_request($segments);
         
@@ -203,7 +203,7 @@ Class OB_Router {
     *           added directory set to segments[0]
     * @return   array
     */    
-    private function _validate_request($segments)
+    public function _validate_request($segments)
     {
         // $segments[0] = directory
         // $segments[1] = controller name
@@ -240,7 +240,7 @@ Class OB_Router {
     * @access    private
     * @return    void
     */
-    private function _parse_routes()
+    public function _parse_routes()
     {
         // Do we even have any custom routing to deal with?
         // There is a default scaffolding trigger, so we'll look just for 1

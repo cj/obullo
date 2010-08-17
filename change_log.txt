@@ -35,6 +35,8 @@ Global Controller files from now on.
 - added script(), app_script(), base_script() functions to head tag helper.
 - ini_set('display_errors', ..); removed from bootstrap and config.php
 - content helper renamed as view.php and all "content_" function prefix changed as "view_"
+- some impromevents for profiler class, added php and php5 libraries colourful track support.
+- added session helper driver extend support.
 
 //-----------------------------------------------------------------------------
 
@@ -48,7 +50,5 @@ Global Controller files from now on.
 @todo .. upload class security
 @todo .. add config load and lang load track support for profiler class
 @todo .. pager class
-
-@todo .. change view_app function as view_layout(); and change "views" folder as layouts.
          
 @next version todo .. firewall class (integer, string validate for requests, login attempts for captcha) 

@@ -47,7 +47,7 @@ Class OB_Profiler {
      * @access    private
      * @return    array
      */
-     private function _compile_benchmarks()
+     public function _compile_benchmarks()
      {
          $profile = array();
          
@@ -95,7 +95,7 @@ Class OB_Profiler {
      * @access    private
      * @return    string
      */    
-    private function _compile_queries()
+    public function _compile_queries()
     {
         $ob = ob::instance();
         
@@ -226,7 +226,7 @@ Class OB_Profiler {
      * @access    private
      * @return    string
      */     
-    private function _compile_post()
+    public function _compile_post()
     {    
         $output  = '<div id="post">';       
         $output .= "<table class=\"tableborder\">";
@@ -273,7 +273,7 @@ Class OB_Profiler {
      * @access    private
      * @return    string
      */    
-    private function _compile_uri_string()
+    public function _compile_uri_string()
     {    
         $ob = ob::instance();
 
@@ -304,7 +304,7 @@ Class OB_Profiler {
      * @access    private
      * @return    string
      */    
-    private function _compile_controller_info()
+    public function _compile_controller_info()
     {            
         $output  = '<div id="controller_info">';       
         $output .= "<table class=\"tableborder\">";
@@ -326,7 +326,7 @@ Class OB_Profiler {
      * @access    public
      * @return    string
      */
-    function _compile_memory_usage()
+    public function _compile_memory_usage()
     {
         $output  = '<div id="memory">';       
         $output .= "<table class=\"tableborder\">";
@@ -356,7 +356,7 @@ Class OB_Profiler {
      * @access    public
      * @return    string
      */
-    function _compile_loaded_files()
+    public function _compile_loaded_files()
     {          
         $ob  = ob::instance();
         $ssc = ssc::instance();

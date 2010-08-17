@@ -107,7 +107,7 @@ Class OB_Parser {
     * @param    bool
     * @return   string
     */
-    function _parse($template, $data, $return = FALSE)
+    public function _parse($template, $data, $return = FALSE)
     {
         if ($template == '')
         {
@@ -161,7 +161,7 @@ Class OB_Parser {
      * @param    string
      * @return   string
      */
-    private function _parse_single($key, $val, $string)
+    public function _parse_single($key, $val, $string)
     {
         return str_replace($this->l_delim.$key.$this->r_delim, $val, $string);
     }
@@ -179,7 +179,7 @@ Class OB_Parser {
      * @param    string
      * @return   string
      */
-    private function _parse_pair($variable, $data, $string)
+    public function _parse_pair($variable, $data, $string)
     {    
         if (FALSE === ($match = $this->_match_pair($string, $variable)))
         {
@@ -218,7 +218,7 @@ Class OB_Parser {
     * @param    string
     * @return   mixed
     */
-    private function _match_pair($string, $variable)
+    public function _match_pair($string, $variable)
     {
         if ( ! preg_match("|" . preg_quote($this->l_delim) . $variable . preg_quote($this->r_delim) . "(.+?)". preg_quote($this->l_delim) . '/' . $variable . preg_quote($this->r_delim) . "|s", $string, $match))
         {
