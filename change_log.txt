@@ -48,5 +48,7 @@ Global Controller files from now on.
 @todo .. upload class security
 @todo .. add config load and lang load track support for profiler class
 @todo .. pager class
+
+@todo .. change view_app function as view_layout(); and change "views" folder as layouts.
          
 @next version todo .. firewall class (integer, string validate for requests, login attempts for captcha) 
