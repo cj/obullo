@@ -40,7 +40,7 @@ Global Controller files from now on.
 
 //-----------------------------------------------------------------------------
 
-@todo .. note to USERGUIDE for the framework portability YOU should use fetchAll instead fetch() function.
+@todo .. add i_request(); function it will not check each post and get values $_REQUEST['item']
 
 @todo .. idea ! add set_callback('function', param1, param1..) instead of set_rules('|callback_function')
 @todo .. base helpers extend support
