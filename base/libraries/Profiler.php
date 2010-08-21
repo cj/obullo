@@ -360,13 +360,14 @@ Class OB_Profiler {
     {          
         $ob  = ob::instance();
         $ssc = ssc::instance();
-        
+        $helper_prefix   = config_item('subhelper_prefix');
+        $subclass_prefix = config_item('subclass_prefix');
+    
         $output  = '<div id="loaded_files">';       
         $output .= "<table class=\"tableborder\">";
         $output .= "<tr><th>".lang_item('profiler_loaded_files')."</th></tr>";
         
         $base_helpers  = '';
-        $helper_prefix = config_item('subhelper_prefix');
         foreach(loader::$_base_helpers as $base_helper) 
         { 
             if(strpos($base_helper, $helper_prefix) === 0)
@@ -378,6 +379,19 @@ Class OB_Profiler {
                 $base_helpers .= $base_helper .'<br />';
             }
         }
+        
+        $loaded_helpers  = '';
+        foreach($ssc->_profiler_loaded_helpers as $loaded_helper) 
+        { 
+            if(strpos($loaded_helper, $helper_prefix) === 0)
+            {
+                $loaded_helpers .= str_replace($helper_prefix, "<span class='subhelper_prefix'>$helper_prefix</span>", $loaded_helper).'<br />';
+            } 
+            else 
+            {
+                $loaded_helpers .= $loaded_helper .'<br />';
+            }
+        }
                     
         $app_helpers  = '';
         foreach(loader::$_app_helpers as $app_helper) { $app_helpers .= $app_helper .'<br />'; }
@@ -386,7 +400,6 @@ Class OB_Profiler {
         foreach(loader::$_helpers as $helper) { $helpers .= $helper .'<br />'; }
         
         $libraries  = '';
-        $subclass_prefix = config_item('subclass_prefix');
         foreach($ssc->_profiler_libs as $lib_key => $lib) 
         { 
             if(strpos($lib, $subclass_prefix) === 0)
@@ -418,17 +431,19 @@ Class OB_Profiler {
         $app_views  = '';
         foreach($ssc->_profiler_app_views as $view) { $app_views .= $view .'<br /> '; }
         
-        $base_helpers = (isset($base_helpers{2}))   ? $base_helpers : '-';
-        $app_helpers  = (isset($app_helpers{2}))    ? $app_helpers : '-';
-        $helpers      = (isset($helpers{2}))        ? $helpers : '-';
-        $libraries    = (isset($libraries{2}))      ? $libraries : '-';
-        $models       = (isset($models{2}))         ? $models : '-';
-        $databases    = (isset($databases{2}))      ? $databases : '-';
-        $scripts      = (isset($scripts{2}))        ? $scripts : '-';
-        $files        = (isset($files{2}))          ? $files : '-';
+        $base_helpers   = (isset($base_helpers{2}))   ? $base_helpers : '-';
+        $app_helpers    = (isset($app_helpers{2}))    ? $app_helpers : '-';
+        $loaded_helpers = (isset($loaded_helpers{2})) ? $loaded_helpers : '-';
+        $helpers        = (isset($helpers{2}))        ? $helpers : '-';
+        $libraries      = (isset($libraries{2}))      ? $libraries : '-';
+        $models         = (isset($models{2}))         ? $models : '-';
+        $databases      = (isset($databases{2}))      ? $databases : '-';
+        $scripts        = (isset($scripts{2}))        ? $scripts : '-';
+        $files          = (isset($files{2}))          ? $files : '-';
         
         $output .= "<tr><td class=\"td\">Base Helpers&nbsp;&nbsp;</td><td class=\"td_val\">".$base_helpers."</td></tr>";  
         $output .= "<tr><td class=\"td\">Application Helpers&nbsp;&nbsp;</td><td class=\"td_val\">".$app_helpers."</td></tr>";    
+        $output .= "<tr><td class=\"td\">Loaded Helpers&nbsp;&nbsp;</td><td class=\"td_val\">".$loaded_helpers."</td></tr>";    
         $output .= "<tr><td class=\"td\">Local Helpers&nbsp;&nbsp;</td><td class=\"td_val\">".$helpers."</td></tr>";    
         $output .= "<tr><td class=\"td\">Libraries&nbsp;&nbsp;</td><td class=\"td_val\">".$libraries."</td></tr>";    
         $output .= "<tr><td class=\"td\">Models&nbsp;&nbsp;</td><td class=\"td_val\">".$models."</td></tr>";    

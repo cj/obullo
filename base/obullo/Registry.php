@@ -19,7 +19,7 @@ defined('BASE') or exit('Access Denied!');
 Abstract Class Obullo_Registry
 {
     abstract protected function get($key);
-    abstract protected function set($key,$val);
+    abstract protected function set($key, $val);
 } 
  
 Class OB_Registry extends Obullo_Registry {

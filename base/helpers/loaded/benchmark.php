@@ -28,29 +28,34 @@ defined('BASE') or exit('Access Denied!');
  * @link          
  */
  
-$_bench = ssc::instance();
-$_bench->_mark = new stdClass();
-$_bench->_mark->marker = array();
+if( ! isset($_bench->_mark)) 
+{
+    $_bench = ssc::instance();
+    $_bench->_mark = new stdClass();
+    $_bench->_mark->marker = array();
 
-log_message('debug', "Benchmark Helper Initialized");
-
+    log_message('debug', "Benchmark Helper Initialized");
+}
 // --------------------------------------------------------------------
 
 /**
- * Set a benchmark marker
- *
- * Multiple calls to this function can be made so that several
- * execution points can be timed
- *
- * @access    public
- * @param     string    $name    name of the marker
- * @return    void
- */
-function benchmark_mark($name)
+* Set a benchmark marker
+*
+* Multiple calls to this function can be made so that several
+* execution points can be timed
+*
+* @access    public
+* @param     string    $name    name of the marker
+* @return    void
+*/
+if( ! function_exists('benchmark_mark') ) 
 {
-    $_bench = ssc::instance(); 
-    
-    $_bench->_mark->marker[$name] = microtime();
+    function benchmark_mark($name)
+    {
+        $_bench = ssc::instance(); 
+        
+        $_bench->_mark->marker[$name] = microtime();
+    }
 }
 
 // -------------------------------------------------------------------- 
@@ -64,31 +69,33 @@ function benchmark_mark($name)
 * @param    integer   the number of decimal places
 * @return   mixed
 */
-function benchmark_elapsed_time($point1 = '', $point2 = '', $decimals = 4)
+if( ! function_exists('benchmark_elapsed_time') ) 
 {
-    $_bench = ssc::instance(); 
-    
-    if ($point1 == '')
+    function benchmark_elapsed_time($point1 = '', $point2 = '', $decimals = 4)
     {
-        return '{elapsed_time}';
+        $_bench = ssc::instance(); 
+        
+        if ($point1 == '')
+        {
+            return '{elapsed_time}';
+        }
+
+        if ( ! isset($_bench->_mark->marker[$point1]))
+        {
+            return '';
+        }
+
+        if ( ! isset($_bench->_mark->marker[$point2]))
+        {
+            $_bench->_mark->marker[$point2] = microtime();
+        }
+
+        list($sm, $ss) = explode(' ', $_bench->_mark->marker[$point1]);
+        list($em, $es) = explode(' ', $_bench->_mark->marker[$point2]);
+
+        return number_format(($em + $es) - ($sm + $ss), $decimals);
     }
-
-    if ( ! isset($_bench->_mark->marker[$point1]))
-    {
-        return '';
-    }
-
-    if ( ! isset($_bench->_mark->marker[$point2]))
-    {
-        $_bench->_mark->marker[$point2] = microtime();
-    }
-
-    list($sm, $ss) = explode(' ', $_bench->_mark->marker[$point1]);
-    list($em, $es) = explode(' ', $_bench->_mark->marker[$point2]);
-
-    return number_format(($em + $es) - ($sm + $ss), $decimals);
 }
-
 // -------------------------------------------------------------------- 
 
 /**
@@ -97,13 +104,14 @@ function benchmark_elapsed_time($point1 = '', $point2 = '', $decimals = 4)
 * @access    public
 * @return    string
 */
-function benchmark_memory_usage()
+if( ! function_exists('benchmark_memory_usage') ) 
 {
-    return '{memory_usage}';
+    function benchmark_memory_usage()
+    {
+        return '{memory_usage}';
+    }
 }
 
-// END OB_Benchmark class
-
-/* End of file Benchmark.php */
-/* Location: ./base/libraries/Benchmark.php */
+/* End of file benchmark.php */
+/* Location: ./base/helpers/loaded/benchmark.php */
 ?>

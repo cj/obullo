@@ -25,13 +25,16 @@ Class LangException extends CommonException {}
  * @link        
  */
  
-$_la = ssc::instance();
-$_la->_ng = new stdClass();
+if( ! isset($_lang->_ng)) 
+{
+    $_la = ssc::instance();
+    $_la->_ng = new stdClass();
 
-$_la->_ng->language  = array();
-$_la->_ng->is_loaded = array();
+    $_la->_ng->language  = array();
+    $_la->_ng->is_loaded = array();
 
-log_message('debug', "Language Helper Initialized");
+    log_message('debug', "Language Helper Initialized");
+}
 
 // --------------------------------------------------------------------
 
@@ -43,55 +46,58 @@ log_message('debug', "Language Helper Initialized");
 * @param    string   the language (english, etc.)
 * @return   mixed
 */
-function lang_load($langfile = '', $idiom = '', $dir = 'base', $return = FALSE)
-{     
-    $_la = ssc::instance();
-    $ob  = ob::instance();
-    
-    if (in_array($langfile, $_la->_ng->is_loaded, TRUE))
-    return;  
-    
-    if ($idiom == '')
-    {
-        $deft_lang = $ob->config->item('language');
-        $idiom = ($deft_lang == '') ? 'english' : $deft_lang;
-    }
-    
-    switch ($dir)
-    {
-        case 'local':
-         $folder = DIR .$GLOBALS['d']. DS .'lang'. DS;                            
-         break;
+if( ! function_exists('lang_load') ) 
+{
+    function lang_load($langfile = '', $idiom = '', $dir = 'base', $return = FALSE)
+    {     
+        $_la = ssc::instance();
+        $ob  = ob::instance();
         
-        case 'global':
-         $folder = APP .'lang'. DS .$idiom. DS;
-         break;
-         
-        case 'base':
-         $folder = BASE.'lang'. DS .$idiom. DS;  
-         break;
-    }
+        if (in_array($langfile, $_la->_ng->is_loaded, TRUE))
+        return;  
+        
+        if ($idiom == '')
+        {
+            $deft_lang = $ob->config->item('language');
+            $idiom = ($deft_lang == '') ? 'english' : $deft_lang;
+        }
+        
+        switch ($dir)
+        {
+            case 'local':
+             $folder = DIR .$GLOBALS['d']. DS .'lang'. DS;                            
+             break;
+            
+            case 'global':
+             $folder = APP .'lang'. DS .$idiom. DS;
+             break;
+             
+            case 'base':
+             $folder = BASE.'lang'. DS .$idiom. DS;  
+             break;
+        }
 
-    if( ! is_dir($folder))
-    return;
-    
-    $lang = get_static($langfile, 'lang', $folder);
-    
-    if ( ! isset($lang))
-    {
-        log_message('error', 'Language file contains no data: lang/' .$idiom. '/'. $langfile. EXT);
+        if( ! is_dir($folder))
         return;
+        
+        $lang = get_static($langfile, 'lang', $folder);
+        
+        if ( ! isset($lang))
+        {
+            log_message('error', 'Language file contains no data: lang/' .$idiom. '/'. $langfile. EXT);
+            return;
+        }
+
+        if ($return)
+        return $lang;
+
+        $_la->_ng->is_loaded[] = $langfile;
+        $_la->_ng->language    = array_merge($_la->_ng->language, $lang);
+        unset($lang);
+
+        log_message('debug', 'Language file loaded: lang/' .$idiom. '/' .$langfile. EXT);
+        return TRUE;
     }
-
-    if ($return)
-    return $lang;
-
-    $_la->_ng->is_loaded[] = $langfile;
-    $_la->_ng->language    = array_merge($_la->_ng->language, $lang);
-    unset($lang);
-
-    log_message('debug', 'Language file loaded: lang/' .$idiom. '/' .$langfile. EXT);
-    return TRUE;
 }
 
 /**
@@ -101,14 +107,17 @@ function lang_load($langfile = '', $idiom = '', $dir = 'base', $return = FALSE)
 * @param    string  $item the language item
 * @return   string
 */
-function lang_item($item = '')
+if( ! function_exists('lang_item') ) 
 {
-    $_la = ssc::instance();
-    
-    $item = ($item == '' OR ! isset($_la->_ng->language[$item])) ? FALSE : $_la->_ng->language[$item];
-    return $item;
+    function lang_item($item = '')
+    {
+        $_la = ssc::instance();
+        
+        $item = ($item == '' OR ! isset($_la->_ng->language[$item])) ? FALSE : $_la->_ng->language[$item];
+        return $item;
+    }
 }
 
 /* End of file lang.php */
-/* Location: ./base/helpers/lang.php */
+/* Location: ./base/helpers/loaded/lang.php */
 ?>

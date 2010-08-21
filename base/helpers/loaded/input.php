@@ -18,20 +18,23 @@ Class InputException extends CommonException {}
 
 // ------------------------------------------------------------------------
 
-$_in = ssc::instance();
-$_in->_put = new stdClass();
+if( ! isset($_in->_put)) 
+{
+    $_in = ssc::instance();
+    $_in->_put = new stdClass();
 
-$_in->_put->use_xss_clean      = FALSE;
-$_in->_put->ip_address         = FALSE;
-$_in->_put->user_agent         = FALSE;
-$_in->_put->allow_get_array    = FALSE;
-                                
-log_message('debug', "Input Helper Initialized");
+    $_in->_put->use_xss_clean      = FALSE;
+    $_in->_put->ip_address         = FALSE;
+    $_in->_put->user_agent         = FALSE;
+    $_in->_put->allow_get_array    = FALSE;
+                                    
+    log_message('debug', "Input Helper Initialized");
 
-$_config = base_register('Config');
+    $_config = base_register('Config');
 
-$_in->_put->use_xss_clean   = ($_config->item('global_xss_filtering') === TRUE) ? TRUE : FALSE;
-$_in->_put->allow_get_array = ($_config->item('enable_query_strings') === TRUE) ? TRUE : FALSE;
+    $_in->_put->use_xss_clean   = ($_config->item('global_xss_filtering') === TRUE) ? TRUE : FALSE;
+    $_in->_put->allow_get_array = ($_config->item('enable_query_strings') === TRUE) ? TRUE : FALSE;
+}
 
 /**
 * Sanitize Globals
@@ -44,75 +47,80 @@ $_in->_put->allow_get_array = ($_config->item('enable_query_strings') === TRUE) 
 * @access    private
 * @return    void
 */
-function _sanitize_globals()
+if( ! function_exists('_sanitize_globals') ) 
 {
-    $in = ssc::instance();
-    
-    // Would kind of be "wrong" to unset any of these GLOBALS
-    $protected = array('_SERVER', '_GET', '_POST', '_FILES', '_REQUEST', '_SESSION', 
-    '_ENV', '_parents', '_bench', '_log', '_config', '_la', '_in', '_secur', '_ses', '_cont', '_controller', 
-    'GLOBALS', 'HTTP_RAW_POST_DATA');
-   
-    // Unset globals for security. 
-    // This is effectively the same as register_globals = off
-    foreach (array($_GET, $_POST, $_COOKIE, $_SERVER, $_FILES, $_ENV, (isset($_SESSION) && is_array($_SESSION)) ? $_SESSION : array()) as $global)
+    function _sanitize_globals()
     {
-        if ( ! is_array($global))
+        $in = ssc::instance();
+        
+        // Would kind of be "wrong" to unset any of these GLOBALS
+        $protected = array('_SERVER', '_GET', '_POST', '_FILES', '_REQUEST', '_SESSION', 
+        '_ENV', '_parents', '_bench', '_log', '_config', '_la', '_in', '_secur', '_ses', '_cont', '_controller', 
+        'GLOBALS', 'HTTP_RAW_POST_DATA');
+       
+        // Unset globals for security. 
+        // This is effectively the same as register_globals = off
+        foreach (array($_GET, $_POST, $_COOKIE, $_SERVER, $_FILES, $_ENV, (isset($_SESSION) && is_array($_SESSION)) ? $_SESSION : array()) as $global)
         {
-            if ( ! in_array($global, $protected))
+            if ( ! is_array($global))
             {
-                unset($GLOBALS[$global]);
-            }
-        }
-        else
-        {
-            foreach ($global as $key => $val)
-            {
-                if ( ! in_array($key, $protected))
+                if ( ! in_array($global, $protected))
                 {
-                    unset($GLOBALS[$key]);
+                    unset($GLOBALS[$global]);
                 }
-
-                if (is_array($val))
+            }
+            else
+            {
+                foreach ($global as $key => $val)
                 {
-                    foreach($val as $k => $v)
+                    if ( ! in_array($key, $protected))
                     {
-                        if ( ! in_array($k, $protected))
+                        unset($GLOBALS[$key]);
+                    }
+
+                    if (is_array($val))
+                    {
+                        foreach($val as $k => $v)
                         {
-                            unset($GLOBALS[$k]);
+                            if ( ! in_array($k, $protected))
+                            {
+                                unset($GLOBALS[$k]);
+                            }
                         }
                     }
                 }
             }
         }
+
+        // Is $_GET data allowed? If not we'll set the $_GET to an empty array
+        if ($in->_put->allow_get_array == FALSE)
+        {
+            $_GET = array();
+        }
+        else
+        {
+            $_GET = _clean_input_data($_GET);
+        }
+
+        // Clean $_POST Data
+        $_POST = _clean_input_data($_POST);
+
+        // Clean $_COOKIE Data
+        // Also get rid of specially treated cookies that might be set by a server
+        // or silly application, that are of no use to a OB application anyway
+        // but that when present will trip our 'Disallowed Key Characters' alarm
+        // http://www.ietf.org/rfc/rfc2109.txt
+        // note that the key names below are single quoted strings, and are not PHP variables
+        unset($_COOKIE['$Version']);
+        unset($_COOKIE['$Path']);
+        unset($_COOKIE['$Domain']);
+        $_COOKIE = _clean_input_data($_COOKIE);
+
+        log_message('debug', "Global POST and COOKIE data sanitized");
     }
-
-    // Is $_GET data allowed? If not we'll set the $_GET to an empty array
-    if ($in->_put->allow_get_array == FALSE)
-    {
-        $_GET = array();
-    }
-    else
-    {
-        $_GET = _clean_input_data($_GET);
-    }
-
-    // Clean $_POST Data
-    $_POST = _clean_input_data($_POST);
-
-    // Clean $_COOKIE Data
-    // Also get rid of specially treated cookies that might be set by a server
-    // or silly application, that are of no use to a OB application anyway
-    // but that when present will trip our 'Disallowed Key Characters' alarm
-    // http://www.ietf.org/rfc/rfc2109.txt
-    // note that the key names below are single quoted strings, and are not PHP variables
-    unset($_COOKIE['$Version']);
-    unset($_COOKIE['$Path']);
-    unset($_COOKIE['$Domain']);
-    $_COOKIE = _clean_input_data($_COOKIE);
-
-    log_message('debug', "Global POST and COOKIE data sanitized");
 }
+
+// ------------------------------------------------------------------------
 
 /**
 * Clean Input Data
@@ -124,43 +132,46 @@ function _sanitize_globals()
 * @param    string
 * @return   string
 */
-function _clean_input_data($str)
+if( ! function_exists('_clean_input_data') ) 
 {
-    $in = ssc::instance();
-    
-    if (is_array($str))
+    function _clean_input_data($str)
     {
-        $new_array = array();
-        foreach ($str as $key => $val)
-        {
-            $new_array[_clean_input_keys($key)] = _clean_input_data($val);
-        }
-        return $new_array;
-    }
-
-    // We strip slashes if magic quotes is on to keep things consistent
-    if (get_magic_quotes_gpc())
-    {
-        $str = stripslashes($str);
-    }
-
-    // Should we filter the input data?
-    if ($in->_put->use_xss_clean === TRUE)
-    {
-        loader::base_helper('security');
+        $in = ssc::instance();
         
-        $str = xss_clean($str);
-    }
+        if (is_array($str))
+        {
+            $new_array = array();
+            foreach ($str as $key => $val)
+            {
+                $new_array[_clean_input_keys($key)] = _clean_input_data($val);
+            }
+            return $new_array;
+        }
 
-    // Standardize newlines
-    if (strpos($str, "\r") !== FALSE)
-    {
-        $str = str_replace(array("\r\n", "\r"), "\n", $str);
-    }
+        // We strip slashes if magic quotes is on to keep things consistent
+        if (get_magic_quotes_gpc())
+        {
+            $str = stripslashes($str);
+        }
 
-    return $str;
+        // Should we filter the input data?
+        if ($in->_put->use_xss_clean === TRUE)
+        {
+            loader::base_helper('security');
+            
+            $str = xss_clean($str);
+        }
+
+        // Standardize newlines
+        if (strpos($str, "\r") !== FALSE)
+        {
+            $str = str_replace(array("\r\n", "\r"), "\n", $str);
+        }
+
+        return $str;
+    }
 }
-
+// ------------------------------------------------------------------------
 
 /**
 * Clean Keys
@@ -173,16 +184,18 @@ function _clean_input_data($str)
 * @param    string
 * @return   string
 */
-function _clean_input_keys($str)
+if( ! function_exists('_clean_input_keys') ) 
 {
-    if ( ! preg_match("/^[a-z0-9:_\/-]+$/i", $str))
+    function _clean_input_keys($str)
     {
-        exit('Disallowed Key Characters.');
+        if ( ! preg_match("/^[a-z0-9:_\/-]+$/i", $str))
+        {
+            exit('Disallowed Key Characters.');
+        }
+
+        return $str;
     }
-
-    return $str;
 }
-
 // --------------------------------------------------------------------
 
 /**
@@ -196,22 +209,24 @@ function _clean_input_keys($str)
 * @param    bool
 * @return   string
 */
-function _fetch_from_array(&$array, $index = '', $xss_clean = FALSE)
+if( ! function_exists('_fetch_from_array') ) 
 {
-    if ( ! isset($array[$index]))
+    function _fetch_from_array(&$array, $index = '', $xss_clean = FALSE)
     {
-        return FALSE;
-    }
+        if ( ! isset($array[$index]))
+        {
+            return FALSE;
+        }
 
-    if ($xss_clean === TRUE)
-    {
-        loader::base_helper('security');
-        return xss_clean($array[$index]);
-    }
+        if ($xss_clean === TRUE)
+        {
+            loader::base_helper('security');
+            return xss_clean($array[$index]);
+        }
 
-    return $array[$index];
+        return $array[$index];
+    }
 }
-
 // --------------------------------------------------------------------
 
 /**
@@ -222,11 +237,13 @@ function _fetch_from_array(&$array, $index = '', $xss_clean = FALSE)
 * @param    bool
 * @return   string
 */
-function i_get($index = '', $xss_clean = FALSE)
+if( ! function_exists('i_get') ) 
 {
-    return _fetch_from_array($_GET, $index, $xss_clean);
+    function i_get($index = '', $xss_clean = FALSE)
+    {
+        return _fetch_from_array($_GET, $index, $xss_clean);
+    }
 }
-
 // --------------------------------------------------------------------
 
 /**
@@ -237,11 +254,30 @@ function i_get($index = '', $xss_clean = FALSE)
 * @param    bool
 * @return   string
 */
-function i_post($index = '', $xss_clean = FALSE)
+if( ! function_exists('i_post') ) 
 {
-    return _fetch_from_array($_POST, $index, $xss_clean);
+    function i_post($index = '', $xss_clean = FALSE)
+    {
+        return _fetch_from_array($_POST, $index, $xss_clean);
+    }
 }
+// --------------------------------------------------------------------
 
+/**
+* Fetch an item from the REQUEST array
+*
+* @access   public
+* @param    string
+* @param    bool
+* @return   string
+*/
+if( ! function_exists('i_request') ) 
+{
+    function i_request($index = '', $xss_clean = FALSE)
+    {
+        return _fetch_from_array($_REQUEST, $index, $xss_clean);
+    }
+}
 // --------------------------------------------------------------------
 
 /**
@@ -252,18 +288,20 @@ function i_post($index = '', $xss_clean = FALSE)
 * @param    bool    XSS cleaning
 * @return   string
 */
-function i_get_post($index = '', $xss_clean = FALSE)
+if( ! function_exists('i_get_post') ) 
 {
-    if ( ! isset($_POST[$index]) )
+    function i_get_post($index = '', $xss_clean = FALSE)
     {
-        return i_get($index, $xss_clean);
-    }
-    else
-    {
-        return i_post($index, $xss_clean);
+        if ( ! isset($_POST[$index]) )
+        {
+            return i_get($index, $xss_clean);
+        }
+        else
+        {
+            return i_post($index, $xss_clean);
+        }
     }
 }
-
 // --------------------------------------------------------------------
 
 /**
@@ -274,11 +312,13 @@ function i_get_post($index = '', $xss_clean = FALSE)
 * @param    bool
 * @return   string
 */
-function i_cookie($index = '', $xss_clean = FALSE)
+if( ! function_exists('i_cookie') ) 
 {
-    return _fetch_from_array($_COOKIE, $index, $xss_clean);
+    function i_cookie($index = '', $xss_clean = FALSE)
+    {
+        return _fetch_from_array($_COOKIE, $index, $xss_clean);
+    }
 }
-
 // --------------------------------------------------------------------
 
 /**
@@ -289,11 +329,13 @@ function i_cookie($index = '', $xss_clean = FALSE)
 * @param    bool
 * @return   string
 */
-function i_server($index = '', $xss_clean = FALSE)
+if( ! function_exists('i_server') ) 
 {
-    return _fetch_from_array($_SERVER, $index, $xss_clean);
+    function i_server($index = '', $xss_clean = FALSE)
+    {
+        return _fetch_from_array($_SERVER, $index, $xss_clean);
+    }
 }
-
 // --------------------------------------------------------------------
              
 /**
@@ -302,59 +344,61 @@ function i_server($index = '', $xss_clean = FALSE)
 * @access    public
 * @return    string
 */
-function i_ip_address()
+if( ! function_exists('i_ip_address') ) 
 {
-    $in = ssc::instance();
-    
-    if ($in->_put->ip_address !== FALSE)
+    function i_ip_address()
     {
+        $in = ssc::instance();
+        
+        if ($in->_put->ip_address !== FALSE)
+        {
+            return $in->_put->ip_address;
+        }
+        
+        if (config_item('proxy_ips') != '' && i_server('HTTP_X_FORWARDED_FOR') && i_server('REMOTE_ADDR'))
+        {
+            $proxies = preg_split('/[\s,]/', config_item('proxy_ips'), -1, PREG_SPLIT_NO_EMPTY);
+            $proxies = is_array($proxies) ? $proxies : array($proxies);
+
+            $in->_put->ip_address = in_array($_SERVER['REMOTE_ADDR'], $proxies) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
+        }
+        elseif (i_server('REMOTE_ADDR') AND i_server('HTTP_CLIENT_IP'))
+        {
+            $in->_put->ip_address = $_SERVER['HTTP_CLIENT_IP'];
+        }
+        elseif (i_server('REMOTE_ADDR'))
+        {
+            $in->_put->ip_address = $_SERVER['REMOTE_ADDR'];
+        }
+        elseif (i_server('HTTP_CLIENT_IP'))
+        {
+            $in->_put->ip_address = $_SERVER['HTTP_CLIENT_IP'];
+        }
+        elseif (i_server('HTTP_X_FORWARDED_FOR'))
+        {
+            $in->_put->ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }
+
+        if ($in->_put->ip_address === FALSE)
+        {
+            $in->_put->ip_address = '0.0.0.0';
+            return $in->_put->ip_address;
+        }
+
+        if (strstr($in->_put->ip_address, ','))
+        {
+            $x = explode(',', $in->_put->ip_address);
+            $in->_put->ip_address = trim(end($x));
+        }
+
+        if ( ! i_valid_ip($in->_put->ip_address))
+        {
+            $in->_put->ip_address = '0.0.0.0';
+        }
+
         return $in->_put->ip_address;
     }
-    
-    if (config_item('proxy_ips') != '' && i_server('HTTP_X_FORWARDED_FOR') && i_server('REMOTE_ADDR'))
-    {
-        $proxies = preg_split('/[\s,]/', config_item('proxy_ips'), -1, PREG_SPLIT_NO_EMPTY);
-        $proxies = is_array($proxies) ? $proxies : array($proxies);
-
-        $in->_put->ip_address = in_array($_SERVER['REMOTE_ADDR'], $proxies) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
-    }
-    elseif (i_server('REMOTE_ADDR') AND i_server('HTTP_CLIENT_IP'))
-    {
-        $in->_put->ip_address = $_SERVER['HTTP_CLIENT_IP'];
-    }
-    elseif (i_server('REMOTE_ADDR'))
-    {
-        $in->_put->ip_address = $_SERVER['REMOTE_ADDR'];
-    }
-    elseif (i_server('HTTP_CLIENT_IP'))
-    {
-        $in->_put->ip_address = $_SERVER['HTTP_CLIENT_IP'];
-    }
-    elseif (i_server('HTTP_X_FORWARDED_FOR'))
-    {
-        $in->_put->ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    }
-
-    if ($in->_put->ip_address === FALSE)
-    {
-        $in->_put->ip_address = '0.0.0.0';
-        return $in->_put->ip_address;
-    }
-
-    if (strstr($in->_put->ip_address, ','))
-    {
-        $x = explode(',', $in->_put->ip_address);
-        $in->_put->ip_address = trim(end($x));
-    }
-
-    if ( ! i_valid_ip($in->_put->ip_address))
-    {
-        $in->_put->ip_address = '0.0.0.0';
-    }
-
-    return $in->_put->ip_address;
 }
-
 // --------------------------------------------------------------------
 
 /**
@@ -366,34 +410,36 @@ function i_ip_address()
 * @param    string
 * @return   string
 */
-function i_valid_ip($ip)
+if( ! function_exists('i_valid_ip') ) 
 {
-    $ip_segments = explode('.', $ip);
+    function i_valid_ip($ip)
+    {
+        $ip_segments = explode('.', $ip);
 
-    // Always 4 segments needed
-    if (count($ip_segments) != 4)
-    {
-        return FALSE;
-    }
-    // IP can not start with 0
-    if ($ip_segments[0][0] == '0')
-    {
-        return FALSE;
-    }
-    // Check each segment
-    foreach ($ip_segments as $segment)
-    {
-        // IP segments must be digits and can not be 
-        // longer than 3 digits or greater then 255
-        if ($segment == '' OR preg_match("/[^0-9]/", $segment) OR $segment > 255 OR strlen($segment) > 3)
+        // Always 4 segments needed
+        if (count($ip_segments) != 4)
         {
             return FALSE;
         }
+        // IP can not start with 0
+        if ($ip_segments[0][0] == '0')
+        {
+            return FALSE;
+        }
+        // Check each segment
+        foreach ($ip_segments as $segment)
+        {
+            // IP segments must be digits and can not be 
+            // longer than 3 digits or greater then 255
+            if ($segment == '' OR preg_match("/[^0-9]/", $segment) OR $segment > 255 OR strlen($segment) > 3)
+            {
+                return FALSE;
+            }
+        }
+
+        return TRUE;
     }
-
-    return TRUE;
 }
-
 // --------------------------------------------------------------------
 
 /**
@@ -402,20 +448,22 @@ function i_valid_ip($ip)
 * @access    public
 * @return    string
 */
-function i_user_agent()
+if( ! function_exists('i_user_agent') ) 
 {
-    $in = ssc::instance();
-    
-    if ($in->_put->user_agent !== FALSE)
+    function i_user_agent()
     {
+        $in = ssc::instance();
+        
+        if ($in->_put->user_agent !== FALSE)
+        {
+            return $in->_put->user_agent;
+        }
+
+        $in->_put->user_agent = ( ! isset($_SERVER['HTTP_USER_AGENT'])) ? FALSE : $_SERVER['HTTP_USER_AGENT'];
+
         return $in->_put->user_agent;
     }
-
-    $in->_put->user_agent = ( ! isset($_SERVER['HTTP_USER_AGENT'])) ? FALSE : $_SERVER['HTTP_USER_AGENT'];
-
-    return $in->_put->user_agent;
 }
-
 // --------------------------------------------------------------------
 
 /**
@@ -425,46 +473,49 @@ function i_user_agent()
 * @param    string
 * @return   string
 */
-function i_filename_security($str)
+if( ! function_exists('i_filename_security') ) 
 {
-    $bad = array(
-                    "../",
-                    "./",
-                    "<!--",
-                    "-->",
-                    "<",
-                    ">",
-                    "'",
-                    '"',
-                    '&',
-                    '$',
-                    '#',
-                    '{',
-                    '}',
-                    '[',
-                    ']',
-                    '=',
-                    ';',
-                    '?',
-                    "%20",
-                    "%22",
-                    "%3c",        // <
-                    "%253c",     // <
-                    "%3e",         // >
-                    "%0e",         // >
-                    "%28",         // (  
-                    "%29",         // ) 
-                    "%2528",     // (
-                    "%26",         // &
-                    "%24",         // $
-                    "%3f",         // ?
-                    "%3b",         // ;
-                    "%3d"        // =
-                );
+    function i_filename_security($str)
+    {
+        $bad = array(
+                        "../",
+                        "./",
+                        "<!--",
+                        "-->",
+                        "<",
+                        ">",
+                        "'",
+                        '"',
+                        '&',
+                        '$',
+                        '#',
+                        '{',
+                        '}',
+                        '[',
+                        ']',
+                        '=',
+                        ';',
+                        '?',
+                        "%20",
+                        "%22",
+                        "%3c",        // <
+                        "%253c",     // <
+                        "%3e",         // >
+                        "%0e",         // >
+                        "%28",         // (  
+                        "%29",         // ) 
+                        "%2528",     // (
+                        "%26",         // &
+                        "%24",         // $
+                        "%3f",         // ?
+                        "%3b",         // ;
+                        "%3d"        // =
+                    );
 
-    return stripslashes(str_replace($bad, '', $str));
+        return stripslashes(str_replace($bad, '', $str));
+    }
 }
 
 /* End of file input.php */
-/* Location: ./base/helpers/input.php */
+/* Location: ./base/helpers/loaded/input.php */
 ?>

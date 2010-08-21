@@ -56,10 +56,10 @@ if( ! function_exists('ob_set_headers'))
                 
         // system helpers
         if (config_item('log_threshold') > 0)
-        require (BASE .'helpers'. DS .'loaded'. DS .'log'. EXT); 
-        require (BASE .'helpers'. DS .'loaded'. DS .'input'. EXT);
-        require (BASE .'helpers'. DS .'loaded'. DS .'lang'. EXT);
-        require (BASE .'helpers'. DS .'loaded'. DS .'benchmark'. EXT);
+        loaded_helper('log');
+        loaded_helper('input');
+        loaded_helper('lang');
+        loaded_helper('benchmark');        
     }
 }
 

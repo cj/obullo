@@ -36,19 +36,15 @@ Global Controller files from now on.
 - ini_set('display_errors', ..); removed from bootstrap and config.php
 - content helper renamed as view.php and all "content_" function prefix changed as "view_"
 - some impromevents for profiler class, added php and php5 libraries colourful track support.
-- added session helper driver extend support.
-
+- added session helper driver extend support, added to all helpers extend support
+- added i_request() function to base input helper.
+- session function all_userdata changed as sess_alldata()
+- changed view helper view_set_folder() 'app_view' switch case string as 'view_app'
 //-----------------------------------------------------------------------------
 
-@todo .. add i_request(); function it will not check each post and get values $_REQUEST['item']
-
-@todo .. idea ! add set_callback('function', param1, param1..) instead of set_rules('|callback_function')
-@todo .. base helpers extend support
-@todo .. output cache filemtime
-@todo .. remove _SESSION global from input helper
-@todo .. Pdo has mysql_free_result solution ?
 @todo .. upload class security
 @todo .. add config load and lang load track support for profiler class
-@todo .. pager class
-         
+
+@next versiın todo .. add set_callback('function', param1, param1..) instead of set_rules('|callback_function')
+@next versiın todo .. pager class         
 @next version todo .. firewall class (integer, string validate for requests, login attempts for captcha) 

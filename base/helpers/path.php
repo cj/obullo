@@ -68,6 +68,7 @@ if( ! function_exists('set_realpath') )
 	    return $path;
     }
 }
+
 /* End of file path.php */
 /* Location: ./base/helpers/path.php */
 ?>

@@ -7,61 +7,64 @@ defined('BASE') or exit('Access Denied!');
 * Less coding, Less Memory.
 * 
 * @author      Ersin Guvenc.
-* 
+* @version     0.1
+* @version     0.2  added extend support
 */
-function _sess_start($params = array())
-{                       
-    log_message('debug', "Session Cookie Driver Initialized"); 
+if( ! function_exists('_sess_start') ) 
+{
+    function _sess_start($params = array())
+    {                       
+        log_message('debug', "Session Cookie Driver Initialized"); 
 
-    $ses = ssc::instance();
+        $ses = ssc::instance();
 
-    foreach (array('sess_encrypt_cookie','sess_expiration', 'sess_match_ip', 
-    'sess_match_useragent', 'sess_cookie_name', 'cookie_path', 'cookie_domain', 
-    'sess_time_to_update', 'time_reference', 'cookie_prefix', 'encryption_key') as $key)
-    {
-        $ses->_sion->$key = (isset($params[$key])) ? $params[$key] : config_item($key);
+        foreach (array('sess_encrypt_cookie','sess_expiration', 'sess_match_ip', 
+        'sess_match_useragent', 'sess_cookie_name', 'cookie_path', 'cookie_domain', 
+        'sess_time_to_update', 'time_reference', 'cookie_prefix', 'encryption_key') as $key)
+        {
+            $ses->_sion->$key = (isset($params[$key])) ? $params[$key] : config_item($key);
+        }
+
+        // _unserialize func. use strip_slashes() func.
+        loader::base_helper('string');
+
+        $ses->_sion->now = _get_time();
+
+        // Set the expiration two years from now.
+        if ($ses->_sion->sess_expiration == 0)
+        $ses->_sion->sess_expiration = (60 * 60 * 24 * 365 * 2);  
+
+        // Set the cookie name
+        $ses->_sion->sess_cookie_name = $ses->_sion->cookie_prefix . $ses->_sion->sess_cookie_name;
+        
+        // Cookie driver changes ...
+        // -------------------------------------------------------------------- 
+        
+        // Run the Session routine. If a session doesn't exist we'll 
+        // create a new one.  If it does, we'll update it.
+        if ( ! sess_read())
+        {
+            sess_create();
+        }
+        else
+        {    
+            sess_update();
+        }
+
+        // Delete 'old' flashdata (from last request)
+        _flashdata_sweep();
+
+        // Mark all new flashdata as old (data will be deleted before next request)
+        _flashdata_mark();
+
+        // Delete expired sessions if necessary
+        _sess_gc();
+
+        log_message('debug', "Session routines successfully run"); 
+
+        return TRUE;
     }
-
-    // _unserialize func. use strip_slashes() func.
-    loader::base_helper('string');
-
-    $ses->_sion->now = _get_time();
-
-    // Set the expiration two years from now.
-    if ($ses->_sion->sess_expiration == 0)
-    $ses->_sion->sess_expiration = (60 * 60 * 24 * 365 * 2);  
-
-    // Set the cookie name
-    $ses->_sion->sess_cookie_name = $ses->_sion->cookie_prefix . $ses->_sion->sess_cookie_name;
-    
-    // Cookie driver changes ...
-    // -------------------------------------------------------------------- 
-    
-    // Run the Session routine. If a session doesn't exist we'll 
-    // create a new one.  If it does, we'll update it.
-    if ( ! sess_read())
-    {
-        sess_create();
-    }
-    else
-    {    
-        sess_update();
-    }
-
-    // Delete 'old' flashdata (from last request)
-    _flashdata_sweep();
-
-    // Mark all new flashdata as old (data will be deleted before next request)
-    _flashdata_mark();
-
-    // Delete expired sessions if necessary
-    _sess_gc();
-
-    log_message('debug', "Session routines successfully run"); 
-
-    return TRUE;
 }
-
 // --------------------------------------------------------------------
 
 /**
@@ -70,99 +73,104 @@ function _sess_start($params = array())
 * @access    public
 * @return    array() sessions.
 */
-function sess_read()
-{    
-    $ses = ssc::instance();
-    
-    // Fetch the cookie
-    $session = i_cookie($ses->_sion->sess_cookie_name);
-
-    // No cookie?  Goodbye cruel world!...
-    if ($session === FALSE)
-    {               
-        log_message('debug', 'A session cookie was not found.');
-        return FALSE;
-    }
-    
-    // Decrypt the cookie data
-    if ($ses->_sion->sess_encrypt_cookie == TRUE)
-    {
-        $encrypt = encrypt::instance();
-        $encrypt->init();
-        
-        $session = $encrypt->decode($session);
-    }
-    else
+if( ! function_exists('sess_read') ) 
+{
+    function sess_read()
     {    
-        // encryption was not used, so we need to check the md5 hash
-        $hash    = substr($session, strlen($session)-32); // get last 32 chars
-        $session = substr($session, 0, strlen($session)-32);
+        $ses = ssc::instance();
+        
+        // Fetch the cookie
+        $session = i_cookie($ses->_sion->sess_cookie_name);
 
-        // Does the md5 hash match?  This is to prevent manipulation of session data in userspace
-        if ($hash !==  md5($session . $ses->_sion->encryption_key))
+        // No cookie?  Goodbye cruel world!...
+        if ($session === FALSE)
+        {               
+            log_message('debug', 'A session cookie was not found.');
+            return FALSE;
+        }
+        
+        // Decrypt the cookie data
+        if ($ses->_sion->sess_encrypt_cookie == TRUE)
         {
-            log_message('error', 'The session cookie data did not match what was expected. This could be a possible hacking attempt.');
+            $encrypt = encrypt::instance();
+            $encrypt->init();
             
+            $session = $encrypt->decode($session);
+        }
+        else
+        {    
+            // encryption was not used, so we need to check the md5 hash
+            $hash    = substr($session, strlen($session)-32); // get last 32 chars
+            $session = substr($session, 0, strlen($session)-32);
+
+            // Does the md5 hash match?  This is to prevent manipulation of session data in userspace
+            if ($hash !==  md5($session . $ses->_sion->encryption_key))
+            {
+                log_message('error', 'The session cookie data did not match what was expected. This could be a possible hacking attempt.');
+                
+                sess_destroy();
+                return FALSE;
+            }
+        }
+        
+        // Unserialize the session array
+        $session = _unserialize($session);
+        
+        // Is the session data we unserialized an array with the correct format?
+        if ( ! is_array($session) OR ! isset($session['session_id']) 
+        OR ! isset($session['ip_address']) OR ! isset($session['user_agent']) 
+        OR ! isset($session['last_activity'])) 
+        {               
             sess_destroy();
             return FALSE;
         }
-    }
-    
-    // Unserialize the session array
-    $session = _unserialize($session);
-    
-    // Is the session data we unserialized an array with the correct format?
-    if ( ! is_array($session) OR ! isset($session['session_id']) 
-    OR ! isset($session['ip_address']) OR ! isset($session['user_agent']) 
-    OR ! isset($session['last_activity'])) 
-    {               
-        sess_destroy();
-        return FALSE;
-    }
-    
-    // Is the session current?
-    if (($session['last_activity'] + $ses->_sion->sess_expiration) < $ses->_sion->now)
-    {
-        sess_destroy();
-        return FALSE;
-    }
+        
+        // Is the session current?
+        if (($session['last_activity'] + $ses->_sion->sess_expiration) < $ses->_sion->now)
+        {
+            sess_destroy();
+            return FALSE;
+        }
 
-    // Does the IP Match?
-    if ($ses->_sion->sess_match_ip == TRUE AND $session['ip_address'] != i_ip_address())
-    {
-        sess_destroy();
-        return FALSE;
+        // Does the IP Match?
+        if ($ses->_sion->sess_match_ip == TRUE AND $session['ip_address'] != i_ip_address())
+        {
+            sess_destroy();
+            return FALSE;
+        }
+        
+        // Does the User Agent Match?
+        if ($ses->_sion->sess_match_useragent == TRUE AND trim($session['user_agent']) != trim(substr(i_user_agent(), 0, 50)))
+        {
+            sess_destroy();
+            return FALSE;
+        }
+        
+        // Cookie driver changes ...
+        // -------------------------------------------------------------------- 
+        
+        // Session is valid!
+        $ses->_sion->userdata = $session;
+        unset($session);
+        
+        return TRUE;
     }
-    
-    // Does the User Agent Match?
-    if ($ses->_sion->sess_match_useragent == TRUE AND trim($session['user_agent']) != trim(substr(i_user_agent(), 0, 50)))
-    {
-        sess_destroy();
-        return FALSE;
-    }
-    
-    // Cookie driver changes ...
-    // -------------------------------------------------------------------- 
-    
-    // Session is valid!
-    $ses->_sion->userdata = $session;
-    unset($session);
-    
-    return TRUE;
 }
-
 // --------------------------------------------------------------------
 
 /**
- * Write the session data
- *
- * @access    public
- * @return    void
- */
-function sess_write()
+* Write the session data
+*
+* @access    public
+* @return    void
+*/
+if( ! function_exists('sess_write') ) 
 {
-    _set_cookie();
-    return; 
+    function sess_write()
+    {
+        _set_cookie();
+        return; 
+    }
 }
 
 /**
@@ -171,35 +179,37 @@ function sess_write()
 * @access    public
 * @return    void
 */
-function sess_create()
-{    
-    $ses = ssc::instance();
-    
-    $sessid = '';
-    while (strlen($sessid) < 32)
-    {
-        $sessid .= mt_rand(0, mt_getrandmax());
+if( ! function_exists('sess_create') ) 
+{
+    function sess_create()
+    {    
+        $ses = ssc::instance();
+        
+        $sessid = '';
+        while (strlen($sessid) < 32)
+        {
+            $sessid .= mt_rand(0, mt_getrandmax());
+        }
+        
+        // To make the session ID even more secure we'll combine it with the user's IP
+        $sessid .= i_ip_address();
+
+             
+        $ses->_sion->userdata = array(
+                            'session_id'     => md5(uniqid($sessid, TRUE)),
+                            'ip_address'     => i_ip_address(),
+                            'user_agent'     => substr(i_user_agent(), 0, 50),
+                            'last_activity'  => $ses->_sion->now
+                            );
+        
+        // Write the cookie
+        // none abstract $this->_set_cookie();
+        
+        // --------------------------------------------------------------------  
+        // Write the cookie
+        _set_cookie(); 
     }
-    
-    // To make the session ID even more secure we'll combine it with the user's IP
-    $sessid .= i_ip_address();
-
-         
-    $ses->_sion->userdata = array(
-                        'session_id'     => md5(uniqid($sessid, TRUE)),
-                        'ip_address'     => i_ip_address(),
-                        'user_agent'     => substr(i_user_agent(), 0, 50),
-                        'last_activity'  => $ses->_sion->now
-                        );
-    
-    // Write the cookie
-    // none abstract $this->_set_cookie();
-    
-    // --------------------------------------------------------------------  
-    // Write the cookie
-    _set_cookie(); 
 }
-
 // --------------------------------------------------------------------
 
 /**
@@ -208,48 +218,50 @@ function sess_create()
 * @access    public
 * @return    void
 */
-function sess_update()
+if( ! function_exists('sess_update') ) 
 {
-    $ses = ssc::instance();
-    
-    // We only update the session every five minutes by default
-    if (($ses->_sion->userdata['last_activity'] + $ses->_sion->sess_time_to_update) >= $ses->_sion->now)
+    function sess_update()
     {
-        return;
-    }
+        $ses = ssc::instance();
+        
+        // We only update the session every five minutes by default
+        if (($ses->_sion->userdata['last_activity'] + $ses->_sion->sess_time_to_update) >= $ses->_sion->now)
+        {
+            return;
+        }
 
-    // Save the old session id so we know which record to 
-    // update in the database if we need it
-    $old_sessid = $ses->_sion->userdata['session_id'];
-    $new_sessid = '';
-    while (strlen($new_sessid) < 32)
-    {
-        $new_sessid .= mt_rand(0, mt_getrandmax());
+        // Save the old session id so we know which record to 
+        // update in the database if we need it
+        $old_sessid = $ses->_sion->userdata['session_id'];
+        $new_sessid = '';
+        while (strlen($new_sessid) < 32)
+        {
+            $new_sessid .= mt_rand(0, mt_getrandmax());
+        }
+        
+        // To make the session ID even more secure we'll combine it with the user's IP
+        $new_sessid .= i_ip_address();
+        
+        // Turn it into a hash
+        $new_sessid = md5(uniqid($new_sessid, TRUE));
+        
+        // Update the session data in the session data array
+        $ses->_sion->userdata['session_id']    = $new_sessid;
+        $ses->_sion->userdata['last_activity'] = $ses->_sion->now;
+        
+        // _set_cookie() will handle this for us if we aren't using database sessions
+        // by pushing all userdata to the cookie.
+        $cookie_data = NULL;
+        
+        // Write the cookie
+        // none abstract $this->_set_cookie($cookie_data);
+        
+        // --------------------------------------------------------------------  
+        
+        // Write the cookie
+        _set_cookie($cookie_data);
     }
-    
-    // To make the session ID even more secure we'll combine it with the user's IP
-    $new_sessid .= i_ip_address();
-    
-    // Turn it into a hash
-    $new_sessid = md5(uniqid($new_sessid, TRUE));
-    
-    // Update the session data in the session data array
-    $ses->_sion->userdata['session_id']    = $new_sessid;
-    $ses->_sion->userdata['last_activity'] = $ses->_sion->now;
-    
-    // _set_cookie() will handle this for us if we aren't using database sessions
-    // by pushing all userdata to the cookie.
-    $cookie_data = NULL;
-    
-    // Write the cookie
-    // none abstract $this->_set_cookie($cookie_data);
-    
-    // --------------------------------------------------------------------  
-    
-    // Write the cookie
-    _set_cookie($cookie_data);
 }
-    
 // --------------------------------------------------------------------
 
 /**
@@ -258,21 +270,23 @@ function sess_update()
 * @access    public
 * @return    void
 */
-function sess_destroy()
-{   
-    $ses = ssc::instance();
-    
-    // Kill the cookie
-    setcookie(           
-                $ses->_sion->sess_cookie_name, 
-                addslashes(serialize(array())), 
-                ($ses->_sion->now - 31500000), 
-                $ses->_sion->cookie_path, 
-                $ses->_sion->cookie_domain, 
-                FALSE
-    );
+if( ! function_exists('sess_destroy') ) 
+{
+    function sess_destroy()
+    {   
+        $ses = ssc::instance();
+        
+        // Kill the cookie
+        setcookie(           
+                    $ses->_sion->sess_cookie_name, 
+                    addslashes(serialize(array())), 
+                    ($ses->_sion->now - 31500000), 
+                    $ses->_sion->cookie_path, 
+                    $ses->_sion->cookie_domain, 
+                    FALSE
+        );
+    }
 }
-
 // --------------------------------------------------------------------
 
 /**
@@ -282,12 +296,14 @@ function sess_destroy()
 * @param    string
 * @return   string
 */        
-function sess_get($item)
+if( ! function_exists('sess_get') ) 
 {
-    $ses = ssc::instance();
-    return ( ! isset($ses->_sion->userdata[$item])) ? FALSE : $ses->_sion->userdata[$item];
+    function sess_get($item)
+    {
+        $ses = ssc::instance();
+        return ( ! isset($ses->_sion->userdata[$item])) ? FALSE : $ses->_sion->userdata[$item];
+    }
 }
-
 // --------------------------------------------------------------------
 
 /**
@@ -295,13 +311,15 @@ function sess_get($item)
 *
 * @access    public
 * @return    mixed
-*/    
-function all_userdata()
+*/
+if( ! function_exists('sess_alldata') ) 
 {
-    $ses = ssc::instance();
-    return ( ! isset($ses->_sion->userdata)) ? FALSE : $ses->_sion->userdata;
+    function sess_alldata()
+    {
+        $ses = ssc::instance();
+        return ( ! isset($ses->_sion->userdata)) ? FALSE : $ses->_sion->userdata;
+    }
 }
-
 // --------------------------------------------------------------------
 
 /**
@@ -311,27 +329,29 @@ function all_userdata()
 * @param    mixed
 * @param    string
 * @return   void
-*/        
-function sess_set($newdata = array(), $newval = '')
-{
-    $ses = ssc::instance();
-    
-    if (is_string($newdata))
+*/       
+if( ! function_exists('sess_set') ) 
+{ 
+    function sess_set($newdata = array(), $newval = '')
     {
-        $newdata = array($newdata => $newval);
-    }
-
-    if (count($newdata) > 0)
-    {
-        foreach ($newdata as $key => $val)
+        $ses = ssc::instance();
+        
+        if (is_string($newdata))
         {
-            $ses->_sion->userdata[$key] = $val;
+            $newdata = array($newdata => $newval);
         }
+
+        if (count($newdata) > 0)
+        {
+            foreach ($newdata as $key => $val)
+            {
+                $ses->_sion->userdata[$key] = $val;
+            }
+        }
+
+        sess_write();
     }
-
-    sess_write();
 }
-
 // --------------------------------------------------------------------
 
 /**
@@ -339,27 +359,29 @@ function sess_set($newdata = array(), $newval = '')
 *
 * @access    array
 * @return    void
-*/        
-function sess_unset($newdata = array())  // obullo changes ...
-{
-    $ses = ssc::instance();
-    
-    if (is_string($newdata))
+*/       
+if( ! function_exists('sess_unset') ) 
+{ 
+    function sess_unset($newdata = array())  // obullo changes ...
     {
-        $newdata = array($newdata => '');
-    }
-
-    if (count($newdata) > 0)
-    {
-        foreach ($newdata as $key => $val)
+        $ses = ssc::instance();
+        
+        if (is_string($newdata))
         {
-            unset($ses->_sion->userdata[$key]);
+            $newdata = array($newdata => '');
         }
+
+        if (count($newdata) > 0)
+        {
+            foreach ($newdata as $key => $val)
+            {
+                unset($ses->_sion->userdata[$key]);
+            }
+        }
+
+        sess_write();
     }
-
-    sess_write();
 }
-
 // ------------------------------------------------------------------------
 
 /**
@@ -371,25 +393,27 @@ function sess_unset($newdata = array())  // obullo changes ...
 * @param    string
 * @return   void
 */
-function sess_set_flash($newdata = array(), $newval = '') // obullo changes ...
-{
-    $ses = ssc::instance();
-    
-    if (is_string($newdata))
+if( ! function_exists('sess_set_flash') ) 
+{ 
+    function sess_set_flash($newdata = array(), $newval = '') // obullo changes ...
     {
-        $newdata = array($newdata => $newval);
-    }
-    
-    if (count($newdata) > 0)
-    {
-        foreach ($newdata as $key => $val)
+        $ses = ssc::instance();
+        
+        if (is_string($newdata))
         {
-            $flashdata_key = $ses->_sion->flashdata_key.':new:'.$key;
-            sess_set($flashdata_key, $val);
+            $newdata = array($newdata => $newval);
         }
-    }
-} 
-
+        
+        if (count($newdata) > 0)
+        {
+            foreach ($newdata as $key => $val)
+            {
+                $flashdata_key = $ses->_sion->flashdata_key.':new:'.$key;
+                sess_set($flashdata_key, $val);
+            }
+        }
+    } 
+}
 // ------------------------------------------------------------------------
 
 /**
@@ -399,20 +423,22 @@ function sess_set_flash($newdata = array(), $newval = '') // obullo changes ...
 * @param    string
 * @return   void
 */
-function sess_keep_flash($key) // obullo changes ...
-{
-    $ses = ssc::instance();
-    // 'old' flashdata gets removed.  Here we mark all 
-    // flashdata as 'new' to preserve it from _flashdata_sweep()
-    // Note the function will return FALSE if the $key 
-    // provided cannot be found
-    $old_flashdata_key = $ses->_sion->flashdata_key.':old:'.$key;
-    $value = sess_get($old_flashdata_key);
+if( ! function_exists('sess_keep_flash') ) 
+{ 
+    function sess_keep_flash($key) // obullo changes ...
+    {
+        $ses = ssc::instance();
+        // 'old' flashdata gets removed.  Here we mark all 
+        // flashdata as 'new' to preserve it from _flashdata_sweep()
+        // Note the function will return FALSE if the $key 
+        // provided cannot be found
+        $old_flashdata_key = $ses->_sion->flashdata_key.':old:'.$key;
+        $value = sess_get($old_flashdata_key);
 
-    $new_flashdata_key = $ses->_sion->flashdata_key.':new:'.$key;
-    sess_set($new_flashdata_key, $value);
+        $new_flashdata_key = $ses->_sion->flashdata_key.':new:'.$key;
+        sess_set($new_flashdata_key, $value);
+    }
 }
-
 // ------------------------------------------------------------------------
 
 /**
@@ -427,23 +453,25 @@ function sess_keep_flash($key) // obullo changes ...
 * @version  0.2     added prefix and suffix parameters.
 * 
 * @return   string
-*/    
-function sess_get_flash($key, $prefix = '', $suffix = '')  // obullo changes ...
-{
-    $ses = ssc::instance();
-    $flashdata_key = $ses->_sion->flashdata_key.':old:'.$key;
-    
-    $value = sess_get($flashdata_key);
-    
-    if($value == '')
+*/
+if( ! function_exists('sess_get_flash') ) 
+{ 
+    function sess_get_flash($key, $prefix = '', $suffix = '')  // obullo changes ...
     {
-        $prefix = '';
-        $suffix = '';
+        $ses = ssc::instance();
+        $flashdata_key = $ses->_sion->flashdata_key.':old:'.$key;
+        
+        $value = sess_get($flashdata_key);
+        
+        if($value == '')
+        {
+            $prefix = '';
+            $suffix = '';
+        }
+        
+        return $prefix.$value.$suffix;
     }
-    
-    return $prefix.$value.$suffix;
 }
-
 // ------------------------------------------------------------------------
 
 /**
@@ -453,22 +481,24 @@ function sess_get_flash($key, $prefix = '', $suffix = '')  // obullo changes ...
 * @access    private
 * @return    void
 */
-function _flashdata_mark()
-{
-    $ses = ssc::instance();
-    $userdata = all_userdata();
-    foreach ($userdata as $name => $value)
+if( ! function_exists('_flashdata_mark') ) 
+{ 
+    function _flashdata_mark()
     {
-        $parts = explode(':new:', $name);
-        if (is_array($parts) && count($parts) === 2)
+        $ses = ssc::instance();
+        $userdata = all_userdata();
+        foreach ($userdata as $name => $value)
         {
-            $new_name = $ses->_sion->flashdata_key.':old:'.$parts[1];
-            sess_set($new_name, $value);
-            sess_unset($name);
+            $parts = explode(':new:', $name);
+            if (is_array($parts) && count($parts) === 2)
+            {
+                $new_name = $ses->_sion->flashdata_key.':old:'.$parts[1];
+                sess_set($new_name, $value);
+                sess_unset($name);
+            }
         }
     }
 }
-
 // ------------------------------------------------------------------------
 
 /**
@@ -477,19 +507,20 @@ function _flashdata_mark()
 * @access    private
 * @return    void
 */
-function _flashdata_sweep()
-{              
-    $userdata = all_userdata();
-    foreach ($userdata as $key => $value)
-    {
-        if (strpos($key, ':old:'))
+if( ! function_exists('_flashdata_sweep') ) 
+{
+    function _flashdata_sweep()
+    {              
+        $userdata = all_userdata();
+        foreach ($userdata as $key => $value)
         {
-            sess_unset($key);
+            if (strpos($key, ':old:'))
+            {
+                sess_unset($key);
+            }
         }
     }
-
 }
-
 // --------------------------------------------------------------------
 
 /**
@@ -498,25 +529,26 @@ function _flashdata_sweep()
 * @access    private
 * @return    string
 */
-function _get_time()
-{   
-    $ses  = ssc::instance();
-    $time = time();
-    if (strtolower($ses->_sion->time_reference) == 'gmt')
-    {
-        $now  = time();
-        $time = mktime( gmdate("H", $now), 
-        gmdate("i", $now), 
-        gmdate("s", $now), 
-        gmdate("m", $now), 
-        gmdate("d", $now), 
-        gmdate("Y", $now)
-        );
+if( ! function_exists('_get_time') ) 
+{
+    function _get_time()
+    {   
+        $ses  = ssc::instance();
+        $time = time();
+        if (strtolower($ses->_sion->time_reference) == 'gmt')
+        {
+            $now  = time();
+            $time = mktime( gmdate("H", $now), 
+            gmdate("i", $now), 
+            gmdate("s", $now), 
+            gmdate("m", $now), 
+            gmdate("d", $now), 
+            gmdate("Y", $now)
+            );
+        }
+        return $time;
     }
-    
-    return $time;
 }
-
 // --------------------------------------------------------------------
 
 /**
@@ -525,41 +557,43 @@ function _get_time()
 * @access    public
 * @return    void
 */
-function _set_cookie($cookie_data = NULL)
+if( ! function_exists('_set_cookie') ) 
 {
-    $ses = ssc::instance();
-    if (is_null($cookie_data))
+    function _set_cookie($cookie_data = NULL)
     {
-        $cookie_data = $ses->_sion->userdata;
-    }
+        $ses = ssc::instance();
+        if (is_null($cookie_data))
+        {
+            $cookie_data = $ses->_sion->userdata;
+        }
 
-    // Serialize the userdata for the cookie
-    $cookie_data = _serialize($cookie_data);
-    
-    if ($ses->_sion->sess_encrypt_cookie == TRUE)
-    {
-        $encrypt = encrypt::instance();
-        $encrypt->init();
-    
-        $cookie_data = $encrypt->encode($cookie_data);
+        // Serialize the userdata for the cookie
+        $cookie_data = _serialize($cookie_data);
+        
+        if ($ses->_sion->sess_encrypt_cookie == TRUE)
+        {
+            $encrypt = encrypt::instance();
+            $encrypt->init();
+        
+            $cookie_data = $encrypt->encode($cookie_data);
+        }
+        else
+        {
+            // if encryption is not used, we provide an md5 hash to prevent userside tampering
+            $cookie_data = $cookie_data . md5($cookie_data . $ses->_sion->encryption_key);
+        }
+        
+        // Set the cookie
+        setcookie(
+                    $ses->_sion->sess_cookie_name,
+                    $cookie_data,
+                    $ses->_sion->sess_expiration + time(),
+                    $ses->_sion->cookie_path,
+                    $ses->_sion->cookie_domain,
+                    0
+                );
     }
-    else
-    {
-        // if encryption is not used, we provide an md5 hash to prevent userside tampering
-        $cookie_data = $cookie_data . md5($cookie_data . $ses->_sion->encryption_key);
-    }
-    
-    // Set the cookie
-    setcookie(
-                $ses->_sion->sess_cookie_name,
-                $cookie_data,
-                $ses->_sion->sess_expiration + time(),
-                $ses->_sion->cookie_path,
-                $ses->_sion->cookie_domain,
-                0
-            );
 }
-
 // --------------------------------------------------------------------
 
 /**
@@ -572,25 +606,27 @@ function _set_cookie($cookie_data = NULL)
 * @param    array
 * @return   string
 */    
-function _serialize($data)
+if( ! function_exists('_serialize') ) 
 {
-    if (is_array($data))
+    function _serialize($data)
     {
-        foreach ($data as $key => $val)
+        if (is_array($data))
+        {
+            foreach ($data as $key => $val)
+            {
+                if (is_string($val))
+                $data[$key] = str_replace('\\', '{{slash}}', $val);
+            }
+        }
+        else
         {
             if (is_string($val))
-            $data[$key] = str_replace('\\', '{{slash}}', $val);
+            $data = str_replace('\\', '{{slash}}', $data);
         }
+        
+        return serialize($data);
     }
-    else
-    {
-        if (is_string($val))
-        $data = str_replace('\\', '{{slash}}', $data);
-    }
-    
-    return serialize($data);
 }
-
 // --------------------------------------------------------------------
 
 /**
@@ -602,25 +638,27 @@ function _serialize($data)
 * @access    private
 * @param    array
 * @return    string
-*/        
-function _unserialize($data)
+*/
+if( ! function_exists('_unserialize') ) 
 {
-    $data = @unserialize(strip_slashes($data));
-    
-    if (is_array($data))
+    function _unserialize($data)
     {
-        foreach ($data as $key => $val)
+        $data = @unserialize(strip_slashes($data));
+        
+        if (is_array($data))
         {
-            if(is_string($val))
-            $data[$key] = str_replace('{{slash}}', '\\', $val);
+            foreach ($data as $key => $val)
+            {
+                if(is_string($val))
+                $data[$key] = str_replace('{{slash}}', '\\', $val);
+            }
+            
+            return $data;
         }
         
-        return $data;
+        return (is_string($data)) ? str_replace('{{slash}}', '\\', $data) : $data;
     }
-    
-    return (is_string($data)) ? str_replace('{{slash}}', '\\', $data) : $data;
 }
-
 // --------------------------------------------------------------------
 
 /**
@@ -632,9 +670,12 @@ function _unserialize($data)
 * @access    public
 * @return    void
 */
-function _sess_gc()
+if( ! function_exists('_sess_gc') ) 
 {
-    return;
+    function _sess_gc()
+    {
+        return;
+    }
 }
 
 /* End of file cookie_driver.php */

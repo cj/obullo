@@ -26,7 +26,7 @@ Class ssc {
     
     public $_ng   = NULL; // la_ng
     public $_er   = NULL; // log_er
-    public $_ent  = NULL; // cont_ent
+    public $_vi   = NULL;  // vi_ew
     public $_put  = NULL; // in_put
     public $_ity  = NULL; // secur_ity 
     public $_sion = NULL; // ses_sion
@@ -35,9 +35,10 @@ Class ssc {
     public $_profiler_mods  = array(); // profiler models
     public $_profiler_libs  = array(); // profiler libs
     public $_profiler_files = array(); // profiler files
-    public $_profiler_scripts     = array(); // profiler scripts
-    public $_profiler_app_views   = array(); // profiler app views
-    public $_profiler_local_views = array(); // profiler local views
+    public $_profiler_scripts        = array(); // profiler scripts
+    public $_profiler_app_views      = array(); // profiler app views
+    public $_profiler_local_views    = array(); // profiler local views
+    public $_profiler_loaded_helpers = array(); // profiler loaed helpers
     
     public static function instance()
     {

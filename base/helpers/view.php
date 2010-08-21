@@ -30,23 +30,25 @@ Class ViewException extends CommonException {}
  * @link        
  */
  
-$_cont = ssc::instance();
-$_cont->_ent = new stdClass();
+if( ! isset($_vi->_ew)) 
+{
+    $_vi = ssc::instance();
+    $_vi->_ew = new stdClass();
 
-$_cont->_ent->view_folder     = DS. '';
-$_cont->_ent->app_view_folder = DS. '';
-$_cont->_ent->css_folder      = '/';
-$_cont->_ent->img_folder      = '/';
-                                           
-log_message('debug', "View Helper Initialized");
+    $_vi->_ew->view_folder     = DS. '';
+    $_vi->_ew->app_view_folder = DS. '';
+    $_vi->_ew->css_folder      = '/';
+    $_vi->_ew->img_folder      = '/';
+                                               
+    log_message('debug', "View Helper Initialized");
+}
 
 // ------------------------------------------------------------------------ 
 
 /**
 * Create your custom folders and
-* change all your view paths for the
-* supporting multiple interfaces (iphone interface, xml services
-* etc ..)
+* change all your view paths to supporting
+* multiple interfaces (iphone interface etc ..)
 * 
 * @author   Ersin Guvenc
 * @param    string $func view function
@@ -54,33 +56,35 @@ log_message('debug', "View Helper Initialized");
 * @version  0.1                 
 * @version  0.2 added img folder
 */
-function view_set_folder($func = 'view', $folder = '')
+if ( ! function_exists('view_set_folder'))
 {
-    $cont = ssc::instance();
-    $folder_path = empty($folder) ? DS : $folder. DS;
-    
-    switch ($func)
+    function view_set_folder($func = 'view', $folder = '')
     {
-       case 'view':
-         $cont->_ent->view_folder     = DS. $folder_path;
-         break;
-         
-       case 'app_view':
-         $cont->_ent->app_view_folder = DS. $folder_path;  
-         break;
-         
-       case 'css':
-         $cont->_ent->css_folder      = $folder;  
-         break;
-         
-       case 'img':
-         $cont->_ent->img_folder      = $folder;  
-         break;
+        $vi = ssc::instance();
+        $folder_path = empty($folder) ? DS : $folder. DS;
+        
+        switch ($func)
+        {
+           case 'view':
+             $vi->_ew->view_folder     = DS. $folder_path;
+             break;
+             
+           case 'view_app':
+             $vi->_ew->app_view_folder = DS. $folder_path;  
+             break;
+             
+           case 'css':
+             $vi->_ew->css_folder      = $folder;  
+             break;
+             
+           case 'img':
+             $vi->_ew->img_folder      = $folder;  
+             break;
+        }
+        
+        return TRUE;
     }
-    
-    return TRUE;
 }
-
 // ------------------------------------------------------------------------ 
 
 /**
@@ -90,11 +94,13 @@ function view_set_folder($func = 'view', $folder = '')
 * @param string $filename
 * @param array  $data
 */
-function view_script($filename, $data = '')
-{   
-    return _load_script(DIR .$GLOBALS['d']. DS .'scripts'. DS, $filename, $data);
+if ( ! function_exists('view_script'))
+{
+    function view_script($filename, $data = '')
+    {   
+        return _load_script(DIR .$GLOBALS['d']. DS .'scripts'. DS, $filename, $data);
+    }
 }
-
 // ------------------------------------------------------------------------
 
 /**
@@ -104,10 +110,14 @@ function view_script($filename, $data = '')
 * @param string $filename
 * @param array  $data
 */
-function view_app_script($filename, $data = '')
-{   
-    return _load_script(APP .'scripts'. DS, $filename, $data);
+if ( ! function_exists('view_app_script'))
+{
+    function view_app_script($filename, $data = '')
+    {   
+        return _load_script(APP .'scripts'. DS, $filename, $data);
+    }
 }
+// ------------------------------------------------------------------------
 
 /**
 * Load inline script file from
@@ -116,10 +126,14 @@ function view_app_script($filename, $data = '')
 * @param string $filename
 * @param array  $data
 */
-function view_base_script($filename, $data = '')
-{   
-    return _load_script(BASE .'scripts'. DS, $filename, $data);
+if ( ! function_exists('view_base_script'))
+{
+    function view_base_script($filename, $data = '')
+    {   
+        return _load_script(BASE .'scripts'. DS, $filename, $data);
+    }
 }
+// ------------------------------------------------------------------------
 
 /**
 * Load local view file
@@ -129,20 +143,22 @@ function view_base_script($filename, $data = '')
 * @param boolean $string
 * @return void
 */
-function view($filename, $data = '', $string = TRUE)
-{               
-    $cont = ssc::instance();
-    $return = FALSE;
+if ( ! function_exists('view'))
+{
+    function view($filename, $data = '', $string = TRUE)
+    {               
+        $vi = ssc::instance();
+        $return = FALSE;
 
-    if(isset($cont->_ent->view_folder{1})) { $return = TRUE; }    // if view folder changed don't show errors ..
+        if(isset($vi->_ew->view_folder{1})) { $return = TRUE; }    // if view folder changed don't show errors ..
 
-    $path =  DIR .$GLOBALS['d']. DS .'views'. $cont->_ent->view_folder;
-    
-    $cont->_profiler_local_views[$filename] = $path . $filename .EXT; 
-    
-    return _load_view($path, $filename, $data, $string, $return);
+        $path =  DIR .$GLOBALS['d']. DS .'views'. $vi->_ew->view_folder;
+        
+        $vi->_profiler_local_views[$filename] = $path . $filename .EXT; 
+        
+        return _load_view($path, $filename, $data, $string, $return);
+    }
 }
-
 // ------------------------------------------------------------------------
 
 /**
@@ -153,20 +169,22 @@ function view($filename, $data = '', $string = TRUE)
 * @param boolean $string
 * @return void
 */
-function view_app($filename, $data = '', $string = FALSE)
+if ( ! function_exists('view_app'))
 {
-    $cont = ssc::instance(); 
-    $return = FALSE;
-    
-    if(isset($cont->_ent->app_view_folder{1})) { $return = TRUE; }  // if view folder changed don't show errors ..
-    
-    $path = APP .'views'. $cont->_ent->app_view_folder;
-    
-    $cont->_profiler_app_views[$filename] = $path . $filename .EXT; 
-    
-    return _load_view($path, $filename, $data, $string, $return); 
+    function view_app($filename, $data = '', $string = FALSE)
+    {
+        $vi = ssc::instance(); 
+        $return = FALSE;
+        
+        if(isset($vi->_ew->app_view_folder{1})) { $return = TRUE; }  // if view folder changed don't show errors ..
+        
+        $path = APP .'views'. $vi->_ew->app_view_folder;
+        
+        $vi->_profiler_app_views[$filename] = $path . $filename .EXT; 
+        
+        return _load_view($path, $filename, $data, $string, $return); 
+    }
 }
-
 // ------------------------------------------------------------------------
 
 /**
@@ -182,33 +200,35 @@ function view_app($filename, $data = '', $string = FALSE)
 * @version  0.2 added empty $data
 * @param    array  $data
 */
-function _load_script($path, $filename, $data = '')
+if ( ! function_exists('_load_script'))
 {
-    if( empty($data) ) $data = array();
-    
-    if ( ! file_exists($path . $filename . EXT) )
+    function _load_script($path, $filename, $data = '')
     {
-        throw new ContentException('Unable locate the script file: '. $path . $filename . EXT);
-    } 
-    
-    $data = _ob_object_to_array($data);
-    
-    if(sizeof($data) > 0) { extract($data, EXTR_SKIP); }
-    
-    ob_start();
-    
-    include($path . $filename . EXT);
-    $content = ob_get_contents();
-    
-    ob_end_clean();
-                           
-    log_message('debug', 'Script file loaded: '.$path . $filename . EXT); 
-    
-    ssc::instance()->_profiler_scripts[] = $filename;
-    
-    return "\n".$content; 
+        if( empty($data) ) $data = array();
+        
+        if ( ! file_exists($path . $filename . EXT) )
+        {
+            throw new ContentException('Unable locate the script file: '. $path . $filename . EXT);
+        } 
+        
+        $data = _ob_object_to_array($data);
+        
+        if(sizeof($data) > 0) { extract($data, EXTR_SKIP); }
+        
+        ob_start();
+        
+        include($path . $filename . EXT);
+        $content = ob_get_contents();
+        
+        ob_end_clean();
+                               
+        log_message('debug', 'Script file loaded: '.$path . $filename . EXT); 
+        
+        ssc::instance()->_profiler_scripts[] = $filename;
+        
+        return "\n".$content; 
+    }
 }
-
 // ------------------------------------------------------------------------ 
     
 /**
@@ -227,51 +247,54 @@ function _load_script($path, $filename, $data = '')
 * @version  0.4 added log_message()
 * @return   void
 */
-function _load_view($path, $filename, $data = '', $string = FALSE, $return = FALSE)
-{   
-    if( empty($data) ) $data = array();
+if ( ! function_exists('_load_view'))
+{
+    function _load_view($path, $filename, $data = '', $string = FALSE, $return = FALSE)
+    {   
+        if( empty($data) ) $data = array();
 
-    if ( ! file_exists($path . $filename . EXT) )
-    {
-        if($return) 
-        { 
-            log_message('debug', 'View file not found: '. $path . $filename . EXT);
+        if ( ! file_exists($path . $filename . EXT) )
+        {
+            if($return) 
+            { 
+                log_message('debug', 'View file not found: '. $path . $filename . EXT);
+                
+                return;     // fail gracefully for different interfaces ..
+                            // iphone etc..
+            }  
+                                 
+            throw new ContentException('Unable locate the view file: '. $filename . EXT);
+        } 
+        
+        $data = _ob_object_to_array($data);
+        
+        if(sizeof($data) > 0) { extract($data, EXTR_SKIP); }
+        
+        ob_start();
+        
+        include($path . $filename . EXT);
+        
+        log_message('debug', 'Content file loaded: '.$path . $filename . EXT);
+
+        if($string === TRUE)
+        {
+            $content = ob_get_contents();
+            @ob_end_clean();
             
-            return;     // fail gracefully for different interfaces ..
-                        // iphone etc..
-        }  
-                             
-        throw new ContentException('Unable locate the view file: '. $filename . EXT);
-    } 
-    
-    $data = _ob_object_to_array($data);
-    
-    if(sizeof($data) > 0) { extract($data, EXTR_SKIP); }
-    
-    ob_start();
-    
-    include($path . $filename . EXT);
-    
-    log_message('debug', 'Content file loaded: '.$path . $filename . EXT);
-
-    if($string === TRUE)
-    {
-        $content = ob_get_contents();
+            return $content;
+        }
+        
+        // Set Global views inside to Output Class for caching functionality..
+        base_register('Output')->append_output(ob_get_contents());
+        
         @ob_end_clean();
         
-        return $content;
+        return;
+        
+        throw new LoaderException('Unable to locate the view: ' . $filename . EXT);
     }
-    
-    // Set Global views inside to Output Class for caching functionality..
-    base_register('Output')->append_output(ob_get_contents());
-    
-    @ob_end_clean();
-    
-    return;
-    
-    throw new LoaderException('Unable to locate the view: ' . $filename . EXT);
 }
-
+// ------------------------------------------------------------------------ 
 
 /**
 * Object to Array
@@ -282,11 +305,13 @@ function _load_view($path, $filename, $data = '', $string = FALSE, $return = FAL
 * @param    object
 * @return   array
 */
-function _ob_object_to_array($object)
+if ( ! function_exists('_ob_object_to_array'))
 {
-    return (is_object($object)) ? get_object_vars($object) : $object;
+    function _ob_object_to_array($object)
+    {
+        return (is_object($object)) ? get_object_vars($object) : $object;
+    }
 }
-
 
 /* End of file view.php */
 /* Location: ./base/helpers/view.php */

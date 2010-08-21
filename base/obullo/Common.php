@@ -266,6 +266,37 @@ spl_autoload_register('register_autoload',true);
 // -------------------------------------------------------------------- 
 
 /**
+* Load system helpers
+* 
+* @access   private
+* @param    mixed $filename
+* @param    mixed $folder
+*/
+function loaded_helper($helper)
+{
+    if(file_exists(BASE .'helpers'. DS .'loaded'. DS .$helper. EXT)) 
+    { 
+        $prefix = config_item('subhelper_prefix');
+    
+        // If user helper file exist ..
+        if(file_exists(APP .'helpers'. DS .$prefix. $helper. EXT))
+        {
+            include(APP .'helpers'. DS .$prefix. $helper. EXT);
+            ssc::instance()->_profiler_loaded_helpers[$prefix . $helper] = $prefix . $helper; 
+        }
+        
+        include(BASE .'helpers'. DS .'loaded'. DS .$helper. EXT);
+        ssc::instance()->_profiler_loaded_helpers[$helper] = $helper; 
+        
+        return; 
+    }
+    
+    throw new LoaderException('Unable to locate the base helper: ' .$helper. EXT);
+}
+
+// -------------------------------------------------------------------- 
+
+/**
 * Loads the (static) configuration or language files.
 *
 * @access    private
