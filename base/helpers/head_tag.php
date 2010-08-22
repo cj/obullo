@@ -36,7 +36,7 @@ defined('BASE') or exit('Access Denied!');
 * @version  0.1
 * @version  0.2 added $path variable
 * @version  0.2 added _ent->css_folder variable
-* @version  0.3 deprecated $path param
+* @version  0.3 depreciated $path param
 * @return   string
 */
 if( ! function_exists('css') ) 
@@ -71,6 +71,8 @@ if( ! function_exists('js') )
         {
             foreach ($src as $k => $v)
             {
+                $v = ltrim($v, '/');   // remove first slash
+                
                 if ($k == 'src' AND strpos($v, '://') === FALSE)
                 {
                     $link .= ' src="'.$ob->config->source_url()  . $v.'" ';
@@ -85,6 +87,8 @@ if( ! function_exists('js') )
         }
         else
         {
+            $src = ltrim($src, '/');   // remove first slash
+            
             if ( strpos($src, '://') !== FALSE)
             {
                 $link .= ' src="'.$src.'" ';
@@ -219,20 +223,21 @@ if( ! function_exists('link_tag') )
 
         $link = '<link '; 
 
-        $_cont = ssc::instance();   // obullo changes ..
+        $vi = ssc::instance();   // obullo changes ..
         
-        // When user use view_set_folder('css'); ..
-        // /sources/iphone/css/welcome.css
+        // When user use view_set_folder('css', 'iphone'); ..  /sources/iphone/css/welcome.css
         $path = '';
-        if(isset($_cont->_ent->css_folder{1}))
+        if(isset($vi->_ew->css_folder{1}))
         {
-            $path = $_cont->_ent->css_folder .'/'; 
+            $path = $vi->_ew->css_folder .'/'; 
         }
         
         if (is_array($href))
         {
             foreach ($href as $k => $v)
             {
+                $v = ltrim($v, '/');   // remove first slash
+                
                 if ($k == 'href' AND strpos($v, '://') === FALSE)
                 {
                     if ($index_page === TRUE)
@@ -254,6 +259,8 @@ if( ! function_exists('link_tag') )
         }
         else
         {
+            $href = ltrim($href, '/');  // remove first slash
+            
             if ( strpos($href, '://') !== FALSE)
             {
                 $link .= ' href="'.$href.'" ';

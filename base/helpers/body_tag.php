@@ -205,20 +205,21 @@ if( ! function_exists('img') )
             $src = array('src' => $src);
         }
 
-        $_cont = ssc::instance();       // obullo changes ..
+        $vi = ssc::instance();       // obullo changes ..
                 
         // When user use view_set_folder('img');
         $path = '';
-        if(isset($_cont->_ent->img_folder{1}))
+        if(isset($vi->_ew->img_folder{1}))
         {
-            $path = $_cont->_ent->img_folder . '/'; 
+            $path = $vi->_ew->img_folder . '/'; 
         }
         
         $img = '<img';
 
         foreach ($src as $k => $v)
         {
-
+            $v = ltrim($v, '/');   // remove first slash
+            
             if ($k == 'src' AND strpos($v, '://') === FALSE)
             {
                 $ob = this();

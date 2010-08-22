@@ -10,7 +10,6 @@ switch off Model instantiate using by boolean like loader::model('model_name', f
 - Removed "use_bind_value" constant from constants/db.php file.
 - renamed form helper validation_errors() function as "form_validate_errors();"
 - renamed captcha helper create_captcha() function as "captcha_create();"
-
 - Added source_url() function to Config.php class.
 - Added Profiler Class. Removed some reserved controller variables (_libs and _mods)  from obullo/ob class.
 - config/parents.php extend rules changed. Rules turned into associative arrays.
@@ -20,7 +19,7 @@ defined in parents.php will extend to its own Global Controller.
 - removed $path param from css(); function , we use css('css/filename.css') instead of css('filename', $path = 'css');
 - removed path from js(); function , we use js('js/welcome.js'); instead of js('filename') , added content_set_folder('img') support
 to content_set_folder() and img() functions.
-- mvc2 pattern improvements: added Super_controller class to /parents folder. A Super Contoller Class will control your
+- mvc2 pattern improvements: added App_controller class to /parents folder. A App Contoller Class will control your
 Global Controller files from now on.
 - changed loader::file('folder/file') as loader::file('folder/file'.EXT) .
 - added current_url(), current_dir(), current_class(), current_method() functions to Url helper.
@@ -40,11 +39,13 @@ Global Controller files from now on.
 - added i_request() function to base input helper.
 - session function all_userdata changed as sess_alldata()
 - changed view helper view_set_folder() 'app_view' switch case string as 'view_app'
+- removed css() function array support from head tag helper
+- loaded_helper() to common.php file, changed bootstrap.php and ob_set_headers func, added loaded helpers track support to profiler class.
+- add config load and lang load track support for profiler class
 //-----------------------------------------------------------------------------
 
 @todo .. upload class security
-@todo .. add config load and lang load track support for profiler class
 
-@next versiın todo .. add set_callback('function', param1, param1..) instead of set_rules('|callback_function')
-@next versiın todo .. pager class         
+@next version todo .. add set_callback('function', param1, param1..) instead of set_rules('|callback_function')
+@next version todo .. pager class         
 @next version todo .. firewall class (integer, string validate for requests, login attempts for captcha) 

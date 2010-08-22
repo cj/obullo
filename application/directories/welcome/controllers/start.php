@@ -6,8 +6,9 @@ Class Start extends Controller {
     {   
         parent::__construct();
         parent::__global();
-        // loader::base_helper('session');
-        // sess_start();
+        
+        loader::base_helper('security');
+        
         $this->output->profiler();
         
     }                                      

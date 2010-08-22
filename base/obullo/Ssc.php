@@ -38,7 +38,9 @@ Class ssc {
     public $_profiler_scripts        = array(); // profiler scripts
     public $_profiler_app_views      = array(); // profiler app views
     public $_profiler_local_views    = array(); // profiler local views
-    public $_profiler_loaded_helpers = array(); // profiler loaed helpers
+    public $_profiler_loaded_helpers = array(); // profiler loaded helpers
+    public $_profiler_config_files   = array(); // profiler config files
+    public $_profiler_lang_files     = array(); // profiler lang files
     
     public static function instance()
     {

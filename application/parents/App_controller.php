@@ -12,6 +12,8 @@ Class App_controller
         loader::base_helper('view');
         
         // error_reporting(0); 
+        // view_set_folder('css', 'iphone');
+        // view_set_folder('img', 'iphone');
                 
         $this->base     = $this->config->base_url();
         $this->base_url = $this->config->site_url();

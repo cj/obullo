@@ -1,6 +1,6 @@
 <?php 
 
-this()->head .= js('welcome.js');
+this()->head .= js('js/welcome.js');
 this()->meta .= meta('keywords', 'obullo, php5, framework');   // You can manually set head tags
 this()->head .= script('welcome');                             // in controller or in view files.   
 

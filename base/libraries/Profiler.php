@@ -367,6 +367,12 @@ Class OB_Profiler {
         $output .= "<table class=\"tableborder\">";
         $output .= "<tr><th>".lang_item('profiler_loaded_files')."</th></tr>";
         
+        $config_files = '';
+        foreach(ssc::instance()->_profiler_config_files as $config_file) { $config_files .= $config_file .'<br />'; }
+        
+        $lang_files   = '';
+        foreach(ssc::instance()->_profiler_lang_files as $lang_file) { $lang_files .= $lang_file .'<br />'; }
+        
         $base_helpers  = '';
         foreach(loader::$_base_helpers as $base_helper) 
         { 
@@ -441,6 +447,8 @@ Class OB_Profiler {
         $scripts        = (isset($scripts{2}))        ? $scripts : '-';
         $files          = (isset($files{2}))          ? $files : '-';
         
+        $output .= "<tr><td class=\"td\">Config Files&nbsp;&nbsp;</td><td class=\"td_val\">".$config_files."</td></tr>";  
+        $output .= "<tr><td class=\"td\">Lang Files&nbsp;&nbsp;</td><td class=\"td_val\">".$lang_files."</td></tr>";  
         $output .= "<tr><td class=\"td\">Base Helpers&nbsp;&nbsp;</td><td class=\"td_val\">".$base_helpers."</td></tr>";  
         $output .= "<tr><td class=\"td\">Application Helpers&nbsp;&nbsp;</td><td class=\"td_val\">".$app_helpers."</td></tr>";    
         $output .= "<tr><td class=\"td\">Loaded Helpers&nbsp;&nbsp;</td><td class=\"td_val\">".$loaded_helpers."</td></tr>";    

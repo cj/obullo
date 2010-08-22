@@ -80,7 +80,7 @@ if( ! function_exists('lang_load') )
         if( ! is_dir($folder))
         return;
         
-        $lang = get_static($langfile, 'lang', $folder);
+        $lang = get_static($langfile, 'lang', $folder);     // Obullo changes ...
         
         if ( ! isset($lang))
         {
@@ -93,6 +93,7 @@ if( ! function_exists('lang_load') )
 
         $_la->_ng->is_loaded[] = $langfile;
         $_la->_ng->language    = array_merge($_la->_ng->language, $lang);
+        ssc::instance()->_profiler_lang_files[$langfile] = $langfile; 
         unset($lang);
 
         log_message('debug', 'Language file loaded: lang/' .$idiom. '/' .$langfile. EXT);
