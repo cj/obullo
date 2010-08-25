@@ -47,6 +47,7 @@ Global Controller files from now on.
 @todo .. upload class security
 @todo .. change config_item as config() and lang_item() as lang()
 
+@next version todo .. datamapper class
 @next version todo .. add set_callback('function', param1, param1..) instead of set_rules('|callback_function')
 @next version todo .. pager class         
 @next version todo .. firewall class (integer, string validate for requests, login attempts for captcha) 
