@@ -55,7 +55,7 @@ if( ! function_exists('_sanitize_globals') )
         
         // Would kind of be "wrong" to unset any of these GLOBALS
         $protected = array('_SERVER', '_GET', '_POST', '_FILES', '_REQUEST', '_SESSION', 
-        '_ENV', '_parents', '_bench', '_log', '_config', '_la', '_in', '_secur', '_ses', '_cont', '_controller', 
+        '_ENV', '_parents', '_bench', '_log', '_config', '_la', '_in', '_secur', '_ses', '_vi', '_controller', 
         'GLOBALS', 'HTTP_RAW_POST_DATA');
        
         // Unset globals for security. 

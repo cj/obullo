@@ -9,7 +9,7 @@ Class Start extends Controller {
         
         loader::base_helper('security');
         
-        $this->output->profiler();
+        // $this->output->profiler();
         
     }                                      
     

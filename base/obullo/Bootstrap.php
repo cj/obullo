@@ -51,9 +51,7 @@ if( ! function_exists('ob_set_headers'))
     {
         // Kill magic quotes
         if ( ! is_php('5.3')) { @set_magic_quotes_runtime(0); }
-                
-        date_default_timezone_set(config_item('timezone_set'));
-                
+                 
         // system helpers
         if (config_item('log_threshold') > 0)
         loaded_helper('log');

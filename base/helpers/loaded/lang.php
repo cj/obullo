@@ -84,7 +84,7 @@ if( ! function_exists('lang_load') )
         
         if ( ! isset($lang))
         {
-            log_message('error', 'Language file contains no data: lang/' .$idiom. '/'. $langfile. EXT);
+            log_message('error', 'Language file contains no data: lang' . DS .$idiom. DS . $langfile. EXT);
             return;
         }
 
@@ -96,7 +96,7 @@ if( ! function_exists('lang_load') )
         ssc::instance()->_profiler_lang_files[$langfile] = $langfile; 
         unset($lang);
 
-        log_message('debug', 'Language file loaded: lang/' .$idiom. '/' .$langfile. EXT);
+        log_message('debug', 'Language file loaded: lang' . DS .$idiom. DS .$langfile. EXT);
         return TRUE;
     }
 }

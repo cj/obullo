@@ -274,7 +274,7 @@ if ( ! function_exists('_load_view'))
         
         include($path . $filename . EXT);
         
-        log_message('debug', 'Content file loaded: '.$path . $filename . EXT);
+        log_message('debug', 'View file loaded: '.$path . $filename . EXT);
 
         if($string === TRUE)
         {

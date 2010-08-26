@@ -31,7 +31,7 @@ Global Controller files from now on.
 - changed css(filename.css), js(filename.js), img(filename.ext) functions as css(css/filename.css), js(js/filename.js), img(images/filename.ext);
 - added extra ='' (attributes) param to form_hidden(); function..
 - added content_view('', (object)$data); support ..
-- added script(), app_script(), base_script() functions to head tag helper.
+- added script(), script_app(), script_base() functions to head tag helper.
 - ini_set('display_errors', ..); removed from bootstrap and config.php
 - content helper renamed as view.php and all "content_" function prefix changed as "view_"
 - some impromevents for profiler class, added php and php5 libraries colourful track support.
@@ -45,7 +45,7 @@ Global Controller files from now on.
 //-----------------------------------------------------------------------------
 
 @todo .. upload class security
-@todo .. change config_item as config() and lang_item() as lang()
+@todo .. change  lang_item() as lang()
 
 @next version todo .. datamapper class
 @next version todo .. add set_callback('function', param1, param1..) instead of set_rules('|callback_function')

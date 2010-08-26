@@ -74,6 +74,8 @@ if( ! function_exists('log_write') )
     {        
         $_log = ssc::instance();
         
+        date_default_timezone_set(config_item('timezone_identifier'));
+        
         if ($_log->_er->_enabled === FALSE)
         {
             return FALSE;

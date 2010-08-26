@@ -3,15 +3,18 @@ defined('BASE') or exit('Access Denied!');
 
 /**
 |--------------------------------------------------------------------------
-| Set default time zone for php default date() function.
+| Set default time zone identifer for date function.
 |--------------------------------------------------------------------------
-| Sets the default timezone used by all date/time functions in the framework
+| 
+| Set the default timezone identifier.
+| If you want to set date timezone dynamically, use this function
 |
-| @see  http://php.net/manual/en/function.date-default-timezone-set.php
-| @link http://www.php.net/manual/en/timezones.php
+|       date_default_timezone_set($this->config->item('timezone_identifier'));
 |
+| in your App_controller.
+| 
 */
-$config['timezone_set']          = 'Europe/Istanbul';
+$config['timezone_identifier']   = 'Europe/Istanbul';
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +43,63 @@ $config['base_url']              = "http://localhost/obullo/";
 |
 */
 $config['source_url']            = "http://localhost/obullo/sources/";
+
+/*
+|--------------------------------------------------------------------------
+| Error Logging Threshold
+|--------------------------------------------------------------------------
+|
+| If you have enabled error logging, you can set an error threshold to 
+| determine what gets logged. Threshold options are:
+| You can enable error logging by setting a threshold over zero. The
+| threshold determines what gets logged. Threshold options are:
+|
+|    0 = Disables logging, Error logging TURNED OFF
+|    1 = Error Messages (including PHP errors)
+|    2 = Debug Messages
+|    3 = Informational Messages
+|    4 = All Messages
+|
+| For a live site you'll usually only enable Errors (1) to be logged otherwise
+| your log files will fill up very fast.
+|
+*/
+$config['log_threshold']         = 0;
+
+/*
+|--------------------------------------------------------------------------
+| Error Logging Directory Path
+|--------------------------------------------------------------------------
+|
+| Leave this BLANK unless you would like to set something other than the default
+| base/logs/ folder.  Use a full server path with trailing slash.
+|
+*/
+$config['log_path']              = '';
+
+/*
+|--------------------------------------------------------------------------
+| Date Format for Logs
+|--------------------------------------------------------------------------
+|
+| Each item that is logged has an associated date. You can use PHP date
+| codes to set your own date formatting
+|
+*/
+$config['log_date_format']       = 'Y-m-d H:i:s';
+
+/*
+|--------------------------------------------------------------------------
+| Master Time Reference
+|--------------------------------------------------------------------------
+|
+| Options are "local" or "gmt".  This pref tells the system whether to use
+| your server's local time as the master "now" reference, or convert it to
+| GMT.  See the "date helper" page of the user guide for information
+| regarding date handling.
+|
+*/
+$config['time_reference']        = 'local';
 
 /*
 |--------------------------------------------------------------------------
@@ -127,7 +187,7 @@ $config['subclass_prefix']       = 'MY_';
 | native helpers.  For more information please see the user guide.
 |
 */
-$config['subhelper_prefix']       = 'my_';
+$config['subhelper_prefix']      = 'my_';
 
 /*
 |--------------------------------------------------------------------------
@@ -174,50 +234,6 @@ $config['enable_query_strings']  = FALSE;
 $config['directory_trigger']     = 'd';   
 $config['controller_trigger']    = 'c';
 $config['function_trigger']      = 'm';
-
-/*
-|--------------------------------------------------------------------------
-| Error Logging Threshold
-|--------------------------------------------------------------------------
-|
-| If you have enabled error logging, you can set an error threshold to 
-| determine what gets logged. Threshold options are:
-| You can enable error logging by setting a threshold over zero. The
-| threshold determines what gets logged. Threshold options are:
-|
-|    0 = Disables logging, Error logging TURNED OFF
-|    1 = Error Messages (including PHP errors)
-|    2 = Debug Messages
-|    3 = Informational Messages
-|    4 = All Messages
-|
-| For a live site you'll usually only enable Errors (1) to be logged otherwise
-| your log files will fill up very fast.
-|
-*/
-$config['log_threshold']         = 0;
-
-/*
-|--------------------------------------------------------------------------
-| Error Logging Directory Path
-|--------------------------------------------------------------------------
-|
-| Leave this BLANK unless you would like to set something other than the default
-| base/logs/ folder.  Use a full server path with trailing slash.
-|
-*/
-$config['log_path']              = '';
-
-/*
-|--------------------------------------------------------------------------
-| Date Format for Logs
-|--------------------------------------------------------------------------
-|
-| Each item that is logged has an associated date. You can use PHP date
-| codes to set your own date formatting
-|
-*/
-$config['log_date_format']       = 'Y-m-d H:i:s';
 
 /*
 |--------------------------------------------------------------------------
@@ -279,19 +295,6 @@ $config['cookie_time']           = (7 * 24 * 60 * 60);
 |
 */
 $config['global_xss_filtering']  = FALSE;
-
-/*
-|--------------------------------------------------------------------------
-| Master Time Reference
-|--------------------------------------------------------------------------
-|
-| Options are "local" or "gmt".  This pref tells the system whether to use
-| your server's local time as the master "now" reference, or convert it to
-| GMT.  See the "date helper" page of the user guide for information
-| regarding date handling.
-|
-*/
-$config['time_reference']        = 'local';
 
 /*
 |--------------------------------------------------------------------------

@@ -26,7 +26,7 @@ Class ssc {
     
     public $_ng   = NULL; // la_ng
     public $_er   = NULL; // log_er
-    public $_vi   = NULL;  // vi_ew
+    public $_vi   = NULL; // vi_ew
     public $_put  = NULL; // in_put
     public $_ity  = NULL; // secur_ity 
     public $_sion = NULL; // ses_sion

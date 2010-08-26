@@ -5,8 +5,8 @@
 *
 * PHP5 MVC Based Minimalist Software.
 * 
-* @package         obullo       
-* @author          obullo.com
+* @package       obullo       
+* @author        obullo.com
 */
 
 /**              
