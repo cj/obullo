@@ -45,6 +45,7 @@ Global Controller files from now on.
 //-----------------------------------------------------------------------------
 
 @todo .. upload class security
+@todo .. date helper timezone changes..
 @todo .. change  lang_item() as lang()
 
 @next version todo .. datamapper class

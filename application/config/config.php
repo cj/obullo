@@ -9,12 +9,12 @@ defined('BASE') or exit('Access Denied!');
 | Set the default timezone identifier.
 | If you want to set date timezone dynamically, use this function
 |
-|       date_default_timezone_set($this->config->item('timezone_identifier'));
+|       date_default_timezone_set($this->config->item('timezone'));
 |
 | in your App_controller.
 | 
 */
-$config['timezone_identifier']   = 'Europe/Istanbul';
+$config['timezone']              = 'Europe/Istanbul';
 
 /*
 |--------------------------------------------------------------------------
