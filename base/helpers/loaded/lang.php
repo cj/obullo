@@ -108,9 +108,9 @@ if( ! function_exists('lang_load') )
 * @param    string  $item the language item
 * @return   string
 */
-if( ! function_exists('lang_item') ) 
+if( ! function_exists('lang') ) 
 {
-    function lang_item($item = '')
+    function lang($item = '')
     {
         $_la = ssc::instance();
         

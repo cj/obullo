@@ -25,7 +25,7 @@ defined('BASE') or exit('Access Denied!');
 
 /*
 |--------------------------------------------------------------------------
-| Global Controller Names - ( Extend Switch )
+| Global Controller Names - ( Controller Extends )
 |--------------------------------------------------------------------------
 | All global controllers located in application/parents folder.
 | To create the parent controller you must define controller
@@ -59,7 +59,7 @@ $parents['test']          =  array('bar'  => 'Foo_controller');
 |--------------------------------------------------------------------------
 | You can assign Global Controllers to Folders.
 | Forexample You have a Folder called /Dummy
-| when you use the '*' symbol , all of the controllers of
+| when you use the '*' symbol , all the controllers contents of
 | /Dummy folder will extend to Dummy Global Controller.
 |
 */

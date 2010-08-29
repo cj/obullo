@@ -876,7 +876,7 @@ Class upload_CORE implements PHP5_Library {
         {
             foreach ($msg as $val)
             {
-                $msg = (lang_item($val) == FALSE) ? $val : lang_item($val);                
+                $msg = (lang($val) == FALSE) ? $val : lang($val);                
                 $this->error_msg[] = $msg;
                 
                 log_message('error', $msg);
@@ -884,7 +884,7 @@ Class upload_CORE implements PHP5_Library {
         }
         else
         {
-            $msg = (lang_item($msg) == FALSE) ? $msg : lang_item($msg);
+            $msg = (lang($msg) == FALSE) ? $msg : lang($msg);
             $this->error_msg[] = $msg;
             
             log_message('error', $msg);

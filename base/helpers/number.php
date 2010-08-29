@@ -46,26 +46,26 @@ if( ! function_exists('byte_format') )
         if ($num >= 1000000000000) 
         {
             $num = round($num / 1099511627776, $precision);
-            $unit = lang_item('terabyte_abbr');
+            $unit = lang('terabyte_abbr');
         }
         elseif ($num >= 1000000000) 
         {
             $num = round($num / 1073741824, $precision);
-            $unit = lang_item('gigabyte_abbr');
+            $unit = lang('gigabyte_abbr');
         }
         elseif ($num >= 1000000) 
         {
             $num = round($num / 1048576, $precision);
-            $unit = lang_item('megabyte_abbr');
+            $unit = lang('megabyte_abbr');
         }
         elseif ($num >= 1000) 
         {
             $num = round($num / 1024, $precision);
-            $unit = lang_item('kilobyte_abbr');
+            $unit = lang('kilobyte_abbr');
         }
         else
         {
-            $unit = lang_item('bytes');
+            $unit = lang('bytes');
             return number_format($num).' '.$unit;
         }
 

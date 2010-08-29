@@ -599,7 +599,7 @@ Class ftp_CORE implements PHP5_Library {
     {
         lang_load('ftp');
         
-        show_error(lang_item($line));
+        show_error(lang($line));
     }
 
 

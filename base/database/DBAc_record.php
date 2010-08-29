@@ -775,7 +775,7 @@ Class OB_DBAc_record  {
         
         if (count($this->ar_set) == 0)
         {
-            throw new DBException(lang_item('db_ac_insert_set_table'));
+            throw new DBException(lang('db_ac_insert_set_table'));
             
             return FALSE;
         }
@@ -784,7 +784,7 @@ Class OB_DBAc_record  {
         {
             if ( ! isset($this->ar_from[0]))
             {
-                throw new DBException(lang_item('db_ac_insert_set_table'));
+                throw new DBException(lang('db_ac_insert_set_table'));
                 
                 return FALSE;
             }
@@ -853,7 +853,7 @@ Class OB_DBAc_record  {
     
         if (count($this->ar_set) == 0)
         {
-            throw new DBException(lang_item('db_ac_update_set_table'));
+            throw new DBException(lang('db_ac_update_set_table'));
             
             return FALSE;
         }
@@ -862,7 +862,7 @@ Class OB_DBAc_record  {
         {
             if ( ! isset($this->ar_from[0]))
             {
-                throw new DBException(lang_item('db_ac_update_set_table')); 
+                throw new DBException(lang('db_ac_update_set_table')); 
                 
                 return FALSE;
             }
@@ -964,7 +964,7 @@ Class OB_DBAc_record  {
         {
             if ( ! isset($this->ar_from[0]))
             {
-                throw new DBException(lang_item('db_active_record_set_table'));
+                throw new DBException(lang('db_active_record_set_table'));
                 
                 return FALSE;
             }
@@ -991,7 +991,7 @@ Class OB_DBAc_record  {
         
         if (count($this->ar_where) == 0 && count($this->ar_wherein) == 0 && count($this->ar_like) == 0)
         {
-            throw new DBException(lang_item('db_active_record_delete'));
+            throw new DBException(lang('db_active_record_delete'));
             
             return FALSE;
         }        

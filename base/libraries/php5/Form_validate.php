@@ -516,7 +516,7 @@ Class form_validate_CORE implements PHP5_Library {
             
                 if ( ! isset($this->_error_messages[$type]))
                 {
-                    if (FALSE === ($line = lang_item($type)))
+                    if (FALSE === ($line = lang($type)))
                     {
                         $line = 'The field was not set';
                     }                            
@@ -653,7 +653,7 @@ Class form_validate_CORE implements PHP5_Library {
             {            
                 if ( ! isset($this->_error_messages[$rule]))
                 {
-                    if (FALSE === ($line = lang_item($rule)))
+                    if (FALSE === ($line = lang($rule)))
                     {
                         $line = 'Unable to access an error message corresponding to your field name.';
                     }                        
@@ -705,7 +705,7 @@ Class form_validate_CORE implements PHP5_Library {
             $line = substr($fieldname, 5);            
             
             // Were we able to translate the field name?  If not we use $line
-            if (FALSE === ($fieldname = lang_item($line)))
+            if (FALSE === ($fieldname = lang($line)))
             {
                 return $line;
             }

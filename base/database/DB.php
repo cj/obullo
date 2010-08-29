@@ -221,7 +221,7 @@ Class OB_DB extends OB_DBAc_sw {
         if(is_array($array))
         {                       
             if( ! self::_is_assoc($array))
-            throw new DBException(lang_item('db_bind_data_must_assoc'));
+            throw new DBException(lang('db_bind_data_must_assoc'));
         }
         
         // Start the Query Timer

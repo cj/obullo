@@ -192,7 +192,7 @@ if( ! function_exists('timespan') )
 	    {
 		    if ($months > 0)
 		    {	
-			    $str .= $months.' '.lang_item((($months	> 1) ? 'date_months' : 'date_month')).', ';
+			    $str .= $months.' '.lang((($months	> 1) ? 'date_months' : 'date_month')).', ';
 		    }	
 
 		    $seconds -= $months * 2628000;
@@ -204,7 +204,7 @@ if( ! function_exists('timespan') )
 	    {
 		    if ($weeks > 0)
 		    {	
-			    $str .= $weeks.' '.lang_item((($weeks	> 1) ? 'date_weeks' : 'date_week')).', ';
+			    $str .= $weeks.' '.lang((($weeks	> 1) ? 'date_weeks' : 'date_week')).', ';
 		    }
 	    
 		    $seconds -= $weeks * 604800;
@@ -216,7 +216,7 @@ if( ! function_exists('timespan') )
 	    {
 		    if ($days > 0)
 		    {	
-			    $str .= $days.' '.lang_item((($days	> 1) ? 'date_days' : 'date_day')).', ';
+			    $str .= $days.' '.lang((($days	> 1) ? 'date_days' : 'date_day')).', ';
 		    }
 
 		    $seconds -= $days * 86400;
@@ -228,7 +228,7 @@ if( ! function_exists('timespan') )
 	    {
 		    if ($hours > 0)
 		    {
-			    $str .= $hours.' '.lang_item((($hours	> 1) ? 'date_hours' : 'date_hour')).', ';
+			    $str .= $hours.' '.lang((($hours	> 1) ? 'date_hours' : 'date_hour')).', ';
 		    }
 	    
 		    $seconds -= $hours * 3600;
@@ -240,7 +240,7 @@ if( ! function_exists('timespan') )
 	    {
 		    if ($minutes > 0)
 		    {	
-			    $str .= $minutes.' '.lang_item((($minutes	> 1) ? 'date_minutes' : 'date_minute')).', ';
+			    $str .= $minutes.' '.lang((($minutes	> 1) ? 'date_minutes' : 'date_minute')).', ';
 		    }
 	    
 		    $seconds -= $minutes * 60;
@@ -248,7 +248,7 @@ if( ! function_exists('timespan') )
 
 	    if ($str == '')
 	    {
-		    $str .= $seconds.' '.lang_item((($seconds	> 1) ? 'date_seconds' : 'date_second')).', ';
+		    $str .= $seconds.' '.lang((($seconds	> 1) ? 'date_seconds' : 'date_second')).', ';
 	    }
 		    
 	    return substr(trim($str), 0, -1);
@@ -533,7 +533,7 @@ if( ! function_exists('timezone_menu') )
 	    foreach (timezones() as $key => $val)
 	    {
 		    $selected = ($default == $key) ? " selected='selected'" : '';
-		    $menu .= "<option value='{$key}'{$selected}>".lang_item($key)."</option>\n";
+		    $menu .= "<option value='{$key}'{$selected}>".lang($key)."</option>\n";
 	    }
 
 	    $menu .= "</select>";

@@ -41,12 +41,12 @@ Global Controller files from now on.
 - changed view helper view_set_folder() 'app_view' switch case string as 'view_app'
 - removed css() function array support from head tag helper
 - loaded_helper() to common.php file, changed bootstrap.php and ob_set_headers func, added loaded helpers track support to profiler class.
-- add config load and lang load track support for profiler class
+- add config load and lang load track support for profiler class, renamed lang_item() function as lang() in lang.php, updated all libraries.
+- added auto_source_url(false); function to config class.
 //-----------------------------------------------------------------------------
 
 @todo .. upload class security
 @todo .. date helper timezone changes..
-@todo .. change  lang_item() as lang()
 
 @next version todo .. datamapper class
 @next version todo .. add set_callback('function', param1, param1..) instead of set_rules('|callback_function')

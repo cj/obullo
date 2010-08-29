@@ -28,9 +28,10 @@ Class ConfigException extends CommonException {}
  */
 Class OB_Config {
     
-    public $config        = array();
-    public $is_loaded     = array();
-    public $auto_base_url = FALSE;
+    public $config          = array();
+    public $is_loaded       = array();
+    public $auto_base_url   = FALSE;
+    public $auto_source_url = TRUE;
 
     /**
      * Constructor
@@ -166,6 +167,17 @@ Class OB_Config {
         $this->auto_base_url = $bool;
     }
     
+    /**
+    * Set host based auto source url
+    * 
+    * @param    boolean  on / off
+    * @return   void
+    */
+    public function auto_source_url($bool = TRUE)   // Obullo changes ..
+    {
+        $this->auto_source_url = $bool;
+    }
+    
     // --------------------------------------------------------------------
 
     /**
@@ -258,12 +270,11 @@ Class OB_Config {
     * Source URL (Get the url for static media files)
     *
     * @access   public
-    * @param    boolean   host based portable url or not
     * @return   string
     */
-    public function source_url($auto_base_url = TRUE)
+    public function source_url()
     {
-        if($this->auto_base_url AND $auto_base_url)    // Obullo changes ..
+        if($this->auto_source_url)    // Obullo changes ..
         {
             return $this->base_url() . 'sources/';
         }

@@ -136,13 +136,13 @@ Class unit_test_CORE implements PHP5_Library {
             foreach ($res as $key => $val)
             {
 
-                if ($key == lang_item('ut_result'))
+                if ($key == lang('ut_result'))
                 {
-                    if ($val == lang_item('ut_passed'))
+                    if ($val == lang('ut_passed'))
                     {
                         $val = '<span style="color: #0C0;">'.$val.'</span>';
                     }
-                    elseif ($val == lang_item('ut_failed'))
+                    elseif ($val == lang('ut_failed'))
                     {
                         $val = '<span style="color: #C00;">'.$val.'</span>';
                     }
@@ -221,20 +221,20 @@ Class unit_test_CORE implements PHP5_Library {
                 {
                     foreach ($val as $k => $v)
                     {
-                        if (FALSE !== ($line = lang_item(strtolower('ut_'.$v))))
+                        if (FALSE !== ($line = lang(strtolower('ut_'.$v))))
                         {
                             $v = $line;
                         }                
-                        $temp[lang_item('ut_'.$k)] = $v;                    
+                        $temp[lang('ut_'.$k)] = $v;                    
                     }
                 }
                 else
                 {
-                    if (FALSE !== ($line = lang_item(strtolower('ut_'.$val))))
+                    if (FALSE !== ($line = lang(strtolower('ut_'.$val))))
                     {
                         $val = $line;
                     }                
-                    $temp[lang_item('ut_'.$key)] = $val;
+                    $temp[lang('ut_'.$key)] = $val;
                 }
             }
             

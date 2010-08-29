@@ -72,7 +72,7 @@ Class OB_Profiler {
     
         $output  = '<div id="benchmark">';       
         $output .= "<table class=\"tableborder\">";
-        $output .= "<tr><th>".lang_item('profiler_benchmarks')."</th></tr>";
+        $output .= "<tr><th>".lang('profiler_benchmarks')."</th></tr>";
         
         foreach ($profile as $key => $val)
         {
@@ -104,9 +104,9 @@ Class OB_Profiler {
         {    
             $output  = '<div id="queries">';       
             $output .= "<table class=\"tableborder\">";
-            $output .= "<tr><th align='center'>".lang_item('profiler_queries')."</th></tr>";
+            $output .= "<tr><th align='center'>".lang('profiler_queries')."</th></tr>";
             
-            $output .= "<tr><td class=\"td_val\">".lang_item('profiler_no_db')."</td></tr>";
+            $output .= "<tr><td class=\"td_val\">".lang('profiler_no_db')."</td></tr>";
 
             $output .= "</table>";
             $output .= "</div>";
@@ -126,12 +126,12 @@ Class OB_Profiler {
         {
             $output .= '<div id="queries">';
             $output .= "<table class=\"tableborder\">"; 
-            $output .= "<tr><th>Database ".lang_item('profiler_queries').": ".count($ob->{$db}->queries)."&nbsp;&nbsp;&nbsp;</th></tr>";
+            $output .= "<tr><th>Database ".lang('profiler_queries').": ".count($ob->{$db}->queries)."&nbsp;&nbsp;&nbsp;</th></tr>";
             
             
             if (count($ob->{$db}->queries) == 0)
             {
-                $output .= "<tr><td class=\"td_val\">".lang_item('profiler_no_queries')."</td></tr>";
+                $output .= "<tr><td class=\"td_val\">".lang('profiler_no_queries')."</td></tr>";
             }
             else
             {   
@@ -183,11 +183,11 @@ Class OB_Profiler {
     {    
         $output  = '<div id="get">';       
         $output .= "<table class=\"tableborder\">";
-        $output .= "<tr><th>".lang_item('profiler_get_data')."</th></tr>";
+        $output .= "<tr><th>".lang('profiler_get_data')."</th></tr>";
 
         if (count($_GET) == 0)
         {
-            $output .= "<tr><td class=\"td_val\">".lang_item('profiler_no_get')."</td></tr>";
+            $output .= "<tr><td class=\"td_val\">".lang('profiler_no_get')."</td></tr>";
         }
             else
         {
@@ -230,11 +230,11 @@ Class OB_Profiler {
     {    
         $output  = '<div id="post">';       
         $output .= "<table class=\"tableborder\">";
-        $output .= "<tr><th>".lang_item('profiler_post_data')."</th></tr>";
+        $output .= "<tr><th>".lang('profiler_post_data')."</th></tr>";
                 
         if (count($_POST) == 0)
         {
-            $output .= "<tr><td class=\"td_val\">".lang_item('profiler_no_post')."</td></tr>";
+            $output .= "<tr><td class=\"td_val\">".lang('profiler_no_post')."</td></tr>";
         }
         else
         {
@@ -279,11 +279,11 @@ Class OB_Profiler {
 
         $output  = '<div id="uri_string">';       
         $output .= "<table class=\"tableborder\">";
-        $output .= "<tr><th>".lang_item('profiler_uri_string')."</th></tr>";
+        $output .= "<tr><th>".lang('profiler_uri_string')."</th></tr>";
         
         if ($ob->uri->uri_string == '')
         {
-            $output .= "<tr><td class=\"td_val\">".lang_item('profiler_no_uri')."</td></tr>";
+            $output .= "<tr><td class=\"td_val\">".lang('profiler_no_uri')."</td></tr>";
         }
         else
         {
@@ -308,7 +308,7 @@ Class OB_Profiler {
     {            
         $output  = '<div id="controller_info">';       
         $output .= "<table class=\"tableborder\">";
-        $output .= "<tr><th>".lang_item('profiler_controller_info')."</th></tr>";
+        $output .= "<tr><th>".lang('profiler_controller_info')."</th></tr>";
 
         $output .= "<tr><td class=\"td_val\">".$GLOBALS['d'].' / '.$GLOBALS['c'].' / '.$GLOBALS['m']."</td></tr>";
         
@@ -330,7 +330,7 @@ Class OB_Profiler {
     {
         $output  = '<div id="memory">';       
         $output .= "<table class=\"tableborder\">";
-        $output .= "<tr><th>".lang_item('profiler_memory_usage')."</th></tr>";
+        $output .= "<tr><th>".lang('profiler_memory_usage')."</th></tr>";
         
         if (function_exists('memory_get_usage') && ($usage = memory_get_usage()) != '')
         {
@@ -338,7 +338,7 @@ Class OB_Profiler {
         }
         else
         {
-            $output .= "<tr><td class=\"td_val\">".lang_item('profiler_no_memory_usage')."</td></tr>";
+            $output .= "<tr><td class=\"td_val\">".lang('profiler_no_memory_usage')."</td></tr>";
         }
         
         $output .= "</table>";
@@ -365,7 +365,7 @@ Class OB_Profiler {
     
         $output  = '<div id="loaded_files">';       
         $output .= "<table class=\"tableborder\">";
-        $output .= "<tr><th>".lang_item('profiler_loaded_files')."</th></tr>";
+        $output .= "<tr><th>".lang('profiler_loaded_files')."</th></tr>";
         
         $config_files = '';
         foreach(ssc::instance()->_profiler_config_files as $config_file) { $config_files .= $config_file .'<br />'; }

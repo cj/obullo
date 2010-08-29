@@ -273,12 +273,12 @@ Class calendar_CORE implements PHP5_Library {
         
         $month = $month_names[$month];
         
-        if (lang_item($month) === FALSE)
+        if (lang($month) === FALSE)
         {
             return ucfirst(str_replace('cal_', '', $month));
         }
 
-        return lang_item($month);
+        return lang($month);
     }
     
     // --------------------------------------------------------------------
@@ -314,7 +314,7 @@ Class calendar_CORE implements PHP5_Library {
         $days = array();
         foreach ($day_names as $val)
         {            
-            $days[] = (lang_item('cal_'.$val) === FALSE) ? ucfirst($val) : lang_item('cal_'.$val);
+            $days[] = (lang('cal_'.$val) === FALSE) ? ucfirst($val) : lang('cal_'.$val);
         }
     
         return $days;

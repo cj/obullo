@@ -1918,7 +1918,7 @@ class email_CORE implements PHP5_Library {
     {
         lang_load('email');
 
-        if (FALSE === ($line = lang_item($msg)))
+        if (FALSE === ($line = lang($msg)))
         {
             $this->_debug_msg[] = str_replace('%s', $val, $msg)."<br />";
         }
