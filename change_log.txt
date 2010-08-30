@@ -45,8 +45,8 @@ Global Controller files from now on.
 - added auto_source_url(false); function to config class.
 //-----------------------------------------------------------------------------
 
+@todo .. change profiler class like log function
 @todo .. upload class security
-@todo .. date helper timezone changes..
 
 @next version todo .. datamapper class
 @next version todo .. add set_callback('function', param1, param1..) instead of set_rules('|callback_function')
