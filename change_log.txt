@@ -45,7 +45,23 @@ Global Controller files from now on.
 - added auto_source_url(false); function to config class.
 //-----------------------------------------------------------------------------
 
-@todo .. change profiler class like log function
+@todo .. change profiler class like log function like this
+
+in common.php
+
+function profiler_log($type, key, msg)
+{
+    $ssc = ssc::instance();
+
+    $ssc->profiler_add[$type][$key] = $msg;
+}
+
+log_message()
+{
+    profiler_log('key', msg);
+}
+
+
 @todo .. upload class security
 
 @next version todo .. datamapper class
