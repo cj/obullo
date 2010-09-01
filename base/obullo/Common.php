@@ -282,12 +282,11 @@ function loaded_helper($helper)
         if(file_exists(APP .'helpers'. DS .$prefix. $helper. EXT))
         {
             include(APP .'helpers'. DS .$prefix. $helper. EXT);
-            ssc::instance()->_profiler_loaded_helpers[$prefix . $helper] = $prefix . $helper; 
+            profiler_set('loaded_helpers', $prefix . $helper, $prefix . $helper);
         }
         
         include(BASE .'helpers'. DS .'loaded'. DS .$helper. EXT);
-        ssc::instance()->_profiler_loaded_helpers[$helper] = $helper; 
-        
+        profiler_set('loaded_helpers', $helper, $helper);
         return; 
     }
     
@@ -497,6 +496,37 @@ function is_php($version = '5.0.0')
     }
 
     return $_is_php[$version];
+}
+
+/**
+* Set data to profiler variable
+* 
+* @param    string $type log type
+* @param    string $key  log key
+* @param    string $val  log val
+*/
+function profiler_set($type, $key, $val)
+{
+    ssc::instance()->profiler_var[$type][$key] = $val;
+}
+
+/**
+* Get profiler data from profiler
+* variable.
+* 
+* @param    string $type log type
+* @return   array
+*/
+function profiler_get($type)
+{
+    $ssc = ssc::instance();
+    
+    if( ! empty($ssc->profiler_var[$type]))
+    {
+        return $ssc->profiler_var[$type];
+    };
+    
+    return array();
 }
 
 // END Common.php File

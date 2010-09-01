@@ -51,7 +51,7 @@ if( ! function_exists('lang_load') )
     function lang_load($langfile = '', $idiom = '', $dir = 'base', $return = FALSE)
     {     
         $_la = ssc::instance();
-        $ob  = ob::instance();
+        $ob  = this();
         
         if (in_array($langfile, $_la->_ng->is_loaded, TRUE))
         return;  
@@ -93,7 +93,8 @@ if( ! function_exists('lang_load') )
 
         $_la->_ng->is_loaded[] = $langfile;
         $_la->_ng->language    = array_merge($_la->_ng->language, $lang);
-        ssc::instance()->_profiler_lang_files[$langfile] = $langfile; 
+        
+        profiler_set('lang_files', $langfile, $langfile);
         unset($lang);
 
         log_message('debug', 'Language file loaded: lang' . DS .$idiom. DS .$langfile. EXT);

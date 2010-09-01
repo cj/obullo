@@ -97,7 +97,7 @@ Class OB_Profiler {
      */    
     public function _compile_queries()
     {
-        $ob = ob::instance();
+        $ob = this();
         
         // Let's determine which databases are currently connected to         
         if (count($ob->_dbs) == 0)
@@ -275,7 +275,7 @@ Class OB_Profiler {
      */    
     public function _compile_uri_string()
     {    
-        $ob = ob::instance();
+        $ob = this();
 
         $output  = '<div id="uri_string">';       
         $output .= "<table class=\"tableborder\">";
@@ -358,7 +358,7 @@ Class OB_Profiler {
      */
     public function _compile_loaded_files()
     {          
-        $ob  = ob::instance();
+        $ob  = this();
         $ssc = ssc::instance();
         $helper_prefix   = config_item('subhelper_prefix');
         $subclass_prefix = config_item('subclass_prefix');
@@ -368,10 +368,10 @@ Class OB_Profiler {
         $output .= "<tr><th>".lang('profiler_loaded_files')."</th></tr>";
         
         $config_files = '';
-        foreach(ssc::instance()->_profiler_config_files as $config_file) { $config_files .= $config_file .'<br />'; }
+        foreach(profiler_get('config_files') as $config_file) { $config_files .= $config_file .'<br />'; }
         
         $lang_files   = '';
-        foreach(ssc::instance()->_profiler_lang_files as $lang_file) { $lang_files .= $lang_file .'<br />'; }
+        foreach(profiler_get('lang_files') as $lang_file) { $lang_files .= $lang_file .'<br />'; }
         
         $base_helpers  = '';
         foreach(loader::$_base_helpers as $base_helper) 
@@ -387,7 +387,7 @@ Class OB_Profiler {
         }
         
         $loaded_helpers  = '';
-        foreach($ssc->_profiler_loaded_helpers as $loaded_helper) 
+        foreach(profiler_get('loaded_helpers') as $loaded_helper) 
         { 
             if(strpos($loaded_helper, $helper_prefix) === 0)
             {

@@ -106,7 +106,7 @@ Class OB_Config {
         }
 
         $this->is_loaded[] = $file;
-        ssc::instance()->_profiler_config_files[$file] = $file; 
+        profiler_set('config_files', $file, $file);
         unset($config);
 
         log_message('debug', 'Config file loaded: config/'.$file.EXT);
