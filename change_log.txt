@@ -49,12 +49,14 @@ Global Controller files from now on.
 
 in common.php
 
-function profiler_log($type, key, msg)
+function profiler_set($type, key, msg) // set
 {
     $ssc = ssc::instance();
 
-    $ssc->profiler_add[$type][$key] = $msg;
+    $ssc->profiler_var[$type][$key] = $msg;
 }
+
+profiler_get($type, $key); // grab
 
 log_message()
 {
