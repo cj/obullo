@@ -48,6 +48,7 @@ Global Controller files from now on.
 
 
 @todo .. upload class security fix
+@todo .. depreciate ob::instance() function use this();
 =======
 @todo .. change profiler class like log function like this
 
@@ -62,9 +63,9 @@ function profiler_set($type, key, msg) // set
 
 profiler_get($type, $key); // grab
 
-log_message()
+log_message() // in common.php file
 {
-    profiler_log('key', msg);
+    profiler_log('key', msg);    add this line..
 }
 
 @todo .. change .htaccess in User Guide like this
