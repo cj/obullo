@@ -406,7 +406,7 @@ Class OB_Profiler {
         foreach(loader::$_helpers as $helper) { $helpers .= $helper .'<br />'; }
         
         $libraries  = '';
-        foreach($ssc->_profiler_libs as $lib_key => $lib) 
+        foreach(profiler_get('libraries') as $lib_key => $lib) 
         { 
             if(strpos($lib, $subclass_prefix) === 0)
             {
@@ -420,22 +420,22 @@ Class OB_Profiler {
         }
         
         $models  = '';
-        foreach($ssc->_profiler_mods as $mod) { $models .= $mod .'<br />'; }
+        foreach(profiler_get('models') as $mod) { $models .= $mod .'<br />'; }
               
         $databases  = '';
         foreach($ob->_dbs as $db) { $databases .= $db .'<br />'; }
         
         $scripts  = '';
-        foreach($ssc->_profiler_scripts as $scr) { $scripts .= $scr .'<br />'; }
+        foreach(profiler_get('scripts') as $scr) { $scripts .= $scr .'<br />'; }
         
         $files  = '';              
-        foreach($ssc->_profiler_files as $file) { $files .= $file .'<br />'; }
+        foreach(profiler_get('files') as $file) { $files .= $file .'<br />'; }
         
         $local_views  = '';
-        foreach($ssc->_profiler_local_views as $view) { $local_views .= $view .'<br /> '; }
+        foreach(profiler_get('local_views') as $view) { $local_views .= $view .'<br /> '; }
     
         $app_views  = '';
-        foreach($ssc->_profiler_app_views as $view) { $app_views .= $view .'<br /> '; }
+        foreach(profiler_get('app_views') as $view) { $app_views .= $view .'<br /> '; }
         
         $base_helpers   = (isset($base_helpers{2}))   ? $base_helpers : '-';
         $app_helpers    = (isset($app_helpers{2}))    ? $app_helpers : '-';

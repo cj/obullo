@@ -154,7 +154,7 @@ if ( ! function_exists('view'))
 
         $path =  DIR .$GLOBALS['d']. DS .'views'. $vi->_ew->view_folder;
         
-        $vi->_profiler_local_views[$filename] = $path . $filename .EXT; 
+        profiler_set('local_views', $filename, $path . $filename .EXT);  
         
         return _load_view($path, $filename, $data, $string, $return);
     }
@@ -180,7 +180,7 @@ if ( ! function_exists('view_app'))
         
         $path = APP .'views'. $vi->_ew->app_view_folder;
         
-        $vi->_profiler_app_views[$filename] = $path . $filename .EXT; 
+        profiler_set('app_views', $filename, $path . $filename .EXT); 
         
         return _load_view($path, $filename, $data, $string, $return); 
     }
@@ -224,7 +224,7 @@ if ( ! function_exists('_load_script'))
                                
         log_message('debug', 'Script file loaded: '.$path . $filename . EXT); 
         
-        ssc::instance()->_profiler_scripts[] = $filename;
+        profiler_set('scripts', $filename, $filename);
         
         return "\n".$content; 
     }

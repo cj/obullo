@@ -48,6 +48,7 @@ defined('BASE') or exit('Access Denied!');
  *                      we use spl_autoload_register() func. because of performance :), added loader::file() func.
  * @version         1.9 added profiler class ssc::instance()->_profiler_ functions.
  * @version         2.0 loader::model('blog/model_filename'); bug fixed.
+ * @version         2.1 added profiler_set(); functions and removed old $ssc->_profiler_ variables.
  */
 
 Class LoaderException extends CommonException {}
@@ -151,6 +152,7 @@ Class loader {
     * @version  0.1
     * @version  0.2  added register_static functions
     * @version  0.3  removed class_exists, removed asn_to_models()
+    * @version  0.4  added profiler_set() func.
     * @return   void
     */
     private static function _library($class, $params_or_no_ins = '', $base = FALSE, $object_name = '', $lib_dir = '')
@@ -182,7 +184,7 @@ Class loader {
         if($OB->$class_var === NULL)
         throw new LoaderException('Unable to locate the '.$type.' library file: '. $class_var);
     
-        ssc::instance()->_profiler_libs[$class_var] = $class_var;   
+        profiler_set('libraries', $class_var, $class_var);
     }
         
     // --------------------------------------------------------------------
@@ -256,6 +258,7 @@ Class loader {
     * @param     string $model_name
     * @version   0.1  
     * @version   0.2 added params_or_no_ins instantiate switch ,added ssc::instance()->_profiler_mods 
+    * @version   0.3 added profiler_set function
     */
     private static function _model($file, $model_name, $object_name = '', $params_or_no_ins = '')
     {
@@ -276,7 +279,7 @@ Class loader {
 
         if($params_or_no_ins === FALSE)
         {
-            ssc::instance()->_profiler_mods[$model_var.'_no_instantiate'] = $model_name;
+            profiler_set('models', $model_var.'_no_instantiate', $model_name);
             return; 
         }
         
@@ -292,7 +295,7 @@ Class loader {
         $OB->$model_var->_assign_db_objects();
         
         // store loaded obullo models
-        ssc::instance()->_profiler_mods[$model_var] = $model_var; 
+        profiler_set('models', $model_var, $model_var);
     }
 
     // --------------------------------------------------------------------
@@ -554,6 +557,7 @@ Class loader {
     * @version  0.1
     * @version  0.2  added storing files to profiler class functionality.
     *                removed EXT constant
+    * @version  0.3  added profiler set func.
     * @return   void
     */                                 
     public static function file($path, $string = FALSE, $ROOT = APP)    
@@ -568,7 +572,7 @@ Class loader {
             log_message('debug', 'External file loaded: '.$path);
        
             // store into profiler
-            ssc::instance()->_profiler_files[] = $ROOT . $path;
+            profiler_set('files', $path, $ROOT . $path);
         
             if($string === TRUE)
             {
@@ -601,15 +605,16 @@ Class loader {
     *               just db objects ..
     * @version 0.3  changed ob::instance()->_mods as 
     *               ssc::instance()->_profiler_mods; 
+    * @version 0.4  added profiler_get func.
     * @return  void
     */
     private static function _assign_db_objects($db_var = '')
     {
-        $ssc = ssc::instance();
+        $models = profiler_get('models');
         
-        if (count($ssc->_profiler_mods) == 0) return;
+        if (count($models) == 0) return;
 
-        foreach ($ssc->_profiler_mods as $model_name)
+        foreach ($models as $model_name)
         {
             $OB->$model_name->$db_var = &$OB->$db_var;
         }

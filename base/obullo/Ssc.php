@@ -33,18 +33,7 @@ Class ssc {
     public $_mark = NULL; // bench_mark
     
     public $profiler_var = array(); // profiler variable.
-    
-    public $_profiler_mods  = array(); // profiler models
-    public $_profiler_libs  = array(); // profiler libs
-    public $_profiler_files = array(); // profiler files
-    public $_profiler_scripts        = array(); // profiler scripts
-    public $_profiler_app_views      = array(); // profiler app views
-    public $_profiler_local_views    = array(); // profiler local views
-    
-    // public $_profiler_loaded_helpers = array(); // profiler loaded helpers
-    // public $_profiler_config_files   = array(); // profiler config files
-    // public $_profiler_lang_files     = array(); // profiler lang files
-    
+
     public static function instance()
     {
         if( ! isset(self::$instance))

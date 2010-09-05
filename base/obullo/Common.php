@@ -87,7 +87,7 @@ function base_register($class, $params_or_no_ins = '', $dir = '')
         
         if($params_or_no_ins === FALSE) 
         {
-            ssc::instance()->_profiler_libs['php_'.$class.'_no_instantiate'] = $Class;
+            profiler_set('libraries', 'php_'.$class.'_no_instantiate', $Class);
             return TRUE;
         }
         
@@ -100,7 +100,7 @@ function base_register($class, $params_or_no_ins = '', $dir = '')
                 require(APP .'libraries'. DS .$prefix. $Class. EXT);
                 $classname = $prefix. $Class;
                 
-                ssc::instance()->_profiler_libs['php_overridden_'. $prefix . $class] = $class;
+                profiler_set('libraries', 'php_'. $class . '_overridden', $prefix . $class);
             }
         }
         
@@ -183,6 +183,7 @@ function register_autoload($real_name)
         // Shortcut support. 
         // --------------------------------------------------------------------       
         $class  = strtolower($real_name); // lowercase classname.
+        $prefix = config_item('subclass_prefix');
         
         // When enable_query_strings = true there are some isset errors ...
         // we need to set directory again.  
@@ -195,7 +196,7 @@ function register_autoload($real_name)
         {
             require(DIR .$GLOBALS['d']. DS .'libraries'. DS .'php5'. DS .$class. EXT);
             
-            ssc::instance()->_profiler_libs['php5_local_'.$class.'_loaded'] = $class;
+            profiler_set('libraries', 'php5_local_'.$class.'_loaded', $class);
             return;
         } 
         
@@ -209,17 +210,17 @@ function register_autoload($real_name)
             if(file_exists(BASE .'libraries'. DS .'php5'. DS .ucfirst($class). EXT))
             $replaced = '_replaced';
             
-            ssc::instance()->_profiler_libs['php5_'.$class.$replaced] = $class;
+            profiler_set('libraries', 'php5_'.$class. $replaced, $class);
             return;            
         } 
                                           
         // Php5 library extend (override) support.    
         // -------------------------------------------------------------------- 
-        if(file_exists(APP .'libraries'. DS .'php5'. DS . config_item('subclass_prefix') .$class. EXT))
+        if(file_exists(APP .'libraries'. DS .'php5'. DS . $prefix .$class. EXT))
         {
-            require(APP .'libraries'. DS .'php5'. DS . config_item('subclass_prefix') .$class. EXT);
+            require(APP .'libraries'. DS .'php5'. DS . $prefix .$class. EXT);
             
-            ssc::instance()->_profiler_libs['php5_'.$class.'_overridden'] = $class;
+            profiler_set('libraries', 'php5_'.$class.'_overridden', $prefix. $class);
             return;            
         } 
 
@@ -231,7 +232,7 @@ function register_autoload($real_name)
             
             require(BASE .'libraries'. DS .'php5'. DS .ucfirst($name[0]). EXT);
         
-            ssc::instance()->_profiler_libs['php5_'.$class] = $class;
+            profiler_set('libraries', 'php5_'.$class, $class);
             return;
         }  
 
@@ -243,7 +244,7 @@ function register_autoload($real_name)
             
             eval('Class '.$class.' extends '.$class.'_CORE {}');
             
-            ssc::instance()->_profiler_libs['php5_'.$class.'_loaded'] = $class;
+            profiler_set('libraries', 'php5_'.$class.'_loaded', $class);
             return;
         }
         

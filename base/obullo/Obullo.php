@@ -33,6 +33,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @version 0.6 added this() shortcut function, added get_config();
  * @version 0.7 !! Returns of the SSC pattern !! :), added SSC class.
  * @version 0.8 Moved ssc to ssc.php , added extend switch support foreach folders.
+ * @version 0.9 added profiler_set() function.
  */
 
 define('OBULLO_VERSION', '1.0.1');
@@ -63,6 +64,7 @@ if( ! file_exists(APP .'parents'. DS .$_Global_controller. EXT))
 }
 
 loader::file('parents'. DS .$_Global_controller. EXT);
+profiler_set('files', 'parents'. DS .'App_controller'. EXT,  APP .'parents'. DS .'App_controller'. EXT);
 
 eval('Class Controller_CORE extends '.$_Global_controller.'{}'); 
 

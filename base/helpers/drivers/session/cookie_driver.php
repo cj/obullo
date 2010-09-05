@@ -486,7 +486,7 @@ if( ! function_exists('_flashdata_mark') )
     function _flashdata_mark()
     {
         $ses = ssc::instance();
-        $userdata = all_userdata();
+        $userdata = sess_alldata();
         foreach ($userdata as $name => $value)
         {
             $parts = explode(':new:', $name);
@@ -511,7 +511,7 @@ if( ! function_exists('_flashdata_sweep') )
 {
     function _flashdata_sweep()
     {              
-        $userdata = all_userdata();
+        $userdata = sess_alldata();
         foreach ($userdata as $key => $value)
         {
             if (strpos($key, ':old:'))

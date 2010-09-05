@@ -44,11 +44,12 @@ Global Controller files from now on.
 - add config load and lang load track support for profiler class
 - renamed lang_item() function as lang() in lang.php, updated all libraries.
 - added auto_source_url(false); function to config class.
+- added profiler_set($type, key, msg) and profiler_get($key) functions to common.php file, updated all libraries, removed ssc:intance()->_profiler_ variables.
 //-----------------------------------------------------------------------------
 
 
 @todo .. upload class security fix
-@todo .. depreciate ob::instance() function use this();
+@todo .. depreciate ob::instance() function but use this() funtion in core;
 =======
 @todo .. change profiler class like log function like this
 
