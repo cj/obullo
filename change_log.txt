@@ -47,6 +47,7 @@ Global Controller files from now on.
 - added profiler_set($type, key, msg) and profiler_get($key) functions to common.php file, updated all libraries, removed ssc:intance()->_profiler_ variables.
 //-----------------------------------------------------------------------------
 
+add alnum_lower and alnum_upper to  string helper pool   case 'alnum'    :    $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 @todo .. upload class security fix
 @todo .. depreciate ob::instance() function but use this() funtion in core;
