@@ -32,8 +32,8 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @version 0.5 added 'Obullo MVC2 Global controller' functionality
  * @version 0.6 added this() shortcut function, added get_config();
  * @version 0.7 !! Returns of the SSC pattern !! :), added SSC class.
- * @version 0.8 Moved ssc to ssc.php , added extend switch support foreach folders.
- * @version 0.9 added profiler_set() function.
+ * @version 0.8 Moved ssc to ssc.php , added extend switch support to foreach folders.
+ * @version 0.9 added '*' function, added profiler_set() function.
  */
 
 define('OBULLO_VERSION', '1.0.1');

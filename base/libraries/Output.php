@@ -266,12 +266,12 @@ Class OB_Output {
                 $output  = preg_replace("|</body>.*?</html>|is", '', $output);
                 
                 // Add profiler script before the body end tag. ( Obullo Changes )
-                $output .= view_base_script('profiler', $data);  
+                $output .= _load_script(BASE .'scripts'. DS, 'profiler', $data);  
                 $output .= '</body></html>';
             }
             else
             {
-                $output .= view_base_script('profiler', $data);
+                $output .= _load_script(BASE .'scripts'. DS, 'profiler', $data);
             }
         } 
         

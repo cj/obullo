@@ -91,8 +91,12 @@ if ( ! function_exists('current_dir'))
 {
     function current_dir($uri = '')
     {
-        $separator = ($uri{0} == '/') ? '' : '/';
-        
+        $separator = '';
+        if($uri != '')
+        {
+            $separator = ($uri{0} == '/') ? '' : '/';
+        }
+    
         return (string)$GLOBALS['d'] . $separator . $uri;
     }
 }
@@ -351,7 +355,7 @@ if ( ! function_exists('safe_mailto'))
 
 	    $data['x'] = array_reverse($x);
 
-        return view_base_script('safe_mail', $data);
+        return _load_script(BASE .'scripts'. DS, 'safe_mail', $data);
     }
 }
 

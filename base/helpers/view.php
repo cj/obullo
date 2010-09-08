@@ -88,54 +88,6 @@ if ( ! function_exists('view_set_folder'))
 // ------------------------------------------------------------------------ 
 
 /**
-* Load inline script file from
-* local folder.
-* 
-* @param string $filename
-* @param array  $data
-*/
-if ( ! function_exists('view_script'))
-{
-    function view_script($filename, $data = '')
-    {   
-        return _load_script(DIR .$GLOBALS['d']. DS .'scripts'. DS, $filename, $data);
-    }
-}
-// ------------------------------------------------------------------------
-
-/**
-* Load inline script file from
-* application folder.
-* 
-* @param string $filename
-* @param array  $data
-*/
-if ( ! function_exists('view_app_script'))
-{
-    function view_app_script($filename, $data = '')
-    {   
-        return _load_script(APP .'scripts'. DS, $filename, $data);
-    }
-}
-// ------------------------------------------------------------------------
-
-/**
-* Load inline script file from
-* base folder.
-* 
-* @param string $filename
-* @param array  $data
-*/
-if ( ! function_exists('view_base_script'))
-{
-    function view_base_script($filename, $data = '')
-    {   
-        return _load_script(BASE .'scripts'. DS, $filename, $data);
-    }
-}
-// ------------------------------------------------------------------------
-
-/**
 * Load local view file
 * 
 * @param string  $filename

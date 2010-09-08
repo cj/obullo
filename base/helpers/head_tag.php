@@ -71,7 +71,7 @@ if( ! function_exists('js') )
         {
             foreach ($src as $k => $v)
             {
-                $v = ltrim($v, '/');   // remove first slash
+                $v = ltrim($v, '/');   // remove first slash  ( Obullo changes )
                 
                 if ($k == 'src' AND strpos($v, '://') === FALSE)
                 {
@@ -120,7 +120,7 @@ if( ! function_exists('script') )
 {
     function script($filename = '', $data = '')
     {
-        return view_script($filename, $data);
+        return _load_script(DIR .$GLOBALS['d']. DS .'scripts'. DS, $filename, $data);
     }
 }
 // ------------------------------------------------------------------------ 
@@ -136,7 +136,7 @@ if( ! function_exists('script_app') )
 {
     function script_app($filename = '', $data = '')
     {
-        return view_app_script($filename, $data);
+        return _load_script(APP .'scripts'. DS, $filename, $data);
     }
 }
 // ------------------------------------------------------------------------ 
@@ -152,7 +152,7 @@ if( ! function_exists('script_base') )
 {
     function script_base($filename = '', $data = '')
     {
-        return view_base_script($filename, $data);
+        return _load_script(BASE .'scripts'. DS, $filename, $data);
     }
 }
 

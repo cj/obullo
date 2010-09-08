@@ -13,8 +13,6 @@ echo meta('author', '');
 
 <base href="<?php echo this()->base; ?>" />
 
-<?php echo css('css/welcome.css'); ?>
-
 <?php echo this()->head; ?>
 </head>
 
