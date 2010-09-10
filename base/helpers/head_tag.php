@@ -69,6 +69,7 @@ if( ! function_exists('js') )
         
         if (is_array($src))
         {
+            $link = '<script ';
             foreach ($src as $k => $v)
             {
                 $v = ltrim($v, '/');   // remove first slash  ( Obullo changes )

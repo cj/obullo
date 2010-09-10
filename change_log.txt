@@ -6,7 +6,7 @@ Version 1.0.1 Changes
 - Global_controller meta tags moved to view_base_layout.php
 - Added $params_or_no_ins instantiate switch to loader::model(); function. User can
 switch off Model instantiate using by boolean like loader::model('model_name', false);  (added to User Guide)
-- Added $params_or_no_ins Instantiate switch for all Loader Library functions.  
+- Added $params_or_no_ins Instantiate switch for all Loader Library functions. (added to User Guide) 
 - Removed "use_bind_value" constant from constants/db.php file.
 - renamed form helper validation_errors() function as "form_validate_errors();"
 - renamed captcha helper create_captcha() function as "captcha_create();"
