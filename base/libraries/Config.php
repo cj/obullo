@@ -283,6 +283,20 @@ Class OB_Config {
     }
     
     // --------------------------------------------------------------------
+
+    /**
+    * Base Folder
+    *
+    * @access    public
+    * @return    string
+    */
+    function base_folder()
+    {
+        $x = explode("/", preg_replace("|/*(.+?)/*$|", "\\1", trim(BASE, DS)));
+        return $this->base_url() . end($x).'/';
+    }
+      
+    // --------------------------------------------------------------------
     
     /**
     * Set a config file item
