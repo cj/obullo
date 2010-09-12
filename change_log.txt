@@ -51,26 +51,9 @@ add alnum_lower and alnum_upper to  string helper pool   case 'alnum'    :    $p
 
 @todo .. upload class security fix
 @todo .. depreciate ob::instance() function but use this() funtion in core;
-=======
 @todo .. change profiler class like log function like this
-
-in common.php
-
-function profiler_set($type, key, msg) // set
-{
-    $ssc = ssc::instance();
-
-    $ssc->profiler_var[$type][$key] = $msg;
-}
-
-profiler_get($type, $key); // grab
-
-log_message() // in common.php file
-{
-    profiler_log('key', msg);    add this line..
-}
-
 @todo .. change .htaccess in User Guide like this
+@todo .. remove php closing tags from all base libraries and application/config files (thanks to phpyuz)
 =======
 DirectoryIndex index.php
 RewriteEngine on
