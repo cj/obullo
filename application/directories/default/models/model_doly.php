@@ -12,7 +12,7 @@ Class Model_doly extends Model {
         
     }
     
-    function doly()
+    public function doly()
     {
         // ...
         // $this->db->query( ... );

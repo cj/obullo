@@ -80,4 +80,3 @@ if( ! function_exists('sess_start'))
 
 /* End of file session.php */
 /* Location: ./base/helpers/session.php */
-?>

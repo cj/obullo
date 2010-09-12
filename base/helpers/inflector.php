@@ -177,4 +177,3 @@ if( ! function_exists('humanize') )
 
 /* End of file inflector.php */
 /* Location: ./base/helpers/inflector.php */
-?>

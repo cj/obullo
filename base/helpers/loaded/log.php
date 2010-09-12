@@ -115,4 +115,3 @@ if( ! function_exists('log_write') )
 
 /* End of file log.php */
 /* Location: ./base/helpers/loaded/log.php */
-?>

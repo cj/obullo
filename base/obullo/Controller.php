@@ -60,4 +60,3 @@ Class Controller extends ob {
 
 /* End of file Controller.php */
 /* Location: ./base/obullo/Controller.php */
-?>

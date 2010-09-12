@@ -589,4 +589,3 @@ if ( ! function_exists('_parse_attributes'))
 
 /* End of file url.php */
 /* Location: ./base/helpers/url.php */
-?>

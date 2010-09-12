@@ -213,4 +213,3 @@ if( ! function_exists('_get_smiley_array') )
 
 /* End of file smiley.php */
 /* Location: ./base/helpers/smiley.php */
-?>

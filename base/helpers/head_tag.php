@@ -296,4 +296,3 @@ if( ! function_exists('link_tag') )
 
 /* End of file head_tag.php */
 /* Location: ./base/helpers/head_tag.php */
-?>

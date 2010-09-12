@@ -456,4 +456,3 @@ if( ! function_exists('word_wrap') )
 
 /* End of file text.php */
 /* Location: ./base/helpers/text.php */
-?>

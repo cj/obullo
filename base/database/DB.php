@@ -803,4 +803,3 @@ Class OB_DB extends OB_DBAc_sw {
 
 /* End of file DB.php */
 /* Location: .base/database/DB.php */
-?>

@@ -71,4 +71,3 @@ if( ! function_exists('set_realpath') )
 
 /* End of file path.php */
 /* Location: ./base/helpers/path.php */
-?>

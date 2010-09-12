@@ -697,4 +697,3 @@ if( ! function_exists('encode_php_tags') )
 }
 /* End of file security.php */
 /* Location: ./base/helpers/security.php */
-?>

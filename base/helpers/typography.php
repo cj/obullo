@@ -70,4 +70,3 @@ if( ! function_exists('auto_typography') )
     
 /* End of file typography.php */
 /* Location: ./base/helpers/typography.php */
-?>

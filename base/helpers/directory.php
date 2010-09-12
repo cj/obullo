@@ -78,4 +78,3 @@ if( ! function_exists('directory_map') )
 }
 /* End of file directory.php */
 /* Location: ./base/helpers/directory.php */
-?>

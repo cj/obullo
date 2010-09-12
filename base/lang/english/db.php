@@ -8,4 +8,3 @@ $lang['db_ac_insert_set_table']     = 'Please set values for insert operation.';
 
 /* End of file db.php */
 /* Location: ./base/lang/english/db.php */
-?>

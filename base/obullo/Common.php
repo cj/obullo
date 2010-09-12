@@ -534,4 +534,3 @@ function profiler_get($type)
 
 /* End of file Common.php */
 /* Location: ./base/obullo/Common.php */
-?>

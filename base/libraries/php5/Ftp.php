@@ -608,4 +608,3 @@ Class ftp_CORE implements PHP5_Library {
 
 /* End of file Ftp.php */
 /* Location: ./base/libraries/php5/Ftp.php */
-?>

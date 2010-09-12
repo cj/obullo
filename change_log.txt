@@ -45,6 +45,7 @@ Global Controller files from now on. -- added to user guide
 - renamed lang_item() function as lang() in lang.php, updated all libraries.
 - added auto_source_url(false); function to config class.
 - added profiler_set($type, key, msg) and profiler_get($key) functions to common.php file, updated all libraries, removed ssc:intance()->_profiler_ variables.
+- removed all php closing tags from all php files (thanks to phpyuz)
 //-----------------------------------------------------------------------------
 
 add alnum_lower and alnum_upper to  string helper pool   case 'alnum'    :    $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -53,7 +54,6 @@ add alnum_lower and alnum_upper to  string helper pool   case 'alnum'    :    $p
 @todo .. depreciate ob::instance() function but use this() funtion in core;
 @todo .. change profiler class like log function like this
 @todo .. change .htaccess in User Guide like this
-@todo .. remove php closing tags from all base libraries and application/config files (thanks to phpyuz)
 =======
 DirectoryIndex index.php
 RewriteEngine on

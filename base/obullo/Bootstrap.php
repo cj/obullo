@@ -159,4 +159,3 @@ if( ! function_exists('ob_system_close'))
 
 /* End of file Bootstrap.php
 /* Location: ./base/obullo/Bootstrap.php */
-?>

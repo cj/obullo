@@ -61,4 +61,3 @@ $routes['index_method']          = "index";
 
 /* End of file routes.php */
 /* Location: .application/config/routes.php */
-?>

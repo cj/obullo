@@ -483,4 +483,3 @@ Class encrypt_CORE implements PHP5_Library {
 
 /* End of file Encrypt.php */
 /* Location: ./base/libraries/php5/Encrypt.php */
-?>

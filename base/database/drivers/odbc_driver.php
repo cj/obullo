@@ -330,4 +330,3 @@ Class Obullo_DB_Driver_Odbc extends OB_DBAdapter
 
 /* End of file odbc_driver.php */
 /* Location: ./base/database/drivers/odbc_driver.php */
-?>

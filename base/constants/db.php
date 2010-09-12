@@ -25,6 +25,9 @@ define('param_inout' , -2147483648); // PDO::PARAM_INPUT_OUTPUT integer
 | These prefs are used when working with query results.
 |
 */
+
+// --------------------------------------------------------------------
+
 /**
 * PDO::FETCH_LAZY
 * Fetch each row as an object with variable names 
@@ -33,6 +36,9 @@ define('param_inout' , -2147483648); // PDO::PARAM_INPUT_OUTPUT integer
 * @return integer
 */
 define('lazy', 1);
+
+// --------------------------------------------------------------------
+
 /**
 * Fetch All query results
 * in associative array data format
@@ -40,6 +46,9 @@ define('lazy', 1);
 * @return integer
 */
 define('assoc', 2);
+
+// --------------------------------------------------------------------
+
 /**
 * Fetch each row as an array
 * indexed by column number
@@ -47,6 +56,9 @@ define('assoc', 2);
 * @return integer
 */
 define('num', 3);
+
+// --------------------------------------------------------------------
+
 /**
 * Fetch each row as an array 
 * indexed by both column name and numbers
@@ -54,6 +66,9 @@ define('num', 3);
 * @return integer
 */
 define('both', 4);
+
+// --------------------------------------------------------------------
+
 /**
 * Fetch All query results
 * in std object data format
@@ -62,6 +77,9 @@ define('both', 4);
 */
 define('obj', 5);
 define('row', 5);
+
+// --------------------------------------------------------------------
+
 /**
 * Specifies that the fetch method shall return TRUE 
 * and assign the values of the columns in the result 
@@ -71,6 +89,9 @@ define('row', 5);
 * @return integer
 */
 define('bound', 6);
+
+// --------------------------------------------------------------------
+
 /**
 * Specifies that the fetch method shall return only a
 * single requested column from the next row in the 
@@ -79,6 +100,9 @@ define('bound', 6);
 * @return integer
 */
 define('column', 7);
+
+// --------------------------------------------------------------------
+
 /**
 * Specifies that the fetch method shall return a new instance
 * of the requested class, mapping the columns to named p
@@ -87,6 +111,9 @@ define('column', 7);
 * @return integer
 */
 define('as_class', 8);
+
+// --------------------------------------------------------------------
+
 /**
 * Specifies that the fetch method shall update an existing 
 * instance of the requested class, mapping the columns to named 
@@ -95,11 +122,17 @@ define('as_class', 8);
 * @return integer
 */
 define('into', 9);
+
+// --------------------------------------------------------------------
+
 /**
 * Fetch func.
 * @return integer
 */
 define('func', 10);
+
+// --------------------------------------------------------------------
+
 /**
 * Fetch each row as an array 
 * indexed by column name
@@ -107,6 +140,9 @@ define('func', 10);
 * @return integer
 */
 define('named', 11);
+
+// --------------------------------------------------------------------
+
 /**
 * WARNING ! Available @since PHP 5.2.3
 * Fetch into an array where the 1st column is a key and 
@@ -115,22 +151,34 @@ define('named', 11);
 * @return integer
 */
 define('key_pair', 12);
+
+// --------------------------------------------------------------------
+
 /**
 * Fecth group. 
 * @return integer
 */
 define('group', 65536);
+
+// --------------------------------------------------------------------
+
 /**
 * Fecth unique. 
 * @return integer
 */
-define('unique', 196608);    
+define('unique', 196608);
+
+// --------------------------------------------------------------------
+    
 /**
 * Determine the class name from the value of first column.
 * 
 * @return integer
 */
 define('class_type', 262144);
+
+// --------------------------------------------------------------------
+
 /**
 * Available @since PHP 5.1.0.
 * As PDO::FETCH_INTO but object is provided 
@@ -139,12 +187,17 @@ define('class_type', 262144);
 * @return integer
 */
 define('serialize', 524288);
+
+// --------------------------------------------------------------------
+
 /**
 * WARNING ! Available @since PHP 5.2.0
 * 
 * @return integer
 */
 define('props_late', 1048576);
+
+// --------------------------------------------------------------------
 
 /**
 |--------------------------------------------------------------------------
@@ -153,6 +206,9 @@ define('props_late', 1048576);
 | These prefs are used when working with query results.
 |
 */
+
+// --------------------------------------------------------------------
+
 /**
 * Fetch the next row in the result set.
 * Valid only for scrollable cursors. 
@@ -160,6 +216,9 @@ define('props_late', 1048576);
 * @return integer
 */
 define('ori_next', 0);
+
+// --------------------------------------------------------------------
+
 /**
 * Fetch the previous row in the result set.
 * Valid only for scrollable cursors. 
@@ -167,6 +226,9 @@ define('ori_next', 0);
 * @return integer
 */
 define('ori_prior', 1);
+
+// --------------------------------------------------------------------
+
 /**
 * Fetch the first row in the result set.
 * Valid only for scrollable cursors. 
@@ -174,6 +236,9 @@ define('ori_prior', 1);
 * @return integer
 */
 define('ori_first', 2);
+
+// --------------------------------------------------------------------
+
 /**
 * Fetch the last row in the result set.
 * Valid only for scrollable cursors. 
@@ -181,6 +246,9 @@ define('ori_first', 2);
 * @return integer
 */
 define('ori_last', 3);
+
+// --------------------------------------------------------------------
+
 /**
 * Fetch the requested row by row number from the result set.
 * Valid only for scrollable cursors. 
@@ -188,6 +256,9 @@ define('ori_last', 3);
 * @return integer
 */
 define('ori_abs', 4);
+
+// --------------------------------------------------------------------
+
 /**
 * Fetch the requested row by relative position from the current 
 * position of the cursor in the result set. 
@@ -197,6 +268,6 @@ define('ori_abs', 4);
 */
 define('ori_rel', 5);
 
+
 /* End of file db.php */
 /* Location: ./base/constants/db.php */
-?>

@@ -330,4 +330,3 @@ Class Obullo_DB_Driver_4d extends OB_DBAdapter
 
 /* End of file 4d_driver.php */
 /* Location: ./base/database/drivers/4d_driver.php */
-?>

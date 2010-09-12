@@ -133,4 +133,3 @@ function this(){ return ob::instance(); }
 
 /* End of file Obullo.php */
 /* Location: ./base/obullo/Obullo.php */
-?>

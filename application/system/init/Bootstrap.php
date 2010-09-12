@@ -19,4 +19,3 @@ defined('BASE') or exit('Access Denied!');
 
 /* End of file Bootstrap.php */
 /* Location: ./application/system/init/Bootstrap.php */
-?>

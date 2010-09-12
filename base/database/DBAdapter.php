@@ -105,7 +105,7 @@ Abstract Class OB_DBAdapter extends OB_DB {
     /**
     * Connect to PDO (default Mysql)
     * 
-    * @author   Ersin Güvenç 
+    * @author   Ersin Guvenc 
     * @param    string $dsn  Dsn
     * @param    string $user Db username
     * @param    mixed  $pass Db password
@@ -232,4 +232,3 @@ Abstract Class OB_DBAdapter extends OB_DB {
 
 /* End of file DBAdapter.php */
 /* Location: .base/database/DBAdapter.php */
-?>

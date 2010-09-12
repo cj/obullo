@@ -346,4 +346,3 @@ set_exception_handler('Obullo_ExceptionHandler');
 
 /* End of file Errors.php */
 /* Location: ./base/obullo/Errors.php */
-?>

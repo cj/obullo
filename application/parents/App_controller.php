@@ -24,4 +24,3 @@ Class App_controller
 
 /* End of file App_controller.php */
 /* Location: ./application/parents/App_controller.php */
-?>

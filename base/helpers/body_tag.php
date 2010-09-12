@@ -263,4 +263,3 @@ if( ! function_exists('nbs') )
 
 /* End of file body_tag.php */
 /* Location: ./base/helpers/body_tag.php */
-?>

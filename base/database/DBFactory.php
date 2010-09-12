@@ -150,4 +150,3 @@ Class OB_DBFactory {
 
 /* End of file DBFactory.php */
 /* Location: ./base/database/DBFactory.php */
-?>

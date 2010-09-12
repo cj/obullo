@@ -22,4 +22,3 @@ $lang['ut_null']			= 'Null';
 
 /* End of file unit_test.php */
 /* Location: ./base/lang/english/unit_test.php */
-?>

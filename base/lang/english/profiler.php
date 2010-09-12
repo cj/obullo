@@ -18,4 +18,3 @@ $lang['profiler_no_memory']         = 'Memory Usage Unavailable';
 
 /* End of file profiler.php */
 /* Location: ./base/lang/english/profiler.php */
-?>

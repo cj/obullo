@@ -71,4 +71,3 @@ $parents['directoryname'] = array(
 
 /* End of file parents.php */
 /* Location: .application/config/parents.php */
-?>

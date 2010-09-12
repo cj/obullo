@@ -60,4 +60,3 @@ Class Model {
 
 /* End of file Model.php */
 /* Location: ./base/obullo/Model.php */
-?>

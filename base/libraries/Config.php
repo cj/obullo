@@ -317,4 +317,3 @@ Class OB_Config {
 
 /* End of file Config.php */
 /* Location: ./base/libraries/Config.php */
-?>

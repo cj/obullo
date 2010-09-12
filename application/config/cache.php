@@ -53,4 +53,3 @@ $cache['compression_level']     = 8;
 
 /* End of file cache.php */
 /* Location: ./application/config/cache.php */
-?>

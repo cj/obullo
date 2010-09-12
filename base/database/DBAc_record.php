@@ -1411,4 +1411,3 @@ Class OB_DBAc_record  {
 }
 /* End of file DBAc_record.php */
 /* Location: .base/database/DBAc_record.php.php */
-?>

@@ -980,4 +980,3 @@ if( ! function_exists('_get_validation_object') )
 
 /* End of file form.php */
 /* Location: ./base/helpers/form.php */
-?>

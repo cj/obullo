@@ -61,4 +61,3 @@ if( ! function_exists('send_email') )
 
 /* End of file email.php */
 /* Location: ./base/helpers/email.php */
-?>

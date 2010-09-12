@@ -22,4 +22,3 @@ Class Global_controller extends __autoloader
 
 /* End of file Global_controller.php */
 /* Location: ./application/parents/Global_controller.php */
-?>

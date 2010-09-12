@@ -446,4 +446,3 @@ Class table_CORE implements PHP5_Library {
 
 /* End of file Table.php */
 /* Location: ./base/libraries/php5/Table.php */
-?>

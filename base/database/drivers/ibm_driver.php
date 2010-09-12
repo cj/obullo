@@ -360,4 +360,3 @@ Class Obullo_DB_Driver_Ibm extends OB_DBAdapter
 
 /* End of file ibm_driver.php */
 /* Location: ./base/database/drivers/ibm_driver.php */
-?>

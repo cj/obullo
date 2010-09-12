@@ -281,4 +281,3 @@ if( ! function_exists('repeater') )
 
 /* End of file string.php */
 /* Location: ./base/helpers/string.php */
-?>

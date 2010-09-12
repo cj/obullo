@@ -48,5 +48,4 @@ Class ssc {
 // END ssc Class
 
 /* End of file Ssc.php */
-/* Location: ./base/obullo/Ssc.php */ 
-?>
+/* Location: ./base/obullo/Ssc.php */

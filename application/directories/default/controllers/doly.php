@@ -3,7 +3,7 @@
 /**
 * Your copy paste Controller.
 */
-Class Doly extends Controller {
+Class Start extends Controller {
     
     function __construct()
     {   
@@ -15,14 +15,12 @@ Class Doly extends Controller {
     public function index()
     {
         $this->title = '';
-    
-        $this->head  = '';
-        $this->head .= '';
 
-        $this->body  = content_view('');
-        content_app_view('');
+        $this->body  = view('');
+        view_app('');
     }
     
-} //end.
+}
 
-?>
+/* End of file start.php */
+/* Location: .application/default/controllers/start.php */

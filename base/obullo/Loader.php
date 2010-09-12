@@ -625,4 +625,3 @@ Class loader {
 
 /* End of file Loader.php */
 /* Location: ./base/obullo/Loader.php */
-?>

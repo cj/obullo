@@ -108,5 +108,4 @@ Class OB_Registry extends Obullo_Registry {
 // END Registry Class
 
 /* End of file Registry.php */
-/* Location: ./base/obullo/Registry.php */ 
-?>
+/* Location: ./base/obullo/Registry.php */

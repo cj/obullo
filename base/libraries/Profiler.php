@@ -499,4 +499,3 @@ Class OB_Profiler {
 
 /* End of file Profiler.php */
 /* Location: ./base/libraries/Profiler.php */
-?>

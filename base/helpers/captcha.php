@@ -292,4 +292,3 @@ if( ! function_exists('captcha_create') )
 
 /* End of file captcha.php */
 /* Location: ./base/helpers/captcha.php */
-?>

@@ -267,4 +267,3 @@ if ( ! function_exists('_ob_object_to_array'))
 
 /* End of file view.php */
 /* Location: ./base/helpers/view.php */
-?>

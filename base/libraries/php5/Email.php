@@ -2036,4 +2036,3 @@ class email_CORE implements PHP5_Library {
 
 /* End of file Email.php */
 /* Location: ./base/libraries/php5/Email.php */
-?>

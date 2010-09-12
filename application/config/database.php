@@ -46,4 +46,3 @@ $database['db2']['options']  = array();
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */
-?>
