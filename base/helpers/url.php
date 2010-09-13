@@ -46,6 +46,23 @@ if ( ! function_exists('base_url'))
 // ------------------------------------------------------------------------
 
 /**
+* Source URL
+*
+* Returns the "source_url" item from your config file
+*
+* @access    public
+* @param     string url
+* @return    string
+*/
+if ( ! function_exists('source_url'))
+{
+    function source_url()
+    {
+        return this()->config->source_url();
+    }
+}
+
+/**
 * Site URL
 *
 * Create a local URL based on your basepath. Segments can be passed via the
