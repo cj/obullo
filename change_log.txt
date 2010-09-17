@@ -51,6 +51,9 @@ Global Controller files from now on. -- added to user guide
 
 add alnum_lower and alnum_upper to  string helper pool   case 'alnum'    :    $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
+@todo add to user gudide wildcards examples
+$this->db->where("field LIKE '".$this->db->escape_str($value)."%_'"); 
+
 @todo .. upload class security fix
 @todo .. depreciate ob::instance() function but use this() funtion in core;
 @todo .. change .htaccess in User Guide like this
