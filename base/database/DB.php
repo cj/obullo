@@ -323,7 +323,7 @@ Class OB_DB extends OB_DBAc_sw {
     * @return   string
     */
     public function last_query($prepared = FALSE)
-    {         
+    {                 
         // let's make sure is it prepared query ?
         if($prepared == TRUE AND self::_is_assoc($this->last_values))
         {   
@@ -603,7 +603,7 @@ Class OB_DB extends OB_DBAc_sw {
     */
     private static function _is_assoc($arr)
     {
-        if( ! is_array($arr)) return FALSE;
+        if(sizeof($arr) == 0) return FALSE;
         
         return array_keys($arr) !== range(0, count($arr) - 1);
     }

@@ -12,7 +12,8 @@ switch off Model instantiate using by boolean like loader::model('model_name', f
 - renamed captcha helper create_captcha() function as "captcha_create();" -- added to user guide 
 - Added source_url() function to Config.php class. -- added to user guide 
 - Added source_url() function to url helper. -- added to user guide 
-- Added Profiler Class. Removed some reserved controller variables (_libs and _mods)  from obullo/ob class.
+- Added Profiler Class. -- added to user guide
+- Removed some reserved controller variables (_libs and _mods)  from obullo/ob class.  -- added to user guide
 - config/parents.php extend rules changed. Rules turned into associative arrays.  -- added to user guide Global Controllers
 - Obullo Mvc2 changes: updated obullo.php, Global Controller extend rule changed belonging to 
 $GLOBAL['d'] variable (directory request). Added '*' rule , All controllers in a folder which have the '*' rule before 
@@ -25,47 +26,35 @@ Global Controller files from now on. -- added to user guide
 - changed loader::file('folder/file') as loader::file('folder/file'.EXT)  -- added to user guide
 - added current_url(), current_dir(), current_class(), current_method() functions to Url helper. -- added to user guide
 - loading model from another path bug fixed. added 'models' string and DS.
-- added $config['subhelper_prefix'] = 'my_';  to config.php file. 
-- added sess_get_flash( $prefix = '', $suffix = '') func. parameters to session drivers.
+- added $config['subhelper_prefix'] = 'my_';  to config.php file.  -- added to user guide
+- added sess_get_flash('', $prefix = '', $suffix = '') func. parameters to session drivers. -- added to user guide
 - added base_url(), site_url() functions to url helper file. -- added to user guide
-- added set  auto_base_url() , base_url and source_url functions to config class, updated source_url() function.
-- changed css(filename.css), js(filename.js), img(filename.ext) functions as css(css/filename.css), js(js/filename.js), img(images/filename.ext);
+- added set  auto_base_url() , base_url and source_url functions to config class, updated source_url() function. -- added to user guide
+- changed css(filename.css), js(filename.js), img(filename.ext) functions as css(css/filename.css), js(js/filename.js), img(images/filename.ext); -- added to user guide
 - added extra ='' (attributes) param to form_hidden(); function..  -- added to user guide
-- added content_view('', (object)$data); support ..
-- added script(), script_app(), script_base() functions to head tag helper.
+- added view('', (object)$data); support ..
+- added script(), script_app(), script_base() functions to head tag helper. -- added to user guide
 - ini_set('display_errors', ..); removed from bootstrap and config.php
-- content helper renamed as view.php and all "content_" function prefix changed as "view_"
+- content helper renamed as view.php and all "content_" function prefix changed as "view_"  -- added to user guide
 - some impromevents for profiler class, added php and php5 libraries colourful track support.
-- added session helper driver extend support, added to all helpers extend support
-- added i_request() function to base input helper.
+- added session helper driver extend support, added to all helpers extend support. -- added to user guide
+- added i_request() function to base input helper. -- added to user guide
 - session function all_userdata changed as sess_alldata()
 - changed view helper view_set_folder() 'app_view' switch case string as 'view_app'
-- removed css() function array support from head tag helper
-- loaded_helper() to common.php file, changed bootstrap.php and ob_set_headers func, added loaded helpers track support to profiler class.
+- changed css() function array support in head tag helper
+- added loaded_helper() function to common.php file, changed bootstrap.php and ob_set_headers func, added loaded helpers track support to profiler class.
 - add config load and lang load track support for profiler class
-- renamed lang_item() function as lang() in lang.php, updated all libraries.
+- renamed lang_item() function as lang() in lang.php, updated all libraries. -- added to user guide
 - added auto_source_url(false); function to config class.
 - added profiler_set($type, key, msg) and profiler_get($key) functions to common.php file, updated all libraries, removed ssc:intance()->_profiler_ variables.
 - removed all php closing tags from all php files (thanks to phpyuz)
+- fixed db.php self::_is_assoc() function bug, removed is_array() added php sizeof() function.
 //-----------------------------------------------------------------------------
 
 add alnum_lower and alnum_upper to  string helper pool   case 'alnum'    :    $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-@todo add to user gudide wildcards examples
-this can be a bug check it ..
-$this->db->where("field LIKE '".$this->db->escape_str($value)."%_'");  CI
-$this->db->where("field LIKE $this->db->escape_str($value.'%_'));  Obullo
-
 @todo .. upload class security fix
 @todo .. depreciate ob::instance() function but use this() funtion in core;
-@todo .. change .htaccess in User Guide like this
-=======
-DirectoryIndex index.php
-RewriteEngine on
-RewriteCond $1 !^(index\.php|sources|favicon\.ico|robots\.txt)
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ ./index.php/$1 [L,QSA]
 
 @next version todo .. pager class   
 @next version todo .. datamapper class
