@@ -41,7 +41,7 @@ Global Controller files from now on. -- added to user guide
 - added i_request() function to base input helper. -- added to user guide
 - session function all_userdata changed as sess_alldata()
 - changed view helper view_set_folder() 'app_view' switch case string as 'view_app'
-- changed css() function array support in head tag helper
+- changed css() function array support in head tag helper -- added to user guide
 - added loaded_helper() function to common.php file, changed bootstrap.php and ob_set_headers func, added loaded helpers track support to profiler class.
 - add config load and lang load track support for profiler class
 - renamed lang_item() function as lang() in lang.php, updated all libraries. -- added to user guide
@@ -49,9 +49,8 @@ Global Controller files from now on. -- added to user guide
 - added profiler_set($type, key, msg) and profiler_get($key) functions to common.php file, updated all libraries, removed ssc:intance()->_profiler_ variables.
 - removed all php closing tags from all php files (thanks to phpyuz)
 - fixed db.php self::_is_assoc() function bug, removed is_array() added php sizeof() function.
+- added alnum_upper and alnum_lower options to random_string() function (string helper) -- added to user guide
 //-----------------------------------------------------------------------------
-
-add alnum_lower and alnum_upper to  string helper pool   case 'alnum'    :    $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 @todo .. upload class security fix
 @todo .. depreciate ob::instance() function but use this() funtion in core;

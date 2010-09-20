@@ -198,19 +198,25 @@ if( ! function_exists('random_string') )
             case 'basic'    : return mt_rand();
               break;
             case 'alnum'    :
+            case 'alnum_lower' :
+            case 'alnum_upper' :
             case 'numeric'  :
             case 'nozero'   :
             case 'alpha'    :
         
                     switch ($type)
                     {
-                        case 'alpha'    :    $pool = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                        case 'alpha'        :    $pool = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
                             break;
-                        case 'alnum'    :    $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                        case 'alnum'        :    $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
                             break;
-                        case 'numeric'  :    $pool = '0123456789';
+                        case 'alnum_lower'  :    $pool = '123456789abcdefghijklmnopqrstuvwxyz';
                             break;
-                        case 'nozero'   :    $pool = '123456789';
+                        case 'alnum_upper'  :    $pool = '123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                            break;
+                        case 'numeric'      :    $pool = '0123456789';
+                            break;
+                        case 'nozero'       :    $pool = '123456789';
                             break;
                     }
 

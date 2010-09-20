@@ -7,10 +7,11 @@ Class Start extends Controller {
         parent::__construct();
         parent::__global();
         
-        $this->output->profiler();
+        // $this->output->profiler();
         
-        $mycalendar = table::instance();
-        $mycalendar->init();
+        loader::base_helper('string');
+        echo random_string('alnum');
+        
     }                                      
     
     public function index()
