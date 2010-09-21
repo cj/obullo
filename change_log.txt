@@ -52,6 +52,8 @@ Global Controller files from now on. -- added to user guide
 - added alnum_upper and alnum_lower options to random_string() function (string helper) -- added to user guide
 //-----------------------------------------------------------------------------
 
+
+@todo ... postgreSQL connection problem ...
 @todo .. upload class security fix
 @todo .. depreciate ob::instance() function but use this() funtion in core;
 
