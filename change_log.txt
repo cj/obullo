@@ -53,7 +53,8 @@ Global Controller files from now on. -- added to user guide
 //-----------------------------------------------------------------------------
 
 
-@todo ... postgreSQL connection problem ...
+@todo .. postgreSQL connection problem ...
+@todo .. put archived doc meta tag to old user guide base layout ..
 @todo .. upload class security fix
 @todo .. depreciate ob::instance() function but use this() funtion in core;
 
