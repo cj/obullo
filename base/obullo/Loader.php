@@ -283,9 +283,9 @@ Class loader {
             return; 
         }
         
-        if( ! class_exists($model_name))
+        if( ! class_exists($model, false)) // autoload false.
         {
-            throw new LoaderException('Model name is not correct in file: '.$model_name);
+            throw new LoaderException('Model name is not correct in file: '.$model);
         }
         
         $OB->$model_var = new $model($params_or_no_ins);    // register($class); we don't need it   
