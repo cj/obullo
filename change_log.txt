@@ -53,7 +53,21 @@ Global Controller files from now on. -- added to user guide
 //-----------------------------------------------------------------------------
 
 
-@todo .. postgreSQL connection problem ...
+@todo .. Add Form_controller (Global) tutorial to user guide .. create a directory called /forms
+then create Form_controller to /parents folder. add common functions to Form controller.
+forexample ...
+
+    /**
+    * Validate captcha image.
+    * 
+    * @return  boolean
+    */
+    public function captcha_check()
+    {
+    
+    }
+
+@todo .. postgreSQL connection bug ...
 @todo .. put archived doc meta tag to old user guide base layout ..
 @todo .. upload class security fix
 @todo .. depreciate ob::instance() function but use this() funtion in core;
