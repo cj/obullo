@@ -51,6 +51,7 @@ Global Controller files from now on. -- added to user guide
 - fixed db.php self::_is_assoc() function bug, removed is_array() added php sizeof() function.
 - added alnum_upper and alnum_lower options to random_string() function (string helper) -- added to user guide
 - fixed class_exists($model, false) // autoload false bug in private loader::_model() fucntion.
+- depreciated encrypt class sha1 function , renamed hash() method as hash_encode. (thanks to phpyuz for good suggestions)
 //-----------------------------------------------------------------------------
 
 
@@ -69,9 +70,10 @@ forexample ...
     }
 
 @todo .. postgreSQL connection bug ...
+@todo .. rename ob class as Obullo , fix instance name as Obullo::instance() 
 @todo .. put archived doc meta tag to old user guide base layout ..
 @todo .. upload class security fix
-@todo .. depreciate ob::instance() function but use this() funtion in core;
+@todo .. depreciate ob::instance() function and use this() funtion everywhere.
 @todo .. start extends Form_controller.. an autload function will load forms.. from /parents folder.
 developer should be edit all forms in same directory .. 
 

@@ -197,7 +197,7 @@ Class encrypt_CORE implements PHP5_Library {
             $rand .= mt_rand(0, mt_getrandmax());
         }
 
-        $rand = $this->hash($rand);
+        $rand = $this->hash_encode($rand);
 
         $enc = '';
         for ($i = 0; $i < strlen($string); $i++)
@@ -248,7 +248,7 @@ Class encrypt_CORE implements PHP5_Library {
     */
     private function _xor_merge($string, $key)
     {
-        $hash = $this->hash($key);
+        $hash = $this->hash_encode($key);
         $str = '';
         for ($i = 0; $i < strlen($string); $i++)
         {
@@ -316,7 +316,7 @@ Class encrypt_CORE implements PHP5_Library {
     */
     private function _add_cipher_noise($data, $key)
     {
-        $keyhash = $this->hash($key);
+        $keyhash = $this->hash_encode($key);
         $keylen = strlen($keyhash);
         $str = '';
 
@@ -347,7 +347,7 @@ Class encrypt_CORE implements PHP5_Library {
     */
     public function _remove_cipher_noise($data, $key)
     {
-        $keyhash = $this->hash($key);
+        $keyhash = $this->hash_encode($key);
         $keylen = strlen($keyhash);
         $str = '';
 
@@ -458,24 +458,12 @@ Class encrypt_CORE implements PHP5_Library {
     * @param    string
     * @return   string
     */    
-    public function hash($str)
+    public function hash_encode($str)
     {
-        return ($this->_hash_type == 'sha1') ? $this->sha1($str) : md5($str);
+        return ($this->_hash_type == 'sha1') ? sha1($str) : md5($str);
     }
 
     // --------------------------------------------------------------------
-
-    /**
-    * Generate an SHA1 Hash
-    *
-    * @access   public
-    * @param    string
-    * @return   string
-    */
-    public function sha1($str)
-    {
-        return sha1($str);
-    }
 
 }
 

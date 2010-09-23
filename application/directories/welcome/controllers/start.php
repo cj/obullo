@@ -6,12 +6,9 @@ Class Start extends Controller {
     {   
         parent::__construct();
         parent::__global();
+        loader::database();
         
         // $this->output->profiler();
-        
-        loader::base_helper('string');
-        echo random_string('alnum');
-        
     }                                      
     
     public function index()
