@@ -85,8 +85,7 @@ Class encrypt_CORE implements PHP5_Library {
                 return $this->encryption_key;
             }
 
-            $OB = ob::instance();
-            $key = $OB->config->item('encryption_key');
+            $key = this()->config->item('encryption_key');
 
             if ($key === FALSE)
             {
@@ -263,12 +262,12 @@ Class encrypt_CORE implements PHP5_Library {
     /**
     * Encrypt using Mcrypt
     *
-    * @access   public
+    * @access   private
     * @param    string
     * @param    string
     * @return   string
     */
-    public function mcrypt_encode($data, $key)
+    private function mcrypt_encode($data, $key)
     {
         $init_size = mcrypt_get_iv_size($this->_get_cipher(), $this->_get_mode());
         $init_vect = mcrypt_create_iv($init_size, MCRYPT_RAND);
@@ -280,12 +279,12 @@ Class encrypt_CORE implements PHP5_Library {
     /**
     * Decrypt using Mcrypt
     *
-    * @access   public
+    * @access   private
     * @param    string
     * @param    string
     * @return   string
     */
-    public function mcrypt_decode($data, $key)
+    private function mcrypt_decode($data, $key)
     {
         $data = $this->_remove_cipher_noise($data, $key);
         $init_size = mcrypt_get_iv_size($this->_get_cipher(), $this->_get_mode());
@@ -341,11 +340,11 @@ Class encrypt_CORE implements PHP5_Library {
     *
     * Function description
     *
-    * @access   public
+    * @access   private
     * @param    type
     * @return   type
     */
-    public function _remove_cipher_noise($data, $key)
+    private function _remove_cipher_noise($data, $key)
     {
         $keyhash = $this->hash_encode($key);
         $keylen = strlen($keyhash);
@@ -454,11 +453,11 @@ Class encrypt_CORE implements PHP5_Library {
     /**
     * Hash encode a string
     *
-    * @access   public
+    * @access   private
     * @param    string
     * @return   string
     */    
-    public function hash_encode($str)
+    private function hash_encode($str)
     {
         return ($this->_hash_type == 'sha1') ? sha1($str) : md5($str);
     }
