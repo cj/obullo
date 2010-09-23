@@ -72,6 +72,9 @@ forexample ...
 @todo .. put archived doc meta tag to old user guide base layout ..
 @todo .. upload class security fix
 @todo .. depreciate ob::instance() function but use this() funtion in core;
+@todo .. start extends Form_controller.. an autload function will load forms.. from /parents folder.
+developer should be edit all forms in same directory .. 
+
 
 @next version todo .. pager class   
 @next version todo .. datamapper class
