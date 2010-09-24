@@ -70,6 +70,7 @@ forexample ...
     }
 
 @todo .. postgreSQL connection bug ...
+@todo .. try multiple db connection in same database query
 @todo .. rename ob class as Obullo , fix instance name as Obullo::instance() 
 @todo .. put archived doc meta tag to old user guide base layout ..
 $todo .. look at globally set database object from app_controller.
