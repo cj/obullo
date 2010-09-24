@@ -75,10 +75,14 @@ forexample ...
 @todo .. put archived doc meta tag to old user guide base layout ..
 $todo .. look at globally set database object from app_controller.
 @todo .. upload class security fix
-@todo .. depreciate ob::instance() function and use this() funtion everywhere.
+@todo .. depreciate ob::instance() function and use this() funtion everywhere. 
 @todo .. start extends Form_controller.. an autload function will load forms.. from /parents folder.
 developer should be edit all forms in same directory .. 
 
+
+@next todo .. db_item() function shodul be set in config class, so user can change database config 
+items globally like this in global_controller ..
+$this->config->set_db_item();
 
 @next add user_guide pages to svn as static html.
 @next version todo .. pager class   
