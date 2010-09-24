@@ -8,7 +8,7 @@ defined('BASE') or exit('Access Denied!');
  *
  * @package         Obullo  
  * @author          Obullo.com  
- * @subpackage      Base.libraries        
+ * @subpackage      Base.obullo        
  * @copyright       Copyright (c) 2009 Ersin Guvenc.
  * @license          
  * @filesource
@@ -16,8 +16,7 @@ defined('BASE') or exit('Access Denied!');
  
 /**
  * Loader Class (Obullo Loader) (c) 2009 - 2010
- *
- * Load obullo library, model, view, config and lang.. files
+ * Load Obullo library, model, config, lang and any other files ...
  *
  * @package         Obullo 
  * @subpackage      Base.obullo     
@@ -48,7 +47,8 @@ defined('BASE') or exit('Access Denied!');
  *                      we use spl_autoload_register() func. because of performance :), added loader::file() func.
  * @version         1.9 added profiler class ssc::instance()->_profiler_ functions.
  * @version         2.0 loader::model('blog/model_filename'); bug fixed.
- * @version         2.1 added profiler_set(); functions and removed old $ssc->_profiler_ variables.
+ * @version         2.1 added profiler_set(); functions and removed old $ssc->_profiler_ variables, renamed OB_DBFactory::init()
+ *                      func as OB_DBFactory::Connect in loader::database();
  */
 
 Class LoaderException extends CommonException {}
@@ -161,7 +161,7 @@ Class loader {
         return FALSE;
          
         // Instantiate the Super Object.        
-        $OB = ob::instance();
+        $OB = this();
         
         $class_var = strtolower($class);
         if($object_name != '') $class_var = &$object_name; 
@@ -270,7 +270,7 @@ Class loader {
         $model_var = &$model_name;
         if($object_name != '') $model_var = $object_name; 
         
-        $OB = ob::instance();  
+        $OB = this();  
         
         if (isset($OB->$model_var) AND is_object($OB->$model_var)) { return; }
         
@@ -324,11 +324,12 @@ Class loader {
     *               added self::_assign_db_objects() func. 
     * @version  0.7 changed DBFactory, moved db_var into DBFactory
     * @version  0.8 changed DBFactory class as static, added $return_object param
+    * @version  0.9 renamed OB_DBFactory::init() func as OB_DBFactory::Connect()
     * @return   void
     */
-    public static function database($db_name = 'db', $return_object = FALSE, $ac_record = NULL)
+    public static function database($db_name = 'db', $return_object = FALSE)
     {
-        $OB = ob::instance();
+        $OB = this();
         
         $db_var = $db_name;
          
@@ -346,19 +347,16 @@ Class loader {
         }   
         
         if($return_object)
-        {
-            // Store db variables .. 
-            $OB->_dbs[$db_var] = $db_var;
-            
-            // Return to database object ..
-            return OB_DBFactory::init($db_name, $db_var, $ac_record);
+        {    
+            $OB->_dbs[$db_var] = $db_var;  // Store db variables .. 
+        
+            return OB_DBFactory::Connect($db_name, $db_var); // Return to database object ..
         }
         
         // Connect to Database
-        ob::instance()->{$db_var} = OB_DBFactory::init($db_name, $db_var, $ac_record);
+        $OB->{$db_var} = OB_DBFactory::Connect($db_name, $db_var);
     
-        // Store db variables  
-        $OB->_dbs[$db_var] = $db_var; 
+        $OB->_dbs[$db_var] = $db_var;  // Store db variables  
                             
         self::_assign_db_objects($db_var);
 
@@ -544,7 +542,7 @@ Class loader {
     */                                 
     public static function config($file)    
     {
-        ob::instance()->config->load($file);
+        this()->config->load($file);
     }
     
     // --------------------------------------------------------------------

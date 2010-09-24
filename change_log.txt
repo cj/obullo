@@ -52,6 +52,9 @@ Global Controller files from now on. -- added to user guide
 - added alnum_upper and alnum_lower options to random_string() function (string helper) -- added to user guide
 - fixed class_exists($model, false) // autoload false bug in private loader::_model() function.
 - depreciated encrypt class sha1 function , renamed hash() method as hash_encode. (thanks to phpyuz for good suggestions)
+- multiple database connection bug fixed in database/DBFactory.php file.
+- loader::database('', '' , FALSE); active record turn off switch depreciated, we have already this option in config/database.php file.
+- renamed OB_DBFactory::init() func as OB_DBFactory::Connect().
 //-----------------------------------------------------------------------------
 
 

@@ -7,8 +7,8 @@ defined('BASE') or exit('Access Denied!');
  * PHP5 MVC Based Minimalist Software.
  *
  * @package         obullo
- * @subpackage      Libraries
- * @category        Libraries      
+ * @subpackage      Base.obullo
+ * @category        Front Controller     
  * @author          obullo.com
  * @copyright       Ersin Guvenc (c) 2009.
  * @since           Version 1.0

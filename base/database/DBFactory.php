@@ -11,7 +11,7 @@ defined('BASE') or exit('Access Denied!');
  * @subpackage      Base.database        
  * @copyright       Copyright (c) 2009 Ersin Guvenc.
  * @license         public 
- * @since           Version 1.0 @alpha 2
+ * @since           Version 1.0
  * @filesource
  */ 
  
@@ -29,48 +29,43 @@ Class DBFactoryException extends CommonException {}
  * @version         0.2 added construct(), active_record() functions
  * @version         0.3 added multiple database connection, dsn connection.
  * @version         0.4 added driver file support.
- */                 
+ * @version         0.5 multiple database connection problem, OB_DBAc_sw Class declaration bug fixed. Added 
+ *                  PDO driver is available function, renamed OB_DBFactory::init() func as OB_DBFactory::Connect()
+ */                
+ 
+if ( ! extension_loaded('pdo') )
+{
+    throw new DBFactoryException('The PDO extension is required but extension is not loaded !');
+}
+ 
+if(db_item('active_record','system')) 
+{
+    eval('Class OB_DBAc_sw extends OB_DBAc_record {}');
+} 
+else 
+{
+    eval('Class OB_DBAc_sw extends PDO {}');
+}
  
 Class OB_DBFactory {
-
-    /**
-    * Check pdo extension
-    * and build database params
-    * 
-    * @author   Ersin Guvenc
-    * @version  0.1
-    * @version  0.2 Added dsn connection, Added optional, required variables.
-    * @return   object PDO
-    */
-    public static function init($param = '', $db_var = 'db', $ac = NULL)
-    {
-        // check for PDO extension
-        if ( ! extension_loaded('pdo') )
-        {
-            throw new DBFactoryException('The PDO extension is required but extension is not loaded !');
-        }
-        
-        return self::_factory($param, $db_var, $ac);
-    }
-    
-    // --------------------------------------------------------------------
-    
+ 
     /**
     * Connect Requested PDO Driver
     * 
     * @author   Ersin Guvenc
-    * @param    
+    * @param    mixed   $param database parameters
+    * @param    string  $db_var database variable
     * @version  0.1
     * @version  0.2 added $db_var and $settings vars
     * @version  0.3 added $param var, set db paramaters manually for
     *           dynamic connections
     * @version  0.4 removed switch, added new driver classes
+    * @version  0.5 removed class, added simple factory function
     * @return   object of PDO Instance.
     */
-    private static function _factory($param, $db_var, $ac = NULL)
+    public static function Connect($param = '', $db_var = 'db')
     {                          
         $dbdriver = is_array($param) ? $param['dbdriver'] : db_item('dbdriver', $db_var); 
-        
         $driver_name = '';
                      
         switch (strtolower($dbdriver))
@@ -123,29 +118,22 @@ Class OB_DBFactory {
           default:
           throw new DBFactoryException('This Database Driver does not support: '. $dbdriver); 
            
-        } //end switch.
+        } // end switch.
         
-        $active_record = is_bool($ac) ? $ac : db_item('active_record','system');
         
-        // ugly hack but we need it ..
-        if($active_record) 
+        if ( ! in_array($dbdriver, PDO::getAvailableDrivers()))  // check the PDO driver is available
         {
-            eval('Class OB_DBAc_sw extends OB_DBAc_record {}');
-        } 
-        else 
-        {
-            eval('Class OB_DBAc_sw extends PDO {}');
+            throw new DBFactoryException('The ' . $dbdriver . ' driver is not currently installed on your server !');
         }
-            
+        
         $driver_class = 'Obullo_DB_Driver_'.ucfirst($driver_name);
         
         $DB = new $driver_class($param, $db_var); 
         $DB->_connect();
         
         return $DB->get_connection();
-    
     }
-    
+
 }
 
 /* End of file DBFactory.php */

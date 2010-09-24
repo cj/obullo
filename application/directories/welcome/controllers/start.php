@@ -7,8 +7,15 @@ Class Start extends Controller {
         parent::__construct();
         parent::__global();
         loader::database();
+        // loader::database('db2');
+        $this->output->profiler();
         
-        // $this->output->profiler();
+        $query = $this->db->query("SELECT * FROM articles");
+        print_r($query->fetch(assoc));
+        
+        // $query2 = $this->db2->query("SELECT * FROM cds WHERE titel = 'Glee'");
+        // print_r($query2->fetch(assoc));
+        
     }                                      
     
     public function index()
