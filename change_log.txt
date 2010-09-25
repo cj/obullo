@@ -88,11 +88,14 @@ items globally like this in global_controller ..
 $this->config->set_db_item();
 
 @next add user_guide pages to svn as static html.
-@next version todo .. pager class   
+@next version todo .. pager class
+@next version todo .. active record union possibility ?
+http://stackoverflow.com/questions/1319611/zend-framework-select-objects-and-union
 @next version todo .. datamapper class
 @next version todo .. add set_callback('function', param1, param1..) instead of set_rules('|callback_function')
 @next version todo .. firewall class (integer, string validate for requests, login attempts for captcha) 
 @next version todo .. firewall class, or any php errors should be show an error inside view() function... blabla
+
 
 @forum .. good idea !!  forum topics must be related with user_guide page ids .. we will add every user guide pages
 this page has (x) related forum topics and  go forum !!
