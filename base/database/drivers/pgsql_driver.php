@@ -63,7 +63,7 @@ Class Obullo_DB_Driver_Pgsql extends OB_DBAdapter
         $port = empty($this->dbh_port) ? '' : ';port='.$this->dbh_port;
         $dsn  = empty($this->dsn) ? 'pgsql:dbname='.$this->database.';user='.$this->username.';password='.$this->password.';host='.$this->hostname.$port : $this->dsn;
              
-        $this->_conn  = $this->pdo_connect($dsn, $this->username, $this->password, $this->options);
+        $this->_pdo  = $this->pdo_connect($dsn, $this->username, $this->password, $this->options);
         
         if( ! empty($this->char_set) )
         $this->_conn->exec("SET NAMES '" . $this->char_set . "'");     
