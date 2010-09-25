@@ -55,6 +55,7 @@ Global Controller files from now on. -- added to user guide
 - multiple database connection bug fixed in database/DBFactory.php file.
 - loader::database('', '' , FALSE); active record turn off switch depreciated, we have already this option in config/database.php file.
 - renamed OB_DBFactory::init() func as OB_DBFactory::Connect().
+- added date_default_timezone_set() function to parents/App_controller.php
 //-----------------------------------------------------------------------------
 
 
@@ -72,6 +73,7 @@ forexample ...
     
     }
 
+@todo .. add a new timezone dropdown date helper. (it should be like this Europe/London etc ..)
 @todo .. postgreSQL connection bug ...
 @todo .. try multiple db connection in same database query
 @todo .. rename ob class as Obullo , fix instance name as Obullo::instance() 

@@ -15,6 +15,8 @@ Class App_controller
         // view_set_folder('css', 'iphone');
         // view_set_folder('img', 'iphone');
                 
+        date_default_timezone_set($this->config->item('timezone'));
+                
         $this->base     = $this->config->base_url();
         $this->base_url = $this->config->site_url();
         $this->base_img = $this->config->source_url() . 'images/';
