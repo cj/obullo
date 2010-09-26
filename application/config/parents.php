@@ -51,7 +51,8 @@ defined('BASE') or exit('Access Denied!');
 | this "Foo_controller";
 | 
 */
-$parents['test']          =  array('bar'  => 'Foo_controller');
+$parents['controller']         =  array('bar'     => 'Foo_controller');
+$parents['controller']         =  array('*_form'  => 'Form_controller');
 
 /*
 |--------------------------------------------------------------------------
@@ -63,7 +64,7 @@ $parents['test']          =  array('bar'  => 'Foo_controller');
 | /Dummy folder will extend to Dummy Global Controller.
 |
 */
-$parents['directoryname'] = array(
+$parents['directory'] = array(
                                      '*'    => 'Dummy_controller',  // default
                                    );
                                      

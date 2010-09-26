@@ -344,7 +344,7 @@ if( ! function_exists('gmt_to_local') )
 	    {
 		    return now();
 	    }
-
+    
 	    $time += timezones($timezone) * 3600;
 
 	    if ($dst == TRUE)

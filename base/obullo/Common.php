@@ -155,11 +155,11 @@ function register_autoload($real_name)
     try // __autoload func. does not catch exceptions ...
     {   // try to catch it and show user friendly errors ..
     
-        // App_controller
+        // Parents folder files: App_controller and Global Controllers
         // -------------------------------------------------------------------- 
-        if($real_name == 'App_controller')
+        if(substr($real_name, -11) == '_controller')
         {
-            require(APP .'parents'. DS .'App_controller'. EXT);
+            require(APP .'parents'. DS .$real_name. EXT);
             return;
         }
         
@@ -180,7 +180,7 @@ function register_autoload($real_name)
             return;
         }
                 
-        // Shortcut support. 
+        // Strlower class name. 
         // --------------------------------------------------------------------       
         $class  = strtolower($real_name); // lowercase classname.
         $prefix = config_item('subclass_prefix');

@@ -13,10 +13,10 @@ Class __autoloader extends App_controller
 
 Class Global_controller extends __autoloader
 {                                     
-      public function __global()
-      {
-          parent::__construct();                                             
-      }
+    public function __global()
+    {
+        parent::__construct();                                             
+    }
       
 }
 
