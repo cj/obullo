@@ -7,8 +7,6 @@ Class Start extends Controller {
         parent::__construct();
         parent::__global();
         
-        table::instance();
-        
     }                                      
     
     public function index()

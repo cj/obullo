@@ -25,21 +25,24 @@ defined('BASE') or exit('Access Denied!');
 
 /*
 |--------------------------------------------------------------------------
+| Global Controller Names - ( Directory Extends )
+|--------------------------------------------------------------------------
+| You can assign Global Controllers to Folders.
+| Forexample You have a Folder called /Dummy
+| when you use the '*' symbol , all the controllers contents of
+| /Dummy folder will extend to Dummy Global Controller.
+|
+*/
+$parents['directory']['rest']        = 'Rest_controller';
+$parents['directory']['rest']        = 'Dummy_controller';
+
+/*
+|--------------------------------------------------------------------------
 | Global Controller Names - ( Controller Extends )
 |--------------------------------------------------------------------------
 | All global controllers located in application/parents folder.
 | To create the parent controller you must define controller
 | name here. 
-| 
-| Example     
-|                  - extends -
-|
-| $parents['test']  =  array('bar'      =>      'Foo_controller');
-|            |                |                          |
-|            |                |                          |
-|          ---               ---                        ---
-| Test directory        Bar controller  (extends to)   Global Controller
-|
 |
 | Description:
  
@@ -51,22 +54,10 @@ defined('BASE') or exit('Access Denied!');
 | this "Foo_controller";
 | 
 */
-$parents['controller']         =  array('bar'     => 'Foo_controller');
-$parents['controller']         =  array('*_form'  => 'Form_controller');
+$parents['controller']['FOO']        =  'Foo_controller';
+$parents['controller']['(_form$)']   =  'Form_controller';
+$parents['controller']['(signup_*)'] =  'Form_controller';
 
-/*
-|--------------------------------------------------------------------------
-| Global Controller Names - ( Directory Extends )
-|--------------------------------------------------------------------------
-| You can assign Global Controllers to Folders.
-| Forexample You have a Folder called /Dummy
-| when you use the '*' symbol , all the controllers contents of
-| /Dummy folder will extend to Dummy Global Controller.
-|
-*/
-$parents['directory'] = array(
-                                     '*'    => 'Dummy_controller',  // default
-                                   );
                                      
 //-------------------------------------------------------------------------
 

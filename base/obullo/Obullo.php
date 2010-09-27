@@ -34,29 +34,49 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @version 0.7 !! Returns of the SSC pattern !! :), added SSC class.
  * @version 0.8 Moved ssc to ssc.php , added extend switch support to foreach folders.
  * @version 0.9 added '*' function, added profiler_set() function.
+ * @version 1.0 added parse_parents() function.
  */
 
 define('OBULLO_VERSION', '1.0.1');
 
 //------------- Global Controller Pattern Extend Switch --------------//
 
-$_parents = get_config('parents');
-
-$_Global_controller = 'Global_controller';    // default Global controller
-
-if(isset($_parents[$GLOBALS['d']])) 
+function parse_parents()
 {
-     if( isset($_parents[$GLOBALS['d']][$GLOBALS['c']]) )
-     {
-         $_Global_controller = (string)$_parents[$GLOBALS['d']][$GLOBALS['c']];
-          
-     } 
-     elseif( isset($_parents[$GLOBALS['d']]['*']) )  // default Gc.
-     {
-         $_Global_controller = (string)$_parents[$GLOBALS['d']]['*'];
-         
-     }
-} 
+    $_parents = get_config('parents');
+
+    if(isset($_parents['directory'][$GLOBALS['d']]))  // Is there a literal directory match ?
+    {
+        return (string)$_parents['controller'][$GLOBALS['d']];
+    }
+
+    if(isset($_parents['controller'][$GLOBALS['c']]))  // Is there a literal controller match ?
+    {
+        return (string)$_parents['controller'][$GLOBALS['c']];
+    }
+
+    // Loop through the parents array looking for directory wild-cards
+    foreach($_parents['directory'] as $pattern => $gc) 
+    {
+        if (preg_match('/'.$pattern.'/', $GLOBALS['c']))
+        {     
+            return (string)$_parents['controller'][$pattern];
+        }
+    }
+    
+    // Loop through the parents array looking for controller wild-cards
+    foreach($_parents['controller'] as $pattern => $gc)
+    {
+        if (preg_match('/'.$pattern.'/', $GLOBALS['c']))
+        {     
+            return (string)$_parents['controller'][$pattern];
+        }
+    }
+    
+    return 'Global_controller';
+}
+
+$_Global_controller = parse_parents();
 
 if( ! file_exists(APP .'parents'. DS .$_Global_controller. EXT)) 
 {
