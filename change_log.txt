@@ -74,6 +74,8 @@ forexample ...
     
     }
 
+@todo .. lang_load(), (local) , lang_load_base(), lang_load_app(), rename language loader functions
+from loader class. remove loader::config(); function, add config_load() as procedural .. (because of performance .. )
 @todo .. change htaccess rules in userguide DirectoryIndex index.php, index.html
 @todo .. Global controllers pattern extends rules ..!!!
 @todo .. rename ob class as Obullo , fix instance name as Obullo::instance() 
