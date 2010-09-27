@@ -74,6 +74,7 @@ forexample ...
     
     }
 
+@todo .. change htaccess rules in userguide DirectoryIndex index.php, index.html
 @todo .. Global controllers pattern extends rules ..!!!
 @todo .. rename ob class as Obullo , fix instance name as Obullo::instance() 
 @todo .. put archived doc meta tag to old user guide base layout ..

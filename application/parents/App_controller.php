@@ -14,7 +14,7 @@ Class App_controller
         // error_reporting(0); 
         // view_set_folder('css', 'iphone');
         // view_set_folder('img', 'iphone');
-                
+                                                
         // set server time globally
         date_default_timezone_set(config_item('timezone'));
         
