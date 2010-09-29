@@ -74,6 +74,7 @@ forexample ...
     
     }
 
+$todo .. $this->config->auto_base_url(true, $ssl = false);
 @todo .. lang_load(), (local) , lang_load_base(), lang_load_app(), rename language loader functions
 from loader class. remove loader::config(); function, add config_load() as procedural .. (because of performance .. )
 @todo .. change htaccess rules in userguide DirectoryIndex index.php, index.html
@@ -91,6 +92,7 @@ developer should be edit all forms in same directory ..
 items globally like this in global_controller ..
 $this->config->set_db_item();
 
+@next version todo .. $this->db->extra_sql()  active record extra sql possibiliy..
 @next add user_guide pages to svn as static html.
 @next version todo .. pager class
 @next version todo .. active record union possibility ?
