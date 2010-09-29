@@ -102,6 +102,29 @@ http://stackoverflow.com/questions/1319611/zend-framework-select-objects-and-uni
 @next version todo .. firewall class (integer, string validate for requests, login attempts for captcha) 
 @next version todo .. firewall class, or any php errors should be show an error inside view() function... blabla
 
+change base url settings ..
+it should be like this <img src="/sources/css" />
+
+// in app controller function ...
+if(ssl = on)     
+{
+    https_pages = array();
+
+    if(in_array('') this page https contents)
+    {
+        
+    } else 
+    {
+        str_replace('https://', 'http://', )
+        redirect('');
+    }
+
+    $this->config->set_item('base_url', );  
+    $this->config->set_item('source_url', ); // css //
+}
+
+$this->config->set_item('anchor_url', '');
+$this->config->set_item('form_url', );
 
 @forum .. good idea !!  forum topics must be related with user_guide page ids .. we will add every user guide pages
 this page has (x) related forum topics and  go forum !!
