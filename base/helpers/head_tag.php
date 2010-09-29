@@ -63,7 +63,7 @@ if( ! function_exists('js') )
 {
     function js($src, $arguments = '', $type = 'text/javascript')
     {        
-        $ob = this();
+        $ob = Obullo::instance();
 
         $link = '<script type="'.$type.'" '; 
         
@@ -220,11 +220,11 @@ if( ! function_exists('link_tag') )
 {
     function link_tag($href = '', $rel = 'stylesheet', $type = 'text/css', $title = '', $media = '', $index_page = FALSE)
     {
-        $ob = this();
+        $ob = Obullo::instance();
 
         $link = '<link '; 
 
-        $vi = ssc::instance();   // obullo changes ..
+        $vi = Ssc::instance();   // obullo changes ..
         
         // When user use view_set_folder('css', 'iphone'); ..  /sources/iphone/css/welcome.css
         $path = '';

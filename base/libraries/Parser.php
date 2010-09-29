@@ -46,7 +46,7 @@ Class OB_Parser {
     */
     public function parse($template, $data, $return = FALSE)
     {
-        $OB = ob::instance();
+        $OB = Obullo::instance();
         $template = view($template, $data);
         
         if ($template == '')
@@ -128,7 +128,7 @@ Class OB_Parser {
 
         if ($return == FALSE)
         {
-            ob::instance()->output->append_output($template);
+            Obullo::instance()->output->append_output($template);
         }
 
         return $template;

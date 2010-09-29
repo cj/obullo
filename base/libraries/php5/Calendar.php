@@ -61,7 +61,7 @@ Class calendar_CORE implements PHP5_Library {
      */
     public function init($config = array())
     {        
-        $la = ssc::instance();
+        $la = Ssc::instance();
         
         if ( ! in_array('calendar_lang'.EXT, $la->_ng->is_loaded, TRUE))
         {

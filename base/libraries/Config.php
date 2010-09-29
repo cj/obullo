@@ -247,17 +247,9 @@ Class OB_Config {
     {
         if($this->auto_base_url)  // Obullo changes ..
         {
-            $https      = i_server('HTTPS');
-            $http_host  = i_server('HTTP_HOST');
             $scrpt_name = i_server('SCRIPT_NAME');
             
-            $url  = ((isset($https) && $https == 'on') ? 'https' : 'http');
-            
-            $url .= '://' . $http_host;
-            
-            $url .= str_replace(basename($scrpt_name), '', $scrpt_name);
-            
-            return $url;
+            return str_replace(basename($scrpt_name), '', $scrpt_name);
         }
     
         return $this->slash_item('base_url');

@@ -118,7 +118,7 @@ Class pager_CORE implements PHP5_Library {
         }
 
         // Determine the current page number.
-        $OB = ob::instance();
+        $OB = Obullo::instance();
 
         if ($OB->config->item('enable_query_strings') === TRUE OR $this->page_query_string === TRUE)
         {

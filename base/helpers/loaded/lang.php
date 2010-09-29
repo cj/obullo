@@ -27,7 +27,7 @@ Class LangException extends CommonException {}
  
 if( ! isset($_lang->_ng)) 
 {
-    $_la = ssc::instance();
+    $_la = Ssc::instance();
     $_la->_ng = new stdClass();
 
     $_la->_ng->language  = array();
@@ -48,10 +48,10 @@ if( ! isset($_lang->_ng))
 */
 if( ! function_exists('lang_load') ) 
 {
-    function lang_load($langfile = '', $idiom = '', $dir = 'base', $return = FALSE)
+    function lang_load_base($langfile = '', $idiom = '', $dir = 'base', $return = FALSE)
     {     
-        $_la = ssc::instance();
-        $ob  = this();
+        $_la = Ssc::instance();
+        $ob  = Obullo::instance();
         
         if (in_array($langfile, $_la->_ng->is_loaded, TRUE))
         return;  
@@ -102,6 +102,16 @@ if( ! function_exists('lang_load') )
     }
 }
 
+function lang_load() 
+{
+    
+}
+
+function lang_load_app()
+{
+    
+}
+
 /**
 * Fetch a item of text from the language array
 *
@@ -113,7 +123,7 @@ if( ! function_exists('lang') )
 {
     function lang($item = '')
     {
-        $_la = ssc::instance();
+        $_la = Ssc::instance();
         
         $item = ($item == '' OR ! isset($_la->_ng->language[$item])) ? FALSE : $_la->_ng->language[$item];
         return $item;

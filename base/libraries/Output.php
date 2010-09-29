@@ -277,7 +277,7 @@ Class OB_Output {
         
         // Does the controller contain a function named _output()?
         // If so send the output there.  Otherwise, echo it.
-        $ob = ob::instance();
+        $ob = Obullo::instance();
         
         if (method_exists($ob, '_output'))
         {
@@ -302,7 +302,7 @@ Class OB_Output {
      */    
     public function _write_cache($output)
     {
-        $OB = ob::instance(); 
+        $OB = Obullo::instance(); 
         
         $path = config_item('cache_path', 'cache');
     

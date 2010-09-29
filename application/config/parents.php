@@ -28,13 +28,14 @@ defined('BASE') or exit('Access Denied!');
 | Global Controller Names - ( Directory Extends )
 |--------------------------------------------------------------------------
 | You can assign Global Controllers to Folders.
-| Forexample You have a Folder called /Dummy
-| when you use the '*' symbol , all the controllers contents of
-| /Dummy folder will extend to Dummy Global Controller.
+|
+| Forexample 
+| If router requests "index.php/rest/" match with directory
+| regex (rest) then the "all" Controllers which is located in rest folder 
+| will extend to Global Rest_controller .
 |
 */
 $parents['directory']['rest']        = 'Rest_controller';
-$parents['directory']['rest']        = 'Dummy_controller';
 
 /*
 |--------------------------------------------------------------------------
@@ -46,17 +47,16 @@ $parents['directory']['rest']        = 'Dummy_controller';
 |
 | Description:
  
-| If router request equal to "index.php/test/bar"
-| then the "Bar" Controller will extend
-| to Global Foo controller .
+| If router requests "index.php/members/signup_form" match with controller
+| regex (_form$) then the "all" Controllers which has subrefix "_form" will 
+| extend to Global Form_controller .
 |
 | Warning !: A Global Controller name writing style must be like
 | this "Foo_controller";
 | 
 */
-$parents['controller']['FOO']        =  'Foo_controller';
 $parents['controller']['(_form$)']   =  'Form_controller';
-$parents['controller']['(signup_*)'] =  'Form_controller';
+$parents['controller']['(blabla_*)'] =  'Blabla_controller';
 
                                      
 //-------------------------------------------------------------------------

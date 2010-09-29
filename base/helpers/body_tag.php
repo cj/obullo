@@ -205,7 +205,7 @@ if( ! function_exists('img') )
             $src = array('src' => $src);
         }
 
-        $vi = ssc::instance();       // obullo changes ..
+        $vi = Ssc::instance();       // obullo changes ..
                 
         // When user use view_set_folder('img');
         $path = '';
@@ -222,7 +222,7 @@ if( ! function_exists('img') )
             
             if ($k == 'src' AND strpos($v, '://') === FALSE)
             {
-                $ob = this();
+                $ob = Obullo::instance();
 
                 if ($index_page === TRUE)
                 {

@@ -18,9 +18,12 @@ if( !defined('BASE') ) exit('Access Denied!');
 * Super Static Controllers (SSC). (c) 2010.
 * Control the Procedural (static) Functions.
 * 
+* @version  0.1 
+* @version  0.2  Renamed ssc class name as Ssc. 
+* 
 * @author   Ersin Guvenc
 */
-Class ssc {
+Class Ssc {
     
     private static $instance;
     

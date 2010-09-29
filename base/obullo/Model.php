@@ -45,7 +45,7 @@ Class Model {
     */
     public function _assign_db_objects()
     {
-        $OB = ob::instance();
+        $OB = Obullo::instance();
         
         foreach($OB->_dbs as $key)
         {

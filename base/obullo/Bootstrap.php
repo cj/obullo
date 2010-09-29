@@ -143,7 +143,7 @@ if( ! function_exists('ob_system_close'))
 {
     function ob_system_close()
     {
-        $ob = ob::instance();
+        $ob = Obullo::instance();
         
         // Close all PDO connections..        
         foreach($ob->_dbs as $db_var)

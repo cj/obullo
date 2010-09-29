@@ -44,7 +44,7 @@ defined('BASE') or exit('Access Denied!');
 * @param mixed $errline
 * @param mixed $type
 */
-function Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, $type)
+function Obullo_Error_Template($errno, $errstr, $errfile, $errline, $type)
 {  
     ob_start();
     include(APP .'system'. DS .'errors'. DS .'ob_error'. EXT);
@@ -80,14 +80,14 @@ function log_php_errors($type, $errstr, $errfile, $errline)
 * 
 * @param object $e
 */
-function Obullo_ExceptionHandler($e)
+function Obullo_Exception_Handler($e)
 {   
     $type = 'Exception';
     $sql  = '';
         
     if(substr($e->getMessage(),0,3) == 'SQL') 
     {
-        $ob   = ob::instance();
+        $ob   = Obullo::instance();
         $type = 'Database';
         
         foreach($ob->_dbs as $key => $val)
@@ -180,71 +180,71 @@ function show_http_error($heading, $message, $template = 'ob_general', $status_c
 * @param string $errfile
 * @param int $errline
 */
-function Obullo_ErrorHandler($errno, $errstr, $errfile, $errline)
+function Obullo_Error_Handler($errno, $errstr, $errfile, $errline)
 {
     if (($errno & error_reporting()) == 0) return;  
     
     switch ($errno)
     {
         case E_ERROR:
-            Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, "ERROR");
+            Obullo_Error_Template($errno, $errstr, $errfile, $errline, "ERROR");
         break;
         
         case E_WARNING:
-            Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, "WARNING");
+            Obullo_Error_Template($errno, $errstr, $errfile, $errline, "WARNING");
         break;
         
         case E_PARSE:
-            Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, "PARSE ERROR");
+            Obullo_Error_Template($errno, $errstr, $errfile, $errline, "PARSE ERROR");
         break;
         
         case E_NOTICE:
-            Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, "NOTICE");
+            Obullo_Error_Template($errno, $errstr, $errfile, $errline, "NOTICE");
         break;
                            
         case E_CORE_ERROR:
-            Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, "CORE ERROR");
+            Obullo_Error_Template($errno, $errstr, $errfile, $errline, "CORE ERROR");
         break;
         
         case E_CORE_WARNING:
-            Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, "CORE WARNING");
+            Obullo_Error_Template($errno, $errstr, $errfile, $errline, "CORE WARNING");
         break;
         
         case E_COMPILE_ERROR:
-            Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, "COMPILE ERROR");
+            Obullo_Error_Template($errno, $errstr, $errfile, $errline, "COMPILE ERROR");
         break;
         
         case E_USER_ERROR:
-            Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, "USER FATAL ERROR");
+            Obullo_Error_Template($errno, $errstr, $errfile, $errline, "USER FATAL ERROR");
             exit();
         break;   
             
         case E_USER_WARNING:
-            Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, "USER WARNING");
+            Obullo_Error_Template($errno, $errstr, $errfile, $errline, "USER WARNING");
         break;
         
         case E_USER_NOTICE:
-            Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, "USER NOTICE");
+            Obullo_Error_Template($errno, $errstr, $errfile, $errline, "USER NOTICE");
         break;
         
         case E_STRICT:
-            Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, "STRICT ERROR");
+            Obullo_Error_Template($errno, $errstr, $errfile, $errline, "STRICT ERROR");
         break;
         
         case E_RECOVERABLE_ERROR:
-            Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, "RECOVERABLE ERROR");
+            Obullo_Error_Template($errno, $errstr, $errfile, $errline, "RECOVERABLE ERROR");
         break;
         
         case E_DEPRECATED:
-            Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, "DEPRECATED ERROR");
+            Obullo_Error_Template($errno, $errstr, $errfile, $errline, "DEPRECATED ERROR");
         break;
         
         case E_USER_DEPRECATED:
-            Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, "USER DEPRECATED ERROR");
+            Obullo_Error_Template($errno, $errstr, $errfile, $errline, "USER DEPRECATED ERROR");
         break;
         
         case E_ALL:
-            Obullo_ErrorTemplate($errno, $errstr, $errfile, $errline, "ERROR");
+            Obullo_Error_Template($errno, $errstr, $errfile, $errline, "ERROR");
         break;
     
     }
@@ -339,8 +339,8 @@ function set_status_header($code = 200, $text = '')
 
 // -------------------------------------------------------------------- 
 
-set_error_handler('Obullo_ErrorHandler');
-set_exception_handler('Obullo_ExceptionHandler');
+set_error_handler('Obullo_Error_Handler');
+set_exception_handler('Obullo_Exception_Handler');
     
 // END Errors.php File
 

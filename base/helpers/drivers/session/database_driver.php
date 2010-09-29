@@ -16,8 +16,8 @@ if( ! function_exists('_sess_start') )
     {                       
         log_message('debug', "Session Database Driver Initialized"); 
 
-        $ob  = ob::instance();
-        $ses = ssc::instance();
+        $ob  = Obullo::instance();
+        $ses = Ssc::instance();
 
         foreach (array('sess_encrypt_cookie', 'sess_driver', 'sess_db_var', 'sess_table_name', 
         'sess_expiration', 'sess_match_ip', 'sess_match_useragent', 'sess_cookie_name', 'cookie_path', 
@@ -95,7 +95,7 @@ if( ! function_exists('sess_read') )
 {
     function sess_read()
     {    
-        $ses = ssc::instance();
+        $ses = Ssc::instance();
         
         // Fetch the cookie
         $session = i_cookie($ses->_sion->sess_cookie_name);
@@ -223,7 +223,7 @@ if( ! function_exists('sess_write') )
 {
     function sess_write()
     {
-        $ses = ssc::instance();
+        $ses = Ssc::instance();
         
         // set the custom userdata, the session data we will set in a second
         $custom_userdata = $ses->_sion->userdata;
@@ -272,7 +272,7 @@ if( ! function_exists('sess_create') )
 {
     function sess_create()
     {    
-        $ses = ssc::instance();
+        $ses = Ssc::instance();
         
         $sessid = '';
         while (strlen($sessid) < 32)
@@ -313,7 +313,7 @@ if( ! function_exists('sess_update') )
 {
     function sess_update()
     {
-        $ses = ssc::instance();
+        $ses = Ssc::instance();
         
         // We only update the session every five minutes by default
         if (($ses->_sion->userdata['last_activity'] + $ses->_sion->sess_time_to_update) >= $ses->_sion->now)
@@ -376,7 +376,7 @@ if( ! function_exists('sess_destroy') )
 {
     function sess_destroy()
     {   
-        $ses = ssc::instance(); 
+        $ses = Ssc::instance(); 
         
         // Db driver changes..
         // -------------------------------------------------------------------
@@ -412,7 +412,7 @@ if( ! function_exists('sess_get') )
 {
     function sess_get($item)
     {
-        $ses = ssc::instance();
+        $ses = Ssc::instance();
         return ( ! isset($ses->_sion->userdata[$item])) ? FALSE : $ses->_sion->userdata[$item];
     }
 }
@@ -428,7 +428,7 @@ if( ! function_exists('sess_alldata') )
 {
     function sess_alldata()
     {
-        $ses = ssc::instance();
+        $ses = Ssc::instance();
         return ( ! isset($ses->_sion->userdata)) ? FALSE : $ses->_sion->userdata;
     }
 }
@@ -446,7 +446,7 @@ if( ! function_exists('sess_set') )
 {
     function sess_set($newdata = array(), $newval = '')
     {
-        $ses = ssc::instance();
+        $ses = Ssc::instance();
         
         if (is_string($newdata))
         {
@@ -476,7 +476,7 @@ if( ! function_exists('sess_unset') )
 {
     function sess_unset($newdata = array())  // obullo changes ...
     {
-        $ses = ssc::instance();
+        $ses = Ssc::instance();
         
         if (is_string($newdata))
         {
@@ -509,7 +509,7 @@ if( ! function_exists('sess_set_flash') )
 {
     function sess_set_flash($newdata = array(), $newval = '') // obullo changes ...
     {
-        $ses = ssc::instance();
+        $ses = Ssc::instance();
         
         if (is_string($newdata))
         {
@@ -539,7 +539,7 @@ if( ! function_exists('sess_keep_flash') )
 {
     function sess_keep_flash($key) // obullo changes ...
     {
-        $ses = ssc::instance();
+        $ses = Ssc::instance();
         // 'old' flashdata gets removed.  Here we mark all 
         // flashdata as 'new' to preserve it from _flashdata_sweep()
         // Note the function will return FALSE if the $key 
@@ -570,7 +570,7 @@ if( ! function_exists('sess_get_flash') )
 {
     function sess_get_flash($key, $prefix = '', $suffix = '')  // obullo changes ...
     {
-        $ses = ssc::instance();
+        $ses = Ssc::instance();
         $flashdata_key = $ses->_sion->flashdata_key.':old:'.$key;
         
         $value = sess_get($flashdata_key);
@@ -597,7 +597,7 @@ if( ! function_exists('_flashdata_mark') )
 {
     function _flashdata_mark()
     {
-        $ses = ssc::instance();
+        $ses = Ssc::instance();
         $userdata = sess_alldata();
         foreach ($userdata as $name => $value)
         {
@@ -646,7 +646,7 @@ if( ! function_exists('_get_time') )
 {
     function _get_time()
     {   
-        $ses  = ssc::instance();
+        $ses  = Ssc::instance();
         $time = time();
         if (strtolower($ses->_sion->time_reference) == 'gmt')
         {
@@ -675,7 +675,7 @@ if( ! function_exists('_set_cookie') )
 {
     function _set_cookie($cookie_data = NULL)
     {
-        $ses = ssc::instance();
+        $ses = Ssc::instance();
         if (is_null($cookie_data))
         {
             $cookie_data = $ses->_sion->userdata;
@@ -788,7 +788,7 @@ if( ! function_exists('_sess_gc') )
 {
     function _sess_gc()
     {
-        $ses = ssc::instance();
+        $ses = Ssc::instance();
         srand(time());
         
         if ((rand() % 100) < $ses->_sion->gc_probability)

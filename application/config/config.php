@@ -7,9 +7,6 @@ defined('BASE') or exit('Access Denied!');
 |--------------------------------------------------------------------------
 | 
 | Set the default timezone identifier.
-| If you want to set date timezone dynamically, use this function
-| date_default_timezone_set(config_item('timezone')); in your App_controller.
-|
 | @see  http://www.php.net/manual/en/timezones.php
 | 
 */
@@ -22,11 +19,12 @@ $config['timezone']              = 'Europe/Istanbul';
 |
 | URL to your Obullo root. Typically this will be your base URL,
 | WITH a trailing slash:
+| Generally a  "/"  trailing slash enough. Not need to full url of your domain.
 |
-|    http://example.com/
+|    Domain Root   "/"
 |
 */
-$config['base_url']              = "http://localhost/obullo/";
+$config['base_url']              = "/obullo/";
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +32,7 @@ $config['base_url']              = "http://localhost/obullo/";
 |--------------------------------------------------------------------------
 |
 | URL to your Static Files.
+| http://static.example.com/sources/
 |
 |    /sources
 |    /sources/js
@@ -41,7 +40,7 @@ $config['base_url']              = "http://localhost/obullo/";
 |    /sources/images
 |
 */
-$config['source_url']            = "http://localhost/obullo/sources/";
+$config['source_url']            = "/sources/";
 
 /*
 |--------------------------------------------------------------------------

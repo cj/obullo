@@ -30,7 +30,7 @@ defined('BASE') or exit('Access Denied!');
  
 if( ! isset($_bench->_mark)) 
 {
-    $_bench = ssc::instance();
+    $_bench = Ssc::instance();
     $_bench->_mark = new stdClass();
     $_bench->_mark->marker = array();
 
@@ -52,7 +52,7 @@ if( ! function_exists('benchmark_mark') )
 {
     function benchmark_mark($name)
     {
-        $_bench = ssc::instance(); 
+        $_bench = Ssc::instance(); 
         
         $_bench->_mark->marker[$name] = microtime();
     }
@@ -73,7 +73,7 @@ if( ! function_exists('benchmark_elapsed_time') )
 {
     function benchmark_elapsed_time($point1 = '', $point2 = '', $decimals = 4)
     {
-        $_bench = ssc::instance(); 
+        $_bench = Ssc::instance(); 
         
         if ($point1 == '')
         {

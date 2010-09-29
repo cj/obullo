@@ -32,7 +32,7 @@ Class ViewException extends CommonException {}
  
 if( ! isset($_vi->_ew)) 
 {
-    $_vi = ssc::instance();
+    $_vi = Ssc::instance();
     $_vi->_ew = new stdClass();
 
     $_vi->_ew->view_folder     = DS. '';
@@ -60,7 +60,7 @@ if ( ! function_exists('view_set_folder'))
 {
     function view_set_folder($func = 'view', $folder = '')
     {
-        $vi = ssc::instance();
+        $vi = Ssc::instance();
         $folder_path = empty($folder) ? DS : $folder. DS;
         
         switch ($func)
@@ -99,7 +99,7 @@ if ( ! function_exists('view'))
 {
     function view($filename, $data = '', $string = TRUE)
     {               
-        $vi = ssc::instance();
+        $vi = Ssc::instance();
         $return = FALSE;
 
         if(isset($vi->_ew->view_folder{1})) { $return = TRUE; }    // if view folder changed don't show errors ..
@@ -125,7 +125,7 @@ if ( ! function_exists('view_app'))
 {
     function view_app($filename, $data = '', $string = FALSE)
     {
-        $vi = ssc::instance(); 
+        $vi = Ssc::instance(); 
         $return = FALSE;
         
         if(isset($vi->_ew->app_view_folder{1})) { $return = TRUE; }  // if view folder changed don't show errors ..

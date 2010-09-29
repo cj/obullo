@@ -51,7 +51,7 @@ Class OB_Profiler {
      {
          $profile = array();
          
-         $_bench = ssc::instance();
+         $_bench = Ssc::instance();
           
          foreach ($_bench->_mark->marker as $key => $val)
          {
@@ -97,7 +97,7 @@ Class OB_Profiler {
      */    
     public function _compile_queries()
     {
-        $ob = this();
+        $ob = Obullo::instance();
         
         // Let's determine which databases are currently connected to         
         if (count($ob->_dbs) == 0)
@@ -275,7 +275,7 @@ Class OB_Profiler {
      */    
     public function _compile_uri_string()
     {    
-        $ob = this();
+        $ob = Obullo::instance();
 
         $output  = '<div id="uri_string">';       
         $output .= "<table class=\"tableborder\">";
@@ -358,8 +358,8 @@ Class OB_Profiler {
      */
     public function _compile_loaded_files()
     {          
-        $ob  = this();
-        $ssc = ssc::instance();
+        $ob  = Obullo::instance();
+        $ssc = Ssc::instance();
         $helper_prefix   = config_item('subhelper_prefix');
         $subclass_prefix = config_item('subclass_prefix');
     

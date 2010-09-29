@@ -256,8 +256,8 @@ function register_autoload($real_name)
         
     } catch(LoaderException $e) 
     {
-        Obullo_ExceptionHandler($e); // exception hack ..
-        exit;                        // do not show fatal errors .. 
+        Obullo_Exception_Handler($e); // exception hack ..
+        exit;                         // do not show fatal errors .. 
     }
     
 } 
@@ -508,7 +508,7 @@ function is_php($version = '5.0.0')
 */
 function profiler_set($type, $key, $val)
 {
-    ssc::instance()->profiler_var[$type][$key] = $val;
+    Ssc::instance()->profiler_var[$type][$key] = $val;
 }
 
 /**
@@ -520,7 +520,7 @@ function profiler_set($type, $key, $val)
 */
 function profiler_get($type)
 {
-    $ssc = ssc::instance();
+    $ssc = Ssc::instance();
     
     if( ! empty($ssc->profiler_var[$type]))
     {

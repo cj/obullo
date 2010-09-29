@@ -39,7 +39,7 @@ if ( ! function_exists('base_url'))
 {
     function base_url()
     {
-        return this()->config->base_url();
+        return Obullo::instance()->config->base_url();
     }
 }
 
@@ -58,7 +58,7 @@ if ( ! function_exists('source_url'))
 {
     function source_url()
     {
-        return this()->config->source_url();
+        return Obullo::instance()->config->source_url();
     }
 }
 
@@ -76,7 +76,7 @@ if ( ! function_exists('site_url'))
 {
     function site_url($uri = '')
     {
-        return this()->config->site_url($uri);
+        return Obullo::instance()->config->site_url($uri);
     }
 }
  
@@ -90,7 +90,7 @@ if ( ! function_exists('current_url'))
 {
     function current_url()
     {
-        $ob = this();
+        $ob = Obullo::instance();
         
 	    return $ob->config->site_url($ob->uri->uri_string());
     }
@@ -179,11 +179,11 @@ if ( ! function_exists('anchor'))
 
         if ( ! is_array($uri))
         {
-            $site_url = ( ! preg_match('!^\w+://! i', $uri)) ? ob::instance()->config->site_url($uri) : $uri;
+            $site_url = ( ! preg_match('!^\w+://! i', $uri)) ? Obullo::instance()->config->site_url($uri) : $uri;
         }
         else
         {
-            $site_url = ob::instance()->config->site_url($uri);
+            $site_url = Obullo::instance()->config->site_url($uri);
         }
 
         if ($title == '')
@@ -222,7 +222,7 @@ if ( ! function_exists('anchor_popup'))
     {
 	    $title = (string) $title;
 
-	    $site_url = ( ! preg_match('!^\w+://! i', $uri)) ? this()->config->site_url($uri) : $uri;
+	    $site_url = ( ! preg_match('!^\w+://! i', $uri)) ? Obullo::instance()->config->site_url($uri) : $uri;
 
 	    if ($title == '')
 	    {
@@ -548,7 +548,7 @@ if ( ! function_exists('redirect'))
     {
 	    if ( ! preg_match('#^https?://#i', $uri))
 	    {
-		    $uri = this()->config->site_url($uri); 
+		    $uri = Obullo::instance()->config->site_url($uri); 
 	    }
 	    
 	    switch($method)

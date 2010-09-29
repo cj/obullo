@@ -26,7 +26,7 @@ Class LogException extends CommonException {}
  */
 if( ! isset($_log->_er)) 
 {
-    $_log = ssc::instance();
+    $_log = Ssc::instance();
     $_log->_er = new stdClass();
 
     $_log->_er->_log_path  = '';
@@ -72,7 +72,7 @@ if( ! function_exists('log_write') )
 {
     function log_write($level = 'error', $msg, $php_error = FALSE)
     {        
-        $_log = ssc::instance();
+        $_log = Ssc::instance();
         
         date_default_timezone_set(config_item('timezone'));
         

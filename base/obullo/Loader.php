@@ -45,7 +45,7 @@ defined('BASE') or exit('Access Denied!');
  * @version         1.7 added $x_helpers .. private static vars and added self::$_x_helpers static functions.
  * @version         1.8 updated db functions, @deprecated register_static(),
  *                      we use spl_autoload_register() func. because of performance :), added loader::file() func.
- * @version         1.9 added profiler class ssc::instance()->_profiler_ functions.
+ * @version         1.9 added profiler class Ssc::instance()->_profiler_ functions.
  * @version         2.0 loader::model('blog/model_filename'); bug fixed.
  * @version         2.1 added profiler_set(); functions and removed old $ssc->_profiler_ variables, renamed OB_DBFactory::init()
  *                      func as OB_DBFactory::Connect in loader::database();
@@ -161,7 +161,7 @@ Class loader {
         return FALSE;
          
         // Instantiate the Super Object.        
-        $OB = this();
+        $OB = Obullo::instance();
         
         $class_var = strtolower($class);
         if($object_name != '') $class_var = &$object_name; 
@@ -257,7 +257,7 @@ Class loader {
     * @param     string $file
     * @param     string $model_name
     * @version   0.1  
-    * @version   0.2 added params_or_no_ins instantiate switch ,added ssc::instance()->_profiler_mods 
+    * @version   0.2 added params_or_no_ins instantiate switch ,added Ssc::instance()->_profiler_mods 
     * @version   0.3 added profiler_set function
     */
     private static function _model($file, $model_name, $object_name = '', $params_or_no_ins = '')
@@ -270,7 +270,7 @@ Class loader {
         $model_var = &$model_name;
         if($object_name != '') $model_var = $object_name; 
         
-        $OB = this();  
+        $OB = Obullo::instance();  
         
         if (isset($OB->$model_var) AND is_object($OB->$model_var)) { return; }
         
@@ -329,7 +329,7 @@ Class loader {
     */
     public static function database($db_name = 'db', $return_object = FALSE)
     {
-        $OB = this();
+        $OB = Obullo::instance();
         
         $db_var = $db_name;
          
@@ -487,15 +487,7 @@ Class loader {
     
     // --------------------------------------------------------------------
     
-    /**
-    * Loads a language file from /directory dir
-    *
-    * @access   public
-    * @param    array
-    * @param    string
-    * @version  0.1
-    * @return   void
-    */
+    /*
     public static function lang($file, $return = FALSE)
     {               
         lang_load($file, '', 'local', $return);
@@ -503,14 +495,7 @@ Class loader {
         
     // --------------------------------------------------------------------
         
-    /**
-    * Loads a language file from /application dir
-    *
-    * @access   public
-    * @param    array
-    * @param    string
-    * @return   void
-    */
+
     public static function app_lang($file = '', $folder = '', $return = FALSE)
     {
         lang_load($file, $folder, 'global', $return);
@@ -518,28 +503,14 @@ Class loader {
     
     // ------------------------------------------------------------------
             
-    /**
-    * Loads a language file from /base dir
-    *
-    * @access   public
-    * @param    array
-    * @param    string
-    * @return   void
-    */
+
     public static function base_lang($file = '', $folder = '', $return = FALSE)
     {
         lang_load($file, $folder, 'base' ,$return);
     }
     
     // --------------------------------------------------------------------
-    
-    /**
-    * Loads a config file
-    *
-    * @access   public
-    * @param    string filename
-    * @return   void
-    */                                 
+                          
     public static function config($file)    
     {
         this()->config->load($file);
@@ -547,6 +518,7 @@ Class loader {
     
     // --------------------------------------------------------------------
     
+    */
     /**
     * Load a file from ROOT directory.
     *
@@ -602,7 +574,7 @@ Class loader {
     * @version 0.2  @deprecated old functions, we assign
     *               just db objects ..
     * @version 0.3  changed ob::instance()->_mods as 
-    *               ssc::instance()->_profiler_mods; 
+    *               Ssc::instance()->_profiler_mods; 
     * @version 0.4  added profiler_get func.
     * @return  void
     */

@@ -20,7 +20,7 @@ Class InputException extends CommonException {}
 
 if( ! isset($_in->_put)) 
 {
-    $_in = ssc::instance();
+    $_in = Ssc::instance();
     $_in->_put = new stdClass();
 
     $_in->_put->use_xss_clean      = FALSE;
@@ -51,7 +51,7 @@ if( ! function_exists('_sanitize_globals') )
 {
     function _sanitize_globals()
     {
-        $in = ssc::instance();
+        $in = Ssc::instance();
         
         // Would kind of be "wrong" to unset any of these GLOBALS
         $protected = array('_SERVER', '_GET', '_POST', '_FILES', '_REQUEST', '_SESSION', 
@@ -136,7 +136,7 @@ if( ! function_exists('_clean_input_data') )
 {
     function _clean_input_data($str)
     {
-        $in = ssc::instance();
+        $in = Ssc::instance();
         
         if (is_array($str))
         {
@@ -348,7 +348,7 @@ if( ! function_exists('i_ip_address') )
 {
     function i_ip_address()
     {
-        $in = ssc::instance();
+        $in = Ssc::instance();
         
         if ($in->_put->ip_address !== FALSE)
         {
@@ -452,7 +452,7 @@ if( ! function_exists('i_user_agent') )
 {
     function i_user_agent()
     {
-        $in = ssc::instance();
+        $in = Ssc::instance();
         
         if ($in->_put->user_agent !== FALSE)
         {

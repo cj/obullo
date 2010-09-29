@@ -13,7 +13,7 @@ Class SessionException extends CommonException {}
 
 if( ! isset($_ses->_sion)) 
 {
-    $_ses = ssc::instance();
+    $_ses = Ssc::instance();
     $_ses->_sion = new stdClass();
     $_ses->_sion->sess_encrypt_cookie  = FALSE;
     $_ses->_sion->sess_expiration      = '7200';

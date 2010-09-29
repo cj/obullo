@@ -24,7 +24,7 @@ defined('BASE') or exit('Access Denied!');
  * @category        Libraries
  * @version         0.1
  */
-Class Controller extends ob {
+Class Controller extends Obullo {
 
     public function __construct()       
     {   

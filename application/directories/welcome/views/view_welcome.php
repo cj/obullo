@@ -22,9 +22,7 @@ this()->head .= script('welcome');                             // in controller 
 <code>application/parents/Global_controller.php , App_controller.php
 </code>
 
-<code>
-<input type="button" onclick="test_me();" value="Script Test !"/>
-</code>
+<code><input type="button" onclick="test_me();" value="Script Test !"/></code>
 
 <p>The corresponding <b>Script</b> file for this page is found at:</p>
 <code>application/directories/welcome/scripts/welcome.php</code>

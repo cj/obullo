@@ -44,7 +44,7 @@ if( ! function_exists('form_open') )
 {	
     function form_open($action = '', $attributes = '', $hidden = array())
     {
-	    $OB = ob::instance();
+	    $OB = Obullo::instance();
 
 	    if ($attributes == '')
 	    $attributes = 'method="post"';

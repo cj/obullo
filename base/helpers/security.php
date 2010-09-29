@@ -30,7 +30,7 @@ defined('BASE') or exit('Access Denied!');
 // --------------------------------------------------------------------
 if( ! isset($_secur->_ity)) 
 {
-    $_secur = ssc::instance();
+    $_secur = Ssc::instance();
     $_secur->_ity = new stdClass();
     $_secur->_ity->xss_hash            = ''; 
 
@@ -86,7 +86,7 @@ if( ! function_exists('xss_clean') )
 {
     function xss_clean($str, $is_image = FALSE)
     {
-        $secur = ssc::instance();
+        $secur = Ssc::instance();
         /*
         * Is the string an array?
         *
@@ -374,7 +374,7 @@ if( ! function_exists('xss_hash') )
 {
     function xss_hash()
     {
-        $secur = ssc::instance();
+        $secur = Ssc::instance();
         
         if ($secur->_ity->xss_hash == '')
         {

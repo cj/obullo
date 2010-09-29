@@ -34,7 +34,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @version 0.7 !! Returns of the SSC pattern !! :), added SSC class.
  * @version 0.8 Moved ssc to ssc.php , added extend switch support to foreach folders.
  * @version 0.9 added '*' function, added profiler_set() function.
- * @version 1.0 added parse_parents() function.
+ * @version 1.0 added parse_parents() function, ob:instance() renamed as Obullo::instance()
  */
 
 define('OBULLO_VERSION', '1.0.1');
@@ -95,7 +95,7 @@ eval('Class Controller_CORE extends '.$_Global_controller.'{}');
 * Obullo Core Class (Super Object) (c) 2010.
 * @author   Ersin Guvenc
 */
-Class ob extends Controller_CORE
+Class Obullo extends Controller_CORE
 {       
     /**
     * Obullo Databases
@@ -122,7 +122,7 @@ Class ob extends Controller_CORE
     }
 
     /**
-    * ob::instance();
+    * Obullo::instance();
     * 
     * Obullo Super Object in Every Where
     *  
@@ -141,13 +141,14 @@ Class ob extends Controller_CORE
 /**
 * @author  Ersin Guvenc
 * 
-* A Pretty handy function for ob::instance();
-* ob::instance = $this so this() = ob::instance isn't it ?.
+* A Pretty handy function for Obullo::instance();
+* Obullo::instance = $this so this() = Obullo::instance isn't it ?
 * 
 * We use "this()" function in View files because of the
 * readability.
 */
-function this(){ return ob::instance(); }
+function this() { return Obullo::instance(); }
+
 
 // END Ob Class
 

@@ -63,7 +63,7 @@ Class form_validate_CORE implements PHP5_Library {
         // Set the character encoding in MB.
         if (function_exists('mb_internal_encoding'))
         {
-            mb_internal_encoding(ob::instance()->config->item('charset'));
+            mb_internal_encoding(Obullo::instance()->config->item('charset'));
         }
     
         log_message('debug', "Form Validation Class Initialized");
@@ -302,7 +302,7 @@ Class form_validate_CORE implements PHP5_Library {
             }
             
             // Is there a validation rule for the particular URI being accessed?
-            $uri = ($group == '') ? trim(ob::instance()->uri->ruri_string(), '/') : $group;
+            $uri = ($group == '') ? trim(Obullo::instance()->uri->ruri_string(), '/') : $group;
             
             if ($uri != '' AND isset($this->_config_rules[$uri]))
             {
@@ -589,13 +589,13 @@ Class form_validate_CORE implements PHP5_Library {
             // Call the function that corresponds to the rule
             if ($callback === TRUE)
             {
-                if ( ! method_exists(ob::instance(), $rule))
+                if ( ! method_exists(Obullo::instance(), $rule))
                 {         
                     continue;
                 }
                 
                 // Run the function and grab the result
-                $result = ob::instance()->$rule($postdata, $param);
+                $result = Obullo::instance()->$rule($postdata, $param);
 
                 // Re-assign the result to the master data array
                 if ($_in_array == TRUE)
