@@ -56,7 +56,7 @@ Global Controller files from now on. -- added to user guide
 - loader::database('', '' , FALSE); active record turn off switch depreciated, we have already this option in config/database.php file.
 - renamed OB_DBFactory::init() func as OB_DBFactory::Connect().
 - added date_default_timezone_set() function to parents/App_controller.php
-- postgreSQL connection bug fixed. 
+- postgreSQL connection bug fixed. (thanks to Julio Max)
 //-----------------------------------------------------------------------------
 
 
