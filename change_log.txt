@@ -69,22 +69,20 @@ updated config.php file base_url and source_url items.
 then create a Form_controller to /parents folder. add common functions to Form controller.
 
 @todo .. lang_load(), (local) , lang_load_base(), lang_load_app(), rename language loader functions
-from loader class. remove loader::config(); function, add config_load() as procedural .. (because of performance .. )
+from loader class. (because of performance .. )
 @todo .. change htaccess rules in userguide DirectoryIndex index.php, index.html
 @todo .. Global controllers pattern extends rules ..!!!
-@todo .. rename ob class as Obullo , fix instance name as Obullo::instance() 
 @todo .. put archived doc meta tag to old user guide base layout ..
 $todo .. look at globally set database object from app_controller.
 @todo .. upload class security fix
-@todo .. depreciate Obullo::instance() function and use this() funtion everywhere. 
-@todo .. start extends Form_controller.. an autload function will load forms.. from /parents folder.
-developer should be edit all forms in same directory .. 
+@todo .. depreciate Obullo::instance() function and use this() funtion everywhere.
+@todo .. <meta http-equiv="Content-Type" content="text/html; charset=utf-8">  to system/errors/ob_404.php
 
 
 @next version todo .. db_item() function shoduld be set in config class, so user can change database config 
 items globally like this in global_controller ..
 $this->config->set_db_item();
-
+@next version todo .. zend libraries load support
 @next version todo .. add user_guide pages to svn as static html.
 @next version todo .. $this->db->extra_sql()  active record extra sql possibiliy..
 @next add user_guide pages to svn as static html.
