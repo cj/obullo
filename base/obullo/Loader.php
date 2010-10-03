@@ -487,7 +487,6 @@ Class loader {
     
     // --------------------------------------------------------------------
     
-    /*
     public static function lang($file, $return = FALSE)
     {               
         lang_load($file, '', 'local', $return);
@@ -518,7 +517,6 @@ Class loader {
     
     // --------------------------------------------------------------------
     
-    */
     /**
     * Load a file from ROOT directory.
     *

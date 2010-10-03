@@ -1,7 +1,7 @@
 <html>
 <head>
 <title>404 Page Not Found</title>
-
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <?php 
 // Important: Don't change the 404 page css names (body, content, h1) 
 // Some browsers does not support different css names for 404 error pages.        

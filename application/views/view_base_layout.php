@@ -6,16 +6,18 @@ echo meta('Content-type', 'text/html; charset=utf-8', 'equiv');
 echo meta('description', '');
 echo meta('author', '');
 ?>
-
 <?php echo this()->meta; ?>
 
 <title><?php echo this()->title; ?></title>
 
+<?php echo this()->head; ?>
+
 <base href="<?php echo this()->base; ?>" />
 
-<?php 
-echo css('css/welcome.css');
-echo this()->head; ?>
+<?php                     
+// base layout css 
+echo css('css/welcome.css'); 
+?>
 </head>
 
 <body <?php echo this()->body_attributes; ?>>
