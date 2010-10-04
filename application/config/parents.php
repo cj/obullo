@@ -35,7 +35,7 @@ defined('BASE') or exit('Access Denied!');
 | will extend to Global Rest_controller .
 |
 */
-$parents['directory']['rest']        = 'Rest_controller';
+$parents['directory']['rest']       = 'Rest_controller';
 
 /*
 |--------------------------------------------------------------------------
@@ -51,12 +51,17 @@ $parents['directory']['rest']        = 'Rest_controller';
 | regex (_form$) then the "all" Controllers which has subrefix "_form" will 
 | extend to Global Form_controller .
 |
-| Warning !: A Global Controller name writing style must be like
+| Warning : A Global Controller name writing style must be like
 | this "Foo_controller";
+|
+| Examples:
 | 
 */
-$parents['controller']['(_form$)']   =  'Form_controller';
-$parents['controller']['(blabla_*)'] =  'Blabla_controller';
+// the controller suffix which end of the "_foo" will extend to Global "Foo_controller" 
+$parents['controller']['(_foo$)']   =  'Foo_controller';
+
+// the controller prefix which start of the "bar_" will extend to Global "Bar_controller"
+$parents['controller']['(bar_*)']   =  'Bar_controller';
 
                                      
 //-------------------------------------------------------------------------
