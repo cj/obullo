@@ -76,7 +76,7 @@ $todo .. look at globally set database object from app_controller.
 @todo .. upload class security fix
 
 @next version todo .. zend and kohana libraries load support (important)
-@next version todo .. documentation for zend and kohana libraries .. 
+@next version todo .. driver files for security helper.. xss functions .. i_post('', callback_func);
 @next version todo .. memcache or shmop session memory container.
 @next version todo .. db_item() function should be set in config class, so user can change database config 
 items globally like this in global_controller ..
