@@ -27,8 +27,7 @@ defined('BASE') or exit('Access Denied!');
  * @link          
  */
 Class calendar_CORE implements PHP5_Library {
-
-    public $OB;
+    
     public $lang;
     public $local_time;
     public $template        = '';
