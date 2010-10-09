@@ -84,7 +84,7 @@ $todo .. look at globally set database object from app_controller.
 items globally like this in global_controller ..
 $this->config->set_db_item();
 @next version todo .. add user_guide pages to svn as static html.
-@next version todo .. $this->db->extra_sql() or $this->db->get_sql() active record extra sql possibiliy..
+@next version todo .. add $this->db->get_sql() for output "raw sql".
 @next add user_guide pages to svn as static html.
 @next version todo .. pager class
 @next version todo .. active record union possibility ?
