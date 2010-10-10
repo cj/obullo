@@ -48,7 +48,7 @@ if( ! isset($_lang->_ng))
 */
 if( ! function_exists('lang_load') ) 
 {
-    function lang_load_base($langfile = '', $idiom = '', $dir = 'base', $return = FALSE)
+    function lang_load($langfile = '', $idiom = '', $dir = 'base', $return = FALSE)
     {     
         $_la = Ssc::instance();
         $ob  = Obullo::instance();
@@ -100,16 +100,6 @@ if( ! function_exists('lang_load') )
         log_message('debug', 'Language file loaded: lang' . DS .$idiom. DS .$langfile. EXT);
         return TRUE;
     }
-}
-
-function lang_load() 
-{
-    
-}
-
-function lang_load_app()
-{
-    
 }
 
 /**
