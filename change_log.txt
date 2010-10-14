@@ -76,6 +76,7 @@ then create a Form_controller to /parents folder. add common functions to Form c
 @todo .. upload class security fix                                                    
 
 
+@next version todo .. in new session helper, there is a bug after that set of cookie_domain in config file.
 @next version todo .. if not posted a variable in form_validate class add it to log debug msg..
 this variable not posted !!! .. 
 @next version todo .. implement database driver with native sessions .. 
