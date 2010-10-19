@@ -76,8 +76,8 @@ view_layout('local_view', 'base_view')
 }
 
 view_layout(
-array('view_welcome', $data), 
-array('view_base_layout', $data)
+array(view('', $data), view('', $data)), 
+'view_base_layout'
 );
 
 @todo .. Add Form_controller (Global) tutorial to user guide .. create a directory called /forms
