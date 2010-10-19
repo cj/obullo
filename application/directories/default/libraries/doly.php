@@ -16,6 +16,7 @@ Class Doly {
 
     }
     
-} //end.
+} 
 
-?>
+/* End of file doly.php */
+/* Location: ./application/libraries/doly.php */

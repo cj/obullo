@@ -62,8 +62,20 @@ updated config.php file base_url and source_url items.
 - @depreciated ob::instance() function, added Obullo::instance(); 
 - Renamed ssc class Ssc.
 - added <meta http-equiv="Content-Type" content="text/html; charset=utf-8">  to system/errors/ob_404.php
-
+- Agent and Parser class moved to /Php5 library folder.
+- added method chaining support to all Php5 libraries " e.g.: echo agent::instance()->init()->browser(); "
+  
 //-----------------------------------------------------------------------------
+
+@todo .. add to user guide php5 method chaining support like this 
+
+echo agent::instance()
+->init()
+->browser();
+
+echo calendar::instance()
+->init()
+->generate(2006, 10);
 
 @todo .. Add Form_controller (Global) tutorial to user guide .. create a directory called /forms
 then create a Form_controller to /parents folder. add common functions to Form controller.

@@ -46,6 +46,13 @@ Class parser_CORE implements PHP5_Library {
     
     // --------------------------------------------------------------------
         
+    public function init() 
+    {     
+        log_message('debug', "Parser Class Initialized");
+        
+        return self::instance(); 
+    }
+        
     /**
     *  Parse a template
     *
@@ -247,4 +254,4 @@ Class parser_CORE implements PHP5_Library {
 // END Parser Class
 
 /* End of file Parser.php */
-/* Location: ./base/libraries/Parser.php */
+/* Location: ./base/libraries/php5/Parser.php */

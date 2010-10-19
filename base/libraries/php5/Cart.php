@@ -82,6 +82,8 @@ Class cart_CORE implements PHP5_Library {
         }
     
         log_message('debug', "Cart Class Initialized");
+        
+        return self::instance();
     }
 
     // --------------------------------------------------------------------

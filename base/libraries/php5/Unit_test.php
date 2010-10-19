@@ -53,6 +53,8 @@ Class unit_test_CORE implements PHP5_Library {
     public function init()
     {
         log_message('debug', "Unit Testing Class Initialized");
+        
+        return self::instance();
     }    
 
     // --------------------------------------------------------------------

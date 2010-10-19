@@ -126,6 +126,8 @@ class email_CORE implements PHP5_Library {
         }
 
         log_message('debug', "Email Class Initialized");
+        
+        return self::instance();
     }
       
     // --------------------------------------------------------------------
@@ -1858,7 +1860,7 @@ class email_CORE implements PHP5_Library {
         $rip = (isset($_SERVER['REMOTE_ADDR']) AND $_SERVER['REMOTE_ADDR'] != "") ? $_SERVER['REMOTE_ADDR'] : FALSE;
         $fip = (isset($_SERVER['HTTP_X_FORWARDED_FOR']) AND $_SERVER['HTTP_X_FORWARDED_FOR'] != "") ? $_SERVER['HTTP_X_FORWARDED_FOR'] : FALSE;
 
-        if ($cip && $rip)     $this->_IP = $cip;
+        if ($cip && $rip)    $this->_IP = $cip;
         elseif ($rip)        $this->_IP = $rip;
         elseif ($cip)        $this->_IP = $cip;
         elseif ($fip)        $this->_IP = $fip;

@@ -107,6 +107,8 @@ Class image_lib_CORE implements PHP5_Library {
         }
 
         log_message('debug', "Image Lib Class Initialized");
+        
+        return self::instance();
     }
 
     // --------------------------------------------------------------------

@@ -72,6 +72,8 @@ Class ftp_CORE implements PHP5_Library {
         }
 
         log_message('debug', "FTP Class Initialized");
+        
+        return self::instance();
     }
     
     // --------------------------------------------------------------------

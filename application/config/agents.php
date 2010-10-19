@@ -12,7 +12,7 @@ defined('BASE') or exit('Access Denied!');
 |
 */
 
-$user_agents['platforms'] = array (
+$agents['platforms'] = array (
 					        'windows nt 6.0'	=> 'Windows Longhorn',
 					        'windows nt 5.2'	=> 'Windows 2003',
 					        'windows nt 5.0'	=> 'Windows 2000',
@@ -49,7 +49,7 @@ $user_agents['platforms'] = array (
 
 // The order of this array should NOT be changed. Many browsers return
 // multiple browser types so we want to identify the sub-type first.
-$user_agents['browsers'] = array(
+$agents['browsers'] = array(
                             'Flock'             => 'Flock',
                             'Chrome'            => 'Chrome',
 					        'Opera'				=> 'Opera',
@@ -74,7 +74,7 @@ $user_agents['browsers'] = array(
 					        'IBrowse'			=> 'IBrowse'
 				        );
 
-$user_agents['mobiles'] = array(
+$agents['mobiles'] = array(
 					        // legacy array, old values commented out
 					        'mobileexplorer'	=> 'Mobile Explorer',
         //					'openwave'			=> 'Open Wave',
@@ -164,7 +164,7 @@ $user_agents['mobiles'] = array(
 				        );
 
 // There are hundreds of bots but these are the most common.
-$user_agents['robots'] = array(
+$agents['robots'] = array(
 					        'googlebot'			=> 'Googlebot',
 					        'msnbot'			=> 'MSNBot',
 					        'slurp'				=> 'Inktomi Slurp',
@@ -175,5 +175,5 @@ $user_agents['robots'] = array(
 					        'lycos'				=> 'Lycos'
 				        );
 
-/* End of file user_agents.php */
-/* Location: .application/config/user_agents.php */
+/* End of file agents.php */
+/* Location: .application/config/agents.php */

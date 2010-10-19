@@ -1,3 +1,7 @@
+<?php 
+this()->head .= js('');
+this()->head .= css('');
+?>
 
 <!-- body tag content -->
 

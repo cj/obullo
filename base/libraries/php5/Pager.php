@@ -90,6 +90,8 @@ Class pager_CORE implements PHP5_Library {
         }
 
         log_message('debug', "Pager Class Initialized");
+        
+        return self::instance();
     }
 
     // --------------------------------------------------------------------

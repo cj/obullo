@@ -17,7 +17,10 @@ Class doly implements PHP5_Library
        return self::$instance;
     }
     
-    public function init() {}
+    public function init() 
+    {    
+        return self::instance();
+    }
     
 
     public function doly_func()
@@ -25,6 +28,7 @@ Class doly implements PHP5_Library
         // ..   
     }
     
-} //end.
+} 
 
-?>
+/* End of file doly.php */
+/* Location: ./application/libraries/php5/doly.php */

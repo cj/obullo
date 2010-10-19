@@ -28,7 +28,7 @@ Class AgentException extends CommonException {}
  * @author        Ersin Guvenc
  * @link          
  */
-Class OB_Agent {
+Class agent_CORE implements PHP5_Library {
 
     public $agent        = NULL;
     
@@ -50,15 +50,29 @@ Class OB_Agent {
     public $mobile       = '';
     public $robot        = '';
     
+    private static $instance;
+    
+    public static function instance()
+    {
+       if(! (self::$instance instanceof self))
+       {
+            self::$instance = new self();
+       } 
+       
+       return self::$instance;
+    }
+
     /**
      * Constructor
      *
      * Sets the User Agent and runs the compilation routine
      *
+     * @version   0.1
+     * @version   0.2   added  $agent = agent::instance()->init(); support
      * @access    public
      * @return    void
      */        
-    public function __construct()
+    public function init()
     {
         if (isset($_SERVER['HTTP_USER_AGENT']))
         {
@@ -74,6 +88,8 @@ Class OB_Agent {
         }
         
         log_message('debug', "User Agent Class Initialized");
+        
+        return self::instance();
     }
     
     // --------------------------------------------------------------------
@@ -86,7 +102,7 @@ Class OB_Agent {
      */        
     public function _load_agent_file()
     {
-        $user_agents = get_config('user_agents');  // obullo changes ..
+        $user_agents = get_config('agents');  // obullo changes ..
         
         $return = FALSE;
         
@@ -498,4 +514,4 @@ Class OB_Agent {
 
 
 /* End of file Agent.php */
-/* Location: ./base/libraries/Agent.php */
+/* Location: ./base/libraries/php5/Agent.php */

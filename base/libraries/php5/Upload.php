@@ -125,6 +125,8 @@ Class upload_CORE implements PHP5_Library {
         } // end if.
         
         log_message('debug', "Upload Class Initialized");
+        
+        return self::instance();
     }
         
     // --------------------------------------------------------------------

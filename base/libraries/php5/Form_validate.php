@@ -67,6 +67,8 @@ Class form_validate_CORE implements PHP5_Library {
         }
     
         log_message('debug', "Form Validation Class Initialized");
+        
+        return self::instance();
     }
     
     // --------------------------------------------------------------------

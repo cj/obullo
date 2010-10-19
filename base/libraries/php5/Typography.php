@@ -65,7 +65,12 @@ Class typography_CORE implements PHP5_Library {
      * Nothing to do here...
      *
      */
-    public function init() {}
+    public function init() 
+    {
+        log_message('debug', "Typography Class Initialized");
+        
+        return self::instance();
+    }
 
     /**
      * Auto Typography

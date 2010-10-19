@@ -1,7 +1,7 @@
 <?php
   
 /**
-* Your copy paste Lang file.
+* Your copy paste local lang file.
 */
  
 $lang['doly']  = 'Doly is a Sheep !';

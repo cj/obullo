@@ -62,6 +62,8 @@ Class encrypt_CORE implements PHP5_Library {
         $this->_mcrypt_exists = ( ! function_exists('mcrypt_encrypt')) ? FALSE : TRUE;
         
         log_message('debug', "Encrypt Class Initialized");
+        
+        return self::instance();
     }
 
     // --------------------------------------------------------------------
