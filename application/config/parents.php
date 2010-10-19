@@ -57,10 +57,10 @@ $parents['directory']['rest']       = 'Rest_controller';
 | Examples:
 | 
 */
-// the controller suffix which end of the "_foo" will extend to Global "Foo_controller" 
+// the controller name suffix which end of the "_foo" will extend to Global "Foo_controller" 
 $parents['controller']['(_foo$)']   =  'Foo_controller';
 
-// the controller prefix which start of the "bar_" will extend to Global "Bar_controller"
+// the controller name prefix which start of the "bar_" will extend to Global "Bar_controller"
 $parents['controller']['(bar_*)']   =  'Bar_controller';
 
                                      

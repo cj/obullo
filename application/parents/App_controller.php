@@ -11,15 +11,6 @@ Class App_controller
     {         
         loader::base_helper('view');
         
-        // error_reporting(0); 
-        // view_set_folder('css', 'iphone');
-        // view_set_folder('img', 'iphone');
-                               
-        $this->config->auto_base_url(true);
-                                                                       
-        // set server time globally
-        date_default_timezone_set(config_item('timezone'));
-        
         $this->base     = $this->config->base_url();
         $this->base_url = $this->config->site_url();
         $this->base_img = $this->config->source_url() . 'images/';

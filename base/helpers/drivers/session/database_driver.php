@@ -49,7 +49,7 @@ if( ! function_exists('_sess_start') )
         {
             if( ! isset($ob->db) || ! $ob->db instanceof OB_DB) 
             {
-                throw new SessionException('Session class works with database so 
+                throw new SessionException('Session helper works with database so 
                     first you must load a database object by loader::database() function.');
             }
             

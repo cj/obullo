@@ -1,17 +1,6 @@
 <?php
 defined('BASE') or exit('Access Denied!');
 
-/**
-|--------------------------------------------------------------------------
-| Set default time zone identifer for date function.
-|--------------------------------------------------------------------------
-| 
-| Set the default timezone identifier.
-| @see  http://www.php.net/manual/en/timezones.php
-| 
-*/
-$config['timezone']              = 'Europe/Istanbul';
-
 /*
 |--------------------------------------------------------------------------
 | Base Site URL

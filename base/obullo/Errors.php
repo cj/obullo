@@ -45,14 +45,16 @@ defined('BASE') or exit('Access Denied!');
 * @param mixed $type
 */
 function Obullo_Error_Template($errno, $errstr, $errfile, $errline, $type)
-{  
+{ 
+    echo $errstr;
+    
     ob_start();
     include(APP .'system'. DS .'errors'. DS .'ob_error'. EXT);
     $buffer = ob_get_contents(); 
     ob_end_clean();
-    
+
     log_php_errors($type, $errstr, $errfile, $errline);
-    
+
     echo $buffer;
 }
 

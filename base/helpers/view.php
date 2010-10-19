@@ -12,11 +12,12 @@ defined('BASE') or exit('Access Denied!');
  * @filesource
  * @license
  */
+
  
 Class ViewException extends CommonException {}  
  
 /**
- * Obullo Content Builder Helper
+ * Obullo View Helper
  *
  * @package     Obullo
  * @subpackage  Helpers
@@ -30,7 +31,7 @@ Class ViewException extends CommonException {}
  * @link        
  */
  
-if( ! isset($_vi->_ew)) 
+if( ! isset($_vi->_ew))  // Helper Constructror
 {
     $_vi = Ssc::instance();
     $_vi->_ew = new stdClass();
@@ -67,18 +68,26 @@ if ( ! function_exists('view_set_folder'))
         {
            case 'view':
              $vi->_ew->view_folder     = DS. $folder_path;
+             
+             log_message('debug', "View() Function Paths Changed");  
              break;
              
            case 'view_app':
-             $vi->_ew->app_view_folder = DS. $folder_path;  
+             $vi->_ew->app_view_folder = DS. $folder_path;
+             
+             log_message('debug', "View_app() Function Paths Changed");   
              break;
              
            case 'css':
-             $vi->_ew->css_folder      = $folder;  
+             $vi->_ew->css_folder      = $folder;
+             
+             log_message('debug', "Css() Function Paths Changed");  
              break;
              
            case 'img':
-             $vi->_ew->img_folder      = $folder;  
+             $vi->_ew->img_folder      = $folder;
+             
+             log_message('debug', "Img() Function Paths Changed");  
              break;
         }
         
@@ -108,7 +117,7 @@ if ( ! function_exists('view'))
         
         profiler_set('local_views', $filename, $path . $filename .EXT);  
         
-        return _load_view($path, $filename, $data, $string, $return);
+        return _load_view($path, $filename, $data, $string, $return, __FUNCTION__);
     }
 }
 // ------------------------------------------------------------------------
@@ -134,7 +143,7 @@ if ( ! function_exists('view_app'))
         
         profiler_set('app_views', $filename, $path . $filename .EXT); 
         
-        return _load_view($path, $filename, $data, $string, $return); 
+        return _load_view($path, $filename, $data, $string, $return, __FUNCTION__); 
     }
 }
 // ------------------------------------------------------------------------
@@ -160,7 +169,7 @@ if ( ! function_exists('_load_script'))
         
         if ( ! file_exists($path . $filename . EXT) )
         {
-            throw new ContentException('Unable locate the script file: '. $path . $filename . EXT);
+            throw new ViewException('Unable locate the script file: '. $path . $filename . EXT);
         } 
         
         $data = _ob_object_to_array($data);
@@ -201,7 +210,7 @@ if ( ! function_exists('_load_script'))
 */
 if ( ! function_exists('_load_view'))
 {
-    function _load_view($path, $filename, $data = '', $string = FALSE, $return = FALSE)
+    function _load_view($path, $filename, $data = '', $string = FALSE, $return = FALSE, $func = 'view')
     {   
         if( empty($data) ) $data = array();
 
@@ -212,16 +221,16 @@ if ( ! function_exists('_load_view'))
                 log_message('debug', 'View file not found: '. $path . $filename . EXT);
                 
                 return;     // fail gracefully for different interfaces ..
-                            // iphone etc..
+                            // iphone, blackberry etc..
             }  
                                  
-            throw new ContentException('Unable locate the view file: '. $filename . EXT);
+            throw new ViewException('Unable locate the view file: '. $filename . EXT);
         } 
         
         $data = _ob_object_to_array($data);
         
         if(sizeof($data) > 0) { extract($data, EXTR_SKIP); }
-        
+                
         ob_start();
         
         include($path . $filename . EXT);
@@ -232,7 +241,7 @@ if ( ! function_exists('_load_view'))
         {
             $content = ob_get_contents();
             @ob_end_clean();
-            
+        
             return $content;
         }
         
@@ -243,7 +252,7 @@ if ( ! function_exists('_load_view'))
         
         return;
         
-        throw new LoaderException('Unable to locate the view: ' . $filename . EXT);
+        throw new ViewException('Unable to locate the view: ' . $filename . EXT);
     }
 }
 // ------------------------------------------------------------------------ 

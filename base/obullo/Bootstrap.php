@@ -39,6 +39,7 @@ if( ! function_exists('ob_include_files'))
         require (BASE .'obullo'. DS .'Registry'. EXT);
         require (BASE .'obullo'. DS .'Common'. EXT);
         require (BASE .'obullo'. DS .'Errors'. EXT);
+        require (APP  .'config'. DS .'init'. EXT);      // Your system init functions ..
         
     }
 }
@@ -51,7 +52,7 @@ if( ! function_exists('ob_set_headers'))
     {
         // Kill magic quotes
         if ( ! is_php('5.3')) { @set_magic_quotes_runtime(0); }
-                 
+                                  
         // system helpers
         if (config_item('log_threshold') > 0)
         loaded_helper('log');

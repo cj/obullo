@@ -26,11 +26,25 @@ Class ParserException extends CommonException {}
  * @author        Ersin Guvenc
  * @link          
  */
-Class OB_Parser {
+Class parser_CORE implements PHP5_Library {
 
     public $l_delim = '{';
     public $r_delim = '}';
     public $object;
+       
+    private static $instance;
+    
+    public static function instance()
+    {
+       if(! (self::$instance instanceof self))
+       {
+            self::$instance = new self();
+       } 
+       
+       return self::$instance;
+    }
+    
+    // --------------------------------------------------------------------
         
     /**
     *  Parse a template

@@ -15,13 +15,13 @@ if( !defined('BASE') ) exit('Access Denied!');
  */
  
  /**
- * Global Controllers ("Obullo MVC2") 
+ * Global Controllers ( GC ) 
  * Dual Controller, Model and View (c) 2010  
  * 
  * @package         Obullo   
  * @subpackage      Base.obullo  
  * @category        Controller
- * @author          Global Controllers Pattern (c) Ersin Guvenc
+ * @author          Global Controllers (c) Ersin Guvenc
  * 
  * @version 0.1
  * @version 0.2 added core functions like ob::register
@@ -29,17 +29,18 @@ if( !defined('BASE') ) exit('Access Denied!');
  *              functions to common.php
  * @version 0.4 @deprecated SSC pattern, added $load variable for loader support
  *              helpers, functions..
- * @version 0.5 added 'Obullo MVC2 Global controller' functionality
+ * @version 0.5 added 'Obullo Global controller' functionality
  * @version 0.6 added this() shortcut function, added get_config();
  * @version 0.7 !! Returns of the SSC pattern !! :), added SSC class.
  * @version 0.8 Moved ssc to ssc.php , added extend switch support to foreach folders.
  * @version 0.9 added '*' function, added profiler_set() function.
  * @version 1.0 added parse_parents() function, ob:instance() renamed as Obullo::instance()
+ * @version 1.1 changed Obullo Mvc2 name as GC
  */
 
 define('OBULLO_VERSION', '1.0.1');
 
-//------------- Global Controller Pattern Extend Switch --------------//
+//------------- Global Controller Extend Switch --------------//
 
 function parse_parents()
 {
