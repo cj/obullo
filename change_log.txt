@@ -56,7 +56,7 @@ Global Controller files from now on. -- added to user guide
 - loader::database('', '' , FALSE); active record turn off switch depreciated, we have already this option in config/database.php file.
 - renamed OB_DBFactory::init() func as OB_DBFactory::Connect().
 - added date_default_timezone_set() function to parents/App_controller.php
-- postgreSQL connection bug fixed. (thanks to Julio Max)
+- postgreSQL connection bug fixed. (thanks to Julio M-ax)
 - updated $this->config->auto_base_url() func, changed $this->config->base_url() and source_url() functions,
 updated config.php file base_url and source_url items.
 - @depreciated ob::instance() function, added Obullo::instance(); 
@@ -64,6 +64,21 @@ updated config.php file base_url and source_url items.
 - added <meta http-equiv="Content-Type" content="text/html; charset=utf-8">  to system/errors/ob_404.php
 
 //-----------------------------------------------------------------------------
+
+@todo .. view_layout(array('view_welcome', $data), 'view_base_layout');
+
+view_layout('local_view', 'base_view')
+{
+    this()->body .= view('local_view');
+    view_app('base_view');
+    
+    return TRUE;
+}
+
+view_layout(
+array('view_welcome', $data), 
+array('view_base_layout', $data)
+);
 
 @todo .. Add Form_controller (Global) tutorial to user guide .. create a directory called /forms
 then create a Form_controller to /parents folder. add common functions to Form controller.
