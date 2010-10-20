@@ -1,4 +1,6 @@
 <?php
+defined('BASE') or exit('Access Denied!');
+
 /*
 | -------------------------------------------------------------------------
 | SYSTEM INITIALIZATION FUNCTIONS
@@ -16,4 +18,4 @@
 | @see  http://www.php.net/manual/en/timezones.php
 | 
 */
-date_default_timezone_set('Europe/Istanbul');
+date_default_timezone_set('GMT');

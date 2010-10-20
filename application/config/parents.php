@@ -1,5 +1,6 @@
 <?php 
-defined('BASE') or exit('Access Denied!'); 
+defined('BASE') or exit('Access Denied!');
+
 /*
 | -------------------------------------------------------------------------
 | USER DEFINED GLOBAL CONTROLLERS (GC)
