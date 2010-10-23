@@ -186,7 +186,7 @@ function register_autoload($real_name)
         $prefix = config_item('subclass_prefix');
         
         // When enable_query_strings = true there are some isset errors ...
-        // we need to set directory again.  
+        // we need to set directory route again.  
         $router = base_register('Router');
         $GLOBALS['d'] = $router->fetch_directory();   // Get requested directory
         

@@ -69,6 +69,7 @@ body {
 }
 
 /* ---------------- Queries -------------------*/
+
 #queries table th {
  text-align: left;
  background-color: #fff;
@@ -80,8 +81,11 @@ body {
 #queries table .td {
  background-color: #EFEFEF;
  font-size: 14px; 
- color: brown;
 }
+
+#queries table .td .notice { color:red; }
+#queries table .td .query_time { color:brown; }
+#queries table .td .cached_query { color: #007700; }
 
 #queries table .td_val {
  background-color: #ddd;

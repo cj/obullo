@@ -120,7 +120,7 @@ Class OB_DB extends OB_DBAc_sw {
             $this->Stmt = $this->_conn->prepare($sql, $this->p_opt);
             
             // Save the  query for debugging 
-            $this->queries[] = $sql;
+            $this->prep_queries[] = $sql;
             
             ++$this->query_count;
                         
@@ -232,14 +232,16 @@ Class OB_DB extends OB_DBAc_sw {
         // switch to pdo::statement
         $this->Stmt->execute($array);
                                      
+        // Save the "cached" query for debugging 
+        $this->cached_queries[] = end($this->prep_queries);    //  ( Obullo Changes ..)
+                                     
         // Stop and aggregate the query time results
         //------------------------------------------------------
         $time_end = list($em, $es) = explode(' ', microtime());
         $this->benchmark += ($em + $es) - ($sm + $ss);
         
-        $this->query_times[] = ($em + $es) - ($sm + $ss);
+        $this->query_times['cached'][] = ($em + $es) - ($sm + $ss);
         //------------------------------------------------------
-        
         
         // reset prepare variable and prevent collision to next query ..
         $this->prepare = FALSE;
@@ -319,18 +321,23 @@ Class OB_DB extends OB_DBAc_sw {
     * @author   Ersin Guvenc
     * @version  0.1
     * @version  0.2 added prepared param
+    * @version  0.3 added bind_chr var and strpos function.
     * @param    boolean $prepared
     * @return   string
     */
     public function last_query($prepared = FALSE)
     {                 
-        // let's make sure is it prepared query ?
+        // let's make sure, is it prepared query ?
         if($prepared == TRUE AND self::_is_assoc($this->last_values))
         {   
-            $bind_keys = array();               
+            $bind_keys = array();      
             foreach(array_keys($this->last_values[$this->exec_count]) as $k)
             {
-                $bind_keys[]   = '/\\'.$k.'\b/';  // escape bind ':' character
+                $bind_chr = ':';
+                if(strpos($k, ':') === 0) // If user use ':' characters
+                $bind_chr = '';          // Some users forgot this character
+                
+                $bind_keys[]  = "/\\$bind_chr".$k.'\b/';  // escape bind ':' character
             }
             
             $quoted_vals = array();
@@ -339,8 +346,7 @@ Class OB_DB extends OB_DBAc_sw {
                 $quoted_vals[] = $this->quote($v);
             }
             
-            // reset last values.
-            $this->last_values = array();
+            $this->last_values = array();  // reset last values.
             
             return preg_replace($bind_keys, $quoted_vals, $this->last_sql);
         }

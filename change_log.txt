@@ -84,7 +84,8 @@ then create a Form_controller to /parents folder. add common functions to Form c
 @todo .. Global controllers pattern extends rules ..!!!
 @todo .. put archived doc meta tag to old user guide base layout ..
 @todo .. look at globally set database object from app_controller.
-@todo .. change obullo mvc2 names as Obullo GC in web site.                                                   
+@todo .. change obullo mvc2 names as Obullo GC in web site.            
+@todo .. add to GC Map (application flow chart) to web site.                                       
 @todo .. session database sql SET userdata field CHARACTER as utf8 into user_guide
 CREATE TABLE `ob_sessions` (
   `user_data` text character set utf8 NOT NULL,

@@ -35,7 +35,7 @@ if( !defined('BASE') ) exit('Access Denied!');
  * @version 0.8 Moved ssc to ssc.php , added extend switch support to foreach folders.
  * @version 0.9 added '*' function, added profiler_set() function.
  * @version 1.0 added parse_parents() function, ob:instance() renamed as Obullo::instance()
- * @version 1.1 changed Obullo Mvc2 name as GC
+ * @version 1.1 changed Obullo Mvc2 name as Obullo GC
  */
 
 define('OBULLO_VERSION', '1.0.1');
@@ -98,14 +98,6 @@ eval('Class Controller_CORE extends '.$_Global_controller.'{}');
 */
 Class Obullo extends Controller_CORE
 {       
-    /**
-    * Obullo Databases
-    * Store all loaded Database Objects
-    * 
-    * @var array
-    */
-    public $_dbs = array();
-       
     /**
     * Obullo instance
     * 

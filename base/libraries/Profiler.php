@@ -98,9 +98,10 @@ Class OB_Profiler {
     public function _compile_queries()
     {
         $ob = Obullo::instance();
+        $databases = profiler_get('databases');
         
         // Let's determine which databases are currently connected to         
-        if (count($ob->_dbs) == 0)
+        if (count($databases) == 0)
         {    
             $output  = '<div id="queries">';       
             $output .= "<table class=\"tableborder\">";
@@ -122,32 +123,32 @@ Class OB_Profiler {
 
         $output  = "";
             
-        foreach ($ob->_dbs as $db)
+        foreach ($databases as $db_name => $db_var)
         {
+            $total_queries = count($ob->{$db_var}->cached_queries) + count($ob->{$db_var}->queries);
+            
             $output .= '<div id="queries">';
             $output .= "<table class=\"tableborder\">"; 
-            $output .= "<tr><th>Database ".lang('profiler_queries').": ".count($ob->{$db}->queries)."&nbsp;&nbsp;&nbsp;</th></tr>";
+            $output .= "<tr><th>".lang('profiler_database').' '.lang('profiler_queries').": ".$total_queries."&nbsp;&nbsp;&nbsp;</th></tr>";
             
+            //---------------------- Direct Queries ---------------------------//
             
-            if (count($ob->{$db}->queries) == 0)
+            if ($total_queries == 0)
             {
                 $output .= "<tr><td class=\"td_val\">".lang('profiler_no_queries')."</td></tr>";
             }
             else
             {   
-                $output .= "<tr><td valign='top' class=\"td\">Db Variable</td><td class=\"td_val\">".$db."</td></tr>";
+                $output .= "<tr><td valign='top' class=\"td\"><span class='query'>Database Name</span></td>";
+                $output .= "<td class=\"td_val\">".$db_name."</td></tr>";
                          
-                foreach ($ob->{$db}->queries as $key => $val)
+                foreach ($ob->{$db_var}->queries as $key => $val)
                 {   
-                
-                    if(isset($ob->{$db}->query_times[$key])) 
+                    $time = '';
+                    if(isset($ob->{$db_var}->query_times[$key])) 
                     {
-                        $time = number_format($ob->{$db}->query_times[$key], 4);
-                    } 
-                     else 
-                    {
-                        $time = 'exec not exist';
-                    } 
+                        $time = number_format($ob->{$db_var}->query_times[$key], 4);
+                    }
                     
                     $val  = highlight_code($val, ENT_QUOTES);
                     
@@ -160,7 +161,54 @@ Class OB_Profiler {
                         $val = str_replace($bold, '<strong>'.$bold.'</strong>', $val);    
                     }
                     
-                    $output .= "<tr><td valign='top' class=\"td\">".$time."&nbsp;&nbsp;</td><td class=\"td_val\">".$val."</td></tr>";
+                    $output .= "<tr><td valign='top' class=\"td\"><span class='query_time'>";
+                    $output .= $time."</span>&nbsp;&nbsp;</td><td class=\"td_val\">".$val."</td></tr>";
+                }
+            }
+            
+            //---------------------- Cached  Queries ---------------------------//
+            
+            if (count($ob->{$db_var}->cached_queries) == 0)
+            {
+                $output .= "";
+            }
+            else
+            {   
+                // $output .= "<tr><td valign='top' class=\"td\">Database Name</td><td class=\"td_val\">".$db_name."</td></tr>";
+                
+                $i = 0;
+                $is_cached = '';
+                foreach ($ob->{$db_var}->cached_queries as $key => $val)
+                {   
+                    ++$i;
+                    
+                    if(isset($ob->{$db_var}->query_times['cached'][$key])) 
+                    {
+                        $time = number_format($ob->{$db_var}->query_times['cached'][$key], 4);
+                    } 
+                     else 
+                    {
+                        $time = '<span class="notice">exec not exist !</span>';
+                    } 
+                    
+                    $val  = highlight_code($ob->{$db_var}->last_query(true), ENT_QUOTES);
+                    
+                    // remove all spaces and newlines.
+                    $val  = preg_replace('/[\t\s]+/s', ' ', $val);   // ( Obullo Changes )
+                    $val  = preg_replace('/[\r\n]/', '<br />', $val);
+                    
+                    foreach ($highlight as $bold)
+                    {
+                        $val = str_replace($bold, '<strong>'.$bold.'</strong>', $val);    
+                    }
+                    
+                    if($i > 1) 
+                    {
+                        $is_cached = '&nbsp;<span class="cached_query">(Cached)</span>';
+                    }
+                    
+                    $output .= "<tr><td valign='top' class=\"td\"><span class='query_time'>" .$time. $is_cached;
+                    $output .= "</span>&nbsp;&nbsp;</td><td class=\"td_val\">".$val."</td></tr>";
                 }
             }
             
@@ -423,7 +471,7 @@ Class OB_Profiler {
         foreach(profiler_get('models') as $mod) { $models .= $mod .'<br />'; }
               
         $databases  = '';
-        foreach($ob->_dbs as $db) { $databases .= $db .'<br />'; }
+        foreach(profiler_get('databases') as $db_name => $db_var) { $databases .= $db_var.'<br />'; }
         
         $scripts  = '';
         foreach(profiler_get('scripts') as $scr) { $scripts .= $scr .'<br />'; }

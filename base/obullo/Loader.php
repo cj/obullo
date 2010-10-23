@@ -325,6 +325,7 @@ Class loader {
     * @version  0.7 changed DBFactory, moved db_var into DBFactory
     * @version  0.8 changed DBFactory class as static, added $return_object param
     * @version  0.9 renamed OB_DBFactory::init() func as OB_DBFactory::Connect()
+    * @version  1.0 added profiler_set('databases') function.
     * @return   void
     */
     public static function database($db_name = 'db', $return_object = FALSE)
@@ -348,16 +349,18 @@ Class loader {
         
         if($return_object)
         {    
-            $OB->_dbs[$db_var] = $db_var;  // Store db variables .. 
-        
+            // Store db variables ..  
+            profiler_set('databases', $db_name, $db_var);  
+            
             return OB_DBFactory::Connect($db_name, $db_var); // Return to database object ..
         }
         
         // Connect to Database
         $OB->{$db_var} = OB_DBFactory::Connect($db_name, $db_var);
     
-        $OB->_dbs[$db_var] = $db_var;  // Store db variables  
-                            
+        // Store db variables
+        profiler_set('databases', $db_name, $db_var);
+        
         self::_assign_db_objects($db_var);
 
     } // end db func.

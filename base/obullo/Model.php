@@ -26,6 +26,7 @@ defined('BASE') or exit('Access Denied!');
  * @version         0.1
  * @version         0.2 added extend to ob
  * @version         0.3 depreciated get_object_vars, added _assing_db_objects
+ * @version         0.4 ob->_dbs func. replaced with profiler_get('databases') func.
  */                    
 
 Class Model {
@@ -47,9 +48,9 @@ Class Model {
     {
         $OB = Obullo::instance();
         
-        foreach($OB->_dbs as $key)
+        foreach(profiler_get('databases') as $db_name => $db_var)
         {
-            $this->$key = &$OB->$key;
+            $this->$db_var = &$OB->$db_var;
         }
     
     }
