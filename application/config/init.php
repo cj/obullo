@@ -1,6 +1,5 @@
 <?php
 defined('BASE') or exit('Access Denied!');
-
 /*
 | -------------------------------------------------------------------------
 | SYSTEM INITIALIZATION FUNCTIONS

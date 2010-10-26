@@ -44,6 +44,7 @@ Class OB_DB extends OB_DBAc_sw {
     public $query_count             = 0;        // count all queries.
     public $exec_count              = 0;        // count exec methods.
     public $queries                 = array();  // store queries for profiler
+    public $cached_queries          = array();  // store cached queries for profiler
     public $query_times             = array();  // query time for profiler
     public $benchmark               = '';       // store benchmark info
     

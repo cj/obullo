@@ -84,7 +84,7 @@ body {
 }
 
 #queries table .td .notice { color:red; }
-#queries table .td .query_time { color:brown; }
+#queries table .td .label { color:brown; }
 #queries table .td .cached_query { color: #007700; }
 
 #queries table .td_val {

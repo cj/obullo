@@ -139,7 +139,7 @@ Class OB_Profiler {
             }
             else
             {   
-                $output .= "<tr><td valign='top' class=\"td\"><span class='query'>Database Name</span></td>";
+                $output .= "<tr><td valign='top' class=\"td\"><span class='label'>Database Name</span></td>";
                 $output .= "<td class=\"td_val\">".$db_name."</td></tr>";
                          
                 foreach ($ob->{$db_var}->queries as $key => $val)
@@ -161,7 +161,7 @@ Class OB_Profiler {
                         $val = str_replace($bold, '<strong>'.$bold.'</strong>', $val);    
                     }
                     
-                    $output .= "<tr><td valign='top' class=\"td\"><span class='query_time'>";
+                    $output .= "<tr><td valign='top' class=\"td\"><span class='label'>";
                     $output .= $time."</span>&nbsp;&nbsp;</td><td class=\"td_val\">".$val."</td></tr>";
                 }
             }
@@ -191,7 +191,7 @@ Class OB_Profiler {
                         $time = '<span class="notice">exec not exist !</span>';
                     } 
                     
-                    $val  = highlight_code($ob->{$db_var}->last_query(true), ENT_QUOTES);
+                    $val  = highlight_code($val, ENT_QUOTES);
                     
                     // remove all spaces and newlines.
                     $val  = preg_replace('/[\t\s]+/s', ' ', $val);   // ( Obullo Changes )
@@ -207,7 +207,7 @@ Class OB_Profiler {
                         $is_cached = '&nbsp;<span class="cached_query">(Cached)</span>';
                     }
                     
-                    $output .= "<tr><td valign='top' class=\"td\"><span class='query_time'>" .$time. $is_cached;
+                    $output .= "<tr><td valign='top' class=\"td\"><span class='label'>" .$time. $is_cached;
                     $output .= "</span>&nbsp;&nbsp;</td><td class=\"td_val\">".$val."</td></tr>";
                 }
             }
