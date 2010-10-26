@@ -80,6 +80,21 @@ echo calendar::instance()
 @todo .. Add Form_controller (Global) tutorial to user guide .. create a directory called /forms
 then create a Form_controller to /parents folder. add common functions to Form controller.
 
+@todo .. add native extend functionality to native Obullo Code Model library.
+http://www.askaboutphp.com/50/codeigniter-extending-the-native-model-and-make-it-your-own.html 
+(CJ Lazell advices)
+
+@todo .. add a loader::app_model('users/balbla'); direcotry support to app_ function.
+
+models/
+users.php
+..users/
+    settings.php
+    get.php
+    post.php
+    put.php
+    delete.php
+
 @todo .. change htaccess rules in userguide DirectoryIndex index.php, index.html
 @todo .. Global controllers pattern extends rules ..!!!
 @todo .. put archived doc meta tag to old user guide base layout ..
