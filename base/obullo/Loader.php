@@ -237,12 +237,12 @@ Class loader {
             $model_name = array_pop($paths);
             $path  = implode('/', $paths) . DS;
             
-            $file = DIR .$path. 'models'. DS .$model_name. EXT;
+            $file = APP .'directories'. DS .$path. 'models'. DS .$model_name. EXT;
         } 
         else
         {
             // Load current controller model
-            $file = DIR .$GLOBALS['d']. DS .'models'. DS .$model_name. EXT;
+            $file = APP .'directories'. DS .$GLOBALS['d']. DS .'models'. DS .$model_name. EXT;
         }
     
         self::_model($file, $model_name, $object_name, $params_or_no_ins);
@@ -425,9 +425,9 @@ Class loader {
             $helper_name = array_pop($paths);
             $path  = implode('/',$paths).'/';
             
-            if(file_exists(DIR .$path.$helper_name. EXT))
+            if(file_exists(APP .'directories'. DS .$path.$helper_name. EXT))
             {
-                include(DIR .$path.$helper_name. EXT);
+                include(APP .'directories'. DS .$path.$helper_name. EXT);
                 
                 self::$_helpers[$helper] = $helper;
                 
@@ -437,9 +437,9 @@ Class loader {
             throw new LoaderException('Unable to locate the directory helper: '.$helper_name. EXT);   
         }
         
-        if(file_exists(DIR .$GLOBALS['d']. DS .'helpers'. DS .$helper. EXT))
+        if(file_exists(APP .'directories'. DS .$GLOBALS['d']. DS .'helpers'. DS .$helper. EXT))
         {
-            include(DIR .$GLOBALS['d']. DS .'helpers'. DS .$helper. EXT);
+            include(APP .'directories'. DS .$GLOBALS['d']. DS .'helpers'. DS .$helper. EXT);
             
             self::$_helpers[$helper] = $helper;
              
@@ -548,7 +548,7 @@ Class loader {
             if($string === TRUE)
             {
                 ob_start();
-                include($ROOT .$path);
+                include_once($ROOT .$path);
             
                 $content = ob_get_contents();
                 @ob_end_clean();
@@ -556,7 +556,7 @@ Class loader {
                 return $content;
             }
             
-            require($ROOT .$path);
+            require_once($ROOT .$path);
             return;
         }
         

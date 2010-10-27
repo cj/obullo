@@ -121,7 +121,7 @@ if( ! function_exists('script') )
 {
     function script($filename = '', $data = '')
     {
-        return _load_script(DIR .$GLOBALS['d']. DS .'scripts'. DS, $filename, $data);
+        return _load_script(APP .'directories'. DS .$GLOBALS['d']. DS .'scripts'. DS, $filename, $data);
     }
 }
 // ------------------------------------------------------------------------ 

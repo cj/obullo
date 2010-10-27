@@ -54,7 +54,6 @@ define('APP',  'application'. DS);
 define('EXT',  '.php'); 
 define('FCPATH', __FILE__);
 define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
-define('DIR',  APP .'directories'. DS);
  
 require(APP  .'system'. DS .'init'. DS .'Bootstrap'. EXT);  
 require(BASE .'obullo'. DS .'Bootstrap'. EXT);
@@ -65,9 +64,9 @@ require(BASE .'obullo'. DS .'Bootstrap'. EXT);
 |--------------------------------------------------------------------------
 |
 | User can create own Front Controller who want replace
-| system methods by overriding to Bootstrap.php library.
-| @see
-| User Guide: Chapters / General Topics / Control Your Application Boot
+| system methods by overriding to Bootstrap.php file.
+| 
+| @see User Guide: Chapters / General Topics / Control Your Application Boot
 |
 */
 ob_include_files();
@@ -78,6 +77,4 @@ ob_system_close();
  
 // --------------------------------------------------------------------
 
-/* Beta 1.0 Rc1 Offical Version Release Date: 30-05-2010. */
-/* SVN $Id: Index.php 214 30-05-2010 16:58:38 develturk $ */
-?>
+/* SVN $Id: Index.php 355 27-10-2010 23:42:38 develturk $ */

@@ -113,7 +113,7 @@ if ( ! function_exists('view'))
 
         if(isset($vi->_ew->view_folder{1})) { $return = TRUE; }    // if view folder changed don't show errors ..
 
-        $path =  DIR .$GLOBALS['d']. DS .'views'. $vi->_ew->view_folder;
+        $path =  APP .'directories'. DS .$GLOBALS['d']. DS .'views'. $vi->_ew->view_folder;
         
         profiler_set('local_views', $filename, $path . $filename .EXT);  
         

@@ -65,7 +65,7 @@ if( ! function_exists('lang_load') )
         switch ($dir)
         {
             case 'local':
-             $folder = DIR .$GLOBALS['d']. DS .'lang'. DS;                            
+             $folder = APP .'directories'. DS .$GLOBALS['d']. DS .'lang'. DS;                            
              break;
             
             case 'global':

@@ -50,7 +50,7 @@ Class Model {
         
         foreach($OB->__ob_db_vars as $db_name => $db_var)
         {
-            echo $db_var.'<br />';
+            echo __FUNCTION__.' : ' .$db_var.'<br />';
             $this->$db_var = &$OB->$db_var;
         }
     

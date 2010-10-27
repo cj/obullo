@@ -95,8 +95,9 @@ echo calendar::instance()
 ->generate(2006, 10);
 
 
+@todo .. look log_message(); some functions does not work.
 @todo .. change require function as require_once in loader::model func.
-@todo .. change include function as incldue_once in loader::library and any other  func like codeigniter.
+@todo .. change include function as include_once in loader::library and any other  func like codeigniter.
 
 @todo .. Add Form_controller (Global) tutorial to user guide .. create a directory called /forms
 then create a Form_controller to /parents folder. add common functions to Form controller.
