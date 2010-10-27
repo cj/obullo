@@ -67,6 +67,7 @@ updated config.php file base_url and source_url items.
   
 //-----------------------------------------------------------------------------
 
+@todo .. !!! be aware model_ loader::database construct() support works in old revisions.
 @todo .. add to user guide php5 method chaining support like this 
 
 echo agent::instance()
