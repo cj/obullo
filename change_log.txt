@@ -80,6 +80,8 @@ updated config.php file base_url and source_url items.
 
 @todo .. !!! be aware model_ loader::database construct() support works in old revisions.
 @todo .. add to user guide php5 method chaining support like this 
+@todo .. add benchmark_micro_timer() function to benchmark helper or use native function. and use this function in
+DB class for profiling
 
 echo agent::instance()
 ->init()
