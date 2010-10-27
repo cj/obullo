@@ -67,6 +67,17 @@ updated config.php file base_url and source_url items.
   
 //-----------------------------------------------------------------------------
 
+!!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!
+@todo .. add loader::model('subfolder/model_name')  local directory sub folder load support
+@todo .. add loader::model('./outside_folder/model_name')  outside directory  load support
+
+@todo .. add loader::app_model('subfolder/model_name')  local directory sub folder load support
+@todo .. add loader::app_model('./outside_folder/model_name')  outside directory  load support
+
+@todo .. add view('subfolder/view_filename')  local directory sub folder load support
+@todo .. add view('./outside_folder/view_filename')  outside directory sub folder load support
+@todo .. view_set_folder tests ...
+
 @todo .. !!! be aware model_ loader::database construct() support works in old revisions.
 @todo .. add to user guide php5 method chaining support like this 
 
