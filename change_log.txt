@@ -91,6 +91,10 @@ echo calendar::instance()
 ->init()
 ->generate(2006, 10);
 
+
+@todo .. change require function as require_once in loader::model func.
+@todo .. change include function as incldue_once in loader::library and any other  func like codeigniter.
+
 @todo .. Add Form_controller (Global) tutorial to user guide .. create a directory called /forms
 then create a Form_controller to /parents folder. add common functions to Form controller.
 
@@ -108,7 +112,12 @@ users.php
     post.php
     put.php
     delete.php
+    
+@todo .. loader::model()  __construct support does not work !!
+http://www.screencast.com/users/brainyone/folders/Jing/media/9d8c6e14-450c-4c1f-9de9-62ee8e370e32
 
+@todo .. add MY_model extend support .. http://content.screencast.com/users/brainyone/folders/Jing/media/d117e9a2-8200-43df-87e2-69cd7f46fda0/00001286.png
+http://www.screencast.com/users/brainyone/folders/Jing/media/74c76098-3b12-43f6-843f-d3e5d1936ec8
 @todo .. change htaccess rules in userguide DirectoryIndex index.php, index.html
 @todo .. Global controllers pattern extends rules ..!!!
 @todo .. put archived doc meta tag to old user guide base layout ..

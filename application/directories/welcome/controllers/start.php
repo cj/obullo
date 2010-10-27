@@ -7,9 +7,9 @@ Class Start extends Controller {
         parent::__construct();
         parent::__global();
         
-        loader::database();
-        $this->output->profiler();
-        // loader::app_model('model_get');
+
+        loader::model('model_welcome');
+    
         
     }                                      
     
