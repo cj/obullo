@@ -148,6 +148,7 @@ $this->config->set_db_item();
 @next version todo .. firewall class (integer, string validate for requests, login attempts for captcha) 
 @next version todo .. firewall class, or any php errors should be show an error inside view() function... blabla
 @next version todo .. look at upload class fix
+@next version todo .. access to log outside of the web with an admin password
 
 @forum .. good idea !!  forum topics must be related with user_guide page ids .. we will add every user guide pages
 this page has (x) related forum topics and  go forum !!
