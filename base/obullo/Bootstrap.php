@@ -147,7 +147,7 @@ if( ! function_exists('ob_system_close'))
         $ob = Obullo::instance();
         
         // Close all PDO connections..        
-        foreach(profiler_get('databases') as $db_name => $db_var)
+        foreach($ob->__ob_db_vars as $db_name => $db_var)
         {
             $ob->{$db_var} = NULL;
         }

@@ -7,9 +7,8 @@ Class Start extends Controller {
         parent::__construct();
         parent::__global();
         
-
-        loader::model('model_welcome');
-    
+        // loader::model('model_welcome', 'user');
+        // $this->user->get_data();
         
     }                                      
     

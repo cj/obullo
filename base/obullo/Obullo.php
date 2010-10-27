@@ -98,6 +98,15 @@ eval('Class Controller_CORE extends '.$_Global_controller.'{}');
 */
 Class Obullo extends Controller_CORE
 {       
+    
+    /**
+    * Store all database names
+    * we will assing them inside Model
+    * 
+    * @var mixed
+    */
+    public $__ob_db_vars = array();
+    
     /**
     * Obullo instance
     * 

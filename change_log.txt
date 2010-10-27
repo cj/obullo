@@ -64,10 +64,13 @@ updated config.php file base_url and source_url items.
 - added <meta http-equiv="Content-Type" content="text/html; charset=utf-8">  to system/errors/ob_404.php
 - Agent and Parser class moved to /Php5 library folder.
 - added method chaining support to all Php5 libraries " e.g.: echo agent::instance()->init()->browser(); "
-  
+- fixed loader::model('', $objectname); bug , changed param order as loader_model('filename', $object_name, $params); function (thanks to Cj Lazell)
+
 //-----------------------------------------------------------------------------
 
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!
+@todo .. add result_array(); and result(); for the CI backward compatiblity
+
 @todo .. add loader::model('subfolder/model_name')  local directory sub folder load support
 @todo .. add loader::model('./outside_folder/model_name')  outside directory  load support
 
@@ -128,6 +131,7 @@ http://www.screencast.com/users/brainyone/folders/Jing/media/74c76098-3b12-43f6-
 CREATE TABLE `ob_sessions` (
   `user_data` text character set utf8 NOT NULL,
 ) 
+@todo .. add user guide to uri protocol functionality ... http://localhost/obullo/index.php?foo=bar it works in just $config['uri_protocol']          = "PATH_INFO"; we need to explain this functionality ..
 
 NEXT VERSION
 ----------------------------------------------------------------
@@ -159,6 +163,7 @@ $this->config->set_db_item();
 @next version todo .. look at upload class fix
 @next version todo .. access to log outside of the web with an admin password
 
+@move project to git_gub..
 @forum .. good idea !!  forum topics must be related with user_guide page ids .. we will add every user guide pages
 this page has (x) related forum topics and  go forum !!
 

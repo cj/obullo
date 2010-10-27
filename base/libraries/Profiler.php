@@ -98,10 +98,9 @@ Class OB_Profiler {
     public function _compile_queries()
     {
         $ob = Obullo::instance();
-        $databases = profiler_get('databases');
         
         // Let's determine which databases are currently connected to         
-        if (count($databases) == 0)
+        if (count($ob->__ob_db_vars) == 0)
         {    
             $output  = '<div id="queries">';       
             $output .= "<table class=\"tableborder\">";
@@ -123,7 +122,7 @@ Class OB_Profiler {
 
         $output  = "";
             
-        foreach ($databases as $db_name => $db_var)
+        foreach ($ob->__ob_db_vars as $db_name => $db_var)
         {
             $total_queries = count($ob->{$db_var}->cached_queries) + count($ob->{$db_var}->queries);
             
@@ -407,7 +406,6 @@ Class OB_Profiler {
     public function _compile_loaded_files()
     {          
         $ob  = Obullo::instance();
-        $ssc = Ssc::instance();
         $helper_prefix   = config_item('subhelper_prefix');
         $subclass_prefix = config_item('subclass_prefix');
     
@@ -471,7 +469,7 @@ Class OB_Profiler {
         foreach(profiler_get('models') as $mod) { $models .= $mod .'<br />'; }
               
         $databases  = '';
-        foreach(profiler_get('databases') as $db_name => $db_var) { $databases .= $db_var.'<br />'; }
+        foreach($ob->__ob_db_vars as $db_name => $db_var) { $databases .= $db_var.'<br />'; }
         
         $scripts  = '';
         foreach(profiler_get('scripts') as $scr) { $scripts .= $scr .'<br />'; }

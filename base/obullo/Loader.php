@@ -194,11 +194,11 @@ Class loader {
     * 
     * @author   Ersin Guvenc
     * @param    string $model
-    * @param    array | boolean $params_or_no_ins (construct params) | or | No Instantiate 
     * @param    string $object_name
+    * @param    array | boolean $params_or_no_ins (construct params) | or | No Instantiate 
     * @return   void
     */
-    public static function app_model($model, $params_or_no_ins = '', $object_name = '')
+    public static function app_model($model, $object_name = '', $params_or_no_ins = '')
     {
         self::_model(APP .'models'. DS .strtolower($model). EXT, strtolower($model), $object_name, $params_or_no_ins);
     }
@@ -211,8 +211,8 @@ Class loader {
     * 
     * @author    Ersin Guvenc
     * @param     string $model
-    * @param     array | boolean $params (construct params) | or | Not Instantiate
     * @param     string $object_name 
+    * @param     array | boolean $params (construct params) | or | Not Instantiate
     * @version   0.1
     * @version   0.2 added directory support
     * @version   0.3 changed $GLOBALS['c'] as $GLOBALS['d']
@@ -224,7 +224,7 @@ Class loader {
     * @version   0.7 loading from another path bug fixed. added 'models' string and DS.
     * @return    void
     */
-    public static function model($model, $params_or_no_ins = '', $object_name = '')
+    public static function model($model, $object_name = '', $params_or_no_ins = '')
     {   
         $model_name = strtolower($model);
         
@@ -267,14 +267,14 @@ Class loader {
             throw new LoaderException('Unable to locate the model: '.$model_name);
         }
         
-        $model_var = &$model_name;
+        $model_var = $model_name;
         if($object_name != '') $model_var = $object_name; 
         
         $OB = Obullo::instance();  
         
         if (isset($OB->$model_var) AND is_object($OB->$model_var)) { return; }
         
-        require($file);
+        require_once($file);
         $model = ucfirst($model_name);   
 
         if($params_or_no_ins === FALSE)
@@ -285,7 +285,7 @@ Class loader {
         
         if( ! class_exists($model, false)) // autoload false.
         {
-            throw new LoaderException('Model name is not correct in file: '.$model);
+            throw new LoaderException('Model name is not correct in this file: '.$model);
         }
         
         $OB->$model_var = new $model($params_or_no_ins);    // register($class); we don't need it   
@@ -325,7 +325,7 @@ Class loader {
     * @version  0.7 changed DBFactory, moved db_var into DBFactory
     * @version  0.8 changed DBFactory class as static, added $return_object param
     * @version  0.9 renamed OB_DBFactory::init() func as OB_DBFactory::Connect()
-    * @version  1.0 added profiler_set('databases') function.
+    * @version  1.0 added $OB->__ob_db_vars[$db_name] function.
     * @return   void
     */
     public static function database($db_name = 'db', $return_object = FALSE)
@@ -349,8 +349,8 @@ Class loader {
         
         if($return_object)
         {    
-            // Store db variables ..  
-            profiler_set('databases', $db_name, $db_var);  
+            // Store db variables ..
+            $OB->__ob_db_vars[$db_name] = $db_var;  
             
             return OB_DBFactory::Connect($db_name, $db_var); // Return to database object ..
         }
@@ -359,8 +359,8 @@ Class loader {
         $OB->{$db_var} = OB_DBFactory::Connect($db_name, $db_var);
     
         // Store db variables
-        profiler_set('databases', $db_name, $db_var);
-        
+        $OB->__ob_db_vars[$db_name] = $db_var;
+
         self::_assign_db_objects($db_var);
 
     } // end db func.
@@ -583,6 +583,7 @@ Class loader {
     {
         $models = profiler_get('models');
         
+        // print_r($models);
         if (count($models) == 0) return;
 
         foreach ($models as $model_name)
