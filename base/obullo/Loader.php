@@ -200,9 +200,6 @@ Class loader {
     */
     public static function app_model($model, $object_name = '', $params_or_no_ins = '')
     {
-        // APP .'models'. DS .strtolower($model). EXT;
-        
-        // self::_model($model, strtolower($model), $object_name, $params_or_no_ins);
         self::model($model, $object_name, $params_or_no_ins, 'app_model');
     }
     
