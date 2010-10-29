@@ -7,6 +7,10 @@ Class Start extends Controller {
         parent::__construct();
         parent::__global();
         
+        loader::model('.default/model_doly');
+    
+        $this->model_doly->doly();
+        
     }                                      
     
     public function index()

@@ -28,8 +28,8 @@ Class Controller extends Obullo {
 
     public function __construct()       
     {   
-        // Be carefull. parent::__construct() must be at the top.
-        parent::__construct();
+        parent::__construct();  // Should be at the top.
+                                
         $this->_ob_init();
         
         log_message('debug', "Controller Class Initialized");

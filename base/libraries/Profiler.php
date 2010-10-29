@@ -98,9 +98,10 @@ Class OB_Profiler {
     public function _compile_queries()
     {
         $ob = Obullo::instance();
+        $total_dbs = profiler_get('databases');
         
         // Let's determine which databases are currently connected to         
-        if (count($ob->__ob_db_vars) == 0)
+        if (count($total_dbs) == 0)
         {    
             $output  = '<div id="queries">';       
             $output .= "<table class=\"tableborder\">";
@@ -122,7 +123,7 @@ Class OB_Profiler {
 
         $output  = "";
             
-        foreach ($ob->__ob_db_vars as $db_name => $db_var)
+        foreach ($total_dbs as $db_name => $db_var)
         {
             $total_queries = count($ob->{$db_var}->cached_queries) + count($ob->{$db_var}->queries);
             
@@ -469,7 +470,7 @@ Class OB_Profiler {
         foreach(profiler_get('models') as $mod) { $models .= $mod .'<br />'; }
               
         $databases  = '';
-        foreach($ob->__ob_db_vars as $db_name => $db_var) { $databases .= $db_var.'<br />'; }
+        foreach($total_dbs as $db_name => $db_var) { $databases .= $db_var.'<br />'; }
         
         $scripts  = '';
         foreach(profiler_get('scripts') as $scr) { $scripts .= $scr .'<br />'; }

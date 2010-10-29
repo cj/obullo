@@ -7,8 +7,8 @@ Class Model_doly extends Model {
     
     function __construct()
     {    
-        parent::__construct();
         loader::database();
+        parent::__construct();
         
     }
     
@@ -16,7 +16,7 @@ Class Model_doly extends Model {
     {
         // ...
         // $this->db->query( ... );
-    
+        echo 'yep. im default doly !';
     }
         
 

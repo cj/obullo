@@ -65,11 +65,14 @@ updated config.php file base_url and source_url items.
 - Agent and Parser class moved to /Php5 library folder.
 - added method chaining support to all Php5 libraries " e.g.: echo agent::instance()->init()->browser(); "
 - fixed loader::model('', $objectname); bug , changed param order as loader_model('filename', $object_name, $params); function (thanks to Cj Lazell)
+- loader::model() require '' func changed as require_once ''.
+- added loader::model('./outside_folder/model_name')  outside directory  load support 
+- added loader::app_model('subfolder/model_name')  global directory sub folder load support
+- added loader::model('subfolder/model_name')  local directory sub folder load support (thanks to Cj Lazell good idea)
 
 //-----------------------------------------------------------------------------
 
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!
-@todo .. add result_array(); and result(); for the CI backward compatiblity
 
 @todo .. add loader::model('subfolder/model_name')  local directory sub folder load support
 @todo .. add loader::model('./outside_folder/model_name')  outside directory  load support
@@ -79,9 +82,9 @@ updated config.php file base_url and source_url items.
 
 @todo .. add view('subfolder/view_filename')  local directory sub folder load support
 @todo .. add view('./outside_folder/view_filename')  outside directory sub folder load support
-@todo .. view_set_folder tests ...
+@todo .. add result_array(); and result(); for the CI backward compatiblity
 
-@todo .. !!! be aware model_ loader::database construct() support works in old revisions.
+@todo .. view_set_folder tests ...
 @todo .. add to user guide php5 method chaining support like this 
 @todo .. add benchmark_micro_timer() function to benchmark helper or use native function. and use this function in
 DB class for profiling

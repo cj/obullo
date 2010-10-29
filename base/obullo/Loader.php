@@ -200,7 +200,10 @@ Class loader {
     */
     public static function app_model($model, $object_name = '', $params_or_no_ins = '')
     {
-        self::_model(APP .'models'. DS .strtolower($model). EXT, strtolower($model), $object_name, $params_or_no_ins);
+        // APP .'models'. DS .strtolower($model). EXT;
+        
+        // self::_model($model, strtolower($model), $object_name, $params_or_no_ins);
+        self::model($model, $object_name, $params_or_no_ins, 'app_model');
     }
     
     // --------------------------------------------------------------------
@@ -209,10 +212,14 @@ Class loader {
     * loader::model();
     * Obullo Model Loader
     * 
+    * loader::model('subfolder/model_name')  local sub folder load support
+    * loader::model('.outside_folder/model_name')  outside directory  load support
+    * 
     * @author    Ersin Guvenc
     * @param     string $model
     * @param     string $object_name 
     * @param     array | boolean $params (construct params) | or | Not Instantiate
+    * @param     reserved private parameter for application model func.
     * @version   0.1
     * @version   0.2 added directory support
     * @version   0.3 changed $GLOBALS['c'] as $GLOBALS['d']
@@ -222,29 +229,49 @@ Class loader {
     * @version   0.5 added $object_name and $params variables 
     * @version   0.6 changed $params as $params_or_no_ins
     * @version   0.7 loading from another path bug fixed. added 'models' string and DS.
+    * @version   0.8 added  model('.outside_folder/model_name') and model('subfolder/model_name') support
     * @return    void
     */
-    public static function model($model, $object_name = '', $params_or_no_ins = '')
+    public static function model($model, $object_name = '', $params_or_no_ins = '', $func = 'model')
     {   
         $model_name = strtolower($model);
+        $root       = APP .'directories';
         
-        // Controller directory support for model
-        // if user provide path separator like this  loader::model(blog/model_blog)
+        if($func == 'app_model')
+        $root       = APP .'models';
         
-        if (strpos($model_name, '/') > 0)
+        switch ($model_name) 
         {
-            $paths = explode('/',$model_name); // path[0] = controller name
-            $model_name = array_pop($paths);
-            $path  = implode('/', $paths) . DS;
+           case (strpos($model_name, '.') === 0):  // ./outside folder request (not need app_model load)
+           
+            $paths      = explode('/',$model_name);   // paths[0] = path , [1] file name     
+            $model_name = array_pop($paths);          // get file name
+            $path       = implode('/', $paths);
             
-            $file = APP .'directories'. DS .$path. 'models'. DS .$model_name. EXT;
-        } 
-        else
-        {
-            // Load current controller model
-            $file = APP .'directories'. DS .$GLOBALS['d']. DS .'models'. DS .$model_name. EXT;
+            $file = APP .'directories'. DS .substr($path, 1). DS .'models'. DS .$model_name. EXT;
+             break;
+             
+           case (strpos($model_name, '/') > 0):  //  inside folder request
+           
+            $paths      = explode('/',$model_name);        
+            $model_name = array_pop($paths);          
+            $path       = implode('/', $paths);
+            
+            $sub_root   = $GLOBALS['d']. DS .'models';
+            if($func == 'app_model')
+            $sub_root   = $path;
+           
+            $file = $root. DS .$sub_root. DS .$path. DS .$model_name. EXT;
+             break;
+             
+           default:
+            $sub_root   = $GLOBALS['d']. DS .'models';
+            if($func == 'app_model')
+            $sub_root   = $path;
+            
+            $file = $root. DS .$sub_root. DS .$model_name. EXT;
         }
-    
+
         self::_model($file, $model_name, $object_name, $params_or_no_ins);
     }
     
@@ -285,8 +312,11 @@ Class loader {
         
         if( ! class_exists($model, false)) // autoload false.
         {
-            throw new LoaderException('Model name is not correct in this file: '.$model);
+            throw new LoaderException('You have a small problem, model name isn\'t right in here: '.$model);
         }
+        
+        // store loaded obullo models
+        profiler_set('models', $model_var, $model_var);     // should be above the new model();
         
         $OB->$model_var = new $model($params_or_no_ins);    // register($class); we don't need it   
 
@@ -294,8 +324,6 @@ Class loader {
         // loader::database() support for Model_x { function __construct() { loader::database() }}
         $OB->$model_var->_assign_db_objects();
         
-        // store loaded obullo models
-        profiler_set('models', $model_var, $model_var);
     }
 
     // --------------------------------------------------------------------
@@ -325,7 +353,7 @@ Class loader {
     * @version  0.7 changed DBFactory, moved db_var into DBFactory
     * @version  0.8 changed DBFactory class as static, added $return_object param
     * @version  0.9 renamed OB_DBFactory::init() func as OB_DBFactory::Connect()
-    * @version  1.0 added $OB->__ob_db_vars[$db_name] function.
+    * @version  1.0 added profiler_set('databases') function.
     * @return   void
     */
     public static function database($db_name = 'db', $return_object = FALSE)
@@ -350,7 +378,7 @@ Class loader {
         if($return_object)
         {    
             // Store db variables ..
-            $OB->__ob_db_vars[$db_name] = $db_var;  
+            profiler_set('databases', $db_name, $db_var);
             
             return OB_DBFactory::Connect($db_name, $db_var); // Return to database object ..
         }
@@ -359,8 +387,8 @@ Class loader {
         $OB->{$db_var} = OB_DBFactory::Connect($db_name, $db_var);
     
         // Store db variables
-        $OB->__ob_db_vars[$db_name] = $db_var;
-
+        profiler_set('databases', $db_name, $db_var);
+        
         self::_assign_db_objects($db_var);
 
     } // end db func.
@@ -582,14 +610,16 @@ Class loader {
     private static function _assign_db_objects($db_var = '')
     {
         $models = profiler_get('models');
-        
-        // print_r($models);
+
+        $OB = Obullo::instance();
+
         if (count($models) == 0) return;
 
         foreach ($models as $model_name)
         {
             $OB->$model_name->$db_var = &$OB->$db_var;
         }
+    
     }
   
 }

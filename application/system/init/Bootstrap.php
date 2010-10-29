@@ -7,8 +7,8 @@ defined('BASE') or exit('Access Denied!');
 |
 | User can create own Front Controller who want replace
 | system methods by overriding to Bootstrap.php library.
-| @see
-| User Guide: Chapters / General Topics / Control Your Application Boot
+| @see User Guide: Chapters / General Topics / Control Your Application Boot
+|
 */
 
 
