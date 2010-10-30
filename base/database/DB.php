@@ -19,6 +19,20 @@ defined('BASE') or exit('Access Denied!');
  
 Class DBException extends CommonException {} 
  
+function ob_query_timer_start()
+{
+    list($sm, $ss) = explode(' ', microtime());
+    
+    return ($sm + $ss);
+}
+
+function ob_query_timer_end()
+{
+    list($em, $es) = explode(' ', microtime());
+    
+    return ($em + $es);
+}
+ 
 /**
  * DB Class.
  *
@@ -95,7 +109,7 @@ Class OB_DB extends OB_DBAc_sw {
     */
     public function prep($options = array())
     {
-        $this->p_opt   = &$options;
+        $this->p_opt   = $options;
         $this->prepare = TRUE;
         
         return $this; // beta 1.0 rc1 changes
@@ -120,32 +134,26 @@ Class OB_DB extends OB_DBAc_sw {
         {
             $this->Stmt = $this->_conn->prepare($sql, $this->p_opt);
             
-            // Save the  query for debugging 
-            $this->prep_queries[] = $sql;
+            $this->prep_queries[] = $sql;  // Save the  query for debugging 
             
             ++$this->query_count;
                         
-            return $this;   // beta 1.0 rc1 changes ( direct query bug fixed )
+            return $this;
         }
                   
-        // Start the Query Timer
-        //------------------------------------------------------
-        $time_start = list($sm, $ss) = explode(' ', microtime());
-        //------------------------------------------------------
+        //------------------------------------
+        $start_time = ob_query_timer_start();
                                   
         $this->Stmt = $this->_conn->query($sql);
 
-        // Save the  query for debugging 
-        $this->queries[] = $sql;
+        $this->queries[] = $sql;   // Save the  query for debugging 
+       
+        $end_time   = ob_query_timer_end();
+        //------------------------------------
         
-        // Stop and aggregate the query time results
-        //------------------------------------------------------
-        $time_end = list($em, $es) = explode(' ', microtime());
-        $this->benchmark += ($em + $es) - ($sm + $ss);
-        
-        $this->query_times[] = ($em + $es) - ($sm + $ss);
-        //------------------------------------------------------
-        
+        $this->benchmark +=    $end_time - $start_time;
+        $this->query_times[] = $end_time - $start_time;
+
         ++$this->query_count;
         
         return $this;
@@ -225,33 +233,25 @@ Class OB_DB extends OB_DBAc_sw {
             throw new DBException(lang('db_bind_data_must_assoc'));
         }
         
-        // Start the Query Timer
-        //------------------------------------------------------
-        $time_start = list($sm, $ss) = explode(' ', microtime());
-        //------------------------------------------------------
+        //------------------------------------
+        $start_time = ob_query_timer_start();
                               
-        // switch to pdo::statement
-        $this->Stmt->execute($array);
+        $this->Stmt->execute($array);       
                                      
-        // Save the "cached" query for debugging 
-        $this->cached_queries[] = end($this->prep_queries);    //  ( Obullo Changes ..)
+        $this->cached_queries[] = end($this->prep_queries);   // Save the "cached" query for debugging 
                                      
-        // Stop and aggregate the query time results
-        //------------------------------------------------------
-        $time_end = list($em, $es) = explode(' ', microtime());
-        $this->benchmark += ($em + $es) - ($sm + $ss);
+        $end_time   = ob_query_timer_end();
+        //------------------------------------
         
-        $this->query_times['cached'][] = ($em + $es) - ($sm + $ss);
-        //------------------------------------------------------
+        $this->benchmark += $end_time - $start_time;
+        $this->query_times['cached'][] = $end_time - $start_time;
         
-        // reset prepare variable and prevent collision to next query ..
+        // reset prepare variable and prevent collision with next query ..
         $this->prepare = FALSE;
         
-        // count execute of prepared statements ..
-        ++$this->exec_count;
+        ++$this->exec_count;        // count execute of prepared statements ..
         
-        // reset last bind values ..
-        $this->last_values = array();
+        $this->last_values = array();   // reset last bind values ..
         
         // store last executed bind values for last_query method.
         if(is_array($array))
@@ -291,25 +291,20 @@ Class OB_DB extends OB_DBAc_sw {
     */
     public function exec_query($sql)
     {
-        $this->last_sql = &$sql;
+        $this->last_sql = $sql;
         
-        // Start the Query Timer
-        //------------------------------------------------------
-        $time_start = list($sm, $ss) = explode(' ', microtime());
-        //------------------------------------------------------
+        //------------------------------------
+        $start_time = ob_query_timer_start();
         
-        // Save the  query for debugging 
-        $this->queries[] = $sql;
+        $this->queries[] = $sql;    // Save the  query for debugging 
         
         $affected_rows = $this->_conn->exec($sql);
                                      
-        // Stop and aggregate the query time results
-        //------------------------------------------------------
-        $time_end = list($em, $es) = explode(' ', microtime());
-        $this->benchmark += ($em + $es) - ($sm + $ss);
+        $end_time   = ob_query_timer_end();
+        //------------------------------------
         
-        $this->query_times[] = ($em + $es) - ($sm + $ss);
-        //------------------------------------------------------
+        $this->benchmark +=    $end_time - $start_time;
+        $this->query_times[] = $end_time - $start_time;
         
         return $affected_rows;
     }
@@ -335,8 +330,8 @@ Class OB_DB extends OB_DBAc_sw {
             foreach(array_keys($this->last_values[$this->exec_count]) as $k)
             {
                 $bind_chr = ':';
-                if(strpos($k, ':') === 0) // If user use ':' characters
-                $bind_chr = '';          // Some users forgot this character
+                if(strpos($k, ':') === 0)   // If user use ':' characters
+                $bind_chr = '';             // Some users forgot this character
                 
                 $bind_keys[]  = "/\\$bind_chr".$k.'\b/';  // escape bind ':' character
             }
@@ -565,9 +560,9 @@ Class OB_DB extends OB_DBAc_sw {
     * Get "all results" by assoc, object, num, bound or 
     * anything what u want
     * 
-    * @param    int $fetch_style = PDO::FETCH_BOTH
+    * @param    int $fetch_style  = PDO::FETCH_BOTH
     * @param    int $column_index = 0
-    * @param    array $ctor_args = array()
+    * @param    array $ctor_args  = array()
     * @return   object
     */
     public function fetch_all()

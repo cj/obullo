@@ -470,7 +470,7 @@ Class OB_Profiler {
         foreach(profiler_get('models') as $mod) { $models .= $mod .'<br />'; }
               
         $databases  = '';
-        foreach($total_dbs as $db_name => $db_var) { $databases .= $db_var.'<br />'; }
+        foreach(profiler_get('databases') as $db_name => $db_var) { $databases .= $db_var.'<br />'; }
         
         $scripts  = '';
         foreach(profiler_get('scripts') as $scr) { $scripts .= $scr .'<br />'; }

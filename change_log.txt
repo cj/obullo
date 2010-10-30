@@ -70,25 +70,18 @@ updated config.php file base_url and source_url items.
 - added loader::app_model('subfolder/model_name')  global directory sub folder load support
 - added loader::model('subfolder/model_name')  local directory sub folder load support (thanks to Cj Lazell good idea)
 
+-
+
 //-----------------------------------------------------------------------------
 
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!
 
-@todo .. add loader::model('subfolder/model_name')  local directory sub folder load support
-@todo .. add loader::model('./outside_folder/model_name')  outside directory  load support
-
-@todo .. add loader::app_model('subfolder/model_name')  local directory sub folder load support
-@todo .. add loader::app_model('./outside_folder/model_name')  outside directory  load support
-
-@todo .. add view('subfolder/view_filename')  local directory sub folder load support
-@todo .. add view('./outside_folder/view_filename')  outside directory sub folder load support
 @todo .. add result_array(); and result(); for the CI backward compatiblity
-
-@todo .. view_set_folder tests ...
 @todo .. add to user guide php5 method chaining support like this 
 @todo .. add benchmark_micro_timer() function to benchmark helper or use native function. and use this function in
 DB class for profiling
 
+@todo .. add method chaining to user guide.
 echo agent::instance()
 ->init()
 ->browser();
@@ -99,29 +92,11 @@ echo calendar::instance()
 
 
 @todo .. look log_message(); some functions does not work.
-@todo .. change require function as require_once in loader::model func.
-@todo .. change include function as include_once in loader::library and any other  func like codeigniter.
-
 @todo .. Add Form_controller (Global) tutorial to user guide .. create a directory called /forms
 then create a Form_controller to /parents folder. add common functions to Form controller.
-
 @todo .. add native extend functionality to native Obullo Code Model library.
 http://www.askaboutphp.com/50/codeigniter-extending-the-native-model-and-make-it-your-own.html 
 (CJ Lazell advices)
-
-@todo .. add a loader::app_model('users/balbla'); direcotry support to app_ function.
-
-models/
-users.php
-..users/
-    settings.php
-    get.php
-    post.php
-    put.php
-    delete.php
-    
-@todo .. loader::model()  __construct support does not work !!
-http://www.screencast.com/users/brainyone/folders/Jing/media/9d8c6e14-450c-4c1f-9de9-62ee8e370e32
 
 @todo .. add MY_model extend support .. http://content.screencast.com/users/brainyone/folders/Jing/media/d117e9a2-8200-43df-87e2-69cd7f46fda0/00001286.png
 http://www.screencast.com/users/brainyone/folders/Jing/media/74c76098-3b12-43f6-843f-d3e5d1936ec8
@@ -135,11 +110,11 @@ http://www.screencast.com/users/brainyone/folders/Jing/media/74c76098-3b12-43f6-
 CREATE TABLE `ob_sessions` (
   `user_data` text character set utf8 NOT NULL,
 ) 
-@todo .. add user guide to uri protocol functionality ... http://localhost/obullo/index.php?foo=bar it works in just $config['uri_protocol']          = "PATH_INFO"; we need to explain this functionality ..
+
 
 NEXT VERSION
 ----------------------------------------------------------------
-
+@next version todo .. add user guide to uri protocol functionality ... http://localhost/obullo/index.php?foo=bar it works in just $config['uri_protocol']          = "PATH_INFO"; we need to explain this functionality ..
 @next version todo .. utf8 support http://www.phpwact.org/php/i18n/utf-8
 @next version todo .. look at include ob_error.php errors when someone use third party session library.
 @next version todo .. if not posted a variable in form_validate class add it to log debug msg..
