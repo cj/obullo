@@ -49,6 +49,7 @@ defined('BASE') or exit('Access Denied!');
  * @version         2.0 loader::model('blog/model_filename'); bug fixed.
  * @version         2.1 added profiler_set(); functions and removed old $ssc->_profiler_ variables, renamed OB_DBFactory::init()
  *                      func as OB_DBFactory::Connect in loader::database();
+ * @version         2.2 added  model('.outside_folder/model_name') and model('subfolder/model_name') support
  */
 
 Class LoaderException extends CommonException {}
