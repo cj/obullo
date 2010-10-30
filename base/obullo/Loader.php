@@ -231,44 +231,41 @@ Class loader {
     */
     public static function model($model, $object_name = '', $params_or_no_ins = '', $func = 'model')
     {   
-        $model_name = strtolower($model);
+        $real_name  = strtolower($model);
         $root       = APP .'directories';
         
         if($func == 'app_model')
         $root       = APP .'models';
         
-        switch ($model_name) 
+        if(strpos($real_name, '/') > 0)         //  inside folder request
         {
-           case (strpos($model_name, '.') === 0):  // ./outside folder request (not need app_model load)
-           
-            $paths      = explode('/',$model_name);   // paths[0] = path , [1] file name     
+            $paths      = explode('/',$real_name);   // paths[0] = path , [1] file name     
             $model_name = array_pop($paths);          // get file name
             $path       = implode('/', $paths);
             
-            $file = APP .'directories'. DS .substr($path, 1). DS .'models'. DS .$model_name. EXT;
-             break;
-             
-           case (strpos($model_name, '/') > 0):  //  inside folder request
-           
-            $paths      = explode('/',$model_name);        
-            $model_name = array_pop($paths);          
-            $path       = implode('/', $paths);
-            
-            $sub_root   = $GLOBALS['d']. DS .'models';
+            $sub_root   = $GLOBALS['d']. DS .'models'. DS;
             if($func == 'app_model')
-            $sub_root   = $path;
+            $sub_root   = '';
            
-            $file = $root. DS .$sub_root. DS .$path. DS .$model_name. EXT;
-             break;
-             
-           default:
-            $sub_root   = $GLOBALS['d']. DS .'models';
-            if($func == 'app_model')
-            $sub_root   = $path;
+            $file = $root. DS .$sub_root. $path. DS .$model_name. EXT;
             
-            $file = $root. DS .$sub_root. DS .$model_name. EXT;
+            if(strpos($real_name, '.') === 0)   // ./outside folder request
+            {
+                $file = APP .'directories'. DS .substr($path, 1). DS .'models'. DS .$model_name. EXT;
+            }
+                
+        } 
+        else 
+        {
+            $sub_root   = $GLOBALS['d']. DS .'models'. DS;
+            if($func == 'app_model')
+            $sub_root   = '';
+            
+            $model_name = $real_name;
+            
+            $file = $root. DS .$sub_root. $model_name. EXT;    
         }
-
+        
         self::_model($file, $model_name, $object_name, $params_or_no_ins);
     }
     
