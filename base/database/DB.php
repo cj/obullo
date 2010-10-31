@@ -588,12 +588,34 @@ Class OB_DB extends OB_DBAc_sw {
     /**
     * Returns a single column from the next row of a result set 
     * 
-    * @param mixed $col
+    * @param object
     */
     public function fetch_column($col = NULL)
     {
         return $this->Stmt->fetchColumn($col);
     }
+    
+    // --------------------------------------------------------------------
+    
+    /**
+    * CodeIgniter backward compatibility (result)
+    * 
+    * @return object
+    */
+    public function result()
+    {
+        return $this->Stmt->fetchAll(PDO::FETCH_OBJ);
+    } 
+    
+    /**
+    * CodeIgniter backward compatibility (result_array)
+    * 
+    * @return  array
+    */
+    public function result_array()
+    {
+        return $this->Stmt->fetchAll(PDO::FETCH_ASSOC);
+    } 
     
     // --------------------------------------------------------------------
     

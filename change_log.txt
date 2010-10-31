@@ -69,8 +69,8 @@ updated config.php file base_url and source_url items.
 - added loader::model('./outside_folder/model_name')  outside directory  load support 
 - added loader::app_model('subfolder/model_name')  global directory sub folder load support
 - added loader::model('subfolder/model_name')  local directory sub folder load support (thanks to Cj Lazell good idea)
-
--
+- added ob_query_timer_start() and ob_query_timer_end() functions to DB class for profiling.
+- added some codeigniter functions result() result_array(); to DB class.
 
 //-----------------------------------------------------------------------------
 
@@ -78,8 +78,7 @@ updated config.php file base_url and source_url items.
 
 @todo .. add result_array(); and result(); for the CI backward compatiblity
 @todo .. add to user guide php5 method chaining support like this 
-@todo .. add benchmark_micro_timer() function to benchmark helper or use native function. and use this function in
-DB class for profiling
+@todo .. 
 
 @todo .. add method chaining to user guide.
 echo agent::instance()
