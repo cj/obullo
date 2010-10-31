@@ -70,17 +70,13 @@ updated config.php file base_url and source_url items.
 - added loader::app_model('subfolder/model_name')  global directory sub folder load support
 - added loader::model('subfolder/model_name')  local directory sub folder load support (thanks to Cj Lazell good idea)
 - added ob_query_timer_start() and ob_query_timer_end() functions to DB class for profiling.
-- added some codeigniter functions result() result_array(); to DB class.
+- added some codeigniter database result functions result() result_array(); to DB class.
 
 //-----------------------------------------------------------------------------
 
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!
 
-@todo .. add result_array(); and result(); for the CI backward compatiblity
 @todo .. add to user guide php5 method chaining support like this 
-@todo .. 
-
-@todo .. add method chaining to user guide.
 echo agent::instance()
 ->init()
 ->browser();
@@ -93,7 +89,8 @@ echo calendar::instance()
 @todo .. look log_message(); some functions does not work.
 @todo .. Add Form_controller (Global) tutorial to user guide .. create a directory called /forms
 then create a Form_controller to /parents folder. add common functions to Form controller.
-@todo .. add native extend functionality to native Obullo Code Model library.
+@todo .. add user guide to extending to Core MY_model functionality.
+it works in Obullo !
 http://www.askaboutphp.com/50/codeigniter-extending-the-native-model-and-make-it-your-own.html 
 (CJ Lazell advices)
 

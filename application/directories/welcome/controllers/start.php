@@ -6,7 +6,11 @@ Class Start extends Controller {
     {   
         parent::__construct();
         parent::__global();
-
+        
+        loader::model('model_welcome');
+        
+        echo $this->model_welcome->create();
+        
     }                                      
     
     public function index()

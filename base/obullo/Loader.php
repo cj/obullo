@@ -49,7 +49,8 @@ defined('BASE') or exit('Access Denied!');
  * @version         2.0 loader::model('blog/model_filename'); bug fixed.
  * @version         2.1 added profiler_set(); functions and removed old $ssc->_profiler_ variables, renamed OB_DBFactory::init()
  *                      func as OB_DBFactory::Connect in loader::database();
- * @version         2.2 added  model('.outside_folder/model_name') and model('subfolder/model_name') support
+ * @version         2.2 added  app_model and model('.outside_folder/model_name') and model('subfolder/model_name') support
+ *                      added  app_helper and helper('.outside_folder/helper_name') - helper('subfolder/helper_name') support
  */
 
 Class LoaderException extends CommonException {}
@@ -210,8 +211,8 @@ Class loader {
     * loader::model();
     * Obullo Model Loader
     * 
-    * loader::model('subfolder/model_name')  local sub folder load support
-    * loader::model('.outside_folder/model_name')  outside directory  load support
+    * loader::model('subfolder/model_name')  local sub folder load
+    * loader::model('.outside_folder/model_name')  outside directory load
     * 
     * @author    Ersin Guvenc
     * @param     string $model
@@ -232,42 +233,9 @@ Class loader {
     */
     public static function model($model, $object_name = '', $params_or_no_ins = '', $func = 'model')
     {   
-        $real_name  = strtolower($model);
-        $root       = APP .'directories';
+        $data = self::_load_file($model, $folder = 'models', $func);
         
-        if($func == 'app_model')
-        $root       = APP .'models';
-        
-        if(strpos($real_name, '/') > 0)         //  inside folder request
-        {
-            $paths      = explode('/',$real_name);   // paths[0] = path , [1] file name     
-            $model_name = array_pop($paths);          // get file name
-            $path       = implode('/', $paths);
-            
-            $sub_root   = $GLOBALS['d']. DS .'models'. DS;
-            if($func == 'app_model')
-            $sub_root   = '';
-           
-            $file = $root. DS .$sub_root. $path. DS .$model_name. EXT;
-            
-            if(strpos($real_name, '.') === 0)   // ./outside folder request
-            {
-                $file = APP .'directories'. DS .substr($path, 1). DS .'models'. DS .$model_name. EXT;
-            }
-                
-        } 
-        else 
-        {
-            $sub_root   = $GLOBALS['d']. DS .'models'. DS;
-            if($func == 'app_model')
-            $sub_root   = '';
-            
-            $model_name = $real_name;
-            
-            $file = $root. DS .$sub_root. $model_name. EXT;    
-        }
-        
-        self::_model($file, $model_name, $object_name, $params_or_no_ins);
+        self::_model($data['file'], $data['file_name'], $object_name, $params_or_no_ins);
     }
     
     // --------------------------------------------------------------------
@@ -393,8 +361,13 @@ Class loader {
     /**
     * loader::app_helper();
     * 
+    * loader::app_helper('subfolder/helper_name')  local sub folder load
+    * loader::app_helper('.outside_folder/helper_name')  outside directory load
+    * 
     * @version  0.1
     * @version  0.2 added self::$_app_helpers static var
+    * @version  0.3 added loader::app_helper('subfolder/helper_name') and 
+    *               loader::app_helper('.outside_folder/helper_name') support
     * @param    string $helper
     */
     public static function app_helper($helper)
@@ -403,14 +376,16 @@ Class loader {
         {
             return; 
         }
-        
-        if(file_exists(APP .'helpers'. DS .$helper. EXT))
+    
+        $data = self::_load_file($helper, $folder = 'helpers', 'app_helper');
+
+        if(file_exists($data['file']))
         {
-            include(APP .'helpers'. DS .$helper. EXT);
+            include($data['file']);
             
             self::$_app_helpers[$helper] = $helper;
             
-            return;    
+            return;
         }
         
         throw new LoaderException('Unable to locate the application helper: ' .$helper. EXT); 
@@ -421,7 +396,10 @@ Class loader {
     /**
     * loader::helper();
     * 
-    * We have three helper directory
+    * loader::helper('subfolder/helper_name')  local sub folder load
+    * loader::helper('.outside_folder/helper_name')  outside directory load
+    * 
+    * We have three helper directories
     *   o Base/helpers  : /base helpers
     *   o App/helpers   : /application helpers
     *   o Local/helpers : /directiories/$directory/ helpers
@@ -433,43 +411,29 @@ Class loader {
     * @version  0.3 changed base helper functionality as base_helper()
     * @version  0.4 added multiple helper load functionality
     * @version  0.5 added self::$_helpers static var
+    * @version  0.6 loader::helper('subfolder/helper_name')  local sub folder load support
+    *               loader::helper('.outside_folder/helper_name')  outside directory  load support
     * @return   void
     */
-    public static function helper($helper)
+    public static function helper($helper, $func = 'helper')
     { 
         if( isset(self::$_helpers[$helper]) )
         {
             return; 
         }
         
-        if (strpos($helper, '/') > 0)
+        $data = self::_load_file($helper, $folder = 'helpers', $loader_func = 'helper');
+
+        if(file_exists($data['file']))
         {
-            $paths = explode('/',$helper);  // path[0] = controller name
-            $helper_name = array_pop($paths);
-            $path  = implode('/',$paths).'/';
-            
-            if(file_exists(APP .'directories'. DS .$path.$helper_name. EXT))
-            {
-                include(APP .'directories'. DS .$path.$helper_name. EXT);
-                
-                self::$_helpers[$helper] = $helper;
-                
-                return;
-            } 
-            
-            throw new LoaderException('Unable to locate the directory helper: '.$helper_name. EXT);   
-        }
-        
-        if(file_exists(APP .'directories'. DS .$GLOBALS['d']. DS .'helpers'. DS .$helper. EXT))
-        {
-            include(APP .'directories'. DS .$GLOBALS['d']. DS .'helpers'. DS .$helper. EXT);
+            include($data['file']);
             
             self::$_helpers[$helper] = $helper;
-             
+            
             return;
-        }  
-         
-        throw new LoaderException('Unable to locate the directory helper: '. $helper. EXT); 
+        } 
+        
+        throw new LoaderException('Unable to locate the helper: '.$helper. EXT);   
     }   
     
     // --------------------------------------------------------------------
@@ -495,14 +459,15 @@ Class loader {
         { 
             $prefix = config_item('subhelper_prefix');
         
-            // If user helper file exist ..
-            if(file_exists(APP .'helpers'. DS .$prefix. $helper. EXT))
+            if(file_exists(APP .'helpers'. DS .$prefix. $helper. EXT))  // If app helper my_file exist.
             {
                 include(APP .'helpers'. DS .$prefix. $helper. EXT);
+                
                 self::$_base_helpers[$prefix . $helper] = $prefix . $helper; 
             }
             
             include(BASE .'helpers'. DS .$helper. EXT);
+            
             self::$_base_helpers[$helper] = $helper;
             
             return; 
@@ -565,8 +530,7 @@ Class loader {
             
             log_message('debug', 'External file loaded: '.$path);
        
-            // store into profiler
-            profiler_set('files', $path, $ROOT . $path);
+            profiler_set('files', $path, $ROOT . $path);  // store into profiler
         
             if($string === TRUE)
             {
@@ -585,6 +549,57 @@ Class loader {
         
         throw new LoaderException('Unable to locate the external file: ' .$path);
     }
+   
+    
+    // --------------------------------------------------------------------
+    
+    /**
+    * Comman file loader for models and
+    * helpers functions.
+    * 
+    * @param string $filename
+    * @param string $folder
+    * @param string $loader_func
+    * 
+    * return array  file_name | file
+    */
+    private static function _load_file($filename, $folder = 'helpers', $loader_func = 'app_helper')
+    {   
+        $real_name  = strtolower($filename);
+        $root       = APP .'directories';
+        
+        if($loader_func == 'app_model')
+        $root       = APP .'models';
+        
+        if($loader_func == 'app_helper')
+        $root       = APP .'helpers';
+        
+        if(strpos($real_name, '/') > 0)         //  inside folder request
+        {
+            $paths      = explode('/',$real_name);   // paths[0] = path , [1] file name     
+            $file_name  = array_pop($paths);          // get file name
+            $path       = implode('/', $paths);
+            
+            $sub_root   = $GLOBALS['d']. DS .$folder. DS;
+            if(strpos($loader_func, 'app_') === 0)
+            $sub_root   = '';
+           
+            $file = $root. DS .$sub_root. $path. DS .$file_name. EXT;
+            
+            if(strpos($real_name, '.') === 0)   // ./outside folder request
+            {
+                $file = APP .'directories'. DS .substr($path, 1). DS .$folder. DS .$file_name. EXT;
+            }
+                
+            return array('file_name' => $file_name, 'file' => $file);
+        } 
+        
+        $sub_root   = $GLOBALS['d']. DS .$folder. DS;
+        if(strpos($loader_func, 'app_') === 0)
+        $sub_root   = '';
+        
+        return array('file_name' => $real_name, 'file' => $root. DS .$sub_root. $real_name. EXT);
+    } 
     
     // --------------------------------------------------------------------
     
