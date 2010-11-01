@@ -112,7 +112,7 @@ Class OB_DB extends OB_DBAc_sw {
         $this->p_opt   = $options;
         $this->prepare = TRUE;
         
-        return $this; // beta 1.0 rc1 changes
+        return $this;
     }
     
     // --------------------------------------------------------------------
@@ -542,6 +542,9 @@ Class OB_DB extends OB_DBAc_sw {
     
         switch (sizeof($arg))
         {
+           case 0:
+           return $this->Stmt->fetchAll(PDO::FETCH_OBJ);
+             break;
            case 1:
            return $this->Stmt->fetch($arg[0]);
              break;
@@ -566,11 +569,14 @@ Class OB_DB extends OB_DBAc_sw {
     * @return   object
     */
     public function fetch_all()
-    {    
+    {  
         $arg = func_get_args();
     
         switch (sizeof($arg))
         {
+           case 0:
+           return $this->Stmt->fetchAll(PDO::FETCH_OBJ);
+             break;
            case 1:
            return $this->Stmt->fetchAll($arg[0]);
              break;
