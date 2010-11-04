@@ -286,7 +286,7 @@ if( ! function_exists('captcha_create') )
         
         ImageDestroy($im);
             
-        return array('word' => $word, 'time' => $now, 'image' => $img_name);
+        return array('word' => $word, 'time' => $now, 'image' => $img);
     }
 }
 

@@ -162,8 +162,7 @@ Class loader {
         if($class == '')
         return FALSE;
          
-        // Instantiate the Super Object.        
-        $OB = Obullo::instance();
+        $OB = Obullo::instance();  // Grab the Super Object. 
         
         $class_var = strtolower($class);
         if($object_name != '') $class_var = &$object_name; 
@@ -340,21 +339,18 @@ Class loader {
         
         if($return_object)
         {    
-            // Store db variables ..
-            profiler_set('databases', $db_name, $db_var);
+            profiler_set('databases', $db_name, $db_var);  // Store db variables ..
             
             return OB_DBFactory::Connect($db_name, $db_var); // Return to database object ..
         }
         
-        // Connect to Database
-        $OB->{$db_var} = OB_DBFactory::Connect($db_name, $db_var);
+        $OB->{$db_var} = OB_DBFactory::Connect($db_name, $db_var);   // Connect to Database
     
-        // Store db variables
-        profiler_set('databases', $db_name, $db_var);
+        profiler_set('databases', $db_name, $db_var);  // Store db variables
         
         self::_assign_db_objects($db_var);
 
-    } // end db func.
+    }
 
     // --------------------------------------------------------------------
     

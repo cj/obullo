@@ -73,6 +73,7 @@ updated config.php file base_url and source_url items.
 - added some codeigniter database result functions result() result_array(); to DB class.
 - added default fetch object support to $this->db->fetch(); and $this->db->fetch_all(); functions. forexample $this->db->fetch(); func.
 fetch data as object by default. $this->db->fetch(assoc); fetch data as associative array().
+- fixed ob_exception.php short tag bug. (thanks to Juan Treminio)
 //-----------------------------------------------------------------------------
 
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!
@@ -95,10 +96,8 @@ it works in Obullo !
 http://www.askaboutphp.com/50/codeigniter-extending-the-native-model-and-make-it-your-own.html 
 (CJ Lazell advices)
 
-@todo .. add MY_model extend support .. http://content.screencast.com/users/brainyone/folders/Jing/media/d117e9a2-8200-43df-87e2-69cd7f46fda0/00001286.png
-http://www.screencast.com/users/brainyone/folders/Jing/media/74c76098-3b12-43f6-843f-d3e5d1936ec8
 @todo .. change htaccess rules in userguide DirectoryIndex index.php, index.html
-@todo .. Global controllers pattern extends rules ..!!!
+@todo .. Global controllers pattern extends rules, add to userguide..!!!
 @todo .. put archived doc meta tag to old user guide base layout ..
 @todo .. look at globally set database object from app_controller.
 @todo .. change obullo mvc2 names as Obullo GC in web site.            

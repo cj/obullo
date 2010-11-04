@@ -11,7 +11,7 @@ background-color: #F0F0F0;
 <div id="exception_content">
 
 <b>[<?php echo $type; ?> Error]: </b> <?php echo $e->getMessage(); ?> <br />
-<? if($e->getCode() != 0)  { ?>
+<?php if($e->getCode() != 0)  { ?>
 
 <b>Code:</b> <?php echo $e->getCode(); ?> <br />
 
