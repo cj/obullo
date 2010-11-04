@@ -86,7 +86,7 @@ echo calendar::instance()
 ->init()
 ->generate(2006, 10);
 
-
+@todo .. add sub loader library support .. loader::app_lib('captcha/securimage');
 @todo .. look log_message(); some functions does not work.
 @todo .. Add Form_controller (Global) tutorial to user guide .. create a directory called /forms
 then create a Form_controller to /parents folder. add common functions to Form controller.
