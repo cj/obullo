@@ -77,6 +77,14 @@ fetch data as object by default. $this->db->fetch(assoc); fetch data as associat
 //-----------------------------------------------------------------------------
 
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!
+I'm doing this
+http://pastie.org/private/iteyujl0yg1zpepvn13mlq
+and I get
+<b>[Exception Error]: </b> Unable locate to Php5 file: Swift_DependencyContainer <br />
+<b>File:</b> /Users/blank/Dropbox/sd/acd/api_v3/base/obullo/Common.php <br />
+<b>Line:</b> 255
+it's using the class to look for the folder, plus it shouldn't be looking in php5
+I'm making a wrapper library using swiftmailer
 
 @todo .. add to user guide php5 method chaining support like this 
 echo agent::instance()
