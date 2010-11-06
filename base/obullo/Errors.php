@@ -343,7 +343,8 @@ function set_status_header($code = 200, $text = '')
 
 set_error_handler('Obullo_Error_Handler');
 set_exception_handler('Obullo_Exception_Handler');
-    
+
+
 // END Errors.php File
 
 /* End of file Errors.php */

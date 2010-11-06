@@ -14,7 +14,6 @@ Class Doly extends Controller {
 
     public function index()
     {
-        echo 'ok';
         $this->title = '';
 
         $this->body  = view('');

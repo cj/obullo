@@ -16,7 +16,6 @@ Class Model_doly extends Model {
     {
         // ...
         // $this->db->query( ... );
-        echo 'yep. im default doly !';
     }
         
 

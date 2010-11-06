@@ -79,6 +79,8 @@ if( ! function_exists('ob_system_run'))
         // Check REQUEST uri if there is a Cached file exist
         if ($output->_display_cache($config, $uri) == TRUE) { exit; }
           
+        _sanitize_globals(); // Initalize to input filter. ( Must be above the GLOBALS )
+          
         $GLOBALS['d']   = $router->fetch_directory();   // Get requested directory
         $GLOBALS['c']   = $router->fetch_class();       // Get requested controller
         $GLOBALS['m']   = $router->fetch_method();      // Get requested method
@@ -96,8 +98,6 @@ if( ! function_exists('ob_system_run'))
         require (BASE .'obullo'. DS .'Obullo'. EXT);
         require (BASE .'obullo'. DS .'Controller'. EXT);
         require (BASE .'obullo'. DS .'Model'. EXT);
-        
-        _sanitize_globals(); // Initalize to input filter.
         
         // Set a mark point for benchmarking
         benchmark_mark('loading_time_base_classes_end');

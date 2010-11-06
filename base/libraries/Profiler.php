@@ -129,7 +129,7 @@ Class OB_Profiler {
             
             $output .= '<div id="queries">';
             $output .= "<table class=\"tableborder\">"; 
-            $output .= "<tr><th>".lang('profiler_database').' '.lang('profiler_queries').": ".$total_queries."&nbsp;&nbsp;&nbsp;</th></tr>";
+            $output .= "<tr><th>".lang('profiler_queries').": ".$total_queries."&nbsp;&nbsp;&nbsp;</th></tr>";
             
             //---------------------- Direct Queries ---------------------------//
             
@@ -152,7 +152,7 @@ Class OB_Profiler {
                     
                     $val  = highlight_code($val, ENT_QUOTES);
                     
-                    // remove all spaces and newlines.
+                    // remove all spaces and newlines, prevent js errors.
                     $val  = preg_replace('/[\t\s]+/s', ' ', $val);   // ( Obullo Changes )
                     $val  = preg_replace('/[\r\n]/', '<br />', $val);
                     
@@ -160,9 +160,9 @@ Class OB_Profiler {
                     {
                         $val = str_replace($bold, '<strong>'.$bold.'</strong>', $val);    
                     }
-                    
+                    exit;
                     $output .= "<tr><td valign='top' class=\"td\"><span class='label'>";
-                    $output .= $time."</span>&nbsp;&nbsp;</td><td class=\"td_val\">".$val."</td></tr>";
+                    $output .= $time."</span>&nbsp;&nbsp;</td><td class=\"td_val\">".wordwrap($val, 20, '<br />')."</td></tr>";
                 }
             }
             
@@ -192,10 +192,12 @@ Class OB_Profiler {
                     } 
                     
                     $val  = highlight_code($val, ENT_QUOTES);
+                    // $val  = wordwrap($val, 20, '<br />');
                     
-                    // remove all spaces and newlines.
+                    // remove all spaces and newlines, prevent javascript errors.
                     $val  = preg_replace('/[\t\s]+/s', ' ', $val);   // ( Obullo Changes )
                     $val  = preg_replace('/[\r\n]/', '<br />', $val);
+
                     
                     foreach ($highlight as $bold)
                     {

@@ -159,6 +159,7 @@ if ( ! function_exists('view_app'))
 * @param    array   $data
 * @version  0.1
 * @version  0.2 added empty $data
+* @version  0.3 added short_open_tag support
 * @param    array  $data
 */
 if ( ! function_exists('_load_script'))
@@ -178,7 +179,16 @@ if ( ! function_exists('_load_script'))
         
         ob_start();
         
-        include($path . $filename . EXT);
+        // Short open tag support.
+        if ((bool) @ini_get('short_open_tag') === FALSE AND config_item('rewrite_short_tags') == TRUE)
+        {
+            echo eval('?>'.preg_replace("/;*\s*\?>/", "; ?>", str_replace('<?=', '<?php echo ', file_get_contents($path.$filename.EXT))));
+        }
+        else
+        {
+            include($path . $filename . EXT);
+        }
+        
         $content = ob_get_contents();
         
         ob_end_clean();
@@ -206,6 +216,7 @@ if ( ! function_exists('_load_script'))
 * @version  0.2 added empty $data
 * @version  0.3 added $return param
 * @version  0.4 added log_message()
+* @version  0.4 added added short_open_tag support
 * @return   void
 */
 if ( ! function_exists('_load_view'))
@@ -218,7 +229,7 @@ if ( ! function_exists('_load_view'))
         {
             if($return) 
             { 
-                log_message('debug', 'View file not found: '. $path . $filename . EXT);
+                log_message('debug', 'View file failed gracefully: '. $path . $filename . EXT);
                 
                 return;     // fail gracefully for different interfaces ..
                             // iphone, blackberry etc..
@@ -233,7 +244,18 @@ if ( ! function_exists('_load_view'))
                 
         ob_start();
         
-        include($path . $filename . EXT);
+        // If the PHP installation does not support short tags we'll
+        // do a little string replacement, changing the short tags
+        // to standard PHP echo statements.
+        
+        if ((bool) @ini_get('short_open_tag') === FALSE AND config_item('rewrite_short_tags') == TRUE)
+        {
+            echo eval('?>'.preg_replace("/;*\s*\?>/", "; ?>", str_replace('<?=', '<?php echo ', file_get_contents($path.$filename.EXT))));
+        }
+        else
+        {
+            include($path . $filename . EXT);
+        }
         
         log_message('debug', 'View file loaded: '.$path . $filename . EXT);
 

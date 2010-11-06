@@ -144,6 +144,7 @@ function base_register($class, $params_or_no_ins = '', $dir = '')
 * @version  0.3 renamed base "libraries" folder as "base"
 * @version  0.4 added php5 library support, added spl_autoload_register() func.
 * @version  0.5 added replace and extend support
+* @version  0.6 removed LoaderException to play nicely with other autoloaders. 
 * 
 * @return NULL | Exception
 */
@@ -151,9 +152,6 @@ function register_autoload($real_name)
 {   
     if(class_exists($real_name))
     return;
-    
-    try // __autoload func. does not catch exceptions ...
-    {   // try to catch it and show user friendly errors ..
     
         // Parents folder files: App_controller and Global Controllers
         // -------------------------------------------------------------------- 
@@ -184,12 +182,7 @@ function register_autoload($real_name)
         // --------------------------------------------------------------------       
         $class  = strtolower($real_name); // lowercase classname.
         $prefix = config_item('subclass_prefix');
-        
-        // When enable_query_strings = true there are some isset errors ...
-        // we need to set directory route again.  
-        $router = base_register('Router');
-        $GLOBALS['d'] = $router->fetch_directory();   // Get requested directory
-        
+
         // Local php5 libraries load support. 
         // -------------------------------------------------------------------- 
         if(file_exists(APP .'directories'. DS .$GLOBALS['d']. DS .'libraries'. DS .'php5'. DS .$class. EXT))
@@ -248,18 +241,7 @@ function register_autoload($real_name)
             return;
         }
         
-        // Driver file support ...
-        
-        // return to exceptions if its fail..    
-        // --------------------------------------------------------------------
-        throw new LoaderException('Unable locate to Php5 file: '. $real_name);
-        
-    } catch(LoaderException $e) 
-    {
-        Obullo_Exception_Handler($e); // exception hack ..
-        exit;                         // do not show fatal errors .. 
-    }
-    
+        return;
 } 
 
 spl_autoload_register('register_autoload',true);

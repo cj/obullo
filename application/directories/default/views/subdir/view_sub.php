@@ -2,4 +2,4 @@
 
 <h1>Hello</h1> 
 
-<p>i am sub view !</p>
+<p>i am a sub view !</p>

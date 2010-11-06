@@ -73,7 +73,10 @@ updated config.php file base_url and source_url items.
 - added some codeigniter database result functions result() result_array(); to DB class.
 - added default fetch object support to $this->db->fetch(); and $this->db->fetch_all(); functions. forexample $this->db->fetch(); func.
 fetch data as object by default. $this->db->fetch(assoc); fetch data as associative array().
-- fixed ob_exception.php short tag bug. (thanks to Juan Treminio)
+- added short_open_tag support to view helper.
+- removed LoaderException from register_autoload() function, to play nicely with other autoloaders.
+- added short_open_tag support to view helper.
+- removed LoaderException from register_autoload() function, to play nicely with other autoloaders.
 //-----------------------------------------------------------------------------
 
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!
@@ -89,19 +92,6 @@ I'm making a wrapper library using swiftmailer
 <?php
 defined('BASE') or exit('Access Denied!');
 
-$config['mailer']['type']= 'smtp';
-$config['mailer']['host']= 'smtp.sendgrid.net';
-$config['mailer']['port']= 25;
-it works doing
-this()->config->load('mailer');
-$config = this()->config->item('mailer');
-Ersin: change your variable
-$mailer['mailer']
-cjlazell: didn't work
-this is the only thing that works
-this()->config->load('mailer');
-$config = this()->config->item('mailer');
-Ersin: ok, i will look at it ..
 cjlazell: I also as a quick fix got swiftmailer working by doing
 //throw new LoaderException('Unable locate to Php5 file: '. $real_name);
 
