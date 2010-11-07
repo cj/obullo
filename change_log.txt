@@ -77,6 +77,7 @@ fetch data as object by default. $this->db->fetch(assoc); fetch data as associat
 - removed LoaderException from register_autoload() function, to play nicely with other autoloaders.
 - added short_open_tag support to view helper.
 - removed LoaderException from register_autoload() function, to play nicely with other autoloaders.
+- added $config['rewrite_short_tags']   = FALSE; to application/config.php file.
 //-----------------------------------------------------------------------------
 
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!

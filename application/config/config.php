@@ -274,6 +274,18 @@ $config['cookie_time']           = (7 * 24 * 60 * 60);
 
 /*
 |--------------------------------------------------------------------------
+| Rewrite PHP Short Tags
+|--------------------------------------------------------------------------
+|
+| If your PHP installation does not have short tag support enabled, Obullo
+| can rewrite the tags on-the-fly, enabling you to utilize that syntax
+| in your view files.  Options are TRUE or FALSE (boolean)
+|
+*/
+$config['rewrite_short_tags']   = FALSE;
+
+/*
+|--------------------------------------------------------------------------
 | Global XSS Filtering
 |--------------------------------------------------------------------------
 |
@@ -282,7 +294,7 @@ $config['cookie_time']           = (7 * 24 * 60 * 60);
 |
 */
 $config['global_xss_filtering']  = FALSE;
-
+                            
 /*
 |--------------------------------------------------------------------------
 | Reverse Proxy IPs
