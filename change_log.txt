@@ -80,6 +80,7 @@ fetch data as object by default. $this->db->fetch(assoc); fetch data as associat
 - added $config['rewrite_short_tags']   = FALSE; to application/config.php file.
 //-----------------------------------------------------------------------------
 
+
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!
 @todo .. convert global controllers functionality as a Module.
 @todo .. add to user guide php5 method chaining support like this 
