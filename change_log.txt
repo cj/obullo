@@ -80,7 +80,6 @@ fetch data as object by default. $this->db->fetch(assoc); fetch data as associat
 - added $config['rewrite_short_tags']   = FALSE; to application/config.php file.
 //-----------------------------------------------------------------------------
 
-
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!
 @todo .. convert global controllers functionality as a Module.
 @todo .. add to user guide php5 method chaining support like this 
@@ -143,7 +142,6 @@ $this->config->set_db_item();
 @next version todo .. look at upload class fix
 @next version todo .. access to log outside of the web with an admin password
 
-@move project to git_gub..
 @forum .. good idea !!  forum topics must be related with user_guide page ids .. we will add every user guide pages
 this page has (x) related forum topics and  go forum !!
 
