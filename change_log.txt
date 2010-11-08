@@ -1,5 +1,7 @@
 CHANGE LOG:
 
+blablabla
+
 Version 1.0.1 Changes
 
 - Deleted old session.php from libraries folder.
