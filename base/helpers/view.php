@@ -40,11 +40,42 @@ if( ! isset($_vi->_ew))  // Helper Constructror
     $_vi->_ew->app_view_folder = DS. '';
     $_vi->_ew->css_folder      = '/';
     $_vi->_ew->img_folder      = '/';
+    $_vi->_ew->view_var        = array();
                                                
     log_message('debug', "View Helper Initialized");
 }
 
 // ------------------------------------------------------------------------ 
+
+if ( ! function_exists('view_var'))
+{
+    function view_var($key, $val = '')
+    {
+        $vi = Ssc::instance();
+        
+        if($val == '')
+        {
+            if(isset($vi->_ew->view_var[$key]))
+            {
+                if(is_array($vi->_ew->view_var[$key]))
+                {
+                    $var = '';
+                    foreach($vi->_ew->view_var[$key] as $value)
+                    {
+                        $var .= $value; 
+                    }
+                    
+                    return $var;
+                }
+                
+                return $vi->_ew->view_var[$key][0];
+            }
+        }
+        
+        $vi->_ew->view_var[$key][] = $val;        
+        return;
+    }
+}
 
 /**
 * Create your custom folders and

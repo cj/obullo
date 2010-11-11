@@ -1,7 +1,7 @@
-<?php 
-this()->head .= js('js/welcome.js');
-this()->meta .= meta('keywords', 'obullo, php5, framework');   // You should set head tags
-this()->head .= script('welcome');                             // in view files.  
+<?php
+view_var('head', js('js/welcome.js'));
+view_var('meta', meta('keywords', 'obullo, php5, framework'));   // You should set head tags // in view files. 
+view_var('head', script('welcome'));        
 ?>
 <!-- body content -->
 

@@ -6,11 +6,11 @@ echo meta('Content-type', 'text/html; charset=utf-8', 'equiv');
 echo meta('description', '');
 echo meta('author', '');
 ?>
-<?php echo this()->meta; ?>
+<?php echo view_var('meta'); ?>
 
-<title><?php echo this()->title; ?></title>
+<title><?php echo view_var('title'); ?></title>
 
-<?php echo this()->head; ?>
+<?php echo view_var('head'); ?>
 
 <base href="<?php echo this()->base; ?>" />
 
@@ -18,9 +18,9 @@ echo meta('author', '');
 
 </head>
 
-<body <?php echo this()->body_attributes; ?>>
+<body>
 
-<?php echo this()->body; ?>
+<?php echo view_var('body'); ?>
 
 </body>
 </html>

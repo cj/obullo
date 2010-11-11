@@ -137,8 +137,7 @@ Class Obullo extends Controller_CORE
 * A Pretty handy function for Obullo::instance();
 * Obullo::instance = $this so this() = Obullo::instance isn't it ?
 * 
-* We use "this()" function in View files because of the
-* readability.
+* We use "this()" function if not available $this in anywhere.
 */
 function this() { return Obullo::instance(); }
 
