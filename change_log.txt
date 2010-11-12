@@ -116,6 +116,12 @@ CREATE TABLE `ob_sessions` (
 
 NEXT VERSION
 ----------------------------------------------------------------
+@next version todo .. think a js validator function
+ var frmvalidator = new Validator("form");
+ frmvalidator.addValidation("firstname","req","Please enter your First Name");
+ frmvalidator.addValidation("firstname","maxlen=20","Max length for FirstName is 20");
+ frmvalidator.addValidation("firstname","alpha");
+ 
 @next version todo .. add user guide to uri protocol functionality ... http://localhost/obullo/index.php?foo=bar it works in just $config['uri_protocol']          = "PATH_INFO"; we need to explain this functionality ..
 @next version todo .. utf8 support http://www.phpwact.org/php/i18n/utf-8
 @next version todo .. look at include ob_error.php errors when someone use third party session library.
