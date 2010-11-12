@@ -80,10 +80,10 @@ fetch data as object by default. $this->db->fetch(assoc); fetch data as associat
 - added short_open_tag support to view helper.
 - removed LoaderException from register_autoload() function, to play nicely with other autoloaders.
 - added $config['rewrite_short_tags']   = FALSE; to application/config.php file.
+- added view_var(); function to view helper.
 //-----------------------------------------------------------------------------
 
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!
-@todo .. convert global controllers functionality as a Module.
 @todo .. add to user guide php5 method chaining support like this 
 echo agent::instance()
 ->init()
