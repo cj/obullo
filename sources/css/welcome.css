@@ -1,0 +1,47 @@
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+html, body {
+    height: 100%; 
+    font-family: arial;
+}
+  
+
+body {
+ background-color: #fff;
+ margin: 40px;
+ font-family: Arial;
+ font-size: 14px;
+ color: #000;
+}
+
+a {
+ color: #003399;
+ background-color: transparent;
+ font-weight: normal;
+}
+
+h1 {
+ color: #808080;
+ background-color: transparent;
+ border-bottom: 1px solid #D0D0D0;
+ font-size: 25px;
+ font-weight: bold;
+ margin: 24px 0 2px 0;
+ padding: 5px 0 6px 0;
+}
+
+code {
+ font-family: Monaco, Verdana, Sans-serif;
+ font-size: 14px;
+ background-color: #f9f9f9;
+ border: 1px dotted #D0D0D0;
+ color: #969696;
+ display: block;
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+ font-weight: bold;
+}
