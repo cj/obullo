@@ -14,11 +14,11 @@ The goal of Obullo is keep the Core minimal via less coding.
 
 ## Installation
 
-  Open archive to your `/htdocs` folder.
-  Check your php.ini, `short_open_tag = ` should be `On`.
-  Check your phpinfo(); `PDO` and `Pdo_yourdriver` (pdo_mysql, pdo_pgsql etc..) must be installed on your host.
-  Open your browser and run Obullo e.g. `http://localhost/obullo`
-  You can change configuration from `application/config/config.php file`.
+- Open archive to your `/htdocs` folder.
+- Check your php.ini, `short_open_tag = ` should be `On`.
+- Check your phpinfo(); `PDO` and `Pdo_yourdriver` (pdo_mysql, pdo_pgsql etc..) must be installed on your host.
+- Open your browser and run Obullo e.g. `http://localhost/obullo`
+- You can change configuration from `application/config/config.php file`.
   
   
 ## Quick Start
@@ -27,6 +27,7 @@ The goal of Obullo is keep the Core minimal via less coding.
 ## Credits
 
 Ersin Guvenc &lt;eguvenc@gmail.com&gt;
+
 CJ Lazell &lt;cjlazell@googlemail.com&gt;
 
 ## License 
