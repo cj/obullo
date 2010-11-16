@@ -86,10 +86,12 @@ fetch data as object by default. $this->db->fetch(assoc); fetch data as associat
 - added sess(); function ( alias of sess_get() ).
 - added $config['sess_die_cookie'] = FALSE; to config.php, If set TRUE all sessions will destroy when the browser closed, added this 
 functionality helpers/session/cookie_driver.php and database_driver.php files.
+- added $this->db->row_array() and $this->db->next_row(); functions to DB.php
 //-----------------------------------------------------------------------------
 
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!
 
+@todo .. add $this->db->row_array(); ,$this->db->next_row(); result() and result_array(); functions  to userguide.
 @todo .. add to user guide php5 method chaining support like this 
 echo agent::instance()
 ->init()
