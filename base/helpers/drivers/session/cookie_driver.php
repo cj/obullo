@@ -8,7 +8,8 @@ defined('BASE') or exit('Access Denied!');
 * 
 * @author      Ersin Guvenc.
 * @version     0.1
-* @version     0.2  added extend support
+* @version     0.2 added extend support
+* @version     0.3 added config_item('sess_die_cookie') and sess() func.
 */
 if( ! function_exists('_sess_start') ) 
 {
@@ -307,6 +308,22 @@ if( ! function_exists('sess_get') )
 // --------------------------------------------------------------------
 
 /**
+* Alias of sess_get(); function.
+*
+* @access   public
+* @param    string
+* @return   string
+*/
+if( ! function_exists('sess') ) 
+{
+    function sess($item)
+    {
+        return sess_get($item);
+    }
+}
+// --------------------------------------------------------------------
+
+/**
 * Fetch all session data
 *
 * @access    public
@@ -395,7 +412,7 @@ if( ! function_exists('sess_unset') )
 */
 if( ! function_exists('sess_set_flash') ) 
 { 
-    function sess_set_flash($newdata = array(), $newval = '') // obullo changes ...
+    function sess_set_flash($newdata = array(), $newval = '')  // ( obullo changes ... )
     {
         $ses = Ssc::instance();
         
@@ -425,7 +442,7 @@ if( ! function_exists('sess_set_flash') )
 */
 if( ! function_exists('sess_keep_flash') ) 
 { 
-    function sess_keep_flash($key) // obullo changes ...
+    function sess_keep_flash($key) // ( obullo changes ...)
     {
         $ses = Ssc::instance();
         // 'old' flashdata gets removed.  Here we mark all 
@@ -583,11 +600,14 @@ if( ! function_exists('_set_cookie') )
             $cookie_data = $cookie_data . md5($cookie_data . $ses->_sion->encryption_key);
         }
         
+        // ( Obullo Changes .. set cookie life time 0 )
+        $expiration = (config_item('sess_die_cookie')) ? 0 : $ses->_sion->sess_expiration + time();
+
         // Set the cookie
         setcookie(
                     $ses->_sion->sess_cookie_name,
                     $cookie_data,
-                    $ses->_sion->sess_expiration + time(),
+                    $expiration,
                     $ses->_sion->cookie_path,
                     $ses->_sion->cookie_domain,
                     0

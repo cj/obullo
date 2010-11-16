@@ -85,6 +85,9 @@ fetch data as object by default. $this->db->fetch(assoc); fetch data as associat
 - added view_var('body', view_render(array('view_header', 'view_welcome', 'view_footer'), $data)); function
 - added '.' outside folder load support view_var('body', view_render(array('.view_header', 'view_welcome', '.view_footer'), $data)) 
 - added sub folder load support to loader::lib() and loader::app_lib('folder/sub/filename'); functions.
+- added sess(); function ( alias of sess_get() ).
+- added $config['sess_die_cookie'] = FALSE; to config.php, If set TRUE all sessions will destroy when the browser closed, added this 
+functionality helpers/session/cookie_driver.php and database_driver.php files.
 //-----------------------------------------------------------------------------
 
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!

@@ -8,6 +8,7 @@ The goal of Obullo is keep the Core minimal via less coding.
 - Global Controllers (Obullo GC)
 - Advanced Directory Structure
 - PDO with Active Record Class
+- Orginally based CodeIgniter
 - Lightweight and Easy to Use.
 
 

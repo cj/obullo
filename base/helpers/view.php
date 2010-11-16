@@ -86,7 +86,7 @@ if ( ! function_exists('view_var'))
 * 
 * @param string $layout
 */
-if ( ! function_exists('view_layout'))
+if ( ! function_exists('view_set'))
 {
     function view_set($layout)
     {

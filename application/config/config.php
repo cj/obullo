@@ -238,9 +238,10 @@ $config['encryption_key']        = "";
 | Session Variables
 |--------------------------------------------------------------------------
 |
-| 'session_cookie_name' = the name you want for the cookie
-| 'encrypt_sess_cookie' = TRUE/FALSE (boolean).  Whether to encrypt the cookie
-| 'session_expiration'  = the number of SECONDS you want the session to last.
+| 'sess_cookie_name'    = the name you want for the cookie
+| 'sess_encrypt_cookie' = TRUE/FALSE (boolean).  Whether to encrypt the cookie
+| 'sess_expiration'     = the number of SECONDS you want the session to last.
+| 'sess_die_cookie'     = If set TRUE all sessions  will destroy when the browser closed.
 |  by default sessions last 7200 seconds (two hours).  Set to zero for no expiration.
 | 'time_to_update'      = how many seconds between Obullo refreshing Session Information
 | 'sess_db_var'         = normally Obullo use standart '$this->db' variable for session database
@@ -249,6 +250,7 @@ $config['encryption_key']        = "";
 */
 $config['sess_cookie_name']      = 'ob_session';
 $config['sess_expiration']       = 7200;
+$config['sess_die_cookie']       = FALSE;
 $config['sess_encrypt_cookie']   = FALSE;
 $config['sess_driver']           = 'cookie';  // cookie | database
 $config['sess_db_var']           = 'db';            
@@ -270,7 +272,7 @@ $config['sess_time_to_update']   = 300;
 $config['cookie_prefix']         = "";
 $config['cookie_domain']         = "";
 $config['cookie_path']           = "/";
-$config['cookie_time']           = (7 * 24 * 60 * 60);
+$config['cookie_time']           = (7 * 24 * 60 * 60) + time();
 
 /*
 |--------------------------------------------------------------------------
