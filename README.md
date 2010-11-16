@@ -26,9 +26,8 @@ The goal of Obullo is keep the Core minimal via less coding.
   
 ## Credits
 
-Ersin Guvenc &lt;eguvenc@gmail.com&gt;
-
-CJ Lazell &lt;cjlazell@googlemail.com&gt;
+- Ersin Guvenc &lt;eguvenc@gmail.com&gt;
+- CJ Lazell &lt;cjlazell@googlemail.com&gt;
 
 ## License 
 
