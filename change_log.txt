@@ -1,7 +1,5 @@
 CHANGE LOG:
 
-blablabla
-
 Version 1.0.1 Changes
 
 - Deleted old session.php from libraries folder.
@@ -91,11 +89,6 @@ functionality helpers/session/cookie_driver.php and database_driver.php files.
 //-----------------------------------------------------------------------------
 
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!
-
-@todo .. add to userguide 
-view_var('body', view_render(array('view_header', 'view_welcome', 'view_footer'), $data));
-"." outside folder (view_app func.) load support.
-view_var('body', view_render(array('.view_header', 'view_welcome', '.view_footer'), $data));
 
 @todo .. add to user guide php5 method chaining support like this 
 echo agent::instance()

@@ -491,19 +491,19 @@ Class OB_DB extends OB_DBAc_sw {
     */	
     function next_row($type = 'object')
     {
-      $result = $this->Stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = $this->Stmt->fetchAll(PDO::FETCH_ASSOC);
 
-      if (count($result) == 0)
-      {
-        return $result;
-      }
+        if(count($result) == 0)
+        {
+            return $result;
+        }
+        
+        if(isset($result[$this->current_row + 1]))
+        {
+            ++$this->current_row;
+        }
 
-      if (isset($result[$this->current_row + 1]))
-      {
-        ++$this->current_row;
-      }
-
-      return (object)$result[$this->current_row];
+        return (object)$result[$this->current_row];
     }
 
     // --------------------------------------------------------------------
