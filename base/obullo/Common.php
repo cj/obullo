@@ -29,12 +29,10 @@ defined('BASE') or exit('Access Denied!');
 
 /**
 * A Php5 library must be contain that functions.
-* But function body can be empty.
 */                        
 interface PHP5_Library 
 {
     public static function instance();
-    public function init();
 }
 
 /**
@@ -57,8 +55,8 @@ interface PHP5_Library
 function base_register($Class, $params_or_no_ins = '', $dir = '', $sub_path = '')
 {                  
     $registry  = OB_Registry::instance();
-           
-    switch ($dir)
+    
+    switch($dir)
     {
        case 'directory':
        $path  = APP .'directories'. DS .$GLOBALS['d']. DS .'libraries'. DS .$sub_path;

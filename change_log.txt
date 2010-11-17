@@ -87,6 +87,9 @@ fetch data as object by default. $this->db->fetch(assoc); fetch data as associat
 - added $config['sess_die_cookie'] = FALSE; to config.php, If set TRUE all sessions will destroy when the browser closed, added this 
 functionality helpers/session/cookie_driver.php and database_driver.php files.
 - added $this->db->row_array() and $this->db->next_row(); functions to DB.php
+- added $query->first_row(), $query->last_row(), $query->previous_row() to DB.php, updated next_row(); functions.
+- a newline bug fixed in profiler.php
+- removed init() method from PHP5_Library interface.
 //-----------------------------------------------------------------------------
 
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!
@@ -101,7 +104,6 @@ echo calendar::instance()
 ->init()
 ->generate(2006, 10);
 
-@todo .. add sub loader library support .. loader::app_lib('captcha/securimage');
 @todo .. look log_message(); some functions does not work.
 @todo .. Add Form_controller (Global) tutorial to user guide .. create a directory called /forms
 then create a Form_controller to /parents folder. add common functions to Form controller.
@@ -124,7 +126,6 @@ CREATE TABLE `ob_sessions` (
 
 NEXT VERSION
 ----------------------------------------------------------------
-@next version todo .. implement session database driver with native sessions ..
 @next version todo .. implement a new pager class
 
 @next version todo .. think a js validator function

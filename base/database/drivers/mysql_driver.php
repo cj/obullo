@@ -10,7 +10,7 @@ defined('BASE') or exit('Access Denied!');
  * @package         Obullo
  * @author          Obullo.com  
  * @subpackage      Base.database        
- * @copyright       Copyright (c) 2009 Ersin Güvenç.
+ * @copyright       Copyright (c) 2009 Ersin Guvenc.
  * @license         public
  * @since           Version 1.0
  * @filesource
@@ -23,7 +23,7 @@ defined('BASE') or exit('Access Denied!');
  * @package       Obullo
  * @subpackage    Drivers
  * @category      Database
- * @author        Ersin Güvenç 
+ * @author        Ersin Guvenc 
  * @link                              
  */
 
@@ -49,7 +49,7 @@ Class Obullo_DB_Driver_Mysql extends OB_DBAdapter
     /**
     * Connect to PDO
     * 
-    * @author   Ersin Güvenç 
+    * @author   Ersin Guvenc 
     * @param    string $dsn  Dsn
     * @param    string $user Db username
     * @param    mixed  $pass Db password

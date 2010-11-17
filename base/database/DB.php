@@ -46,22 +46,25 @@ function ob_query_timer_end()
  * @version         0.3 beta 1.0 rc1 changes ( direct query bug fixed ) removed auto bind value,
  *                  last query bug fixed.
  * @version         0.4 added profiler class variables, queries, $query_times
+ * @version         0.5 added first_row(), last, next and prev functions
  */
 
 Class OB_DB extends OB_DBAc_sw {
 
     public $prepare                 = FALSE;    // prepare switch
     public $p_opt                   = array();  // prepare options
-    public $last_sql                = NULL;     // store last queried sql
-    public $last_values             = array();  // store last executed PDO values by exec_count
+    public $last_sql                = NULL;     // stores last queried sql
+    public $last_values             = array();  // stores last executed PDO values by exec_count
 
     public $query_count             = 0;        // count all queries.
     public $exec_count              = 0;        // count exec methods.
-    public $queries                 = array();  // store queries for profiler
-    public $cached_queries          = array();  // store cached queries for profiler
+    public $queries                 = array();  // stores queries for profiler
+    public $cached_queries          = array();  // stores cached queries for profiler
     public $query_times             = array();  // query time for profiler
-    public $benchmark               = '';       // store benchmark info
-    public $current_row             = 0;        // Stores the current row
+    public $benchmark               = '';       // stores benchmark info
+    
+    public $current_row             = 0;        // stores the current row
+    public $stmt_result             = array();  // stores current result for first_row() next_row() iteration
 
     public $use_bind_values         = FALSE;    // bind value usage switch
     public $use_bind_params         = FALSE;    // bind param usage switch
@@ -424,7 +427,7 @@ Class OB_DB extends OB_DBAc_sw {
     */
     public function assoc()
     {
-        return $this->Stmt->fetch(PDO::FETCH_ASSOC);
+        return current($this->Stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     // --------------------------------------------------------------------
@@ -436,7 +439,7 @@ Class OB_DB extends OB_DBAc_sw {
     */
     public function obj()
     {
-        return $this->Stmt->fetch(PDO::FETCH_OBJ);
+        return current($this->Stmt->fetchAll(PDO::FETCH_OBJ));
     }
 
     // --------------------------------------------------------------------
@@ -448,7 +451,7 @@ Class OB_DB extends OB_DBAc_sw {
     */
     public function row()
     {
-        return $this->Stmt->fetch(PDO::FETCH_OBJ);
+        return current($this->Stmt->fetchAll(PDO::FETCH_OBJ));
     }
 
     // --------------------------------------------------------------------
@@ -480,6 +483,67 @@ Class OB_DB extends OB_DBAc_sw {
     // --------------------------------------------------------------------
 
     /**
+    * Get results for current db 
+    * operation. (first_row(), next_row() .. )
+    *     
+    * @access   private
+    * @param    integer $type
+    * @return   array
+    */
+    private function _stmt_result($type)
+    {
+        if(count($this->stmt_result) > 0)
+        {
+            return $this->stmt_result;
+        }
+        
+        $this->stmt_result = $this->Stmt->fetchAll($type);
+        
+        return $this->stmt_result;
+    }
+    
+    // --------------------------------------------------------------------
+    
+    /**
+    * Returns the "first" row
+    *
+    * @access    public
+    * @return    object
+    */    
+    function first_row($type = obj)
+    {
+        $result = $this->_stmt_result($type);
+
+        if (count($result) == 0)
+        {
+            return $result;
+        }
+        
+        return $result[0];
+    }
+
+    // --------------------------------------------------------------------
+    
+    /**
+    * Returns the "last" row
+    *
+    * @access    public
+    * @return    object
+    */    
+    function last_row($type = obj)
+    {
+        $result = $this->_stmt_result($type);
+
+        if (count($result) == 0)
+        {
+            return $result;
+        }
+        return $result[count($result) -1];
+    }    
+    
+    // --------------------------------------------------------------------
+
+    /**
     * Returns the "next" row
     *
     * Returns the next row results. next_rowset doesn't work for the mysql
@@ -489,9 +553,9 @@ Class OB_DB extends OB_DBAc_sw {
     * @access	public
     * @return	object
     */	
-    function next_row($type = 'object')
+    function next_row($type = obj)
     {
-        $result = $this->Stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = $this->_stmt_result($type);
 
         if(count($result) == 0)
         {
@@ -503,11 +567,35 @@ Class OB_DB extends OB_DBAc_sw {
             ++$this->current_row;
         }
 
-        return (object)$result[$this->current_row];
+        return $result[$this->current_row];
     }
 
     // --------------------------------------------------------------------
 
+    /**
+    * Returns the "previous" row
+    *
+    * @access    public
+    * @return    object
+    */    
+    function previous_row($type = obj)
+    {
+        $result = $this->_stmt_result($type);
+
+        if (count($result) == 0)
+        {
+            return $result;
+        }
+
+        if (isset($result[$this->current_row - 1]))
+        {
+            --$this->current_row;
+        }
+        return $result[$this->current_row];
+    }
+    
+    // --------------------------------------------------------------------
+    
     /**
     * Fetches the next row and returns it as an object.
     *
@@ -553,7 +641,7 @@ Class OB_DB extends OB_DBAc_sw {
     */
     public function both()
     {
-        return $this->Stmt->fetch(PDO::FETCH_BOTH);
+        return current($this->Stmt->fetchAll(PDO::FETCH_BOTH));
     }
 
     // --------------------------------------------------------------------
@@ -573,16 +661,16 @@ Class OB_DB extends OB_DBAc_sw {
         switch (sizeof($arg))
         {
            case 0:
-           return $this->Stmt->fetchAll(PDO::FETCH_OBJ);
+           return current($this->Stmt->fetchAll(PDO::FETCH_OBJ));
              break;
            case 1:
-           return $this->Stmt->fetch($arg[0]);
+           return current($this->Stmt->fetchAll($arg[0]));
              break;
            case 2:
-           return $this->Stmt->fetch($arg[0], $arg[1]);
+           return current($this->Stmt->fetchAll($arg[0], $arg[1]));
              break;
            case 3:
-           return $this->Stmt->fetch($arg[0], $arg[1], $arg[2]);
+           return current($this->Stmt->fetchAll($arg[0], $arg[1], $arg[2]));
              break;
         }
     }
@@ -650,7 +738,7 @@ Class OB_DB extends OB_DBAc_sw {
     */
     public function result_array()
     {
-        return $this->Stmt->fetchAll(PDO::FETCH_OBJ);
+        return $this->Stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**

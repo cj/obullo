@@ -44,7 +44,7 @@ if(db_item('active_record','system'))
 } 
 else 
 {
-    eval('Class OB_DBAc_sw extends PDO {}');
+    eval('Class OB_DBAc_sw {}');
 }
  
  

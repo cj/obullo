@@ -139,9 +139,9 @@ Class OB_Profiler {
             }
             else
             {   
-                $output .= "<tr><td valign='top' class=\"td\"><span class='label'>Database Name</span></td>";
+                $output .= "<tr><td valign='top' class=\"td\"><span class='label'>Database</span></td>";
                 $output .= "<td class=\"td_val\">".$db_name."</td></tr>";
-                         
+                
                 foreach ($ob->{$db_var}->queries as $key => $val)
                 {   
                     $time = '';
@@ -150,19 +150,20 @@ Class OB_Profiler {
                         $time = number_format($ob->{$db_var}->query_times[$key], 4);
                     }
                     
-                    $val  = highlight_code($val, ENT_QUOTES);
+                    $val = wordwrap($val, 60,"\n");
+                    $val = highlight_code($val, ENT_QUOTES);
                     
                     // remove all spaces and newlines, prevent js errors.
-                    $val  = preg_replace('/[\t\s]+/s', ' ', $val);   // ( Obullo Changes )
-                    $val  = preg_replace('/[\r\n]/', '<br />', $val);
+                    $val = preg_replace('/[\t\s]+/s', ' ', $val);   // ( Obullo Changes )
+                    $val = preg_replace('/[\r\n]/', '<br />', $val);
                     
                     foreach ($highlight as $bold)
                     {
                         $val = str_replace($bold, '<strong>'.$bold.'</strong>', $val);    
                     }
-                    exit;
+                    
                     $output .= "<tr><td valign='top' class=\"td\"><span class='label'>";
-                    $output .= $time."</span>&nbsp;&nbsp;</td><td class=\"td_val\">".wordwrap($val, 20, '<br />')."</td></tr>";
+                    $output .= $time."</span>&nbsp;&nbsp;</td><td class=\"td_val\">".$val."</td></tr>";
                 }
             }
             
@@ -174,8 +175,6 @@ Class OB_Profiler {
             }
             else
             {   
-                // $output .= "<tr><td valign='top' class=\"td\">Database Name</td><td class=\"td_val\">".$db_name."</td></tr>";
-                
                 $i = 0;
                 $is_cached = '';
                 foreach ($ob->{$db_var}->cached_queries as $key => $val)
@@ -191,12 +190,12 @@ Class OB_Profiler {
                         $time = '<span class="notice">exec not exist !</span>';
                     } 
                     
-                    $val  = highlight_code($val, ENT_QUOTES);
-                    // $val  = wordwrap($val, 20, '<br />');
+                    $val = wordwrap($val, 60,"\n");
+                    $val = highlight_code($val, ENT_QUOTES);
                     
                     // remove all spaces and newlines, prevent javascript errors.
-                    $val  = preg_replace('/[\t\s]+/s', ' ', $val);   // ( Obullo Changes )
-                    $val  = preg_replace('/[\r\n]/', '<br />', $val);
+                    $val = preg_replace('/[\t\s]+/s', ' ', $val);   // ( Obullo Changes )
+                    $val = preg_replace('/[\r\n]/', '<br />', $val);
 
                     
                     foreach ($highlight as $bold)
