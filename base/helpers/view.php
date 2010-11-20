@@ -150,7 +150,7 @@ if ( ! function_exists('view_set_folder'))
 * 
 * @param string  $filename
 * @param array   $data
-* @param boolean $string
+* @param boolean $string default TRUE
 * @return void
 */
 if ( ! function_exists('view'))

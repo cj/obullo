@@ -466,6 +466,18 @@ Class encrypt_CORE implements PHP5_Library {
 
     // --------------------------------------------------------------------
 
+    /**
+    * Generate an SHA1 Hash
+    *
+    * @access   public
+    * @param    string
+    * @return   string
+    */
+    public function sha1($str)
+    {
+        return sha1($str);
+    }
+    
 }
 
 // END Encrypt class

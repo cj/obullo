@@ -149,7 +149,7 @@ function register_autoload($real_name)
 {   
     if(class_exists($real_name))
     return;
-    
+
         // Parents folder files: App_controller and Global Controllers
         // -------------------------------------------------------------------- 
         if(substr($real_name, -11) == '_controller')

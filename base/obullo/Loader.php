@@ -266,7 +266,7 @@ Class loader {
         }
         
         $model_var = $model_name;
-        if($object_name != '') $model_var = $object_name; 
+        if($object_name != '' OR $object_name != NULL) $model_var = $object_name; 
         
         $OB = Obullo::instance();  
         

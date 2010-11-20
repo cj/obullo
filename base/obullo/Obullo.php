@@ -84,8 +84,8 @@ if( ! file_exists(APP .'parents'. DS .$_Global_controller. EXT))
      throw new CommonException('Unable locate to Global Controller file: '.$_Global_controller. EXT);
 }
 
-loader::file('parents'. DS .$_Global_controller. EXT);
 profiler_set('files', 'parents'. DS .'App_controller'. EXT,  APP .'parents'. DS .'App_controller'. EXT);
+profiler_set('files', 'parents'. DS .$_Global_controller. EXT,  APP .'parents'. DS .$_Global_controller. EXT);
 
 eval('Class Controller_CORE extends '.$_Global_controller.'{}'); 
 

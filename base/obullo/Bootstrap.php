@@ -79,7 +79,7 @@ if( ! function_exists('ob_system_run'))
         // Check REQUEST uri if there is a Cached file exist
         if ($output->_display_cache($config, $uri) == TRUE) { exit; }
           
-        _sanitize_globals(); // Initalize to input filter. ( Must be above the GLOBALS )
+        _sanitize_globals(); // Initalize to input filter. ( Sanitize must be above the GLOBALS !! )
           
         $GLOBALS['d']   = $router->fetch_directory();   // Get requested directory
         $GLOBALS['c']   = $router->fetch_class();       // Get requested controller

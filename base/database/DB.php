@@ -439,7 +439,7 @@ Class OB_DB extends OB_DBAc_sw {
     */
     public function obj()
     {
-        return current($this->Stmt->fetchAll(PDO::FETCH_OBJ));
+        return $this->row();
     }
 
     // --------------------------------------------------------------------
@@ -457,7 +457,7 @@ Class OB_DB extends OB_DBAc_sw {
     // --------------------------------------------------------------------
 
     /**
-    * Get number of rows
+    * Get number of rows, Does not support all db drivers.
     *
     * @return  integer
     */
@@ -465,21 +465,7 @@ Class OB_DB extends OB_DBAc_sw {
     {
         return $this->Stmt->rowCount();
     }
-
-    // --------------------------------------------------------------------
-
-    /**
-    * Retrieves the next rowset (result set) for a SQL statement that has
-    * multiple result sets.  An example is a stored procedure that returns
-    * the results of multiple queries.
-    *
-    * @return bool
-    */
-    public function next_rowset()
-    {
-        return $this->Stmt->nextRowset();
-    }
-
+    
     // --------------------------------------------------------------------
 
     /**

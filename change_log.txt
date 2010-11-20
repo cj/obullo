@@ -36,27 +36,27 @@ Global Controller files from now on. -- added to user guide
 - added script(), script_app(), script_base() functions to head tag helper. -- added to user guide
 - ini_set('display_errors', ..); removed from bootstrap and config.php
 - content helper renamed as view.php and all "content_" function prefix changed as "view_"  -- added to user guide
-- some impromevents for profiler class, added php and php5 libraries colourful track support.
+- some impromevents for profiler class, added php and php5 libraries colorful track support.
 - added session helper driver extend support, added to all helpers extend support. -- added to user guide
 - added i_request() function to base input helper. -- added to user guide
 - session function all_userdata changed as sess_alldata()
-- changed view helper view_set_folder() 'app_view' switch case string as 'view_app'
+- changed view helper view_set_folder() 'app_view' switch case string renamed as 'view_app'
 - changed css() function array support in head tag helper -- added to user guide
-- added loaded_helper() function to common.php file, changed bootstrap.php and ob_set_headers func, added loaded helpers track support to profiler class.
+- added loaded_helper() function to common.php file, changed bootstrap.php and ob_set_headers func, added loaded helpers track support to profiler class. 
 - add config load and lang load track support for profiler class
 - renamed lang_item() function as lang() in lang.php, updated all libraries. -- added to user guide
-- added auto_source_url(false); function to config class.
+- added auto_source_url(false); function to config class. -- added to user guide
 - added profiler_set($type, key, msg) and profiler_get($key) functions to common.php file, updated all libraries, removed ssc:intance()->_profiler_ variables.
 - removed all php closing tags from all php files (thanks to phpyuz)
 - fixed db.php self::_is_assoc() function bug, removed is_array() added php sizeof() function.
 - added alnum_upper and alnum_lower options to random_string() function (string helper) -- added to user guide
 - fixed class_exists($model, false) // autoload false bug in private loader::_model() function.
-- depreciated encrypt class sha1 function , renamed hash() method as hash_encode. (thanks to phpyuz for good suggestions)
+- renamed encrypt class hash() method as hash_encode. (thanks to phpyuz for good suggestions)
 - multiple database connection bug fixed in database/DBFactory.php file. (thanks to Huseyin Basar, he found this bug.)
 - loader::database('', '' , FALSE); active record turn off switch depreciated, we have already this option in config/database.php file.
 - renamed OB_DBFactory::init() func as OB_DBFactory::Connect().
-- added date_default_timezone_set() function to parents/App_controller.php
-- postgreSQL connection bug fixed. (thanks to Julio M-ax)
+- added init.php to config/ folder and added date_default_timezone_set() function.
+- postgreSQL connection bug fixed. (thanks to Julio Max)
 - updated $this->config->auto_base_url() func, changed $this->config->base_url() and source_url() functions,
 updated config.php file base_url and source_url items.
 - @depreciated ob::instance() function, added Obullo::instance(); 
@@ -77,17 +77,17 @@ fetch data as object by default. $this->db->fetch(assoc); fetch data as associat
 - added $config['rewrite_short_tags']   = FALSE; to application/config.php file.
 - added short_open_tag support to view helper.
 - added view_var(); function to view helper.  -- added to userguide.
-- added view_render(); function to view helper.
-- added view_set('view_layoutname'); function to view helper.
-- added $use_layout parameter to view_render( , $use_layout);  and view_var(, $use_layout); functions.
-- added view_var('body', view_render(array('view_header', 'view_welcome', 'view_footer'), $data)); function
-- added '.' outside folder load support view_var('body', view_render(array('.view_header', 'view_welcome', '.view_footer'), $data)) 
+- added view_render(); function to view helper.  -- added to userguide.
+- added view_set('view_layoutname'); function to view helper.  -- added to userguide.
+- added $use_layout parameter to view_render( , $use_layout);  and view_var(, $use_layout); functions. -- added to userguide.
+- added view_var('body', view_render(array('view_header', 'view_welcome', 'view_footer'), $data)); function  -- added to userguide.
+- added '.' outside folder load support view_var('body', view_render(array('.view_header', 'view_welcome', '.view_footer'), $data))   
 - added sub folder load support to loader::lib() and loader::app_lib('folder/sub/filename'); functions.
-- added sess(); function ( alias of sess_get() ).
+- added sess(); function ( alias of sess_get() ).  -- added to userguide
 - added $config['sess_die_cookie'] = FALSE; to config.php, If set TRUE all sessions will destroy when the browser closed, added this 
-functionality helpers/session/cookie_driver.php and database_driver.php files.
-- added $this->db->row_array() and $this->db->next_row(); functions to DB.php
-- added $query->first_row(), $query->last_row(), $query->previous_row() to DB.php, updated next_row(); functions.
+functionality helpers/session/cookie_driver.php and database_driver.php files.  -- added to userguide
+- added $this->db->row_array() and $this->db->next_row(); functions to DB.php  -- added to userguide
+- added $query->first_row(), $query->last_row(), $query->previous_row() to DB.php, updated next_row(); functions. -- added to userguide
 - a newline bug fixed in profiler.php
 - removed init() method from PHP5_Library interface.
 //-----------------------------------------------------------------------------
@@ -118,10 +118,6 @@ http://www.askaboutphp.com/50/codeigniter-extending-the-native-model-and-make-it
 @todo .. look at globally set database object from app_controller.
 @todo .. change obullo mvc2 names as Obullo GC in web site.            
 @todo .. add to GC Map (application flow chart) to web site.                                       
-@todo .. session database sql SET userdata field CHARACTER as utf8 into user_guide
-CREATE TABLE `ob_sessions` (
-  `user_data` text character set utf8 NOT NULL,
-) 
 
 
 NEXT VERSION

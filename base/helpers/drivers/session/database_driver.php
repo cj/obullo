@@ -34,7 +34,9 @@ if( ! function_exists('_sess_start') )
 
         // Set the expiration two years from now.
         if ($ses->_sion->sess_expiration == 0)
-        $ses->_sion->sess_expiration = (60 * 60 * 24 * 365 * 2);  
+        {
+            $ses->_sion->sess_expiration = (60 * 60 * 24 * 365 * 2);
+        }
 
         // Set the cookie name
         $ses->_sion->sess_cookie_name = $ses->_sion->cookie_prefix . $ses->_sion->sess_cookie_name;
@@ -44,7 +46,7 @@ if( ! function_exists('_sess_start') )
         // if custom database variable exists ..
         if(isset($ob->{$ses->_sion->sess_db_var}) AND $ob->{$ses->_sion->sess_db_var} instanceof OB_DB)
         {
-            $ses->_sion->sess_db = &$ob->{$ses->_sion->sess_db_var};
+            $ses->_sion->sess_db = $ob->{$ses->_sion->sess_db_var};
         }                                
         else
         {
