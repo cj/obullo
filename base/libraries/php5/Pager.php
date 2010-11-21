@@ -46,7 +46,7 @@ class pager_CORE implements PHP5_Library
      */
     public static function init($options = array())
     {
-        $mode = (isset($options['mode']) ? ucfirst($options['mode']) : 'Jumping');
+        $mode = (isset($options['mode']) ? strtolower($options['mode']) : 'jumping');
         $classname = 'Pager_'.$mode;
         $classfile = 'drivers'. DS .'pager'. DS .'Pager_'. $mode. EXT;
 

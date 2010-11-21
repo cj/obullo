@@ -1,15 +1,21 @@
 <?php
+defined('BASE') or exit('Access Denied!');
 
+/**
+ * Obullo Framework (c) 2009.
+ *
+ * PHP5 MVC Based Minimalist Software.
+ * 
+ * @package         obullo       
+ * @author          obullo.com
+ * @copyright       Ersin Guvenc (c) 2009.
+ * @filesource
+ * @license
+ */
+
+// ------------------------------------------------------------------------
 Class PagerException extends CommonException {}
 
-/**
- * Two constants used to guess the path- and file-name of the page
- * when the user doesn't set any other value
- */
-
-/**
- * Error codes
- */
 define('PAGER_OK',                         0);
 define('ERROR_PAGER',                     -1);
 define('ERROR_PAGER_INVALID',             -2);
@@ -227,9 +233,9 @@ class Pager_Common
      * @return integer PageID for given offset
      * @access public
      */
-    function getPageIdByOffset($index)
+    function get_page_by_offset($index)
     {
-        throw new PagerException('function '.__FUNCTION__.' not implemented.');
+        return;
     }
 
     // ------------------------------------------------------------------------
@@ -274,10 +280,9 @@ class Pager_Common
      * @return array First and last offsets
      * @access public
      */
-    function getPageRangeByPageId($pageID = NULL)
+    function get_page_range_by_page($pageID = NULL)
     {
-        $msg = 'function "getPageRangeByPageId()" not implemented.';
-        return $this->raiseError($msg, ERROR_PAGER_NOT_IMPLEMENTED);
+       return;
     }
 
     // ------------------------------------------------------------------------
@@ -304,7 +309,7 @@ class Pager_Common
      */
     function get_links($pageID = NULL, $next_html = '')
     {
-        return $this->raiseError('function "get_links()" not implemented.', ERROR_PAGER_NOT_IMPLEMENTED);
+        return;
     }
 
     // ------------------------------------------------------------------------
@@ -548,28 +553,31 @@ class Pager_Common
     function _generateFormOnClick($formAction, $data)
     {
         // Check we have an array to work with
-        if (!is_array($data)) {
-            trigger_error(
-                '_generateForm() Parameter 1 expected to be Array or Object. Incorrect value given.',
-                E_USER_WARNING
-            );
-            return false;
+        if ( ! is_array($data)) 
+        {
+            throw new PagerException('_generateForm() Parameter 1 expected to be Array or Object. Incorrect value given.');
+            return FALSE;
         }
 
-        if (!empty($this->_formID)) {
+        if (!empty($this->_formID)) 
+        {
             $str = 'var form = document.getElementById("'.$this->_formID.'"); var input = ""; ';
-        } else {
+        } 
+        else 
+        {
             $str = 'var form = document.createElement("form"); var input = ""; ';
         }
 
         // We /shouldn't/ need to escape the URL ...
         $str .= sprintf('form.action = "%s"; ', htmlentities($formAction, ENT_COMPAT, 'UTF-8'));
         $str .= sprintf('form.method = "%s"; ', $this->_httpMethod);
-        foreach ($data as $key => $val) {
+        foreach ($data as $key => $val) 
+        {
             $str .= $this->_generateFormOnClickHelper($val, $key);
         }
 
-        if (empty($this->_formID)) {
+        if (empty($this->_formID)) 
+        {
             $str .= 'document.getElementsByTagName("body")[0].appendChild(form);';
         }
 
@@ -720,11 +728,15 @@ class Pager_Common
      */
     function _recursive_stripslashes(&$var)
     {
-        if (is_array($var)) {
-            foreach (array_keys($var) as $k) {
+        if (is_array($var)) 
+        {
+            foreach (array_keys($var) as $k) 
+            {
                 $this->_recursive_stripslashes($var[$k]);
             }
-        } else {
+        } 
+        else 
+        {
             $var = stripslashes($var);
         }
     }
@@ -1027,7 +1039,7 @@ class Pager_Common
      * @return string xhtml select box
      * @access public
      */
-    function getPerPageSelectBox($start=5, $end=30, $step=5, $showAllData=false, $extraParams=array())
+    function getPerPageSelectBox($start = 5, $end = 30, $step = 5, $showAllData = FALSE, $extraParams = array())
     {
         include_once 'Pager/HtmlWidgets.php';
         $widget = new Pager_HtmlWidgets($this);
@@ -1070,9 +1082,11 @@ class Pager_Common
      */
     function _printFirstPage()
     {
-        if ($this->is_first_page()) {
+        if ($this->is_first_page()) 
+        {
             return '';
         }
+        
         $this->_linkData[$this->_urlVar] = 1;
         return $this->_renderLink(
                 str_replace('%d', 1, $this->_altFirst),
@@ -1091,9 +1105,11 @@ class Pager_Common
      */
     function _printLastPage()
     {
-        if ($this->is_last_page()) {
+        if ($this->is_last_page()) 
+        {
             return '';
         }
+        
         $this->_linkData[$this->_urlVar] = $this->_totalPages;
         return $this->_renderLink(
                 str_replace('%d', $this->_totalPages, $this->_altLast),
@@ -1112,10 +1128,13 @@ class Pager_Common
      */
     function _setFirstLastText()
     {
-        if ($this->_firstPageText == '') {
+        if ($this->_firstPageText == '') 
+        {
             $this->_firstPageText = '1';
         }
-        if ($this->_lastPageText == '') {
+        
+        if ($this->_lastPageText == '') 
+        {
             $this->_lastPageText = $this->_totalPages;
         }
     }
@@ -1152,13 +1171,13 @@ class Pager_Common
         {
             if (is_scalar($val)) 
             {
-                //array_push($tmp, $key.'='.$val);
-                $val = urlencode($val);
+                
+                $val = urlencode($val);  //array_push($tmp, $key.'='.$val);
                 array_push($tmp, $key .'='. str_replace('%2F', '/', $val));
                 continue;
             }
-            // If the value is an array, recursively parse it
-            if (is_array($val)) 
+            
+            if (is_array($val))  // If the value is an array, recursively parse it
             {
                 array_push($tmp, $this->__http_build_query($val, urlencode($key)));
                 continue;
@@ -1299,9 +1318,10 @@ class Pager_Common
                 $this->_url .= $this->_base_url;
             }
             
-            if (false === strpos($this->_fileName, '%d')) 
+            if (FALSE === strpos($this->_fileName, '%d')) 
             {
-                trigger_error($this->errorMessage(ERROR_PAGER_INVALID_USAGE), E_USER_WARNING);
+                throw new PagerException('if $options[\'append\'] is set to false, '
+                                                  .' $options[\'fileName\'] MUST contain the "%d" placeholder.');
             }
         }
         
@@ -1365,7 +1385,7 @@ class Pager_Common
         $this->_currentPage = max($this->_currentPage, 1);
         $this->_linkData = $this->_getLinksData();
 
-        return PAGER_OK;
+        return TRUE;
     }
 
     // ------------------------------------------------------------------------
@@ -1380,10 +1400,9 @@ class Pager_Common
      */
     function getOption($name)
     {
-        if (!in_array($name, $this->_allowed_options)) 
+        if ( ! in_array($name, $this->_allowed_options)) 
         {
-            $msg = 'invalid option: '.$name;
-            return $this->raiseError($msg, ERROR_PAGER_INVALID);
+            throw new PagerException('You choosed invalid option.');
         }
         
         return $this->{'_' . $name};
@@ -1432,8 +1451,7 @@ class Pager_Common
             );
         }
 
-        return (isset($errorMessages[$code]) ?
-            $errorMessages[$code] : $errorMessages[ERROR_PAGER]);
+        return (isset($errorMessages[$code]) ? $errorMessages[$code] : $errorMessages[ERROR_PAGER]);
     }
 
 

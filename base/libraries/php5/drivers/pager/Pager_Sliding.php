@@ -25,7 +25,7 @@ require_once 'Pager_Common.php';
  * @subpackage    Libraries.drivers.pager_sliding
  * @category      Libraries
  * @author        Ersin Guvenc
- * @author        Derived from PEAR pager package.
+ * @author        Derived from PEAR Pager package.
  * @link          
  */
 
@@ -50,13 +50,13 @@ class Pager_Sliding extends Pager_Common
         $this->_spacesAfterSeparator  = 3;
         $this->_curPageSpanPre        = '<b>';
         $this->_curPageSpanPost       = '</b>';
-
-        //set custom options
-        $err = $this->setOptions($options);
         
-        if ($err !== PAGER_OK) 
+        //set custom options
+        $res = $this->setOptions($options);
+        
+        if ($res !== TRUE) 
         {
-            return $this->raiseError($this->errorMessage($err), $err);
+            throw new PagerException('Pager Unknown Error.');
         }
         
         $this->build();
@@ -73,9 +73,7 @@ class Pager_Sliding extends Pager_Common
     * @deprecated
     * @access public
     */
-    function getPageIdByOffset($index)
-    {
-    }
+    function get_page_by_offset($index) {}
 
     // ------------------------------------------------------------------------
 

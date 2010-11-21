@@ -25,7 +25,7 @@ require_once 'Pager_Common.php';
  * @subpackage    Libraries.drivers.pager_jumping
  * @category      Libraries
  * @author        Ersin Guvenc
- * @author        Derived from PEAR pager package.
+ * @author        Derived from PEAR Pager package.
  * @link          
  */
 
@@ -40,14 +40,13 @@ class Pager_Jumping extends Pager_Common
     */
     function __construct($options = array())
     {
-        $err = $this->setOptions($options);
+        $res = $this->setOptions($options);
         
-        if ($err !== PAGER_OK) 
+        if ($res !== TRUE) 
         {
-            return $this->raiseError($this->errorMessage($err), $err);
+            throw new PagerException('Pager Unknown Error.');
         }
-        
-        
+    
         $this->build();
     }
     
@@ -60,7 +59,7 @@ class Pager_Jumping extends Pager_Common
     *
     * @return int PageID for given offset
     */
-    function getPageIdByOffset($index)
+    function get_page_by_offset($index)
     {
         if (!isset($this->_pageData)) 
         {
@@ -95,7 +94,7 @@ class Pager_Jumping extends Pager_Common
      * @return array  First and last offsets
      * @access public
      */
-    function getPageRangeByPageId($pageid = null)
+    function get_page_range_by_page($pageid = null)
     {
         $pageid = isset($pageid) ? (int)$pageid : $this->_currentPage;
         
@@ -138,13 +137,16 @@ class Pager_Jumping extends Pager_Common
      *
      * @return array Back/pages/next links
      */
-    function get_links($pageID=null, $next_html='')
+    function get_links($pageID = NULL, $next_html = '')
     {
         //BC hack
-        if (!empty($next_html)) {
+        if ( ! empty($next_html)) 
+        {
             $back_html = $pageID;
-            $pageID    = null;
-        } else {
+            $pageID    = NULL;
+        } 
+        else 
+        {
             $back_html = '';
         }
 
@@ -178,7 +180,7 @@ class Pager_Jumping extends Pager_Common
         $linkTags    = $this->linkTags;
         $linkTagsRaw = $this->linkTagsRaw;
 
-        if (!is_null($pageID)) 
+        if ( ! is_null($pageID)) 
         {
             $this->_currentPage = $_sav;
         }
@@ -229,7 +231,7 @@ class Pager_Jumping extends Pager_Common
         }
 
         $links = '';
-        $limits = $this->getPageRangeByPageId($this->_currentPage);
+        $limits = $this->get_page_range_by_page($this->_currentPage);
 
         for ($i=$limits[0]; $i<=min($limits[1], $this->_totalPages); $i++) 
         {
