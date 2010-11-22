@@ -27,7 +27,7 @@ defined('BASE') or exit('Access Denied!');
  * @see           Original package http://pear.php.net/package/Pager
  * @link          
  */
-class pager_CORE implements PHP5_Library
+Class pager_CORE implements PHP5_Library
 {
     
     public static function instance()
@@ -66,3 +66,8 @@ class pager_CORE implements PHP5_Library
     }
 
 }
+
+// END Pager Class
+
+/* End of file Pager.php */
+/* Location: ./base/libraries/php5/Pager.php */

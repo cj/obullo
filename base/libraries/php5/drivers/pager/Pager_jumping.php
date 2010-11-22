@@ -15,21 +15,22 @@ defined('BASE') or exit('Access Denied!');
 
 // ------------------------------------------------------------------------
  
-require_once 'Pager_Common.php';
+require_once 'Pager_common.php';
 
 /**
  * Obullo Pager Jumping Driver
  *
  *
  * @package       Obullo
- * @subpackage    Libraries.drivers.pager_jumping
+ * @subpackage    Libraries.drivers.Pager_jumping
  * @category      Libraries
  * @author        Ersin Guvenc
  * @author        Derived from PEAR Pager package.
+ * @see           Original package http://pear.php.net/package/Pager
  * @link          
  */
 
-class Pager_Jumping extends Pager_Common
+Class Pager_jumping extends Pager_common
 {
     /**
     * Constructor
@@ -40,7 +41,7 @@ class Pager_Jumping extends Pager_Common
     */
     function __construct($options = array())
     {
-        $res = $this->setOptions($options);
+        $res = $this->set_options($options);
         
         if ($res !== TRUE) 
         {
@@ -61,9 +62,9 @@ class Pager_Jumping extends Pager_Common
     */
     function get_page_by_offset($index)
     {
-        if (!isset($this->_pageData)) 
+        if (!isset($this->_page_data)) 
         {
-            $this->_generatePageData();
+            $this->_generate_page_data();
         }
 
         if (($index % $this->_per_page) > 0) 
@@ -96,9 +97,9 @@ class Pager_Jumping extends Pager_Common
      */
     function get_page_range_by_page($pageid = null)
     {
-        $pageid = isset($pageid) ? (int)$pageid : $this->_currentPage;
+        $pageid = isset($pageid) ? (int)$pageid : $this->_current_page;
         
-        if (isset($this->_pageData[$pageid]) || is_null($this->_itemData)) 
+        if (isset($this->_page_data[$pageid]) || is_null($this->_item_data)) 
         {
             // I'm sure I'm missing something here, but this formula works
             // so I'm using it until I find something simpler.
@@ -106,7 +107,7 @@ class Pager_Jumping extends Pager_Common
             
             return array(
                 max($start, 1),
-                min($start+$this->_delta-1, $this->_totalPages)
+                min($start+$this->_delta-1, $this->_total_pages)
             );
             
         } 
@@ -150,39 +151,39 @@ class Pager_Jumping extends Pager_Common
             $back_html = '';
         }
 
-        if (!is_null($pageID)) 
+        if ( ! is_null($pageID)) 
         {
             $this->links = '';
-            if ($this->_totalPages > $this->_delta) 
+            if ($this->_total_pages > $this->_delta) 
             {
-                $this->links .= $this->_printFirstPage();
+                $this->links .= $this->_print_first_page();
             }
 
-            $_sav = $this->_currentPage;
-            $this->_currentPage = $pageID;
+            $_sav = $this->_current_page;
+            $this->_current_page = $pageID;
 
-            $this->links .= $this->_getBackLink('', $back_html);
-            $this->links .= $this->_getPageLinks();
-            $this->links .= $this->_getNextLink('', $next_html);
+            $this->links .= $this->_get_back_link('', $back_html);
+            $this->links .= $this->_get_page_links();
+            $this->links .= $this->_get_next_link('', $next_html);
             
-            if ($this->_totalPages > $this->_delta) 
+            if ($this->_total_pages > $this->_delta) 
             {
-                $this->links .= $this->_printLastPage();
+                $this->links .= $this->_print_last_page();
             }
         }
 
-        $back        = str_replace('&nbsp;', '', $this->_getBackLink());
-        $next        = str_replace('&nbsp;', '', $this->_getNextLink());
-        $pages       = $this->_getPageLinks();
-        $first       = $this->_printFirstPage();
-        $last        = $this->_printLastPage();
+        $back        = str_replace('&nbsp;', '', $this->_get_back_link());
+        $next        = str_replace('&nbsp;', '', $this->_get_next_link());
+        $pages       = $this->_get_page_links();
+        $first       = $this->_print_first_page();
+        $last        = $this->_print_last_page();
         $all         = $this->links;
-        $linkTags    = $this->linkTags;
-        $linkTagsRaw = $this->linkTagsRaw;
+        $link_tags   = $this->link_tags;
+        $link_tags_raw = $this->link_tags_raw;
 
         if ( ! is_null($pageID)) 
         {
-            $this->_currentPage = $_sav;
+            $this->_current_page = $_sav;
         }
 
         return array(
@@ -192,15 +193,15 @@ class Pager_Jumping extends Pager_Common
             $first,
             $last,
             $all,
-            $linkTags,
+            $link_tags,
             'back'        => $back,
             'pages'       => $pages,
             'next'        => $next,
             'first'       => $first,
             'last'        => $last,
             'all'         => $all,
-            'linktags'    => $linkTags,
-            'linkTagsRaw' => $linkTagsRaw,
+            'link_tags'   => $link_tags,
+            'link_tags_raw' => $link_tags_raw,
         );
     }
 
@@ -215,43 +216,47 @@ class Pager_Jumping extends Pager_Common
     * @return string Links
     * @access private
     */
-    function _getPageLinks($url = '')
+    function _get_page_links($url = '')
     {
-        //legacy setting... the preferred way to set an option now
-        //is adding it to the constuctor
+        // legacy setting... the preferred way to set an option now
+        // is adding it to the constuctor
         if ( ! empty($url)) 
         {
             $this->_base_url = $url;
         }
 
         //If there's only one page, don't display links
-        if ($this->_clearIfVoid AND ($this->_totalPages < 2)) 
+        if ($this->_clear_if_void AND ($this->_total_pages < 2)) 
         {
             return '';
         }
 
         $links = '';
-        $limits = $this->get_page_range_by_page($this->_currentPage);
+        $limits = $this->get_page_range_by_page($this->_current_page);
 
-        for ($i=$limits[0]; $i<=min($limits[1], $this->_totalPages); $i++) 
+        for ($i=$limits[0]; $i<=min($limits[1], $this->_total_pages); $i++) 
         {
-            if ($i != $this->_currentPage) 
+            if ($i != $this->_current_page) 
             {
-                $this->range[$i] = false;
-                $this->_linkData[$this->_urlVar] = $i;
-                $links .= $this->_renderLink(str_replace('%d', $i, $this->_altPage), $i);
+                $this->range[$i] = FALSE;
+                $this->_link_data[$this->_url_var] = $i;
+                $links .= $this->_render_link(str_replace('%d', $i, $this->_alt_page), $i);
             } 
             else 
             {
-                $this->range[$i] = true;
-                $links .= $this->_curPageSpanPre . $i . $this->_curPageSpanPost;
+                $this->range[$i] = TRUE;
+                $links .= $this->_cur_page_span_pre . $i . $this->_cur_page_span_post;
             }
             
-            $links .= $this->_spacesBefore
-                   . (($i != $this->_totalPages) ? $this->_separator.$this->_spacesAfter : '');
+            $links .= $this->_spaces_before
+                   . (($i != $this->_total_pages) ? $this->_separator.$this->_spaces_after : '');
         }
         return $links;
     }
 
-
 }
+
+// END Pager_jumping Class
+
+/* End of file Pager_jumping.php */
+/* Location: ./base/libraries/php5/drivers/pager/Pager_jumping.php */

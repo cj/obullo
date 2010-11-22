@@ -55,7 +55,10 @@ if( ! function_exists('ob_set_headers'))
                                   
         // system helpers
         if (config_item('log_threshold') > 0)
-        loaded_helper('log');
+        {
+            loaded_helper('log');
+        }
+        
         loaded_helper('input');
         loaded_helper('lang');
         loaded_helper('benchmark');        

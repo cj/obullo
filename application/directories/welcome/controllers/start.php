@@ -8,24 +8,32 @@ Class Start extends Controller {
         parent::__global();
         
         loader::database();
+        loader::base_helper('form');
     }           
     
     public function index()
     {      
+        // http://devzone.zend.com/article/2418
+        
         $query = $this->db->query('SELECT * FROM articles');
         $num_rows = $query->row_count();
         
+        echo 'PER PAGE: '.i_get_post('setPerPage').'<br />';
+        
+        $per_page = (i_get_post('setPerPage')) ? i_get_post('setPerPage') : '5';
+        
         $params = array(
-            'mode'         => 'Sliding',
-            'per_page'     => 2,
+            'mode'         => 'sliding',
+            'per_page'     => $per_page,
             'delta'        => 2,
-            'httpMethod'   => 'GET',
-            'urlVar'       => 'page',
+            'http_method'  => 'GET',
+            'url_var'      => 'page',
             'append'       => TRUE,
             'query_string' => TRUE,
-            'currentPage'  => $this->uri->segment(4),
+            'current_page' => $this->uri->segment(4),
             'base_url'     => '/obullo/index.php/welcome/start/index/',
-            'total_items'  => $num_rows
+            'total_items'  => $num_rows,
+            'extra_vars'   => array('setPerPage' => $per_page),
         );
         
         /*
@@ -54,10 +62,15 @@ Class Start extends Controller {
 
         //echo links to other pages:
         echo $links['all'];
-
         
-        // $selectBox = $pager->getPerPageSelectBox();
-        // echo $selectBox;
+        $selectBox = $pager->get_per_page_select_box();
+        
+        echo form_open('', array('method' => $params['http_method']));
+        echo 'Select how many items per page should be shown:<br />';
+        echo $selectBox.'&nbsp';
+        echo form_submit('_send', 'Send', "");
+        echo form_close();
+
         
         //Pager can also generate <link rel="first|prev|next|last"> tags
         // echo 'tags:'. $pager->linkTags.'<br /><br /><br />';
