@@ -93,7 +93,7 @@ functionality helpers/session/cookie_driver.php and database_driver.php files.  
 //-----------------------------------------------------------------------------
 
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!
-
+@todo .. add object serialization __sleep and wakeup to DB.php
 @todo .. add to user guide EDIT button .. add admin to pending user guide updates.
 @todo .. add $this->db->row_array(); ,$this->db->next_row(); result() and result_array(); functions  to userguide.
 @todo .. add to user guide php5 method chaining support like this 
