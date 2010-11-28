@@ -93,7 +93,7 @@ Class Pager_common
     public $_clear_if_void         = TRUE;      // boolean If TRUE and there's only one page, links aren't shown
     public $_use_sessions          = FALSE;     // boolean Use session for storing the number of items per page
     public $_close_session         = FALSE;     // boolean Close the session when finished reading/writing data
-    public $_session_var           = 'setPerPage';  // string name of the session var for number of items per page
+    public $_session_var           = 'set_per_page';  // string name of the session var for number of items per page
     
     public $links                  = '';        // string Complete set of links
     public $link_tags              = '';        // string Complete set of link tags
@@ -166,7 +166,7 @@ Class Pager_common
     */
     public function build()
     {
-        $this->_page_data    = array();   //reset
+        $this->_page_data    = array();   // reset
         $this->links         = '';
         $this->link_tags     = '';
         $this->link_tags_raw = array();
@@ -209,7 +209,7 @@ Class Pager_common
     * @return array Page data
     * @access public
     */
-    public function getPageData($pageID = null)
+    public function get_page_data($pageID = NULL)
     {
         $pageID = empty($pageID) ? $this->_current_page : $pageID;
 
@@ -229,14 +229,14 @@ Class Pager_common
     // ------------------------------------------------------------------------
     
     /**
-     * Returns offsets for given pageID. Eg, if you
-     * pass it pageID one and your perPage limit is 10 it will return (1, 10). PageID of 2 would
-     * give you (11, 20).
-     *
-     * @param integer $pageID PageID to get offsets for
-     * @return array  First and last offsets
-     * @access public
-     */
+    * Returns offsets for given pageID. Eg, if you
+    * pass it pageID one and your perPage limit is 10 it will return (1, 10). PageID of 2 would
+    * give you (11, 20).
+    *
+    * @param integer $pageID PageID to get offsets for
+    * @return array  First and last offsets
+    * @access public
+    */
     public function get_offset_by_page($pageID = NULL)
     {
         $pageID = isset($pageID) ? $pageID : $this->_current_page;
@@ -246,7 +246,7 @@ Class Pager_common
             $this->_generate_page_data();
         }
 
-        if (isset($this->_page_data[$pageID]) || is_null($this->_item_data)) 
+        if (isset($this->_page_data[$pageID]) OR is_null($this->_item_data)) 
         {
             return array(
                         max(($this->_per_page * ($pageID - 1)) + 1, 1),
@@ -371,9 +371,8 @@ Class Pager_common
     * @access private
     */
     protected function _generate_page_data()
-    {
-        // Been supplied an array of data?
-        if ( ! is_null($this->_item_data)) 
+    {   
+        if ( ! is_null($this->_item_data))  // Been supplied an array of data?
         {
             $this->_total_items = count($this->_item_data);
         }
@@ -458,7 +457,7 @@ Class Pager_common
             }
             
             return sprintf("<a href='javascript:void(0)' onclick='%s'%s%s%s title='%s'>%s</a>",
-                           $this->_generateFormOnClick($href, $this->_link_data),
+                           $this->_generate_form_onclick($href, $this->_link_data),
                            empty($this->_class_string) ? '' : ' '.$this->_class_string,
                            empty($this->_attributes)  ? '' : ' '.$this->_attributes,
                            empty($this->_accesskey)   ? '' : ' accesskey=\''.$this->_link_data[$this->_url_var].'\'',
@@ -478,7 +477,7 @@ Class Pager_common
     * $arr =  array('array' => array(array('hello', 'world'),
     *                                'things' => array('stuff', 'junk'));
     * http_build_query($arr)
-    * and _generateFormOnClick('foo.php', $arr)
+    * and _generate_form_onclick('foo.php', $arr)
     * will yield
     * $_REQUEST['array'][0][0] === 'hello'
     * $_REQUEST['array'][0][1] === 'world'
@@ -493,7 +492,7 @@ Class Pager_common
     * @return  string  A string of javascript that generates a form and submits it
     * @access  private
     */
-    protected function _generateFormOnClick($formAction, $data)
+    protected function _generate_form_onclick($form_action, $data)
     {
         if ( ! is_array($data))   // Check we have an array to work with
         {
@@ -511,11 +510,11 @@ Class Pager_common
         }
 
         // We /shouldn't/ need to escape the URL ...
-        $str .= sprintf('form.action = "%s"; ', htmlentities($formAction, ENT_COMPAT, 'UTF-8'));
+        $str .= sprintf('form.action = "%s"; ', htmlentities($form_action, ENT_COMPAT, 'UTF-8'));
         $str .= sprintf('form.method = "%s"; ', $this->_http_method);
         foreach ($data as $key => $val) 
         {
-            $str .= $this->_generateFormOnClickHelper($val, $key);
+            $str .= $this->_generate_form_onclick_helper($val, $key);
         }
 
         if (empty($this->_form_id)) 
@@ -530,7 +529,7 @@ Class Pager_common
     // ------------------------------------------------------------------------
 
     /**
-    * This is used by _generateFormOnClick().
+    * This is used by _generate_form_onclick().
     * Recursively processes the arrays, objects, and literal values.
     *
     * @param mixed  $data Data that should be rendered
@@ -539,58 +538,46 @@ Class Pager_common
     *                representing the data
     * @access private
     */
-    protected function _generateFormOnClickHelper($data, $prev = '')
+    protected function _generate_form_onclick_helper($data, $prev = '')
     {
         $str = '';
-        if (is_array($data) || is_object($data)) 
+        if (is_array($data) OR is_object($data)) 
         {
             // foreach key/visible member
             foreach ((array)$data as $key => $val) 
             {
                 // append [$key] to prev
                 $tempKey = sprintf('%s[%s]', $prev, $key);
-                $str .= $this->_generateFormOnClickHelper($val, $tempKey);
+                $str .= $this->_generate_form_onclick_helper($val, $tempKey);
             }
         } 
         else 
-        {  // must be a literal value
+        {  
+            // must be a literal value
             // escape newlines and carriage returns
             $search  = array("\n", "\r");
             $replace = array('\n', '\n');
-            $escapedData = str_replace($search, $replace, $data);
+            $escaped_data = str_replace($search, $replace, $data);
             
             // am I forgetting any dangerous whitespace?
             // would a regex be faster?
             // if it's already encoded, don't encode it again
-            if (!$this->_isEncoded($escapedData)) 
+            
+            $hexchar = '&#[\dA-Fx]{2,};';
+            if ( ! preg_match("/^(\s|($hexchar))*$/Uims", $escaped_data))  // Check if a string is an encoded multibyte string
             {
-                $escapedData = urlencode($escapedData);
+                $escaped_data = urlencode($escaped_data);
             }
             
-            $escapedData = htmlentities($escapedData, ENT_QUOTES, 'UTF-8');
+            $escaped_data = htmlentities($escaped_data, ENT_QUOTES, 'UTF-8');
 
             $str .= 'input = document.createElement("input"); ';
             $str .= 'input.type = "hidden"; ';
             $str .= sprintf('input.name = "%s"; ', $prev);
-            $str .= sprintf('input.value = "%s"; ', $escapedData);
+            $str .= sprintf('input.value = "%s"; ', $escaped_data);
             $str .= 'form.appendChild(input); ';
         }
         return $str;
-    }
-
-    // ------------------------------------------------------------------------
-
-    /**
-    * Returns true if the string is a regexp pattern
-    *
-    * @param string $string the pattern to check
-    *
-    * @return boolean
-    * @access private
-    */
-    protected function _isRegexp($string) 
-    {
-        return preg_match('/^\/.*\/([Uims]+)?$/', $string);
     }
 
     // ------------------------------------------------------------------------
@@ -601,7 +588,7 @@ Class Pager_common
     * @return array Data
     * @access private
     */
-    protected function _getLinksData()
+    protected function _get_links_data()
     {
         $qs = array();
         if ($this->_import_query) 
@@ -618,11 +605,12 @@ Class Pager_common
         
         foreach ($this->_exclude_vars as $exclude) 
         {
-            $use_preg = $this->_isRegexp($exclude);
+            $use_preg = preg_match('/^\/.*\/([Uims]+)?$/', $exclude);  // Returns true if the string is a regexp pattern
             
             foreach (array_keys($qs) as $qs_item) 
             {
-                if ($use_preg) {
+                if ($use_preg) 
+                {
                     if (preg_match($exclude, $qs_item, $matches)) 
                     {
                         foreach ($matches as $m) 
@@ -806,7 +794,7 @@ Class Pager_common
     */
     protected function _get_first_link_tag($raw = FALSE)
     {
-        if ($this->is_first_page() || ($this->_http_method != 'GET')) 
+        if ($this->is_first_page() OR ($this->_http_method != 'GET')) 
         {
             return $raw ? array() : '';
         }
@@ -814,13 +802,13 @@ Class Pager_common
         if ($raw) 
         {
             return array(
-                'url'   => $this->_getLinkTagUrl(1),
+                'url'   => $this->_get_link_tag_url(1),
                 'title' => $this->_first_link_title
             );
         }
         
         return sprintf('<link rel="first" href="%s" title="%s" />'."\n",
-            $this->_getLinkTagUrl(1),
+            $this->_get_link_tag_url(1),
             $this->_first_link_title
         );
     }
@@ -837,7 +825,7 @@ Class Pager_common
     */
     protected function _get_prev_link_tag($raw = false)
     {
-        if ($this->is_first_page() || ($this->_http_method != 'GET')) 
+        if ($this->is_first_page() OR ($this->_http_method != 'GET')) 
         {
             return $raw ? array() : '';
         }
@@ -845,13 +833,13 @@ Class Pager_common
         if ($raw) 
         {
             return array(
-                'url'   => $this->_getLinkTagUrl($this->get_prev_page()),
+                'url'   => $this->_get_link_tag_url($this->get_prev_page()),
                 'title' => $this->_prev_link_title
             );
         }
         
         return sprintf('<link rel="previous" href="%s" title="%s" />'."\n",
-            $this->_getLinkTagUrl($this->get_prev_page()),
+            $this->_get_link_tag_url($this->get_prev_page()),
             $this->_prev_link_title
         );
     }
@@ -868,7 +856,7 @@ Class Pager_common
     */
     protected function _get_next_link_tag($raw = FALSE)
     {
-        if ($this->is_last_page() || ($this->_http_method != 'GET')) 
+        if ($this->is_last_page() OR ($this->_http_method != 'GET')) 
         {
             return $raw ? array() : '';
         }
@@ -876,13 +864,13 @@ Class Pager_common
         if ($raw) 
         {
             return array(
-                'url'   => $this->_getLinkTagUrl($this->get_next_page()),
+                'url'   => $this->_get_link_tag_url($this->get_next_page()),
                 'title' => $this->_next_link_title
             );
         }
         
         return sprintf('<link rel="next" href="%s" title="%s" />'."\n",
-            $this->_getLinkTagUrl($this->get_next_page()),
+            $this->_get_link_tag_url($this->get_next_page()),
             $this->_next_link_title
         );
     }
@@ -899,19 +887,19 @@ Class Pager_common
     */
     protected function _get_last_link_tag($raw = false)
     {
-        if ($this->is_last_page() || ($this->_http_method != 'GET')) 
+        if ($this->is_last_page() OR ($this->_http_method != 'GET')) 
         {
             return $raw ? array() : '';
         }
         if ($raw) 
         {
             return array(
-                'url'   => $this->_getLinkTagUrl($this->_total_pages),
+                'url'   => $this->_get_link_tag_url($this->_total_pages),
                 'title' => $this->_last_link_title
             );
         }
         return sprintf('<link rel="last" href="%s" title="%s" />'."\n",
-            $this->_getLinkTagUrl($this->_total_pages),
+            $this->_get_link_tag_url($this->_total_pages),
             $this->_last_link_title
         );
     }
@@ -926,7 +914,7 @@ Class Pager_common
     * @return string the link tag url
     * @access private
     */
-    protected function _getLinkTagUrl($pageID)
+    protected function _get_link_tag_url($pageID)
     {
         $this->_link_data[$this->_url_var] = $pageID;
         
@@ -1158,23 +1146,6 @@ Class Pager_common
     }
 
     // ------------------------------------------------------------------------
-
-    /**
-    * Helper function
-    * Check if a string is an encoded multibyte string
-    *
-    * @param string $string string to check
-    *
-    * @return boolean
-    * @access private
-    */
-    protected function _isEncoded($string)
-    {
-        $hexchar = '&#[\dA-Fx]{2,};';
-        return preg_match("/^(\s|($hexchar))*$/Uims", $string) ? TRUE : FALSE;
-    }
-
-    // ------------------------------------------------------------------------
     
     /**
     * Set and sanitize options
@@ -1292,48 +1263,9 @@ Class Pager_common
         }
         
         $this->_current_page = max($this->_current_page, 1);
-        $this->_link_data = $this->_getLinksData();
+        $this->_link_data = $this->_get_links_data();
 
         return TRUE;
-    }
-
-    // ------------------------------------------------------------------------
-
-    /**
-    * Return the current value of a given option
-    *
-    * @param string $name option name
-    *
-    * @return mixed option value
-    * @access public
-    */
-    function getOption($name)
-    {
-        if ( ! in_array($name, $this->_allowed_options)) 
-        {
-            throw new PagerException('You choosed invalid option.');
-        }
-        
-        return $this->{'_' . $name};
-    }
-
-    // ------------------------------------------------------------------------
-
-    /**
-    * Return an array with all the current pager options
-    *
-    * @return array list of all the pager options
-    * @access public
-    */
-    function getOptions()
-    {
-        $options = array();
-        foreach ($this->_allowed_options as $option) 
-        {
-            $options[$option] = $this->{'_' . $option};
-        }
-        
-        return $options;
     }
 
 }

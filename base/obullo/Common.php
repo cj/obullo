@@ -157,14 +157,14 @@ function register_autoload($real_name)
             require(APP .'parents'. DS .$real_name. EXT);
             return;
         }
-        
+                
         // Database files. 
         // -------------------------------------------------------------------- 
         if(strpos($real_name, 'OB_DB') === 0)
         {
             require(BASE .'database'. DS .substr($real_name, 3). EXT);
             return;
-        }
+        }    
         
         if(strpos($real_name, 'Obullo_DB_Driver_') === 0)
         {
@@ -179,7 +179,7 @@ function register_autoload($real_name)
         // --------------------------------------------------------------------       
         $class  = strtolower($real_name); // lowercase classname.
         $prefix = config_item('subclass_prefix');
-
+        
         // Local php5 libraries load support. 
         // -------------------------------------------------------------------- 
         if(file_exists(APP .'directories'. DS .$GLOBALS['d']. DS .'libraries'. DS .'php5'. DS .$class. EXT))

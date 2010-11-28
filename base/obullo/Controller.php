@@ -43,17 +43,10 @@ Class Controller extends Obullo {
     */
     private function _ob_init()
     {
-        $Classes = array(                         
-                            'config'    => 'Config',
-                            'router'    => 'Router',
-                            'uri'       => 'URI', 
-                            'output'    => 'Output' 
-                        );
-                        
-        foreach ($Classes as $public_var => $Class)
-        {
-            $this->$public_var = base_register($Class);
-        }
+        $this->config = base_register('Config');
+        $this->router = base_register('Router');
+        $this->uri    = base_register('URI');
+        $this->output = base_register('Output');
     }
 }
 // END Controller Class

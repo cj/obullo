@@ -91,16 +91,16 @@ Class Pager_sliding extends Pager_common
     * @return array  First and last offsets
     * @access public
     */
-    function getPageRangeByPageId($pageid = NULL)
+    function get_page_range_by_page($pageid = NULL)
     {
         $pageid = isset($pageid) ? (int)$pageid : $this->_current_page;
         
-        if (!isset($this->_page_data)) 
+        if ( ! isset($this->_page_data)) 
         {
             $this->_generate_page_data();
         }
         
-        if (isset($this->_page_data[$pageid]) || is_null($this->_item_data)) 
+        if (isset($this->_page_data[$pageid]) OR is_null($this->_item_data)) 
         {
             if ($this->_expanded) 
             {

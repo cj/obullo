@@ -1,4 +1,19 @@
 <?php
+function OB_memory_usage() {
+        $usage = '';
+ 
+        $mem_usage = memory_get_usage(true); 
+        
+        if ($mem_usage < 1024) 
+            $usage =  $mem_usage." bytes"; 
+        elseif ($mem_usage < 1048576) 
+            $usage = round($mem_usage/1024,2)." kilobytes"; 
+        else 
+            $usage = round($mem_usage/1048576,2)." megabytes"; 
+            
+        return $usage;
+} 
+$start = memory_get_usage();
 /**
 |--------------------------------------------------------------------------
 | Obullo Framework (c) 2010. 
@@ -79,3 +94,8 @@ ob_system_close();
 // --------------------------------------------------------------------
 
 /* SVN $Id: Index.php 355 27-10-2010 23:42:38 develturk $ */
+
+$end = memory_get_usage();
+
+echo '<b>Started memory:</b> '.$start.'<br />';
+echo '<b>Total consumed memory: </b>'.$end.'<br />';

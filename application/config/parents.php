@@ -43,17 +43,7 @@ $parents['directory']['rest']       = 'Rest_controller';
 | extend rules then the "all" Controllers which has suffix "_form" will 
 | extend to Global Form_controller .
 |
-| Examples:
-|
-|  
-|   $parents['controller']['(_form$)']   =  'Form_controller';
-|                |                                  |
-|   the controller name suffix which is "_foo" will extend to Global "Form_controller"
-|    
-|   
-|   $parents['controller']['(bar_*)']    =  'Bar_controller';
-|               |                                   |
-|   the controller name prefix which is "bar_" will extend to Global "Bar_controller"
+| @See  Chapters / General Topics / Global Controllers
 | 
 */
 $parents['controller']['(_form$)']   =  'Form_controller';

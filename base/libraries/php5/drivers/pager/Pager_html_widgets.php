@@ -52,50 +52,49 @@ Class Pager_html_widgets
      * @param integer $start       starting value for the select menu
      * @param integer $end         ending value for the select menu
      * @param integer $step        step between values in the select menu
-     * @param boolean $showAllData If true, perPage is set equal to totalItems.
-     * @param array   $extraParams (or string $optionText for BC reasons)
-     *                - 'optionText': text to show in each option.
+     * @param boolean $show_all_data If true, perPage is set equal to totalItems.
+     * @param array   $extra_params (or string $option_text for BC reasons)
+     *                - 'option_text': text to show in each option.
      *                  Use '%d' where you want to see the number of pages selected.
      *                - 'attributes': (html attributes) Tag attributes or
      *                  HTML attributes (id="foo" pairs), will be inserted in the
      *                  <select> tag
-     *                - 'checkMaxLimit': if true, Pager checks if $end is bigger
+     *                - 'check_max_limit': if true, Pager checks if $end is bigger
      *                  than $totalItems, and doesn't show the extra select options
-     *                - 'autoSubmit': if TRUE, add some js code
+     *                - 'auto_submit': if TRUE, add some js code
      *                  to submit the form on the onChange event
      *
      * @return string xhtml select box
      * @access public
      */
-    function get_per_page_select_box($start = 5, $end = 30, $step = 5, $showAllData = FALSE, $extraParams = array())
+    function get_per_page_select_box($start = 5, $end = 30, $step = 5, $show_all_data = FALSE, $extra_params = array())
     {
-        // FIXME: needs POST support
-        $optionText    = '%d';
-        $attributes    = '';
-        $checkMaxLimit = FALSE;
+        $option_text     = '%d';  // FIXME: needs POST support
+        $attributes      = '';
+        $check_max_limit = FALSE;
         
-        if (is_string($extraParams)) 
+        if (is_string($extra_params)) 
         {
             //old behavior, BC maintained
-            $optionText = $extraParams;
+            $option_text = $extra_params;
         } 
         else 
         {
-            if (array_key_exists('optionText', $extraParams)) 
+            if (array_key_exists('option_text', $extra_params)) 
             {
-                $optionText = $extraParams['optionText'];
+                $option_text = $extra_params['option_text'];
             }
-            if (array_key_exists('attributes', $extraParams)) 
+            if (array_key_exists('attributes', $extra_params)) 
             {
-                $attributes = $extraParams['attributes'];
+                $attributes = $extra_params['attributes'];
             }
-            if (array_key_exists('checkMaxLimit', $extraParams)) 
+            if (array_key_exists('check_max_limit', $extra_params)) 
             {
-                $checkMaxLimit = $extraParams['checkMaxLimit'];
+                $check_max_limit = $extra_params['check_max_limit'];
             }
         }
 
-        if ( ! strstr($optionText, '%d')) 
+        if ( ! strstr($option_text, '%d')) 
         {
             throw new PagerException('Page class invalid format - use "%d" as placeholder.');
         }
@@ -113,9 +112,9 @@ Class Pager_html_widgets
             $selected = $this->pager->_per_page;
         }
 
-        if ($checkMaxLimit && $this->pager->_totalItems >= 0 && $this->pager->_totalItems < $end) 
+        if ($check_max_limit AND $this->pager->_total_items >= 0 AND $this->pager->_total_items < $end) 
         {
-            $end = $this->pager->_totalItems;
+            $end = $this->pager->_total_items;
         }
 
         $tmp = '<select name="'.$this->pager->_session_var.'"';
@@ -124,7 +123,7 @@ Class Pager_html_widgets
             $tmp .= ' '.$attributes;
         }
         
-        if ( ! empty($extraParams['autoSubmit'])) 
+        if ( ! empty($extra_params['auto_submit'])) 
         {
             if ('GET' == $this->pager->_http_method) 
             {
@@ -157,7 +156,7 @@ Class Pager_html_widgets
             elseif ($this->pager->_http_method == 'POST') 
             {
                 $tmp .= " onchange='"
-                     . $this->pager->_generateFormOnClick($this->pager->_url, $this->pager->_link_data)
+                     . $this->pager->_generate_form_onclick($this->pager->_url, $this->pager->_link_data)
                      . "'";
                 $tmp = preg_replace(
                     '/(input\.name = \"'.$this->pager->_session_var.'\"; input\.value =) \"(\d+)\";/',
@@ -177,13 +176,13 @@ Class Pager_html_widgets
             {
                 $tmp .= ' selected="selected"';
             }
-            $tmp .= '>'.sprintf($optionText, $i).'</option>';
+            $tmp .= '>'.sprintf($option_text, $i).'</option>';
         }
         
-        if ($showAllData && $last != $this->pager->_totalItems) 
+        if ($show_all_data AND $last != $this->pager->_total_items) 
         {
-            $tmp .= '<option value="'.$this->pager->_totalItems.'"';
-            if ($this->pager->_totalItems == $selected) 
+            $tmp .= '<option value="'.$this->pager->_total_items.'"';
+            if ($this->pager->_total_items == $selected) 
             {
                 $tmp .= ' selected="selected"';
             }
@@ -191,7 +190,7 @@ Class Pager_html_widgets
             
             if (empty($this->pager->_show_all_text)) 
             {
-                $tmp .= str_replace('%d', $this->pager->_totalItems, $optionText);
+                $tmp .= str_replace('%d', $this->pager->_total_items, $option_text);
             } 
             else 
             {
@@ -215,10 +214,10 @@ Class Pager_html_widgets
      * Returns a string with a XHTML SELECT menu with the page numbers,
      * useful as an alternative to the links
      *
-     * @param array  $params          - 'optionText': text to show in each option.
+     * @param array  $params          - 'option_text': text to show in each option.
      *                                  Use '%d' where you want to see the number
      *                                  of pages selected.
-     *                                - 'autoSubmit': if TRUE, add some js code
+     *                                - 'auto_submit': if TRUE, add some js code
      *                                  to submit the form on the onChange event
      * @param string $extraAttributes (html attributes) Tag attributes or
      *                                HTML attributes (id="foo" pairs), will be
@@ -229,13 +228,13 @@ Class Pager_html_widgets
      */
     function get_page_select_box($params = array(), $extra_attributes = '')
     {
-        $optionText = '%d';
-        if (array_key_exists('optionText', $params)) 
+        $option_text = '%d';
+        if (array_key_exists('option_text', $params)) 
         {
-            $optionText = $params['optionText'];
+            $option_text = $params['option_text'];
         }
 
-        if ( ! strstr($optionText, '%d')) 
+        if ( ! strstr($option_text, '%d')) 
         {
             throw new PagerException('invalid format - use "%d" as placeholder.');
         }
@@ -247,7 +246,7 @@ Class Pager_html_widgets
             $tmp .= ' '.$extra_attributes;
         }
         
-        if ( ! empty($params['autoSubmit'])) 
+        if ( ! empty($params['auto_submit'])) 
         {
             if ($this->pager->_http_method == 'GET') 
             {
@@ -274,7 +273,7 @@ Class Pager_html_widgets
             elseif ($this->pager->_http_method == 'POST') 
             {
                 $tmp .= " onchange='"
-                     . $this->pager->_generateFormOnClick($this->pager->_url, $this->pager->_link_data)
+                     . $this->pager->_generate_form_onclick($this->pager->_url, $this->pager->_link_data)
                      . "'";
                 $tmp = preg_replace(
                     '/(input\.name = \"'.$this->pager->_url_var.'\"; input\.value =) \"(\d+)\";/',
@@ -296,7 +295,7 @@ Class Pager_html_widgets
                 $tmp .= ' selected="selected"';
             }
             
-            $tmp .= '>'.sprintf($optionText, $i).'</option>';
+            $tmp .= '>'.sprintf($option_text, $i).'</option>';
         }
         
         $tmp .= '</select>';

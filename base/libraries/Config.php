@@ -26,24 +26,24 @@ Class ConfigException extends CommonException {}
  * @author      Ersin Guvenc
  * @link        
  */
-Class OB_Config {
-    
+Class OB_Config
+{    
     public $config          = array();
     public $is_loaded       = array();
     public $auto_base_url   = FALSE;
     public $auto_source_url = TRUE;
-
+    
     /**
-     * Constructor
-     *
-     * Sets the $config data from the primary config.php file as a class variable
-     *
-     * @access  public
-     * @param   string   the config file name
-     * @param   boolean  if configuration values should be loaded into their own section
-     * @param   boolean  true if errors should just return false, false if an error message should be displayed
-     * @return  boolean  if the file was successfully loaded or not
-     */
+    * Constructor
+    *
+    * Sets the $config data from the primary config.php file as a class variable
+    *
+    * @access  public
+    * @param   string   the config file name
+    * @param   boolean  if configuration values should be loaded into their own section
+    * @param   boolean  true if errors should just return false, false if an error message should be displayed
+    * @return  boolean  if the file was successfully loaded or not
+    */
     public function __construct()
     {
         $this->config = get_config();
