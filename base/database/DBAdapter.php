@@ -200,7 +200,7 @@ Abstract Class OB_DBAdapter extends OB_DB {
     */
     public function transaction()
     {
-        $this->_connect();
+        $this->__wakeup();
         $this->_conn->beginTransaction();
         
         return $this;
@@ -211,7 +211,7 @@ Abstract Class OB_DBAdapter extends OB_DB {
     */
     public function commit()
     {
-        $this->_connect(); 
+        $this->__wakeup(); 
         $this->_conn->commit();
         
         return $this;
@@ -222,10 +222,29 @@ Abstract Class OB_DBAdapter extends OB_DB {
     */
     public function rollback()
     {    
-        $this->_connect();
+        $this->__wakeup();
         $this->_conn->rollBack();
         
         return $this;
+    }
+    
+    public function __sleep()
+    {   
+        return array(
+        'hostname', 
+        'username', 
+        'password', 
+        'database', 
+        'dbdriver', 
+        'char_set', 
+        'dbh_port', 
+        'dsn', 
+        'options');
+    }
+    
+    public function __wakeup()
+    {
+        $this->_connect();
     }
     
 }

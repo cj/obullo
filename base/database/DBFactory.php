@@ -130,7 +130,7 @@ Class OB_DBFactory {
         $driver_class = 'Obullo_DB_Driver_'.ucfirst($driver_name);
         
         $DB = new $driver_class($param, $db_var); 
-        $DB->_connect();
+        $DB->__wakeup();
         
         return $DB->get_connection();
     }
