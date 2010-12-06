@@ -9,10 +9,16 @@ Class Start extends Controller {
         
         loader::database();
         loader::base_helper('form');
+        loader::base_helper('hmvc');
     }           
     
     public function index()
-    {     
+    {   
+        $hmvc = hmvc_call('welcome/blog/write/18282/');
+        $hmvc->set_post(array('test' => 'obullo'));
+        $hmvc->exec();
+        
+        
         // http://devzone.zend.com/article/2418
         $query = $this->db->query('SELECT * FROM articles');
         $num_rows = $query->row_count();
@@ -22,7 +28,7 @@ Class Start extends Controller {
         $per_page = (i_get_post('set_per_page')) ? i_get_post('set_per_page') : '5';
         
         $params = array(
-            'mode'         => 'jumping',  // sliding
+            'mode'         => 'sliding',  // jumping
             'per_page'     => $per_page,
             'delta'        => 2,
             'http_method'  => 'GET',
@@ -78,6 +84,18 @@ Class Start extends Controller {
         print 'PAGED DATA: '.print_r($data).'<br /><br /><br />';
         
         //Results from methods:
+        echo 'get_current_page()...: '; var_dump($pager->get_current_page());
+        echo 'get_next_page()......: '; var_dump($pager->get_next_page());
+        echo 'get_prev_page()......: '; var_dump($pager->get_prev_page());
+        echo 'num_items()..........: '; var_dump($pager->num_items());
+        echo 'num_pages()..........: '; var_dump($pager->num_pages());
+        echo 'is_first_page()......: '; var_dump($pager->is_first_page());
+        echo 'is_last_page().......: '; var_dump($pager->is_last_page());
+        echo 'is_last_page_end()...: '; var_dump($pager->is_last_page_end());
+        echo '$pager->range........: '; var_dump($pager->range);
+        
+        /*
+        //Results from methods:
         echo 'get_current_page()...: '.var_dump($pager->get_current_page()).'<br />';
         echo 'get_next_page()......: '.var_dump($pager->get_next_page()).'<br />';
         echo 'get_prev_page()..: '.var_dump($pager->get_prev_page()).'<br />';
@@ -87,7 +105,7 @@ Class Start extends Controller {
         echo 'is_last_page().........: '.var_dump($pager->is_last_page()).'<br />';
         echo 'is_last_page_end().: '.var_dump($pager->is_last_page_end()).'<br />';
         echo '$pager->range........: '.var_dump($pager->range).'<br />';
-        
+        */
         /*
         view_var('title', 'Welcome to Obullo Framework !');
         
@@ -96,7 +114,27 @@ Class Start extends Controller {
         view_var('body', view('view_welcome', $data)); 
         view_app('view_base_layout'); 
         */
+
+        
+        echo form_open('/welcome/start/send_form', array('method' => 'POST'));
+        echo form_input('test', 'deneme 123');
+        echo form_submit('_send', 'Send', "");
+        echo form_close();
+        
+        
+        
     }
+    
+    function send_form()
+    {
+        
+        echo '<br />';
+        echo '<br />';
+        echo 'HMVC result:';
+         
+        hmvc_call('welcome/blog/write');
+    }
+    
     
 }
 

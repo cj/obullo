@@ -29,7 +29,7 @@ $config['base_url']              = "/obullo/";
 |    /sources/images
 |
 */
-$config['source_url']            = "/sources/";
+$config['source_url']            = "/obullo/sources/";
 
 /*
 |--------------------------------------------------------------------------

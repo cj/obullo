@@ -39,7 +39,6 @@ Class OB_Router {
     public $directory           = '';
     public $uri_protocol        = 'auto';
     public $default_controller;
-    public $query_string        = FALSE; // Obullo  1.0 changes
     
     /**
     * Constructor
@@ -74,7 +73,6 @@ Class OB_Router {
     * @access    private
     * @author    Ersin Guvenc
     * @version   0.1
-    * @version   0.2 added query_sting = true var
     * @return    void
     */
     public function _set_routing()
@@ -82,11 +80,7 @@ Class OB_Router {
         // Are query strings enabled in the config file?
         // If so, we're done since segment based URIs are not used with query strings.
         if (config_item('enable_query_strings') === TRUE AND isset($_GET[config_item('controller_trigger')]))
-        {
-            // obullo 1.0 changes 
-            $this->query_string = TRUE;
-            // obullo 1.0 changes
-        
+        {        
             $this->set_directory(trim($this->uri->_filter_uri($_GET[config_item('directory_trigger')])));
             $this->set_class(trim($this->uri->_filter_uri($_GET[config_item('controller_trigger')])));
 

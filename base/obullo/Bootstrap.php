@@ -91,10 +91,9 @@ if( ! function_exists('ob_system_run'))
         // Check the controller exists or not
         if ( ! file_exists(APP .'directories'. DS .$GLOBALS['d']. DS .'controllers'. DS .$GLOBALS['c']. EXT))
         {
-            if($router->query_string) show_404("{$GLOBALS['d']} / {$GLOBALS['c']} / {$GLOBALS['m']}");
+            if(config_item('enable_query_strings') === TRUE) show_404("{$GLOBALS['d']} / {$GLOBALS['c']} / {$GLOBALS['m']}");
             
-            throw new CommonException('Unable to load your default controller.
-            Please make sure the controller specified in your Routes.php file is valid.');
+            throw new CommonException('Unable to load your default controller.Please make sure the controller specified in your Routes.php file is valid.');
         }
         
         require (BASE .'obullo'. DS .'Loader'. EXT);

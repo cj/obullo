@@ -53,6 +53,7 @@ Class OB_URI
      * Get the URI String
      *
      * @access    private
+     * @param     $hvmc  boolean
      * @return    string                            
      */    
     public function _fetch_uri_string()
