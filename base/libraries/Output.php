@@ -119,14 +119,14 @@ Class OB_Output {
     // --------------------------------------------------------------------
     
     /**
-     * Set HTTP Status Header
-     * moved to Common procedural functions.
-     * 
-     * @access   public
-     * @param    int     the status code
-     * @param    string    
-     * @return   void
-     */    
+    * Set HTTP Status Header
+    * moved to Common procedural functions.
+    * 
+    * @access   public
+    * @param    int     the status code
+    * @param    string    
+    * @return   void
+    */    
     public function set_status_header($code = 200, $text = '')
     {
         set_status_header($code, $text);
@@ -135,12 +135,12 @@ Class OB_Output {
     // --------------------------------------------------------------------
     
     /**
-     * Enable/disable Profiler
-     *
-     * @access   public
-     * @param    bool  $val
-     * @return   void
-     */    
+    * Enable/disable Profiler
+    *
+    * @access   public
+    * @param    bool  $val
+    * @return   void
+    */    
     public function profiler($val = TRUE)
     {
         $this->enable_profiler = (is_bool($val)) ? $val : TRUE;
@@ -149,12 +149,12 @@ Class OB_Output {
     // --------------------------------------------------------------------
     
     /**
-     * Set Cache
-     *
-     * @access   public
-     * @param    integer
-     * @return   void
-     */    
+    * Set Cache
+    *
+    * @access   public
+    * @param    integer
+    * @return   void
+    */    
     public function cache($time)
     {
         $this->cache_expiration = ( ! is_numeric($time)) ? 0 : $time;
@@ -176,7 +176,7 @@ Class OB_Output {
      * @access    public
      * @return    mixed
      */        
-    public function _display($output = '')
+    public function _display($output = '', $hmvc_uri_string = '')
     {    
         // Set the output data
         if ($output == '')
@@ -189,7 +189,7 @@ Class OB_Output {
         // Do we need to write a cache file?
         if ($this->cache_expiration > 0)
         {
-            $this->_write_cache($output);
+            $this->_write_cache($output, $hmvc_uri_string);
         }
         
         // --------------------------------------------------------------------
@@ -235,6 +235,14 @@ Class OB_Output {
         }        
 
         // --------------------------------------------------------------------
+        
+        if($hmvc_uri_string != '') // if cache type HMVC return to content
+        {            
+            echo $output;
+            log_message('debug', "Final output sent to browser");
+            log_message('debug', "Total execution time: ".$elapsed);
+            return TRUE;
+        }
         
         // Does the this() function exist?
         // If not we know we are dealing with a cache file so we'll
@@ -295,12 +303,12 @@ Class OB_Output {
     // --------------------------------------------------------------------
     
     /**
-     * Write a Cache File
-     *
-     * @access    public
-     * @return    void
-     */    
-    public function _write_cache($output)
+    * Write a Cache File
+    *
+    * @access    public
+    * @return    void
+    */    
+    public function _write_cache($output, $hmvc_uri_string = '')
     {
         $OB = Obullo::instance(); 
         
@@ -313,8 +321,11 @@ Class OB_Output {
             return;
         }
         
-        $uri =  $OB->config->base_url() . $OB->config->item('index_page'). $OB->uri->uri_string();
-        $cache_path .= md5($uri);
+        // Obullo changes .. 
+        $uri_string = ($hmvc_uri_string != '') ?  $hmvc_uri_string : $OB->uri->uri_string();
+
+        $uri =  $OB->config->base_url() . $OB->config->item('index_page'). $uri_string;
+        $cache_path .= $uri; // md5($uri);
 
         if ( ! $fp = @fopen($cache_path, FOPEN_WRITE_CREATE_DESTRUCTIVE))
         {
@@ -343,11 +354,11 @@ Class OB_Output {
     // --------------------------------------------------------------------
     
     /**
-     * Update/serve a cached file
-     *
-     * @access    public
-     * @return    void
-     */    
+    * Update/serve a cached file
+    *
+    * @access    public
+    * @return    void
+    */    
     public function _display_cache(&$config, &$URI)
     {
         $cache_path = (config_item('cache_path', 'cache') == '') ? APP.'system'.DS.'cache'.DS : config_item('cache_path', 'cache');
@@ -357,7 +368,7 @@ Class OB_Output {
           
         // filemtime($cached_file) < filemtime($file = $globals[c]) overwrite to cached file.
           
-        $filepath = $cache_path . md5($uri);
+        $filepath = $cache_path . $uri;// md5($uri);
                 
         if ( ! @file_exists($filepath))
         {

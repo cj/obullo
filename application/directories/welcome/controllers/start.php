@@ -13,12 +13,19 @@ Class Start extends Controller {
     }           
     
     public function index()
-    {   
+    {       
         $hmvc = hmvc_call('welcome/blog/write/18282/');
         $hmvc->set_post(array('test' => 'obullo'));
-        $hmvc->exec();
+        echo $hmvc->exec();
         
+        // echo '<br />uri_string:'.$hmvc->uri_string.'<br /><br />';
+
+        /*
+        $hmvc2 = hmvc_call('welcome/blog/read/4455');
+        echo $hmvc2->exec();
         
+        echo '<br />uri_string:'.$hmvc2->uri_string.'<br /><br />';
+        */
         // http://devzone.zend.com/article/2418
         $query = $this->db->query('SELECT * FROM articles');
         $num_rows = $query->row_count();
@@ -114,14 +121,11 @@ Class Start extends Controller {
         view_var('body', view('view_welcome', $data)); 
         view_app('view_base_layout'); 
         */
-
         
         echo form_open('/welcome/start/send_form', array('method' => 'POST'));
         echo form_input('test', 'deneme 123');
         echo form_submit('_send', 'Send', "");
         echo form_close();
-        
-        
         
     }
     

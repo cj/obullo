@@ -81,46 +81,86 @@ Class OB_HMVC
     // --------------------------------------------------------------------
     
     /**
-    * Execute Hmvc request
+    * Reset all variables for multiple
+    * HMVC requests.
     * 
     * @return   void
     */
-    public function exec()
+    public function clear()
     {
-        $d = $this->fetch_directory();   // Get requested directory
-        $c = $this->fetch_class();       // Get requested controller
-        $m = $this->fetch_method();      // Get requested method
+        $this->keyval       = array();
+        $this->uri_string   = '';
+        $this->segments     = array();
+        $this->rsegments    = array();
+        $this->class        = '';
+        $this->method       = 'index';
+        $this->directory    = '';
+        $this->default_controller  = '';
+    }
+    
+    // --------------------------------------------------------------------
+    
+    /**
+    * Execute Hmvc request
+    * 
+    * @return   string
+    */
+    public function exec($string = TRUE)
+    {
+        $D = $this->fetch_directory();   // Get requested directory
+        $C = $this->fetch_class();       // Get requested controller
+        $M = $this->fetch_method();      // Get requested method
+        
+        $config = base_register('Config');
+        $output = base_register('Output');
+        
+        $URI = new stdClass();
+        $URI->uri_string = '__HMVC_TEMP__'.$this->uri_string;
+        
+        if ($output->_display_cache($config, $URI) == TRUE)  // Check REQUEST uri if there is a Cached file exist
+        { 
+            return;  // return to cached output.
+        }
         
         // Check the controller exists or not
-        if ( ! file_exists(APP .'directories'. DS .$d. DS .'controllers'. DS .$c. EXT))
+        if ( ! file_exists(APP .'directories'. DS .$D. DS .'controllers'. DS .$C. EXT))
         {
             if(config_item('enable_query_strings') === TRUE) 
             {
-                show_404("{$d} / {$c} / {$m}");
+                show_404("{$D} / {$C} / {$M}");
             }
             
             throw new HMVCException('HMVC Unable to load your controller.Check your routes in Routes.php file is valid.');
         }
             
          // call the controller.
-         require_once(APP .'directories'. DS .$d. DS .'controllers'. DS .$c. EXT);
+         require_once(APP .'directories'. DS .$D. DS .'controllers'. DS .$C. EXT);
 
          // If Everyting ok Declare Called Controller !
-         $OB = new $c();
+         $OB = new $C();
 
          // Check method exist or not
-         if ( ! in_array(strtolower($m), array_map('strtolower', get_class_methods($OB))))
+         if ( ! in_array(strtolower($M), array_map('strtolower', get_class_methods($OB))))
          {
-            throw new HMVCException('Hmvc request not found:'."{$d} / {$c} / {$m}");
+            throw new HMVCException('Hmvc request not found: '."{$D} / {$C} / {$M}");
          }
          
+         ob_start();
+    
          // Call the requested method.                1       2       3
          // Any URI segments present (besides the directory/class/method) 
          // will be passed to the method for convenience
-         call_user_func_array(array($OB, $m), array_slice($this->rsegments, 3));
+         call_user_func_array(array($OB, $M), array_slice($this->rsegments, 3));
+         
+         $content = ob_get_contents();
+         @ob_end_clean();
+         
+         // return $content;
+    
+         // Write Cache file if cache on ! and Send the final rendered output to the browser
+         $output->_display($content, '__HMVC_TEMP__'.$this->uri_string);         
     }
-    
-    
+
     // --------------------------------------------------------------------
     
     /**

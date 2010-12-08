@@ -141,13 +141,13 @@ class email_CORE implements PHP5_Library {
     public function clear($clear_attachments = FALSE)
     {
         $this->_subject        = "";
-        $this->_body        = "";
-        $this->_finalbody    = "";
-        $this->_header_str    = "";
-        $this->_replyto_flag = FALSE;
-        $this->_recipients    = array();
+        $this->_body           = "";
+        $this->_finalbody      = "";
+        $this->_header_str     = "";
+        $this->_replyto_flag   = FALSE;
+        $this->_recipients     = array();
         $this->_headers        = array();
-        $this->_debug_msg    = array();
+        $this->_debug_msg      = array();
 
         $this->_set_header('User-Agent', $this->useragent);
         $this->_set_header('Date', $this->_set_date());

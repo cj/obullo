@@ -41,6 +41,7 @@ if( ! function_exists('hmvc_call') )
     function hmvc_call($request)
     {
         $hmvc = base_register('HMVC');
+        $hmvc->clear();
         $hmvc->hmvc_request($request);
         
         // return to HMVC Object.
