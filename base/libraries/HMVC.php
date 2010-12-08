@@ -114,14 +114,6 @@ Class OB_HMVC
         $config = base_register('Config');
         $output = base_register('Output');
         
-        $URI = new stdClass();
-        $URI->uri_string = '__HMVC_TEMP__'.$this->uri_string;
-        
-        if ($output->_display_cache($config, $URI) == TRUE)  // Check REQUEST uri if there is a Cached file exist
-        { 
-            return;  // return to cached output.
-        }
-        
         // Check the controller exists or not
         if ( ! file_exists(APP .'directories'. DS .$D. DS .'controllers'. DS .$C. EXT))
         {
@@ -155,10 +147,7 @@ Class OB_HMVC
          $content = ob_get_contents();
          @ob_end_clean();
          
-         // return $content;
-    
-         // Write Cache file if cache on ! and Send the final rendered output to the browser
-         $output->_display($content, '__HMVC_TEMP__'.$this->uri_string);         
+         return $content;
     }
 
     // --------------------------------------------------------------------

@@ -18,14 +18,13 @@ Class Start extends Controller {
         $hmvc->set_post(array('test' => 'obullo'));
         echo $hmvc->exec();
         
-        // echo '<br />uri_string:'.$hmvc->uri_string.'<br /><br />';
+        echo '<br />uri_string:'.$hmvc->uri_string.'<br /><br />';
 
-        /*
         $hmvc2 = hmvc_call('welcome/blog/read/4455');
         echo $hmvc2->exec();
         
         echo '<br />uri_string:'.$hmvc2->uri_string.'<br /><br />';
-        */
+    
         // http://devzone.zend.com/article/2418
         $query = $this->db->query('SELECT * FROM articles');
         $num_rows = $query->row_count();
