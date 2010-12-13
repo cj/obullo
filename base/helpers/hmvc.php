@@ -33,19 +33,19 @@ defined('BASE') or exit('Access Denied!');
 * Call HMVC Request using HMVC Class.
 * 
 * @access   public
-* @param    string $request
+* @param    string  $request
+* @param    integer $cache_time
 * @return   object of HMVC class
 */
 if( ! function_exists('hmvc_call') ) 
 {
-    function hmvc_call($request)
+    function hmvc_call($request, $cache_time = 0)
     {
         $hmvc = base_register('HMVC');
-        $hmvc->clear();
-        $hmvc->hmvc_request($request);
+        $hmvc->clear();                 // clear variables for each request.
+        $hmvc->hmvc_request($request, $cache_time);
         
-        // return to HMVC Object.
-        return $hmvc;
+        return $hmvc;  // return to HMVC Object.
     }  
 
 }

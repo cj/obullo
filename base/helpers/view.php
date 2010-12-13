@@ -354,7 +354,6 @@ if ( ! function_exists('_load_view'))
         
         return;
         
-        throw new ViewException('Unable to locate the view: ' . $filename . EXT);
     }
 }
 // ------------------------------------------------------------------------ 

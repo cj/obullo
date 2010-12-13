@@ -24,7 +24,7 @@ Class HMVCException extends CommonException {}
  * @subpackage  Libraries
  * @category    HMVC - URI and Routers
  * @author      Ersin Guvenc
- * @link        
+ * @version     0.1
  */
 Class OB_HMVC
 {
@@ -56,12 +56,14 @@ Class OB_HMVC
     *
     * @access    private
     * @param     $hvmc  boolean
-    * @return    string                            
+    * @param     $cache_time integer
+    * @return    void                           
     */    
-    public function hmvc_request($hmvc_uri = '')
+    public function hmvc_request($hmvc_uri = '', $cache_time = 0)
     {
         if($hmvc_uri != '')
         {
+            $this->cache_time = $cache_time;
             $this->uri_string = $hmvc_uri;
             
             $routes = get_config('routes');
@@ -90,6 +92,7 @@ Class OB_HMVC
     {
         $this->keyval       = array();
         $this->uri_string   = '';
+        $this->cache_time   = 0;
         $this->segments     = array();
         $this->rsegments    = array();
         $this->class        = '';
@@ -101,11 +104,11 @@ Class OB_HMVC
     // --------------------------------------------------------------------
     
     /**
-    * Execute Hmvc request
+    * Execute Hmvc Request
     * 
     * @return   string
     */
-    public function exec($string = TRUE)
+    public function exec()
     {
         $D = $this->fetch_directory();   // Get requested directory
         $C = $this->fetch_class();       // Get requested controller
@@ -113,6 +116,15 @@ Class OB_HMVC
         
         $config = base_register('Config');
         $output = base_register('Output');
+     
+        $URI = new stdClass();          // Create fake URI class.
+        $URI->uri_string = '__HMVC_URI__'.$this->uri_string;
+        $URI->cache_time = $this->cache_time;
+
+        if($output->_display_cache($config, $URI, TRUE) == TRUE) // Check request uri if there is a HMVC cached file exist.
+        {
+            return;
+        }
         
         // Check the controller exists or not
         if ( ! file_exists(APP .'directories'. DS .$D. DS .'controllers'. DS .$C. EXT))
@@ -125,29 +137,30 @@ Class OB_HMVC
             throw new HMVCException('HMVC Unable to load your controller.Check your routes in Routes.php file is valid.');
         }
             
-         // call the controller.
-         require_once(APP .'directories'. DS .$D. DS .'controllers'. DS .$C. EXT);
+        // Call the controller.
+        require_once(APP .'directories'. DS .$D. DS .'controllers'. DS .$C. EXT);
 
-         // If Everyting ok Declare Called Controller !
-         $OB = new $C();
+        // If Everyting ok Declare Called Controller !
+        $OB = new $C();
 
-         // Check method exist or not
-         if ( ! in_array(strtolower($M), array_map('strtolower', get_class_methods($OB))))
-         {
+        // Check method exist or not
+        if ( ! in_array(strtolower($M), array_map('strtolower', get_class_methods($OB))))
+        {
             throw new HMVCException('Hmvc request not found: '."{$D} / {$C} / {$M}");
-         }
+        }
          
-         ob_start();
+        ob_start();
     
-         // Call the requested method.                1       2       3
-         // Any URI segments present (besides the directory/class/method) 
-         // will be passed to the method for convenience
-         call_user_func_array(array($OB, $M), array_slice($this->rsegments, 3));
+        // Call the requested method.                1       2       3
+        // Any URI segments present (besides the directory/class/method) 
+        // will be passed to the method for convenience
+        call_user_func_array(array($OB, $M), array_slice($this->rsegments, 3));
          
-         $content = ob_get_contents();
-         @ob_end_clean();
+        $content = ob_get_contents();
+        @ob_end_clean();
          
-         return $content;
+        // Write cache file if cache on ! and Send the final rendered output to the browser
+        $output->_display_hmvc($content, $URI);
     }
 
     // --------------------------------------------------------------------
@@ -507,7 +520,8 @@ Class OB_HMVC
         }
     }
     
-    // --------------------------------------------------------------------    
+    // --------------------------------------------------------------------
+      
     /**
      * Re-index Segments
      *

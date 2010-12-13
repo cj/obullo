@@ -27,6 +27,8 @@ Class OutputException extends CommonException {}
  * @category      Libraries
  * @author        Ersin Guvenc
  * @link          
+ * @version       0.1
+ * @version       0.2  Added HMVC Output Cache Support
  */
 Class OB_Output {
 
@@ -34,10 +36,8 @@ Class OB_Output {
     public $cache_expiration    = 0;
     public $headers             = array();
     public $enable_profiler     = FALSE;
-    public $parse_exec_vars     = TRUE;    
-    // whether or not to parse variables like {elapsed_time} and {memory_usage}
-
-
+    public $parse_exec_vars     = TRUE;    // whether or not to parse variables like {elapsed_time} and {memory_usage}
+    
     public function __construct()
     {
         log_message('debug', "Output Class Initialized");
@@ -46,13 +46,13 @@ Class OB_Output {
     // --------------------------------------------------------------------
     
     /**
-     * Get Output
-     *
-     * Returns the current output string
-     *
-     * @access    public
-     * @return    string
-     */    
+    * Get Output
+    *
+    * Returns the current output string
+    *
+    * @access    public
+    * @return    string
+    */    
     public function get_output()
     {
         return $this->final_output;
@@ -61,14 +61,14 @@ Class OB_Output {
     // --------------------------------------------------------------------
     
     /**
-     * Set Output
-     *
-     * Sets the output string
-     *
-     * @access    public
-     * @param     string
-     * @return    void
-     */    
+    * Set Output
+    *
+    * Sets the output string
+    *
+    * @access    public
+    * @param     string
+    * @return    void
+    */    
     public function set_output($output)
     {
         $this->final_output = $output;
@@ -77,14 +77,14 @@ Class OB_Output {
     // --------------------------------------------------------------------
 
     /**
-     * Append Output
-     *
-     * Appends data onto the output string
-     *
-     * @access    public
-     * @param     string
-     * @return    void
-     */    
+    * Append Output
+    *
+    * Appends data onto the output string
+    *
+    * @access    public
+    * @param     string
+    * @return    void
+    */    
     public function append_output($output)
     {
         if ($this->final_output == '')
@@ -100,17 +100,17 @@ Class OB_Output {
     // --------------------------------------------------------------------
 
     /**
-     * Set Header
-     *
-     * Lets you set a server header which will be outputted with the final display.
-     *
-     * Note:  If a file is cached, headers will not be sent.  We need to figure out
-     * how to permit header data to be saved with the cache data...
-     *
-     * @access    public
-     * @param    string
-     * @return    void
-     */    
+    * Set Header
+    *
+    * Lets you set a server header which will be outputted with the final display.
+    *
+    * Note:  If a file is cached, headers will not be sent.  We need to figure out
+    * how to permit header data to be saved with the cache data...
+    *
+    * @access    public
+    * @param    string
+    * @return    void
+    */    
     public function set_header($header, $replace = TRUE)
     {
         $this->headers[] = array($header, $replace);
@@ -163,6 +163,40 @@ Class OB_Output {
     // --------------------------------------------------------------------
     
     /**
+    * Display HMVC Output
+    * 
+    * @version  0.1
+    * @param    string $output
+    * @param    object $URI
+    * @return   string
+    */
+    public function _display_hmvc($output = '', $URI)
+    {        
+        // Do we need to write a HMVC cache file?
+        if ($URI->cache_time > 0)
+        {
+            $this->_write_cache($output, $URI);
+        }
+        
+        // Does the controller contain a function named _output()?
+        // If so send the output there.  Otherwise, echo it.
+        $OB = Obullo::instance();
+        
+        if (method_exists($OB, '_output'))
+        {
+            $OB->_output($output);
+        }
+        else
+        {
+            echo $output;
+        }
+        
+        log_message('debug', 'HMVC '.str_replace('__HMVC_URI__', '', $URI->uri_string).' uri output sent to browser');  
+    }
+    
+    // --------------------------------------------------------------------
+    
+    /**
      * Display Output
      *
      * All "view" data is automatically put into this variable by the controller class:
@@ -176,7 +210,7 @@ Class OB_Output {
      * @access    public
      * @return    mixed
      */        
-    public function _display($output = '', $hmvc_uri_string = '')
+    public function _display($output = '')
     {    
         // Set the output data
         if ($output == '')
@@ -189,7 +223,7 @@ Class OB_Output {
         // Do we need to write a cache file?
         if ($this->cache_expiration > 0)
         {
-            $this->_write_cache($output, $hmvc_uri_string);
+            $this->_write_cache($output);
         }
         
         // --------------------------------------------------------------------
@@ -235,14 +269,6 @@ Class OB_Output {
         }        
 
         // --------------------------------------------------------------------
-        
-        if($hmvc_uri_string != '') // if cache type HMVC return to content
-        {            
-            echo $output;
-            log_message('debug', "Final output sent to browser");
-            log_message('debug', "Total execution time: ".$elapsed);
-            return TRUE;
-        }
         
         // Does the this() function exist?
         // If not we know we are dealing with a cache file so we'll
@@ -298,7 +324,7 @@ Class OB_Output {
         
         log_message('debug', "Final output sent to browser");
         log_message('debug', "Total execution time: " . $elapsed);        
-    }
+    }    
     
     // --------------------------------------------------------------------
     
@@ -308,7 +334,7 @@ Class OB_Output {
     * @access    public
     * @return    void
     */    
-    public function _write_cache($output, $hmvc_uri_string = '')
+    public function _write_cache($output, $HMVC_URI = '')
     {
         $OB = Obullo::instance(); 
         
@@ -321,19 +347,22 @@ Class OB_Output {
             return;
         }
         
-        // Obullo changes .. 
-        $uri_string = ($hmvc_uri_string != '') ?  $hmvc_uri_string : $OB->uri->uri_string();
-
+        // ( Obullo changes .. )
+        $uri_string = (is_object($HMVC_URI)) ? $HMVC_URI->uri_string : $OB->uri->uri_string();
+    
+    
         $uri =  $OB->config->base_url() . $OB->config->item('index_page'). $uri_string;
-        $cache_path .= $uri; // md5($uri);
+        $cache_path .= md5($uri);
 
         if ( ! $fp = @fopen($cache_path, FOPEN_WRITE_CREATE_DESTRUCTIVE))
         {
-            log_message('error', "Unable to write cache file: ".$cache_path);
+            log_message('error', 'Unable to write cache file: '.$cache_path);
             return;
         }
         
-        $expire = time() + ($this->cache_expiration * 60);
+        // ( Obullo changes .. )
+        $cache_expiration = (is_object($HMVC_URI)) ? $HMVC_URI->cache_time : $this->cache_expiration;
+        $expire = time() + ($cache_expiration * 60);
         
         if (flock($fp, LOCK_EX))
         {
@@ -342,9 +371,10 @@ Class OB_Output {
         }
         else
         {
-            log_message('error', "Unable to secure a file lock for file at: ".$cache_path);
+            log_message('error', 'Unable to secure a file lock for file at: '.$cache_path);
             return;
         }
+        
         fclose($fp);
         @chmod($cache_path, DIR_WRITE_MODE);
 
@@ -359,16 +389,14 @@ Class OB_Output {
     * @access    public
     * @return    void
     */    
-    public function _display_cache(&$config, &$URI)
-    {
+    public function _display_cache(&$config, &$URI, $HMVC = FALSE)
+    {        
         $cache_path = (config_item('cache_path', 'cache') == '') ? APP.'system'.DS.'cache'.DS : config_item('cache_path', 'cache');
-          
+
         // Build the file path.  The file name is an MD5 hash of the full URI
         $uri =  $config->base_url() . $config->item('index_page') . $URI->uri_string;
           
-        // filemtime($cached_file) < filemtime($file = $globals[c]) overwrite to cached file.
-          
-        $filepath = $cache_path . $uri;// md5($uri);
+        $filepath = $cache_path . md5($uri);
                 
         if ( ! @file_exists($filepath))
         {
@@ -399,18 +427,32 @@ Class OB_Output {
         
         // Has the file expired? If so we'll delete it.
         if (time() >= trim(str_replace('TS--->', '', $match['1'])))
-        {         
+        {        
             if (is_really_writable($cache_path))
             {
                 @unlink($filepath);
-                log_message('debug', "Cache file has expired. File deleted");
+                log_message('debug', 'Cache file has expired. File deleted');
                 return FALSE;
             }
         }
+        
+        if($HMVC) // ( Obullo Changes ..)
+        {
+            // if current cache time = 0 for current HMVC URI delete old cached file.
+            if($URI->cache_time == 0) @unlink($filepath);
+            
+            // Display the cache
+            $this->_display_hmvc(str_replace($match['0'], '', $cache), $URI);
+            
+            log_message('debug', 'HMVC '.str_replace('__HMVC_URI__', '', $URI->uri_string).' uri cache file is current and displayed.');
+            
+            return TRUE;
+        } 
 
         // Display the cache
         $this->_display(str_replace($match['0'], '', $cache));
-        log_message('debug', "Cache file is current. Sending it to browser.");        
+        
+        log_message('debug', 'Cache file is current. Sending it to browser.');        
         return TRUE;
     }
 

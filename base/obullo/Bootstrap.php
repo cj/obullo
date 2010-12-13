@@ -80,10 +80,7 @@ if( ! function_exists('ob_system_run'))
         benchmark_mark('loading_time_base_classes_start');
         
         // Check REQUEST uri if there is a Cached file exist
-        if ($output->_display_cache($config, $uri) == TRUE) { 
-            
-            echo 'caca  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!';
-            exit; }
+        if ($output->_display_cache($config, $uri) == TRUE) { exit; }
           
         _sanitize_globals(); // Initalize to input filter. ( Sanitize must be above the GLOBALS !! )
           

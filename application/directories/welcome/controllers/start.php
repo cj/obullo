@@ -14,17 +14,20 @@ Class Start extends Controller {
     
     public function index()
     {       
-        $hmvc = hmvc_call('welcome/blog/write/18282/');
-        $hmvc->set_post(array('test' => 'obullo'));
+        $this->output->cache(0);
+        ob_start();
+
+        $hmvc = hmvc_call('welcome/blog/write/18282/', 0);
+        $hmvc->set_post(array('test' => 'obullXXXX'));
         echo $hmvc->exec();
         
         echo '<br />uri_string:'.$hmvc->uri_string.'<br /><br />';
-
-        $hmvc2 = hmvc_call('welcome/blog/read/4455');
+        
+        $hmvc2 = hmvc_call('welcome/blog/read/4455', 0);
         echo $hmvc2->exec();
         
         echo '<br />uri_string:'.$hmvc2->uri_string.'<br /><br />';
-    
+
         // http://devzone.zend.com/article/2418
         $query = $this->db->query('SELECT * FROM articles');
         $num_rows = $query->row_count();
@@ -125,6 +128,9 @@ Class Start extends Controller {
         echo form_input('test', 'deneme 123');
         echo form_submit('_send', 'Send', "");
         echo form_close();
+        
+        
+        $this->output->append_output(ob_get_clean());
         
     }
     
