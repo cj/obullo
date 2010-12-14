@@ -43,31 +43,31 @@ Class Pager_html_widgets
     }
     
     /**
-     * Returns a string with a XHTML SELECT menu,
-     * useful for letting the user choose how many items per page should be
-     * displayed. If parameter useSessions is TRUE, this value is stored in
-     * a session var. The string isn't echoed right now so you can use it
-     * with template engines.
-     *
-     * @param integer $start       starting value for the select menu
-     * @param integer $end         ending value for the select menu
-     * @param integer $step        step between values in the select menu
-     * @param boolean $show_all_data If true, perPage is set equal to totalItems.
-     * @param array   $extra_params (or string $option_text for BC reasons)
-     *                - 'option_text': text to show in each option.
-     *                  Use '%d' where you want to see the number of pages selected.
-     *                - 'attributes': (html attributes) Tag attributes or
-     *                  HTML attributes (id="foo" pairs), will be inserted in the
-     *                  <select> tag
-     *                - 'check_max_limit': if true, Pager checks if $end is bigger
-     *                  than $totalItems, and doesn't show the extra select options
-     *                - 'auto_submit': if TRUE, add some js code
-     *                  to submit the form on the onChange event
-     *
-     * @return string xhtml select box
-     * @access public
-     */
-    function get_per_page_select_box($start = 5, $end = 30, $step = 5, $show_all_data = FALSE, $extra_params = array())
+    * Returns a string with a XHTML SELECT menu,
+    * useful for letting the user choose how many items per page should be
+    * displayed. If parameter useSessions is TRUE, this value is stored in
+    * a session var. The string isn't echoed right now so you can use it
+    * with template engines.
+    *
+    * @param integer $start       starting value for the select menu
+    * @param integer $end         ending value for the select menu
+    * @param integer $step        step between values in the select menu
+    * @param boolean $show_all_data If true, perPage is set equal to totalItems.
+    * @param array   $extra_params (or string $option_text for BC reasons)
+    *                - 'option_text': text to show in each option.
+    *                  Use '%d' where you want to see the number of pages selected.
+    *                - 'attributes': (html attributes) Tag attributes or
+    *                  HTML attributes (id="foo" pairs), will be inserted in the
+    *                  <select> tag
+    *                - 'check_max_limit': if true, Pager checks if $end is bigger
+    *                  than $totalItems, and doesn't show the extra select options
+    *                - 'auto_submit': if TRUE, add some js code
+    *                  to submit the form on the onChange event
+    *
+    * @return string xhtml select box
+    * @access public
+    */
+    public function get_per_page_select_box($start = 5, $end = 30, $step = 5, $show_all_data = FALSE, $extra_params = array())
     {
         $option_text     = '%d';  // FIXME: needs POST support
         $attributes      = '';
@@ -128,26 +128,24 @@ Class Pager_html_widgets
             if ('GET' == $this->pager->_http_method) 
             {
                 $selector = '\' + '.'this.options[this.selectedIndex].value + \'';
-                if ($this->pager->_append) 
+                
+                // ( Obullo Changes ..)
+                
+                $tmp_link_data = $this->pager->_link_data;
+                if (isset($tmp_link_data[$this->pager->_url_var])) 
                 {
-                    $tmpLinkData = $this->pager->_link_data;
-                    if (isset($tmpLinkData[$this->pager->_url_var])) 
-                    {
-                        $tmpLinkData[$this->pager->_url_var] = $this->pager->getCurrentPageID();
-                    }
-                    
-                    $tmpLinkData[$this->pager->_session_var] = '1';
-                    $href = '?' . $this->pager->_http_build_query_wrapper($tmpLinkData);
-                    $href = htmlentities($this->pager->_url, ENT_COMPAT, 'UTF-8'). preg_replace(
-                        '/(&|&amp;|\?)('.$this->pager->_session_var.'=)(\d+)/',
-                        '\\1\\2'.$selector,
-                        htmlentities($href, ENT_COMPAT, 'UTF-8')
-                    );
-                } 
-                else 
-                {
-                    $href = htmlentities($this->pager->_url . str_replace('%d', $selector, $this->pager->_filename), ENT_COMPAT, 'UTF-8');
+                    $tmp_link_data[$this->pager->_url_var] = $this->pager->get_current_page();
                 }
+                
+                $tmp_link_data[$this->pager->_session_var] = '1';
+                $href = '?' . $this->pager->_http_build_query_wrapper($tmp_link_data);
+                $href = htmlentities($this->pager->_url, ENT_COMPAT, 'UTF-8'). preg_replace(
+                    '/(&|&amp;|\?)('.$this->pager->_session_var.'=)(\d+)/',
+                    '\\1\\2'.$selector,
+                    htmlentities($href, ENT_COMPAT, 'UTF-8')
+                );
+
+                // ( Obullo Changes ..)
                 
                 $tmp .= ' onchange="document.location.href=\''
                      . $href .'\''
@@ -211,22 +209,22 @@ Class Pager_html_widgets
     }
 
     /**
-     * Returns a string with a XHTML SELECT menu with the page numbers,
-     * useful as an alternative to the links
-     *
-     * @param array  $params          - 'option_text': text to show in each option.
-     *                                  Use '%d' where you want to see the number
-     *                                  of pages selected.
-     *                                - 'auto_submit': if TRUE, add some js code
-     *                                  to submit the form on the onChange event
-     * @param string $extraAttributes (html attributes) Tag attributes or
-     *                                HTML attributes (id="foo" pairs), will be
-     *                                inserted in the <select> tag
-     *
-     * @return string xhtml select box
-     * @access public
-     */
-    function get_page_select_box($params = array(), $extra_attributes = '')
+    * Returns a string with a XHTML SELECT menu with the page numbers,
+    * useful as an alternative to the links
+    *
+    * @param array  $params          - 'option_text': text to show in each option.
+    *                                  Use '%d' where you want to see the number
+    *                                  of pages selected.
+    *                                - 'auto_submit': if TRUE, add some js code
+    *                                  to submit the form on the onChange event
+    * @param string $extraAttributes (html attributes) Tag attributes or
+    *                                HTML attributes (id="foo" pairs), will be
+    *                                inserted in the <select> tag
+    *
+    * @return string xhtml select box
+    * @access public
+    */
+    public function get_page_select_box($params = array(), $extra_attributes = '')
     {
         $option_text = '%d';
         if (array_key_exists('option_text', $params)) 
@@ -252,19 +250,16 @@ Class Pager_html_widgets
             {
                 $selector = '\' + '.'this.options[this.selectedIndex].value + \'';
                 
-                if ($this->pager->_append) 
-                {
-                    $href = '?' . $this->pager->_http_build_query_wrapper($this->pager->_link_data);
-                    $href = htmlentities($this->pager->_url, ENT_COMPAT, 'UTF-8'). preg_replace(
-                        '/(&|&amp;|\?)('.$this->pager->_url_var.'=)(\d+)/',
-                        '\\1\\2'.$selector,
-                        htmlentities($href, ENT_COMPAT, 'UTF-8')
-                    );
-                } 
-                else 
-                {
-                    $href = htmlentities($this->pager->_url . str_replace('%d', $selector, $this->pager->_filename), ENT_COMPAT, 'UTF-8');
-                }
+                // ( Obullo Changes ..)
+                
+                $href = '?' . $this->pager->_http_build_query_wrapper($this->pager->_link_data);
+                $href = htmlentities($this->pager->_url, ENT_COMPAT, 'UTF-8'). preg_replace(
+                    '/(&|&amp;|\?)('.$this->pager->_url_var.'=)(\d+)/',
+                    '\\1\\2'.$selector,
+                    htmlentities($href, ENT_COMPAT, 'UTF-8')
+                );
+                
+                // ( Obullo Changes ..)
                 
                 $tmp .= ' onchange="document.location.href=\''
                      . $href .'\''

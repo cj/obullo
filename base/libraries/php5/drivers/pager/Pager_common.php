@@ -42,7 +42,6 @@ Class Pager_common
     public $_base_url       = '';       // string base_url  // pear pager $_path / PAGER_CURRENT_PATHNAME
     public $_filename       = '';       // string file name
     public $_fix_filename   = TRUE;     // boolean If false, don't override the fileName option. Use at your own risk.
-    public $_append         = TRUE;     // boolean you have to use FALSE with mod_rewrite
     public $_http_method    = 'GET';    // string specifies which HTTP method to use
     public $_form_id        = '';       // string specifies which HTML form to use
     public $_import_query   = TRUE;     // boolean whether or not to import submitted data
@@ -110,7 +109,6 @@ Class Pager_common
         'base_url',      // 'path',  ( Obullo changes .. )
         'filename',
         'fix_filename',
-        'append',
         'http_method',
         'query_string',  // ( Obullo changes .. )
         'form_id',
@@ -161,8 +159,8 @@ Class Pager_common
     /**
     * Generate or refresh the links and paged data after a call to set_options()
     *
-    * @return void
     * @access public
+    * @return void
     */
     public function build()
     {
@@ -204,23 +202,23 @@ Class Pager_common
     /**
     * Returns an array of current pages data
     *
-    * @param integer $pageID Desired page ID (optional)
+    * @param integer $page_id Desired page ID (optional)
     *
     * @return array Page data
     * @access public
     */
-    public function get_page_data($pageID = NULL)
+    public function get_page_data($page_id = NULL)
     {
-        $pageID = empty($pageID) ? $this->_current_page : $pageID;
+        $page_id = empty($page_id) ? $this->_current_page : $page_id;
 
         if ( ! isset($this->_page_data)) 
         {
             $this->_generate_page_data();
         }
         
-        if ( ! empty($this->_page_data[$pageID])) 
+        if ( ! empty($this->_page_data[$page_id])) 
         {
-            return $this->_page_data[$pageID];
+            return $this->_page_data[$page_id];
         }
         
         return array();
@@ -229,28 +227,28 @@ Class Pager_common
     // ------------------------------------------------------------------------
     
     /**
-    * Returns offsets for given pageID. Eg, if you
-    * pass it pageID one and your perPage limit is 10 it will return (1, 10). PageID of 2 would
+    * Returns offsets for given page_id. Eg, if you
+    * pass it page_id one and your perPage limit is 10 it will return (1, 10). page_id of 2 would
     * give you (11, 20).
     *
-    * @param integer $pageID PageID to get offsets for
+    * @param integer $page_id page_id to get offsets for
     * @return array  First and last offsets
     * @access public
     */
-    public function get_offset_by_page($pageID = NULL)
+    public function get_offset_by_page($page_id = NULL)
     {
-        $pageID = isset($pageID) ? $pageID : $this->_current_page;
+        $page_id = isset($page_id) ? $page_id : $this->_current_page;
         
         if ( ! isset($this->_page_data)) 
         {
             $this->_generate_page_data();
         }
 
-        if (isset($this->_page_data[$pageID]) OR is_null($this->_item_data)) 
+        if (isset($this->_page_data[$page_id]) OR is_null($this->_item_data)) 
         {
             return array(
-                        max(($this->_per_page * ($pageID - 1)) + 1, 1),
-                        min($this->_total_items, $this->_per_page * $pageID)
+                        max(($this->_per_page * ($page_id - 1)) + 1, 1),
+                        min($this->_total_items, $this->_per_page * $page_id)
                    );
         }
         return array(0, 0);
@@ -370,7 +368,7 @@ Class Pager_common
     * @return void
     * @access private
     */
-    protected function _generate_page_data()
+    public function _generate_page_data()
     {   
         if ( ! is_null($this->_item_data))  // Been supplied an array of data?
         {
@@ -411,25 +409,18 @@ Class Pager_common
     * @return string The link in string form
     * @access private
     */
-    protected function _render_link($altText, $linkText)
+    public function _render_link($alt_text, $link_text)
     {
         $OB = Obullo::instance();
         
         if ($this->_http_method == 'GET') 
         {
-            if ($this->_append) 
-            {
-                $href = '?' . $this->_http_build_query_wrapper($this->_link_data);
+            $href = '?' . $this->_http_build_query_wrapper($this->_link_data);
 
-                // Is query string true,  ( Obullo Changes )
-                if($OB->config->item('enable_query_strings') === FALSE AND $this->_query_string == FALSE)
-                {   
-                     $href = $this->_link_data[$this->_url_var]; 
-                }
-            } 
-            else 
-            {
-                $href = str_replace('%d', $this->_link_data[$this->_url_var], $this->_filename);
+            // Is query string false, use Obullo style urls  ( Obullo Changes )
+            if($this->_query_string == FALSE)
+            {   
+                 $href = $this->_link_data[$this->_url_var]; 
             }
             
             $onclick = '';
@@ -444,8 +435,8 @@ Class Pager_common
                            empty($this->_attributes)  ? '' : ' '.$this->_attributes,
                            empty($this->_accesskey)   ? '' : ' accesskey="'.$this->_link_data[$this->_url_var].'"',
                            empty($onclick)            ? '' : ' onclick="'.$onclick.'"',
-                           $altText,
-                           $linkText
+                           $alt_text,
+                           $link_text
             );
         } 
         elseif ($this->_http_method == 'POST') 
@@ -461,8 +452,8 @@ Class Pager_common
                            empty($this->_class_string) ? '' : ' '.$this->_class_string,
                            empty($this->_attributes)  ? '' : ' '.$this->_attributes,
                            empty($this->_accesskey)   ? '' : ' accesskey=\''.$this->_link_data[$this->_url_var].'\'',
-                           $altText,
-                           $linkText
+                           $alt_text,
+                           $link_text
             );
         }
         return '';
@@ -492,7 +483,7 @@ Class Pager_common
     * @return  string  A string of javascript that generates a form and submits it
     * @access  private
     */
-    protected function _generate_form_onclick($form_action, $data)
+    public function _generate_form_onclick($form_action, $data)
     {
         if ( ! is_array($data))   // Check we have an array to work with
         {
@@ -538,7 +529,7 @@ Class Pager_common
     *                representing the data
     * @access private
     */
-    protected function _generate_form_onclick_helper($data, $prev = '')
+    public function _generate_form_onclick_helper($data, $prev = '')
     {
         $str = '';
         if (is_array($data) OR is_object($data)) 
@@ -588,7 +579,7 @@ Class Pager_common
     * @return array Data
     * @access private
     */
-    protected function _get_links_data()
+    public function _get_links_data()
     {
         $qs = array();
         if ($this->_import_query) 
@@ -656,7 +647,7 @@ Class Pager_common
     * @return void
     * @access private
     */
-    protected function _recursive_stripslashes(&$var)
+    public function _recursive_stripslashes(&$var)
     {
         if (is_array($var)) 
         {
@@ -681,7 +672,7 @@ Class Pager_common
     * @return void
     * @access private
     */
-    protected function _recursive_urldecode(&$var)
+    public function _recursive_urldecode(&$var)
     {
         if (is_array($var)) 
         {
@@ -709,7 +700,7 @@ Class Pager_common
     * @return string The link
     * @access private
     */
-    protected function _get_back_link($url = '', $link = '')
+    public function _get_back_link($url = '', $link = '')
     {
         //legacy settings... the preferred way to set an option
         //now is passing it to the factory
@@ -750,7 +741,7 @@ Class Pager_common
     * @return string The link
     * @access private
     */
-    protected function _get_next_link($url = '', $link = '')
+    public function _get_next_link($url = '', $link = '')
     {
         //legacy settings... the preferred way to set an option
         //now is passing it to the factory
@@ -792,7 +783,7 @@ Class Pager_common
     * @return mixed string with html link tag or separated as array
     * @access private
     */
-    protected function _get_first_link_tag($raw = FALSE)
+    public function _get_first_link_tag($raw = FALSE)
     {
         if ($this->is_first_page() OR ($this->_http_method != 'GET')) 
         {
@@ -823,7 +814,7 @@ Class Pager_common
     * @return mixed string with html link tag or separated as array
     * @access private
     */
-    protected function _get_prev_link_tag($raw = false)
+    public function _get_prev_link_tag($raw = false)
     {
         if ($this->is_first_page() OR ($this->_http_method != 'GET')) 
         {
@@ -854,7 +845,7 @@ Class Pager_common
     * @return mixed string with html link tag or separated as array
     * @access private
     */
-    protected function _get_next_link_tag($raw = FALSE)
+    public function _get_next_link_tag($raw = FALSE)
     {
         if ($this->is_last_page() OR ($this->_http_method != 'GET')) 
         {
@@ -885,7 +876,7 @@ Class Pager_common
     * @return mixed string with html link tag or separated as array
     * @access private
     */
-    protected function _get_last_link_tag($raw = false)
+    public function _get_last_link_tag($raw = false)
     {
         if ($this->is_last_page() OR ($this->_http_method != 'GET')) 
         {
@@ -909,23 +900,16 @@ Class Pager_common
     /**
     * Helper method
     *
-    * @param integer $pageID page ID
+    * @param integer $page_id page id
     *
     * @return string the link tag url
     * @access private
     */
-    protected function _get_link_tag_url($pageID)
+    public function _get_link_tag_url($page_id)
     {
-        $this->_link_data[$this->_url_var] = $pageID;
-        
-        if ($this->_append) 
-        {
-            $href = '?' . $this->_http_build_query_wrapper($this->_link_data);
-        } 
-        else 
-        {
-            $href = str_replace('%d', $this->_link_data[$this->_url_var], $this->_filename);
-        }
+        $this->_link_data[$this->_url_var] = $page_id;
+    
+        $href = '?' . $this->_http_build_query_wrapper($this->_link_data);
         
         return htmlentities($this->_url . $href, ENT_COMPAT, 'UTF-8');
     }
@@ -942,8 +926,8 @@ Class Pager_common
     * @param integer $start       starting value for the select menu
     * @param integer $end         ending value for the select menu
     * @param integer $step        step between values in the select menu
-    * @param boolean $showAllData If true, perPage is set equal to totalItems.
-    * @param array   $extraParams (or string $optionText for BC reasons)
+    * @param boolean $show_all_data If true, perPage is set equal to totalItems.
+    * @param array   $extra_params (or string $optionText for BC reasons)
     *                - 'optionText': text to show in each option.
     *                  Use '%d' where you want to see the number of pages selected.
     *                - 'attributes': (html attributes) Tag attributes or
@@ -953,12 +937,12 @@ Class Pager_common
     * @return string xhtml select box
     * @access public
     */
-    public function get_per_page_select_box($start = 5, $end = 30, $step = 5, $showAllData = FALSE, $extraParams = array())
+    public function get_per_page_select_box($start = 5, $end = 30, $step = 5, $show_all_data = FALSE, $extra_params = array())
     {
         include_once 'Pager_html_widgets'. EXT;
         $widget = new Pager_html_widgets($this);
         
-        return $widget->get_per_page_select_box($start, $end, $step, $showAllData, $extraParams);
+        return $widget->get_per_page_select_box($start, $end, $step, $show_all_data, $extra_params);
     }
 
     // ------------------------------------------------------------------------
@@ -972,19 +956,19 @@ Class Pager_common
     *                                  of pages selected.
     *                                - 'autoSubmit': if TRUE, add some js code
     *                                  to submit the form on the onChange event
-    * @param string $extraAttributes (html attributes) Tag attributes or
+    * @param string $extra_attributes (html attributes) Tag attributes or
     *                                HTML attributes (id="foo" pairs), will be
     *                                inserted in the <select> tag
     *
     * @return string xhtml select box
     * @access public
     */
-    public function get_page_select_box($params = array(), $extraAttributes = '')
+    public function get_page_select_box($params = array(), $extra_attributes = '')
     {   
         include_once 'Pager_html_widgets'. EXT;
         $widget = new Pager_html_widgets($this);
         
-        return $widget->get_page_select_box($params, $extraAttributes);
+        return $widget->get_page_select_box($params, $extra_attributes);
     }
 
     // ------------------------------------------------------------------------
@@ -996,7 +980,7 @@ Class Pager_common
     *                or empty string if this is the 1st page.
     * @access private
     */
-    protected function _print_first_page()
+    public function _print_first_page()
     {
         if ($this->is_first_page()) 
         {
@@ -1020,7 +1004,7 @@ Class Pager_common
     *                or empty string if this is the 1st page.
     * @access private
     */
-    protected function _print_last_page()
+    public function _print_last_page()
     {
         if ($this->is_last_page()) 
         {
@@ -1044,7 +1028,7 @@ Class Pager_common
     * @return void
     * @access private
     */
-    protected function _set_first_last_text()
+    public function _set_first_last_text()
     {
         if ($this->_first_page_text == '') 
         {
@@ -1070,7 +1054,7 @@ Class Pager_common
     * @return string
     * @access private
     */
-    protected function _http_build_query_wrapper($data)
+    public function _http_build_query_wrapper($data)
     {
         $data = (array)$data;
         if (empty($data)) 
@@ -1115,7 +1099,7 @@ Class Pager_common
     * @return string
     * @access private
     */
-    protected function __http_build_query($array, $name)
+    public function __http_build_query($array, $name)
     {
         $tmp = array();
         $separator = ini_get('arg_separator.output');
@@ -1180,30 +1164,14 @@ Class Pager_common
             $this->_filename = ltrim($this->_filename, '/');  // strip leading slash
         }
 
-        if ($this->_append) 
+        // removed _append
+        if ($this->_fix_filename) 
         {
-            if ($this->_fix_filename) 
-            {
-                $this->_filename = ''; // PAGER_CURRENT_FILENAME avoid possible user error;
-            }
-            
-            $this->_url = $this->_base_url . $this->_filename;
-            
-        } else 
-        {
-            $this->_url = $this->_base_url;
-            
-            if (0 != strncasecmp($this->_filename, 'javascript', 10)) 
-            {
-                $this->_url .= $this->_base_url;
-            }
-            
-            if (FALSE === strpos($this->_filename, '%d')) 
-            {
-                throw new PagerException('if $options[\'append\'] is set to false, '
-                                                  .' $options[\'fileName\'] MUST contain the "%d" placeholder.');
-            }
+            $this->_filename = ''; // PAGER_CURRENT_FILENAME avoid possible user error;
         }
+        
+        $this->_url = $this->_base_url . $this->_filename;
+        
         
         if (substr($this->_url, 0, 2) == '//') 
         {

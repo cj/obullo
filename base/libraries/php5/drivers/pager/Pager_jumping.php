@@ -54,13 +54,13 @@ Class Pager_jumping extends Pager_common
     // ------------------------------------------------------------------------
 
     /**
-    * Returns pageID for given offset
+    * Returns page_id for given offset
     *
-    * @param integer $index Offset to get pageID for
+    * @param integer $index Offset to get page_id for
     *
-    * @return int PageID for given offset
+    * @return int page_id for given offset
     */
-    function get_page_by_offset($index)
+    public function get_page_by_offset($index)
     {
         if (!isset($this->_page_data)) 
         {
@@ -69,41 +69,41 @@ Class Pager_jumping extends Pager_common
 
         if (($index % $this->_per_page) > 0) 
         {
-            $pageID = ceil((float)$index / (float)$this->_per_page);
+            $page_id = ceil((float)$index / (float)$this->_per_page);
         } 
         else 
         {
-            $pageID = $index / $this->_per_page;
+            $page_id = $index / $this->_per_page;
         }
         
-        return $pageID;
+        return $page_id;
     }
 
     // ------------------------------------------------------------------------
     
     /**
-     * Given a PageId, it returns the limits of the range of pages displayed.
-     * While getOffsetByPageId() returns the offset of the data within the
-     * current page, this method returns the offsets of the page numbers interval.
-     * E.g., if you have pageId=3 and delta=10, it will return (1, 10).
-     * PageID of 8 would give you (1, 10) as well, because 1 <= 8 <= 10.
-     * PageID of 11 would give you (11, 20).
-     * If the method is called without parameter, pageID is set to currentPage#.
-     *
-     * @param integer $pageid PageID to get offsets for
-     *
-     * @return array  First and last offsets
-     * @access public
-     */
-    function get_page_range_by_page($pageid = null)
+    * Given a page_id, it returns the limits of the range of pages displayed.
+    * While get_offset_by_page() returns the offset of the data within the
+    * current page, this method returns the offsets of the page numbers interval.
+    * E.g., if you have page_id=3 and delta=10, it will return (1, 10).
+    * page_id of 8 would give you (1, 10) as well, because 1 <= 8 <= 10.
+    * page_id of 11 would give you (11, 20).
+    * If the method is called without parameter, page_id is set to currentPage#.
+    *
+    * @param integer $page_id page_id to get offsets for
+    *
+    * @return array  First and last offsets
+    * @access public
+    */
+    public function get_page_range_by_page($page_id = null)
     {
-        $pageid = isset($pageid) ? (int)$pageid : $this->_current_page;
+        $page_id = isset($page_id) ? (int)$page_id : $this->_current_page;
         
-        if (isset($this->_page_data[$pageid]) || is_null($this->_item_data)) 
+        if (isset($this->_page_data[$page_id]) || is_null($this->_item_data)) 
         {
             // I'm sure I'm missing something here, but this formula works
             // so I'm using it until I find something simpler.
-            $start = ((($pageid + (($this->_delta - ($pageid % $this->_delta))) % $this->_delta) / $this->_delta) - 1) * $this->_delta +1;
+            $start = ((($page_id + (($this->_delta - ($page_id % $this->_delta))) % $this->_delta) / $this->_delta) - 1) * $this->_delta +1;
             
             return array(
                 max($start, 1),
@@ -120,38 +120,38 @@ Class Pager_jumping extends Pager_common
     // ------------------------------------------------------------------------
 
     /**
-     * Returns back/next/first/last and page links,
-     * both as ordered and associative array.
-     *
-     * NB: in original PEAR::Pager this method accepted two parameters,
-     * $back_html and $next_html. Now the only parameter accepted is
-     * an integer ($pageID), since the html text for prev/next links can
-     * be set in the constructor. If a second parameter is provided, then
-     * the method act as it previously did. This hack's only purpose is to
-     * mantain backward compatibility.
-     *
-     * @param integer $pageID    Optional pageID. If specified, links for that 
-     *                           page are provided instead of current one.
-     *                           [ADDED IN NEW PAGER VERSION]
-     * @param string  $next_html HTML to put inside the next link
-     *                           [deprecated: use the factory instead]
-     *
-     * @return array Back/pages/next links
-     */
-    function get_links($pageID = NULL, $next_html = '')
+    * Returns back/next/first/last and page links,
+    * both as ordered and associative array.
+    *
+    * NB: in original PEAR::Pager this method accepted two parameters,
+    * $back_html and $next_html. Now the only parameter accepted is
+    * an integer ($page_id), since the html text for prev/next links can
+    * be set in the constructor. If a second parameter is provided, then
+    * the method act as it previously did. This hack's only purpose is to
+    * mantain backward compatibility.
+    *
+    * @param integer $page_id    Optional page_id. If specified, links for that 
+    *                           page are provided instead of current one.
+    *                           [ADDED IN NEW PAGER VERSION]
+    * @param string  $next_html HTML to put inside the next link
+    *                           [deprecated: use the factory instead]
+    *
+    * @return array Back/pages/next links
+    */
+    public function get_links($page_id = NULL, $next_html = '')
     {
         //BC hack
         if ( ! empty($next_html)) 
         {
-            $back_html = $pageID;
-            $pageID    = NULL;
+            $back_html = $page_id;
+            $page_id    = NULL;
         } 
         else 
         {
             $back_html = '';
         }
 
-        if ( ! is_null($pageID)) 
+        if ( ! is_null($page_id)) 
         {
             $this->links = '';
             if ($this->_total_pages > $this->_delta) 
@@ -160,7 +160,7 @@ Class Pager_jumping extends Pager_common
             }
 
             $_sav = $this->_current_page;
-            $this->_current_page = $pageID;
+            $this->_current_page = $page_id;
 
             $this->links .= $this->_get_back_link('', $back_html);
             $this->links .= $this->_get_page_links();
@@ -181,7 +181,7 @@ Class Pager_jumping extends Pager_common
         $link_tags   = $this->link_tags;
         $link_tags_raw = $this->link_tags_raw;
 
-        if ( ! is_null($pageID)) 
+        if ( ! is_null($page_id)) 
         {
             $this->_current_page = $_sav;
         }
@@ -216,7 +216,7 @@ Class Pager_jumping extends Pager_common
     * @return string Links
     * @access private
     */
-    function _get_page_links($url = '')
+    public function _get_page_links($url = '')
     {
         // legacy setting... the preferred way to set an option now
         // is adding it to the constuctor

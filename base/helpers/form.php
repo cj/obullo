@@ -50,7 +50,7 @@ if( ! function_exists('form_open') )
 	    $attributes = 'method="post"';
 	    
 	    $action = ( strpos($action, '://') === FALSE) ? $OB->config->site_url($action) : $action;
-
+        
 	    $form = '<form action="'.$action.'"';
 
 	    $form .= _attributes_to_string($attributes, TRUE);

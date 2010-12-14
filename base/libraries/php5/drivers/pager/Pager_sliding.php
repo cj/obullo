@@ -68,45 +68,45 @@ Class Pager_sliding extends Pager_common
     /**
     * "Overload" PEAR::Pager method. VOID. Not needed here...
     *
-    * @param integer $index Offset to get pageID for
+    * @param integer $index Offset to get page_id for
     *
     * @return void
     * @deprecated
     * @access public
     */
-    function get_page_by_offset($index) {}
+    public function get_page_by_offset($index) {}
 
     // ------------------------------------------------------------------------
 
     /**
-    * Given a PageId, it returns the limits of the range of pages displayed.
-    * While getOffsetByPageId() returns the offset of the data within the
+    * Given a page_id, it returns the limits of the range of pages displayed.
+    * While get_offset_by_page() returns the offset of the data within the
     * current page, this method returns the offsets of the page numbers interval.
-    * E.g., if you have pageId=5 and delta=2, it will return (3, 7).
-    * PageID of 9 would give you (4, 8).
-    * If the method is called without parameter, pageID is set to currentPage#.
+    * E.g., if you have page_id=5 and delta=2, it will return (3, 7).
+    * page_id of 9 would give you (4, 8).
+    * If the method is called without parameter, page_id is set to currentPage#.
     *
-    * @param integer $pageid PageID to get offsets for
+    * @param integer $page_id page_id to get offsets for
     *
     * @return array  First and last offsets
     * @access public
     */
-    function get_page_range_by_page($pageid = NULL)
+    public function get_page_range_by_page($page_id = NULL)
     {
-        $pageid = isset($pageid) ? (int)$pageid : $this->_current_page;
+        $page_id = isset($page_id) ? (int)$page_id : $this->_current_page;
         
         if ( ! isset($this->_page_data)) 
         {
             $this->_generate_page_data();
         }
         
-        if (isset($this->_page_data[$pageid]) OR is_null($this->_item_data)) 
+        if (isset($this->_page_data[$page_id]) OR is_null($this->_item_data)) 
         {
             if ($this->_expanded) 
             {
-                $min_surplus = ($pageid <= $this->_delta) ? ($this->_delta - $pageid + 1) : 0;
-                $max_surplus = ($pageid >= ($this->_total_pages - $this->_delta)) ?
-                                ($pageid - ($this->_total_pages - $this->_delta)) : 0;
+                $min_surplus = ($page_id <= $this->_delta) ? ($this->_delta - $page_id + 1) : 0;
+                $max_surplus = ($page_id >= ($this->_total_pages - $this->_delta)) ?
+                                ($page_id - ($this->_total_pages - $this->_delta)) : 0;
             } 
             else 
             {
@@ -114,8 +114,8 @@ Class Pager_sliding extends Pager_common
             }
             
             return array(
-                max($pageid - $this->_delta - $max_surplus, 1),
-                min($pageid + $this->_delta + $min_surplus, $this->_total_pages)
+                max($page_id - $this->_delta - $max_surplus, 1),
+                min($page_id + $this->_delta + $min_surplus, $this->_total_pages)
             );
         }
         return array(0, 0);
@@ -127,19 +127,19 @@ Class Pager_sliding extends Pager_common
     * Returns back/next/first/last and page links,
     * both as ordered and associative array.
     *
-    * @param integer $pageID Optional pageID. If specified, links for that page
+    * @param integer $page_id Optional page_id. If specified, links for that page
     *                        are provided instead of current one.
     * @param string  $dummy  used to comply with parent signature (leave empty)
     *
     * @return array back/pages/next/first/last/all links
     * @access public
     */
-    function get_links($pageID = NULL, $dummy = '')
+    public function get_links($page_id = NULL, $dummy = '')
     {
-        if ( ! is_null($pageID)) 
+        if ( ! is_null($page_id)) 
         {
             $_sav = $this->_current_page;
-            $this->_current_page = $pageID;
+            $this->_current_page = $page_id;
 
             $this->links = '';
             if ($this->_total_pages > (2 * $this->_delta + 1)) 
@@ -166,7 +166,7 @@ Class Pager_sliding extends Pager_common
         $link_tags   = $this->link_tags;
         $link_tags_raw = $this->link_tags_raw;
 
-        if (!is_null($pageID)) 
+        if (!is_null($page_id)) 
         {
             $this->_current_page = $_sav;
         }
@@ -200,11 +200,11 @@ Class Pager_sliding extends Pager_common
     * @return string Links
     * @access private
     */
-    function _get_page_links($url = '')
+    public function _get_page_links($url = '')
     {
         //legacy setting... the preferred way to set an option now
         //is adding it to the constuctor
-        if (!empty($url)) 
+        if ( ! empty($url)) 
         {
             $this->_base_url = $url;
         }
@@ -256,12 +256,12 @@ Class Pager_sliding extends Pager_common
 
                 if ($i == $this->_current_page) 
                 {
-                    $this->range[$i] = true;
+                    $this->range[$i] = TRUE;
                     $links .= $this->_cur_page_span_pre . $i . $this->_cur_page_span_post;
                 } 
                 else 
                 {
-                    $this->range[$i] = false;
+                    $this->range[$i] = FALSE;
                     $this->_link_data[$this->_url_var] = $i;
                     $links .= $this->_render_link(str_replace('%d', $i, $this->_alt_page), $i);
                 }
@@ -300,7 +300,7 @@ Class Pager_sliding extends Pager_common
                 } 
                 else 
                 {
-                    $this->range[$i] = true;
+                    $this->range[$i] = TRUE;
                     $links .= $this->_cur_page_span_pre . $i . $this->_cur_page_span_post;
                 }
                 

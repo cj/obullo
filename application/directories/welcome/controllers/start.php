@@ -40,10 +40,9 @@ Class Start extends Controller {
             'mode'         => 'sliding',  // jumping
             'per_page'     => $per_page,
             'delta'        => 2,
-            'http_method'  => 'POST',
+            'http_method'  => 'GET',    
             'url_var'      => 'page',
-            'append'       => TRUE,
-            'query_string' => TRUE,
+            'query_string' => FALSE,      // If FALSE use Obullo style URLs 
             'current_page' => $this->uri->segment(4),
             'base_url'     => '/obullo/index.php/welcome/start/index/',
             'total_items'  => $num_rows,
@@ -55,7 +54,7 @@ Class Start extends Controller {
         // for($i=0; $i<=256; $i++)
         // $row[$i] = $i.'__item';
 
-        // $params['itemData'] = $row;
+        // $params['item_data'] = $row;
         
         
         $pager = pager::instance()->init($params);
@@ -74,10 +73,10 @@ Class Start extends Controller {
         //$links is an ordered+associative array with 'back'/'pages'/'next'/'first'/'last'/'all' links.
         //NB: $links['all'] is the same as $pager->links;
 
-        print_r($links['next']);
+        // print_r($links['next']);
         
         //echo links to other pages:
-        // echo $links['all'];
+        echo $links['all'];
         
         $selectBox = $pager->get_per_page_select_box();
         
@@ -130,7 +129,6 @@ Class Start extends Controller {
         echo form_input('test', 'deneme 123');
         echo form_submit('_send', 'Send', "");
         echo form_close();
-        
         
         $this->output->append_output(ob_get_clean());
         
