@@ -16,7 +16,8 @@ Class Start extends Controller {
     {       
         $this->output->cache(0);
         ob_start();
-
+        
+        /*
         $hmvc = hmvc_call('welcome/blog/write/18282/', 0);
         $hmvc->set_post(array('test' => 'obullXXXX'));
         echo $hmvc->exec();
@@ -25,9 +26,8 @@ Class Start extends Controller {
         
         $hmvc2 = hmvc_call('welcome/blog/read/4455', 0);
         echo $hmvc2->exec();
-        
         echo '<br />uri_string:'.$hmvc2->uri_string.'<br /><br />';
-
+        */
         // http://devzone.zend.com/article/2418
         $query = $this->db->query('SELECT * FROM articles');
         $num_rows = $query->row_count();
@@ -40,7 +40,7 @@ Class Start extends Controller {
             'mode'         => 'sliding',  // jumping
             'per_page'     => $per_page,
             'delta'        => 2,
-            'http_method'  => 'GET',
+            'http_method'  => 'POST',
             'url_var'      => 'page',
             'append'       => TRUE,
             'query_string' => TRUE,
@@ -74,8 +74,10 @@ Class Start extends Controller {
         //$links is an ordered+associative array with 'back'/'pages'/'next'/'first'/'last'/'all' links.
         //NB: $links['all'] is the same as $pager->links;
 
+        print_r($links['next']);
+        
         //echo links to other pages:
-        echo $links['all'];
+        // echo $links['all'];
         
         $selectBox = $pager->get_per_page_select_box();
         
@@ -133,6 +135,7 @@ Class Start extends Controller {
         $this->output->append_output(ob_get_clean());
         
     }
+
     
     function send_form()
     {

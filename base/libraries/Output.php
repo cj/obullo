@@ -182,9 +182,9 @@ Class OB_Output {
         // If so send the output there.  Otherwise, echo it.
         $OB = Obullo::instance();
         
-        if (method_exists($OB, '_output'))
+        if (method_exists($OB, '_hmvc_output'))
         {
-            $OB->_output($output);
+            $OB->_hmvc_output($output);
         }
         else
         {
@@ -349,7 +349,6 @@ Class OB_Output {
         
         // ( Obullo changes .. )
         $uri_string = (is_object($HMVC_URI)) ? $HMVC_URI->uri_string : $OB->uri->uri_string();
-    
     
         $uri =  $OB->config->base_url() . $OB->config->item('index_page'). $uri_string;
         $cache_path .= md5($uri);

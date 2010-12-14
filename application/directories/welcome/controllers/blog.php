@@ -1,7 +1,5 @@
 <?php
   
-
-  
 Class Blog extends Controller {
     
     function __construct()
@@ -22,12 +20,11 @@ Class Blog extends Controller {
     
     // If outout function exist
     // you can add extra output inside to current
-    function _output($output)
+    function _hmvc_output($output)
     {
-        echo 'sdsdssssssss';
         echo $output;
     }
-    
+
     function read()
     {
         echo 'READ !!! WORKS  !! NOTZZS !!';
