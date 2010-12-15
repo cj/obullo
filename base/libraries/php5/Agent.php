@@ -87,7 +87,7 @@ Class agent_CORE implements PHP5_Library {
             }
         }
         
-        log_message('debug', "User Agent Class Initialized");
+        log_me('debug', "User Agent Class Initialized");
         
         return self::instance();
     }

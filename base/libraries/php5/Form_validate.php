@@ -66,7 +66,7 @@ Class form_validate_CORE implements PHP5_Library {
             mb_internal_encoding(Obullo::instance()->config->item('charset'));
         }
     
-        log_message('debug', "Form Validation Class Initialized");
+        log_me('debug', "Form Validation Class Initialized");
         
         return self::instance();
     }
@@ -318,7 +318,7 @@ Class form_validate_CORE implements PHP5_Library {
             // We're we able to set the rules correctly?
             if (count($this->_field_data) == 0)
             {
-                log_message('debug', "Unable to find validation rules");
+                log_me('debug', "Unable to find validation rules");
                 return FALSE;
             }
         }

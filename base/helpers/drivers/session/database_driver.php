@@ -15,7 +15,7 @@ if( ! function_exists('_sess_start') )
 {
     function _sess_start($params = array())
     {                       
-        log_message('debug', "Session Database Driver Initialized"); 
+        log_me('debug', "Session Database Driver Initialized"); 
 
         $ob  = Obullo::instance();
         $ses = Ssc::instance();
@@ -80,7 +80,7 @@ if( ! function_exists('_sess_start') )
         // Delete expired sessions if necessary
         _sess_gc();
 
-        log_message('debug', "Session routines successfully run"); 
+        log_me('debug', "Session routines successfully run"); 
 
         return TRUE;
     }
@@ -105,7 +105,7 @@ if( ! function_exists('sess_read') )
         // No cookie?  Goodbye cruel world!...
         if ($session === FALSE)
         {               
-            log_message('debug', 'A session cookie was not found.');
+            log_me('debug', 'A session cookie was not found.');
             return FALSE;
         }
         
@@ -126,7 +126,7 @@ if( ! function_exists('sess_read') )
             // Does the md5 hash match?  This is to prevent manipulation of session data in userspace
             if ($hash !==  md5($session . $ses->_sion->encryption_key))
             {
-                log_message('error', 'The session cookie data did not match what was expected. This could be a possible hacking attempt.');
+                log_me('error', 'The session cookie data did not match what was expected. This could be a possible hacking attempt.');
                 
                 sess_destroy();
                 return FALSE;
@@ -819,7 +819,7 @@ if( ! function_exists('_sess_gc') )
             $ses->_sion->sess_db->where("last_activity < {$expire}");
             $ses->_sion->sess_db->delete($ses->_sion->sess_table_name);
 
-            log_message('debug', 'Session garbage collection performed.');
+            log_me('debug', 'Session garbage collection performed.');
         }
     }
 }

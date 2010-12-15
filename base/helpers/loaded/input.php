@@ -28,7 +28,7 @@ if( ! isset($_in->_put))
     $_in->_put->user_agent         = FALSE;
     $_in->_put->allow_get_array    = FALSE;
                                     
-    log_message('debug', "Input Helper Initialized");
+    log_me('debug', "Input Helper Initialized");
 
     $_config = base_register('Config');
 
@@ -116,7 +116,7 @@ if( ! function_exists('_sanitize_globals') )
         unset($_COOKIE['$Domain']);
         $_COOKIE = _clean_input_data($_COOKIE);
 
-        log_message('debug', "Global POST and COOKIE data sanitized");
+        log_me('debug', "Global POST and COOKIE data sanitized");
     }
 }
 

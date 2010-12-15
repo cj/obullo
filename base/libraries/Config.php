@@ -109,7 +109,7 @@ Class OB_Config
         profiler_set('config_files', $file, $file);
         unset($config);
 
-        log_message('debug', 'Config file loaded: config/'.$file.EXT);
+        log_me('debug', 'Config file loaded: config/'.$file.EXT);
         return TRUE;
     }
       

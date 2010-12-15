@@ -1,5 +1,5 @@
 <?php
-if( !defined('BASE') ) exit('Access Denied!');
+defined('BASE') or exit('Access Denied!');
 
 /**
  * Obullo Framework (c) 2009.

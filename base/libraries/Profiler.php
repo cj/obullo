@@ -518,11 +518,11 @@ Class OB_Profiler {
     // --------------------------------------------------------------------
    
     /**
-     * Run the Profiler
-     *
-     * @access    public
-     * @return    string
-     */    
+    * Run the Profiler
+    *
+    * @access    public
+    * @return    string
+    */    
     public function run()
     {
         $output  = "<div id=\"obullo_profiler\">";

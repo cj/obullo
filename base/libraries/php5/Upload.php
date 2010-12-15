@@ -124,7 +124,7 @@ Class upload_CORE implements PHP5_Library {
             }
         } // end if.
         
-        log_message('debug', "Upload Class Initialized");
+        log_me('debug', "Upload Class Initialized");
         
         return self::instance();
     }
@@ -881,7 +881,7 @@ Class upload_CORE implements PHP5_Library {
                 $msg = (lang($val) == FALSE) ? $val : lang($val);                
                 $this->error_msg[] = $msg;
                 
-                log_message('error', $msg);
+                log_me('error', $msg);
             }        
         }
         else
@@ -889,7 +889,7 @@ Class upload_CORE implements PHP5_Library {
             $msg = (lang($msg) == FALSE) ? $msg : lang($msg);
             $this->error_msg[] = $msg;
             
-            log_message('error', $msg);
+            log_me('error', $msg);
         }
     }
     

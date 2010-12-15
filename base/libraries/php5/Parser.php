@@ -48,7 +48,7 @@ Class parser_CORE implements PHP5_Library {
         
     public function init() 
     {     
-        log_message('debug', "Parser Class Initialized");
+        log_me('debug', "Parser Class Initialized");
         
         return self::instance(); 
     }

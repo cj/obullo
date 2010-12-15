@@ -72,7 +72,7 @@ if( ! function_exists('sess_start'))
             return TRUE;
         }
         
-        log_message('debug', "Sessions started"); 
+        log_me('debug', "Sessions started"); 
         
         return FALSE;
     }

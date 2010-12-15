@@ -34,7 +34,7 @@ if( ! isset($_bench->_mark))
     $_bench->_mark = new stdClass();
     $_bench->_mark->marker = array();
 
-    log_message('debug', "Benchmark Helper Initialized");
+    log_me('debug', "Benchmark Helper Initialized");
 }
 // --------------------------------------------------------------------
 

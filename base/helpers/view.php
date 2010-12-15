@@ -44,7 +44,7 @@ if( ! isset($_vi->_ew))  // Helper Constructror
     $_vi->_ew->view_var         = array();
     $_vi->_ew->view_layout_name = '';
                                                
-    log_message('debug', "View Helper Initialized");
+    log_me('debug', "View Helper Initialized");
 }
 
 // ------------------------------------------------------------------------ 
@@ -118,25 +118,25 @@ if ( ! function_exists('view_set_folder'))
            case 'view':
              $vi->_ew->view_folder     = DS. $folder_path;
              
-             log_message('debug', "View() Function Paths Changed");  
+             log_me('debug', "View() Function Paths Changed");  
              break;
              
            case 'view_app':
              $vi->_ew->app_view_folder = DS. $folder_path;
              
-             log_message('debug', "View_app() Function Paths Changed");   
+             log_me('debug', "View_app() Function Paths Changed");   
              break;
              
            case 'css':
              $vi->_ew->css_folder      = $folder;
              
-             log_message('debug', "Css() Function Paths Changed");  
+             log_me('debug', "Css() Function Paths Changed");  
              break;
              
            case 'img':
              $vi->_ew->img_folder      = $folder;
              
-             log_message('debug', "Img() Function Paths Changed");  
+             log_me('debug', "Img() Function Paths Changed");  
              break;
         }
         
@@ -273,7 +273,7 @@ if ( ! function_exists('_load_script'))
         
         ob_end_clean();
                                
-        log_message('debug', 'Script file loaded: '.$path . $filename . EXT); 
+        log_me('debug', 'Script file loaded: '.$path . $filename . EXT); 
         
         profiler_set('scripts', $filename, $filename);
         
@@ -295,7 +295,7 @@ if ( ! function_exists('_load_script'))
 * @version  0.1
 * @version  0.2 added empty $data
 * @version  0.3 added $return param
-* @version  0.4 added log_message()
+* @version  0.4 added log_me()
 * @version  0.4 added added short_open_tag support
 * @return   void
 */
@@ -309,7 +309,7 @@ if ( ! function_exists('_load_view'))
         {
             if($return) 
             { 
-                log_message('debug', 'View file failed gracefully: '. $path . $filename . EXT);
+                log_me('debug', 'View file failed gracefully: '. $path . $filename . EXT);
                 
                 return;     // fail gracefully for different interfaces ..
                             // iphone, blackberry etc..
@@ -337,7 +337,7 @@ if ( ! function_exists('_load_view'))
             include($path . $filename . EXT);
         }
         
-        log_message('debug', 'View file loaded: '.$path . $filename . EXT);
+        log_me('debug', 'View file loaded: '.$path . $filename . EXT);
 
         if($string === TRUE)
         {

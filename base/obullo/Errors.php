@@ -74,7 +74,7 @@ function Obullo_Error_Template($errno, $errstr, $errfile, $errline, $type)
  */
 function log_php_errors($type, $errstr, $errfile, $errline)
 {    
-    log_message('error', 'Php Error Type: '.$type.'  --> '.$errstr. ' '.$errfile.' '.$errline, TRUE);
+    log_me('error', 'Php Error Type: '.$type.'  --> '.$errstr. ' '.$errfile.' '.$errline, TRUE);
 }
 
 /**
@@ -120,7 +120,7 @@ function Obullo_Exception_Handler($e)
 */
 function show_404($page = '')
 {   
-    log_message('error', '404 Page Not Found --> '.$page);
+    log_me('error', '404 Page Not Found --> '.$page);
     echo show_http_error('404 Page Not Found', $page, 'ob_404', 404);
 
     exit;
@@ -140,7 +140,7 @@ function show_404($page = '')
 */
 function show_error($message, $status_code = 500, $heading = 'An Error Was Encountered')
 {
-    log_message('error', 'HTTP Error --> '.$message); 
+    log_me('error', 'HTTP Error --> '.$message); 
     echo show_http_error($heading, $message, 'ob_general', $status_code);
     
     exit;

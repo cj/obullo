@@ -80,7 +80,7 @@ Class calendar_CORE implements PHP5_Library {
             }
         }
         
-        log_message('debug', "Calendar Class Initialized");
+        log_me('debug', "Calendar Class Initialized");
         
         return self::instance();
     }

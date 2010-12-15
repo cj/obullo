@@ -60,7 +60,7 @@ if( ! isset($_log->_er))
 /**
  * Write Log File
  *
- * Generally this function will be called using the global log_message() function
+ * Generally this function will be called using the global log_me() function
  *
  * @access   public
  * @param    string    the error level

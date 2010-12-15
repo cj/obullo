@@ -58,7 +58,7 @@ Class trackback_CORE implements PHP5_Library {
      */
     public function init()
     {
-        log_message('debug', "Trackback Class Initialized");
+        log_me('debug', "Trackback Class Initialized");
         
         return self::instance();
     }
@@ -533,7 +533,7 @@ Class trackback_CORE implements PHP5_Library {
      */    
     public function set_error($msg)
     {
-        log_message('error', $msg);
+        log_me('error', $msg);
         
         $this->error_msg[] = $msg;
     }

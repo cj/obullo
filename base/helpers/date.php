@@ -56,7 +56,7 @@ if( ! function_exists('now') )
 		    {
 			    $system_time = time();
 			    
-                log_message('error', 'The Date class could not set a proper GMT timestamp so the local time() value was used.');
+                log_me('error', 'The Date class could not set a proper GMT timestamp so the local time() value was used.');
 		    }    
 
 		    return $system_time;

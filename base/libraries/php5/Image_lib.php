@@ -106,7 +106,7 @@ Class image_lib_CORE implements PHP5_Library {
             $this->_initialize($props);
         }
 
-        log_message('debug', "Image Lib Class Initialized");
+        log_me('debug', "Image Lib Class Initialized");
         
         return self::instance();
     }
@@ -1523,7 +1523,7 @@ Class image_lib_CORE implements PHP5_Library {
                 $msg = (lang($val) == FALSE) ? $val : lang($val);
                 $this->error_msg[] = $msg;
                 
-                log_message('error', $msg);
+                log_me('error', $msg);
             }
         }
         else
@@ -1531,7 +1531,7 @@ Class image_lib_CORE implements PHP5_Library {
             $msg = (lang($msg) == FALSE) ? $msg : lang($msg);
             $this->error_msg[] = $msg;
             
-            log_message('error', $msg);
+            log_me('error', $msg);
         }
     }
 

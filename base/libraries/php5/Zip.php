@@ -57,7 +57,7 @@ Class zip_CORE implements PHP5_Library {
     
     public function init()
     {
-        log_message('debug', "Zip Compression Class Initialized");
+        log_me('debug', "Zip Compression Class Initialized");
         
         return self::instance();
     }

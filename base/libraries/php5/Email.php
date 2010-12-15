@@ -125,7 +125,7 @@ class email_CORE implements PHP5_Library {
             $this->_safe_mode = ((boolean)@ini_get("safe_mode") === FALSE) ? FALSE : TRUE;
         }
 
-        log_message('debug', "Email Class Initialized");
+        log_me('debug', "Email Class Initialized");
         
         return self::instance();
     }

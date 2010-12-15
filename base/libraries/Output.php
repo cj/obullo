@@ -40,7 +40,7 @@ Class OB_Output {
     
     public function __construct()
     {
-        log_message('debug', "Output Class Initialized");
+        log_me('debug', "Output Class Initialized");
     }
     
     // --------------------------------------------------------------------
@@ -191,7 +191,7 @@ Class OB_Output {
             echo $output;
         }
         
-        log_message('debug', 'HMVC '.str_replace('__HMVC_URI__', '', $URI->uri_string).' uri output sent to browser');  
+        log_me('debug', 'HMVC '.str_replace('__HMVC_URI__', '', $URI->uri_string).' uri output sent to browser');  
     }
     
     // --------------------------------------------------------------------
@@ -276,8 +276,8 @@ Class OB_Output {
         if ( ! function_exists('this'))
         {
             echo $output;
-            log_message('debug', "Final output sent to browser");
-            log_message('debug', "Total execution time: ".$elapsed);
+            log_me('debug', "Final output sent to browser");
+            log_me('debug', "Total execution time: ".$elapsed);
             return TRUE;
         }
     
@@ -322,8 +322,8 @@ Class OB_Output {
             echo $output;  // Send it to the browser!
         }
         
-        log_message('debug', "Final output sent to browser");
-        log_message('debug', "Total execution time: " . $elapsed);        
+        log_me('debug', "Final output sent to browser");
+        log_me('debug', "Total execution time: " . $elapsed);        
     }    
     
     // --------------------------------------------------------------------
@@ -355,7 +355,7 @@ Class OB_Output {
 
         if ( ! $fp = @fopen($cache_path, FOPEN_WRITE_CREATE_DESTRUCTIVE))
         {
-            log_message('error', 'Unable to write cache file: '.$cache_path);
+            log_me('error', 'Unable to write cache file: '.$cache_path);
             return;
         }
         
@@ -370,14 +370,14 @@ Class OB_Output {
         }
         else
         {
-            log_message('error', 'Unable to secure a file lock for file at: '.$cache_path);
+            log_me('error', 'Unable to secure a file lock for file at: '.$cache_path);
             return;
         }
         
         fclose($fp);
         @chmod($cache_path, DIR_WRITE_MODE);
 
-        log_message('debug', "Cache file written: ".$cache_path);
+        log_me('debug', "Cache file written: ".$cache_path);
     }
 
     // --------------------------------------------------------------------
@@ -430,7 +430,7 @@ Class OB_Output {
             if (is_really_writable($cache_path))
             {
                 @unlink($filepath);
-                log_message('debug', 'Cache file has expired. File deleted');
+                log_me('debug', 'Cache file has expired. File deleted');
                 return FALSE;
             }
         }
@@ -443,7 +443,7 @@ Class OB_Output {
             // Display the cache
             $this->_display_hmvc(str_replace($match['0'], '', $cache), $URI);
             
-            log_message('debug', 'HMVC '.str_replace('__HMVC_URI__', '', $URI->uri_string).' uri cache file is current and displayed.');
+            log_me('debug', 'HMVC '.str_replace('__HMVC_URI__', '', $URI->uri_string).' uri cache file is current and displayed.');
             
             return TRUE;
         } 
@@ -451,7 +451,7 @@ Class OB_Output {
         // Display the cache
         $this->_display(str_replace($match['0'], '', $cache));
         
-        log_message('debug', 'Cache file is current. Sending it to browser.');        
+        log_me('debug', 'Cache file is current. Sending it to browser.');        
         return TRUE;
     }
 

@@ -71,7 +71,7 @@ Class ftp_CORE implements PHP5_Library {
             $this->hostname = preg_replace('|.+?://|', '', $this->hostname);
         }
 
-        log_message('debug', "FTP Class Initialized");
+        log_me('debug', "FTP Class Initialized");
         
         return self::instance();
     }

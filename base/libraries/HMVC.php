@@ -46,7 +46,7 @@ Class OB_HMVC
     
     public function __construct()
     {
-        log_message('debug', "HMVC Class Initialized");
+        log_me('debug', "HMVC Class Initialized");
     }
     
     // --------------------------------------------------------------------
@@ -235,7 +235,7 @@ Class OB_HMVC
             // re-index the routed segments array so it starts with 1 rather than 0
             $this->_reindex_segments();
             
-            log_message('debug', "No URI present. Default controller set.");
+            log_me('debug', "No URI present. Default controller set.");
             return;
         }
         unset($this->routes['default_controller']);
@@ -456,9 +456,9 @@ Class OB_HMVC
     /**
     *  Set the directory name
     *
-    * @access    public
+    * @access   public
     * @param    string
-    * @return    void
+    * @return   void
     */    
     public function set_directory($dir)
     {

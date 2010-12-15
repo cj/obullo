@@ -32,7 +32,7 @@ Class Controller extends Obullo {
                                 
         $this->_ob_init();
         
-        log_message('debug', "Controller Class Initialized");
+        log_me('debug', "Controller Class Initialized");
     }
 
     /**

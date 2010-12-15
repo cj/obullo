@@ -33,7 +33,7 @@ if( ! isset($_lang->_ng))
     $_la->_ng->language  = array();
     $_la->_ng->is_loaded = array();
 
-    log_message('debug', "Language Helper Initialized");
+    log_me('debug', "Language Helper Initialized");
 }
 
 // --------------------------------------------------------------------
@@ -84,7 +84,7 @@ if( ! function_exists('lang_load') )
         
         if ( ! isset($lang))
         {
-            log_message('error', 'Language file contains no data: lang' . DS .$idiom. DS . $langfile. EXT);
+            log_me('error', 'Language file contains no data: lang' . DS .$idiom. DS . $langfile. EXT);
             return;
         }
 
@@ -97,7 +97,7 @@ if( ! function_exists('lang_load') )
         profiler_set('lang_files', $langfile, $langfile);
         unset($lang);
 
-        log_message('debug', 'Language file loaded: lang' . DS .$idiom. DS .$langfile. EXT);
+        log_me('debug', 'Language file loaded: lang' . DS .$idiom. DS .$langfile. EXT);
         return TRUE;
     }
 }

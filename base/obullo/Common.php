@@ -399,7 +399,7 @@ function db_item($item, $index = 'db')
 * @access    public
 * @return    void
 */
-function log_message($level = 'error', $message, $php_error = FALSE)
+function log_me($level = 'error', $message, $php_error = FALSE)
 {
     if (config_item('log_threshold') == 0)
     return;
@@ -408,18 +408,29 @@ function log_message($level = 'error', $message, $php_error = FALSE)
 }
 
 
+/**
+* Codeigniter Backward Compatibility.
+* Please use log_me() function instead of log_message();
+* 
+* @access public
+*/
+function log_message($level = 'error', $message, $php_error = FALSE)
+{
+    return log_me($level, $message, $php_error);
+}
+
 // -------------------------------------------------------------------- 
 
 /**
- * Tests for file writability
- *
- * is_writable() returns TRUE on Windows servers when you really can't write to 
- * the file, based on the read-only attribute.  is_writable() is also unreliable
- * on Unix servers if safe_mode is on. 
- *
- * @access    private
- * @return    void
- */
+* Tests for file writability
+*
+* is_writable() returns TRUE on Windows servers when you really can't write to 
+* the file, based on the read-only attribute.  is_writable() is also unreliable
+* on Unix servers if safe_mode is on. 
+*
+* @access    private
+* @return    void
+*/
 function is_really_writable($file)
 {    
     // If we're on a Unix server with safe_mode off we call is_writable

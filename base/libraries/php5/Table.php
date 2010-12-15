@@ -50,7 +50,7 @@ Class table_CORE implements PHP5_Library {
     
     public function init()
     {
-        log_message('debug', "Table Class Initialized");
+        log_me('debug', "Table Class Initialized");
         
         return self::instance();
     }

@@ -59,7 +59,7 @@ Class OB_Router {
         $this->uri    = base_register('URI');
         $this->_set_routing();        
                 
-        log_message('debug', "Router Class Initialized");
+        log_me('debug', "Router Class Initialized");
     }
     
     // --------------------------------------------------------------------
@@ -122,7 +122,7 @@ Class OB_Router {
             // re-index the routed segments array so it starts with 1 rather than 0
             $this->uri->_reindex_segments();
             
-            log_message('debug', "No URI present. Default controller set.");
+            log_me('debug', "No URI present. Default controller set.");
             return;
         }
         unset($this->routes['default_controller']);

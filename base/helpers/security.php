@@ -356,7 +356,7 @@ if( ! function_exists('xss_clean') )
             }
         }
 
-        log_message('debug', "XSS Filtering completed");
+        log_me('debug', "XSS Filtering completed");
         return $str;
     }
 }

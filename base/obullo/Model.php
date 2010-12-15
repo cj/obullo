@@ -35,7 +35,7 @@ Class Model {
     {
         $this->_assign_db_objects();
 
-        log_message('debug', "Model Class Initialized");
+        log_me('debug', "Model Class Initialized");
     }
     
     /**

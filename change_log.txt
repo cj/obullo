@@ -91,18 +91,14 @@ functionality helpers/session/cookie_driver.php and database_driver.php files.  
 - a newline bug fixed in profiler.php
 - removed init() method from PHP5_Library interface.
 - added __sleep and __wakeup function to DB.php file.
+- added new Pager Class / Drivers and Html widgets.
+- added HMVC library and hmvc helper.
 //-----------------------------------------------------------------------------
 
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!
 
-@todo .. rename log_message function as log_me();
+@todo .. add  log_me(); function alias of log_message();
 @todo .. look log_message(); some functions does not work.
-@todo .. hmvc helper, Hierarciahl MVC support
-@todo .. add $this->db->row_array(); ,$this->db->next_row(); result() and result_array(); functions  to userguide.
-@todo .. add to user guide php5 method chaining support like this 
-echo agent::instance()
-->init()
-->browser();
 
 remove method chaning.
 echo calendar::instance()

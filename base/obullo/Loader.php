@@ -533,7 +533,7 @@ Class loader {
         { 
             self::$_files[$path] = $path;
             
-            log_message('debug', 'External file loaded: '.$path);
+            log_me('debug', 'External file loaded: '.$path);
        
             profiler_set('files', $path, $ROOT . $path);  // store into profiler
         

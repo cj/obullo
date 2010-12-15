@@ -67,7 +67,7 @@ Class typography_CORE implements PHP5_Library {
      */
     public function init() 
     {
-        log_message('debug', "Typography Class Initialized");
+        log_me('debug', "Typography Class Initialized");
         
         return self::instance();
     }
