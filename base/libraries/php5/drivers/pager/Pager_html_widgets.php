@@ -52,7 +52,7 @@ Class Pager_html_widgets
     * @param integer $start       starting value for the select menu
     * @param integer $end         ending value for the select menu
     * @param integer $step        step between values in the select menu
-    * @param boolean $show_all_data If true, perPage is set equal to totalItems.
+    * @param boolean $show_all_data If true, per_page is set equal to total_items.
     * @param array   $extra_params (or string $option_text for BC reasons)
     *                - 'option_text': text to show in each option.
     *                  Use '%d' where you want to see the number of pages selected.

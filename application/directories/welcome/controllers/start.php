@@ -5,7 +5,6 @@ Class Start extends Controller {
     function __construct()
     {   
         parent::__construct();
-        parent::__global();
         
         loader::database();
         loader::base_helper('form');
@@ -13,11 +12,7 @@ Class Start extends Controller {
     }           
     
     public function index()
-    {       
-        $this->output->cache(0);
-        ob_start();
-        
-        /*
+    {          
         $hmvc = hmvc_call('welcome/blog/write/18282/', 0);
         $hmvc->set_post(array('test' => 'obullXXXX'));
         echo $hmvc->exec();
@@ -27,8 +22,11 @@ Class Start extends Controller {
         $hmvc2 = hmvc_call('welcome/blog/read/4455', 0);
         echo $hmvc2->exec();
         echo '<br />uri_string:'.$hmvc2->uri_string.'<br /><br />';
-        */
+
+        echo 'okoko';
         // http://devzone.zend.com/article/2418
+        exit;
+        
         $query = $this->db->query('SELECT * FROM articles');
         $num_rows = $query->row_count();
         
@@ -42,20 +40,12 @@ Class Start extends Controller {
             'delta'        => 2,
             'http_method'  => 'GET',    
             'url_var'      => 'page',
-            'query_string' => FALSE,      // If FALSE use Obullo style URLs 
+            'query_string' => TRUE,      // If FALSE use Obullo style URLs 
             'current_page' => $this->uri->segment(4),
-            'base_url'     => '/obullo/index.php/welcome/start/index/',
+            'base_url'     => '/obullo/index.php',
             'total_items'  => $num_rows,
-            'extra_vars'   => array('set_per_page' => $per_page),
+            'extra_vars'   => array('d'=>'welcome','c'=>'start', 'm' => 'index', 'set_per_page' => $per_page),
         );
-        
-        
-        // $row = array();
-        // for($i=0; $i<=256; $i++)
-        // $row[$i] = $i.'__item';
-
-        // $params['item_data'] = $row;
-        
         
         $pager = pager::instance()->init($params);
          
@@ -67,22 +57,16 @@ Class Start extends Controller {
         $this->db->get('articles', $params['per_page'], $from - 1);
         $data = $this->db->fetch_all(assoc);
          
-        // $data  = $pager->get_page_data();
         $links = $pager->get_links();
-
-        //$links is an ordered+associative array with 'back'/'pages'/'next'/'first'/'last'/'all' links.
-        //NB: $links['all'] is the same as $pager->links;
-
-        // print_r($links['next']);
         
-        //echo links to other pages:
-        echo $links['all'];
+        $hiddens = array(
+        'd' => 'welcome',
+        'c' => 'start',
+        'm' => 'index',
+        );
         
-        $selectBox = $pager->get_per_page_select_box();
-        
-        echo form_open('', array('method' => $params['http_method']));
-        echo 'Select how many items per page should be shown:<br />';
-        echo $selectBox.'&nbsp';
+        echo form_open('', array('method' => $params['http_method']), $hiddens);
+        echo $links['all'].'&nbsp;&nbsp; Per Page '.$pager->get_per_page_select_box(5, 50, 5, false).'&nbsp';
         echo form_submit('_send', 'Send', "");
         echo form_close();
 
@@ -124,13 +108,6 @@ Class Start extends Controller {
         view_var('body', view('view_welcome', $data)); 
         view_app('view_base_layout'); 
         */
-        
-        echo form_open('/welcome/start/send_form', array('method' => 'POST'));
-        echo form_input('test', 'deneme 123');
-        echo form_submit('_send', 'Send', "");
-        echo form_close();
-        
-        $this->output->append_output(ob_get_clean());
         
     }
 

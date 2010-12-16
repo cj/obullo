@@ -34,6 +34,10 @@ Class OB_HMVC
     public $segments    = array();
     public $rsegments   = array();
     
+    // Post and Get variables
+    public $POST_keys   = array();
+    public $GET_keys    = array();
+    
     // Router variables.. 
     public $config;    
     public $routes              = array();
@@ -42,7 +46,6 @@ Class OB_HMVC
     public $method              = 'index';
     public $directory           = '';
     public $default_controller;
-
     
     public function __construct()
     {
@@ -98,7 +101,43 @@ Class OB_HMVC
         $this->class        = '';
         $this->method       = 'index';
         $this->directory    = '';
+        $this->post_keys    = array();
+        $this->get_keys     = array();
         $this->default_controller  = '';
+    }
+    
+    // --------------------------------------------------------------------
+    
+    /**
+    * Set $_POST params
+    * 
+    * @param array $params
+    */
+    public function set_post($params)
+    {
+        foreach($params as $key => $val)
+        {
+            $_POST[$key] = $val;
+            
+            $this->POST_keys[$key] = '';
+        }
+    }
+    
+    // --------------------------------------------------------------------
+    
+    /**
+    * Set $_GET params
+    * 
+    * @param array $params
+    */
+    public function set_get($params)
+    {
+        foreach($params as $key => $val)
+        {
+            $_GET[$key] = $val;
+            
+            $this->GET_keys[$key] = '';
+        }
     }
     
     // --------------------------------------------------------------------
@@ -161,35 +200,17 @@ Class OB_HMVC
          
         // Write cache file if cache on ! and Send the final rendered output to the browser
         $output->_display_hmvc($content, $URI);
-    }
-
-    // --------------------------------------------------------------------
-    
-    /**
-    * Set $_POST params
-    * 
-    * @param array $params
-    */
-    public function set_post($params)
-    {
-        foreach($params as $key => $val)
+        
+        // reset POST data foreach request
+        foreach($this->POST_keys as $key => $val)
         {
-            $_POST[$key] = $val; 
+            unset($_POST[$key]);
         }
-    }
-    
-    // --------------------------------------------------------------------
-    
-    /**
-    * Set $_GET params
-    * 
-    * @param array $params
-    */
-    public function set_get($params)
-    {
-        foreach($params as $key => $val)
+        
+        // reset GET data foreach request
+        foreach($this->GET_keys as $key => $val)
         {
-            $_GET[$key] = $val; 
+            unset($_GET[$key]);
         }
     }
     

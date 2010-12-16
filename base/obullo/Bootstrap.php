@@ -97,7 +97,6 @@ if( ! function_exists('ob_system_run'))
         }
         
         require (BASE .'obullo'. DS .'Loader'. EXT);
-        require (BASE .'obullo'. DS .'Obullo'. EXT);
         require (BASE .'obullo'. DS .'Controller'. EXT);
         require (BASE .'obullo'. DS .'Model'. EXT);
         

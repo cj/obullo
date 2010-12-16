@@ -40,7 +40,7 @@ $parents['directory']['rest']       = 'Rest_controller';
 | Description:
 |
 | If router requests "index.php/members/signup_form" match with regex (_form$)
-| extend rules then the "all" Controllers which has suffix "_form" will 
+| extend rules, then the "all" Controllers which has suffix "_form" will 
 | extend to Global Form_controller .
 |
 | @See  Chapters / General Topics / Global Controllers
@@ -48,6 +48,7 @@ $parents['directory']['rest']       = 'Rest_controller';
 */
 $parents['controller']['(_form$)']   =  'Form_controller';
 $parents['controller']['(bar_*)']    =  'Bar_controller';
+$parents['controller']['blog']    =  'Bar_controller';
 
 
 
