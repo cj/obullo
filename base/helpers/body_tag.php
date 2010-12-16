@@ -222,7 +222,7 @@ if( ! function_exists('img') )
             
             if ($k == 'src' AND strpos($v, '://') === FALSE)
             {
-                $ob = Obullo::instance();
+                $ob = this();
 
                 if ($index_page === TRUE)
                 {

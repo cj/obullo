@@ -162,7 +162,7 @@ Class loader {
         if($class == '')
         return FALSE;
          
-        $OB = Obullo::instance();  // Grab the Super Object. 
+        $OB = this();  // Grab the Super Object. 
         
         $class_var = strtolower($class);
         
@@ -268,7 +268,7 @@ Class loader {
         $model_var = $model_name;
         if($object_name != '' OR $object_name != NULL) $model_var = $object_name; 
         
-        $OB = Obullo::instance();  
+        $OB = this();  
         
         if (isset($OB->$model_var) AND is_object($OB->$model_var)) { return; }
         
@@ -329,7 +329,7 @@ Class loader {
     */
     public static function database($db_name = 'db', $return_object = FALSE)
     {
-        $OB = Obullo::instance();
+        $OB = this();
         
         $db_var = $db_name;
          
@@ -626,7 +626,7 @@ Class loader {
     {
         $models = profiler_get('models');
 
-        $OB = Obullo::instance();
+        $OB = this();
 
         if (count($models) == 0) return;
 

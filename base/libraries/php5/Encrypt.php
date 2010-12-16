@@ -87,7 +87,7 @@ Class encrypt_CORE implements PHP5_Library {
                 return $this->encryption_key;
             }
 
-            $key = Obullo::instance()->config->item('encryption_key');
+            $key = this()->config->item('encryption_key');
 
             if ($key === FALSE)
             {

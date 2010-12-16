@@ -63,7 +63,7 @@ if( ! function_exists('js') )
 {
     function js($src, $arguments = '', $type = 'text/javascript')
     {        
-        $ob = Obullo::instance();
+        $ob = this();
 
         $link = '<script type="'.$type.'" '; 
         
@@ -220,7 +220,7 @@ if( ! function_exists('link_tag') )
 {
     function link_tag($href = '', $rel = 'stylesheet', $type = 'text/css', $title = '', $media = '', $index_page = FALSE)
     {
-        $ob = Obullo::instance();
+        $ob = this();
 
         $link = '<link '; 
 

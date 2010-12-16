@@ -180,7 +180,7 @@ Class OB_Output {
         
         // Does the controller contain a function named _output()?
         // If so send the output there.  Otherwise, echo it.
-        $OB = Obullo::instance();
+        $OB = this();
         
         if (method_exists($OB, '_hmvc_output'))
         {
@@ -311,7 +311,7 @@ Class OB_Output {
         
         // Does the controller contain a function named _output()?
         // If so send the output there.  Otherwise, echo it.
-        $ob = Obullo::instance();
+        $ob = this();
         
         if (method_exists($ob, '_output'))
         {
@@ -336,7 +336,7 @@ Class OB_Output {
     */    
     public function _write_cache($output, $HMVC_URI = '')
     {
-        $OB = Obullo::instance(); 
+        $OB = this(); 
         
         $path = config_item('cache_path', 'cache');
     

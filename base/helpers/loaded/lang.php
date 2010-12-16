@@ -51,7 +51,7 @@ if( ! function_exists('lang_load') )
     function lang_load($langfile = '', $idiom = '', $dir = 'base', $return = FALSE)
     {     
         $_la = Ssc::instance();
-        $ob  = Obullo::instance();
+        $ob  = this();
         
         if (in_array($langfile, $_la->_ng->is_loaded, TRUE))
         return;  

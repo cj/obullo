@@ -89,7 +89,7 @@ function Obullo_Exception_Handler($e)
         
     if(substr($e->getMessage(),0,3) == 'SQL') 
     {
-        $ob   = Obullo::instance();
+        $ob   = this();
         $type = 'Database';
         
         foreach(profiler_get('databases') as $db_name => $db_var)

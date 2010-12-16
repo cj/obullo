@@ -67,7 +67,7 @@ Class parser_CORE implements PHP5_Library {
     */
     public function parse($template, $data, $return = FALSE)
     {
-        $OB = Obullo::instance();
+        $OB = this();
         $template = view($template, $data);
         
         if ($template == '')
@@ -149,7 +149,7 @@ Class parser_CORE implements PHP5_Library {
 
         if ($return == FALSE)
         {
-            Obullo::instance()->output->append_output($template);
+            this()->output->append_output($template);
         }
 
         return $template;

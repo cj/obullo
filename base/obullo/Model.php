@@ -46,7 +46,7 @@ Class Model {
     */
     public function _assign_db_objects()
     {
-        $OB = Obullo::instance();
+        $OB = this();
         
         foreach(profiler_get('databases') as $db_name => $db_var)
         {

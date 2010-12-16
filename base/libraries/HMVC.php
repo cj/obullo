@@ -527,7 +527,7 @@ Class OB_HMVC
      */        
     public function _explode_segments()
     {
-        $OB = Obullo::instance();
+        $OB = this();
         
         foreach(explode("/", preg_replace("|/*(.+?)/*$|", "\\1", $this->uri_string)) as $val)
         {

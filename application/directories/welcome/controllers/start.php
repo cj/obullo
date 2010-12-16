@@ -23,10 +23,8 @@ Class Start extends Controller {
         echo $hmvc2->exec();
         echo '<br />uri_string:'.$hmvc2->uri_string.'<br /><br />';
 
-        echo 'okoko';
         // http://devzone.zend.com/article/2418
-        exit;
-        
+
         $query = $this->db->query('SELECT * FROM articles');
         $num_rows = $query->row_count();
         

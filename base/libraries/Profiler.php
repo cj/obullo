@@ -97,7 +97,7 @@ Class OB_Profiler {
      */    
     public function _compile_queries()
     {
-        $ob = Obullo::instance();
+        $ob = this();
         $total_dbs = profiler_get('databases');
         
         // Let's determine which databases are currently connected to         
@@ -324,7 +324,7 @@ Class OB_Profiler {
      */    
     public function _compile_uri_string()
     {    
-        $ob = Obullo::instance();
+        $ob = this();
 
         $output  = '<div id="uri_string">';       
         $output .= "<table class=\"tableborder\">";
@@ -407,7 +407,7 @@ Class OB_Profiler {
      */
     public function _compile_loaded_files()
     {          
-        $ob  = Obullo::instance();
+        $ob  = this();
         $helper_prefix   = config_item('subhelper_prefix');
         $subclass_prefix = config_item('subclass_prefix');
     

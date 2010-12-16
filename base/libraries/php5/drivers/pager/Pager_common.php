@@ -411,7 +411,7 @@ Class Pager_common
     */
     public function _render_link($alt_text, $link_text)
     {
-        $OB = Obullo::instance();
+        $OB = this();
         
         if ($this->_http_method == 'GET') 
         {

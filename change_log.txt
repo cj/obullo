@@ -59,7 +59,7 @@ Global Controller files from now on. -- added to user guide
 - postgreSQL connection bug fixed. (thanks to Julio Max)
 - updated $this->config->auto_base_url() func, changed $this->config->base_url() and source_url() functions,
 updated config.php file base_url and source_url items.
-- @depreciated ob::instance() function, added Obullo::instance(); 
+- @depreciated ob::instance() function, added this(); 
 - Renamed ssc class Ssc.
 - added <meta http-equiv="Content-Type" content="text/html; charset=utf-8">  to system/errors/ob_404.php
 - Agent and Parser class moved to /Php5 library folder.

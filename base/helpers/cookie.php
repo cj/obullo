@@ -59,7 +59,7 @@ if( ! function_exists('set_cookie') )
         }
 
         // Set the config file options
-        $OB = Obullo::instance();
+        $OB = this();
 
         if ($prefix == '' AND $OB->config->item('cookie_prefix') != '')
         {
@@ -108,7 +108,7 @@ if( ! function_exists('get_cookie') )
 {
     function get_cookie($index = '', $xss_clean = FALSE)
     {
-        $OB = Obullo::instance();
+        $OB = this();
         
         $prefix = '';
         
