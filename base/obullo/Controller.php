@@ -114,7 +114,7 @@ Class Controller extends Controller_CORE {
     {   
         self::$instance = &$this;
                                 
-        parent::__global();    // Initialize to Global Controller
+        parent::__global();     // Initialize to Global Controller
                                 
         $this->_ob_init();
         

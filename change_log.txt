@@ -93,6 +93,10 @@ functionality helpers/session/cookie_driver.php and database_driver.php files.  
 - added __sleep and __wakeup function to DB.php file.
 - added new Pager Class / Drivers and Html widgets.
 - added HMVC library and hmvc helper.
+- replaces  Obullo::instance() function as this() in all files.
+- removed Obullo.php from /base/obullo/ directory. Updated Bootstrap.php
+- Depreciated using parent::__global() func in all controllers. We moved to Obullo/Controller.php , parent::__global() function
+works automatically from now on.
 //-----------------------------------------------------------------------------
 
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!
