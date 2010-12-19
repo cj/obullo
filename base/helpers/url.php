@@ -114,12 +114,7 @@ if ( ! function_exists('current_dir'))
             $separator = ($uri{0} == '/') ? '' : '/';
         }
         
-        $hmvc = base_register('HMVC');  // if hmvc request exist
-        $D    = $hmvc->fetch_directory();
-
-        $current_dir = ($D != '') ? $D : (string)$GLOBALS['d'];
-    
-        return  $current_dir. $separator . $uri;
+        return (string)$GLOBALS['d']. $separator . $uri;
     }
 }
 // ------------------------------------------------------------------------ 
@@ -133,13 +128,8 @@ if ( ! function_exists('current_dir'))
 if ( ! function_exists('current_class'))
 {
     function current_class()
-    {
-        $hmvc = base_register('HMVC');  // if hmvc request exist
-        $C    = $hmvc->fetch_class();
-        
-        $current_class = ($C != '') ? $C : (string)$GLOBALS['c'];
-        
-        return $current_class;
+    {        
+        return (string)$GLOBALS['c'];
     }
 }
 // ------------------------------------------------------------------------ 
@@ -153,13 +143,8 @@ if ( ! function_exists('current_class'))
 if ( ! function_exists('current_method'))
 {
     function current_method()
-    {
-        $hmvc = base_register('HMVC');  // if hmvc request exist
-        $D    = $hmvc->fetch_directory();
-        
-        $current_method = ($D != '') ? $hmvc->fetch_method() : (string)$GLOBALS['m'];
-        
-        return $current_method;
+    {        
+        return (string)$GLOBALS['m'];
     }
 }
 // ------------------------------------------------------------------------ 

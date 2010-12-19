@@ -12,7 +12,9 @@ Class Start extends Global_controller {
     }           
     
     public function index()
-    {                  
+    {   
+        ob_start();               
+        /*
         $hmvc = hmvc_call('blog/blog/write/18282/', 0);
         $hmvc->set_post(array('test' => 'obullXXXX'));
         echo $hmvc->exec();
@@ -21,7 +23,7 @@ Class Start extends Global_controller {
             
         $hmvc2 = hmvc_call('blog/blog/read/4455', 0);
         echo $hmvc2->exec();
-    
+        */
         // http://devzone.zend.com/article/2418
 
         $query = $this->db->query('SELECT * FROM articles');
@@ -106,6 +108,9 @@ Class Start extends Global_controller {
         view_app('view_base_layout'); 
         */
         
+        echo benchmark_memory_usage();
+        
+        $this->output->append_output(ob_get_clean());
     }
 
     
