@@ -103,7 +103,7 @@ Class OB_HMVC
         $this->directory    = '';
         $this->post_keys    = array();
         $this->get_keys     = array();
-        $this->default_controller  = '';
+        $this->default_controller  = '';    
     }
     
     // --------------------------------------------------------------------
@@ -149,9 +149,9 @@ Class OB_HMVC
     */
     public function exec()
     {
-        $D = $this->fetch_directory();   // Get requested directory
-        $C = $this->fetch_class();       // Get requested controller
-        $M = $this->fetch_method();      // Get requested method
+        $GLOBALS['d']   = $this->fetch_directory();   // Get requested directory
+        $GLOBALS['c']   = $this->fetch_class();       // Get requested controller
+        $GLOBALS['m']   = $this->fetch_method();      // Get requested method
         
         $config = base_register('Config');
         $output = base_register('Output');
@@ -166,26 +166,26 @@ Class OB_HMVC
         }
         
         // Check the controller exists or not
-        if ( ! file_exists(APP .'directories'. DS .$D. DS .'controllers'. DS .$C. EXT))
+        if ( ! file_exists(APP .'directories'. DS .$GLOBALS['d']. DS .'controllers'. DS .$GLOBALS['c']. EXT))
         {
             if(config_item('enable_query_strings') === TRUE) 
             {
-                show_404("{$D} / {$C} / {$M}");
+                show_404("{$GLOBALS['d']} / {$GLOBALS['c']} / {$GLOBALS['m']}");
             }
             
             throw new HMVCException('HMVC Unable to load your controller.Check your routes in Routes.php file is valid.');
         }
             
         // Call the controller.
-        require_once(APP .'directories'. DS .$D. DS .'controllers'. DS .$C. EXT);
+        require_once(APP .'directories'. DS .$GLOBALS['d']. DS .'controllers'. DS .$GLOBALS['c']. EXT);
 
         // If Everyting ok Declare Called Controller !
-        $OB = new $C();
+        $OB = new $GLOBALS['c']();
 
         // Check method exist or not
-        if ( ! in_array(strtolower($M), array_map('strtolower', get_class_methods($OB))))
+        if ( ! in_array(strtolower($GLOBALS['m']), array_map('strtolower', get_class_methods($OB))))
         {
-            throw new HMVCException('Hmvc request not found: '."{$D} / {$C} / {$M}");
+            throw new HMVCException('Hmvc request not found: '."{$GLOBALS['d']} / {$GLOBALS['c']} / {$GLOBALS['m']}");
         }
          
         ob_start();
@@ -193,7 +193,7 @@ Class OB_HMVC
         // Call the requested method.                1       2       3
         // Any URI segments present (besides the directory/class/method) 
         // will be passed to the method for convenience
-        call_user_func_array(array($OB, $M), array_slice($this->rsegments, 3));
+        call_user_func_array(array($OB, $GLOBALS['m']), array_slice($this->rsegments, 3));
          
         $content = ob_get_contents();
         @ob_end_clean();
@@ -201,8 +201,15 @@ Class OB_HMVC
         // Write cache file if cache on ! and Send the final rendered output to the browser
         $output->_display_hmvc($content, $URI);
         
+        //---------------------- Reset Variables ------------------//
         
         $this->clear();  // reset all variables.
+                         // reset $GLOBALS
+                         
+        $router = base_register('Router');
+        $GLOBALS['d']   = $router->fetch_directory();   // Get requested directory
+        $GLOBALS['c']   = $router->fetch_class();       // Get requested controller
+        $GLOBALS['m']   = $router->fetch_method();      // Get requested method
         
         
         // reset POST data foreach request

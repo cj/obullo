@@ -2,7 +2,7 @@
 defined('BASE') or exit('Access Denied!');
 
 /**
- * Obullo Framework (c) 2009.
+ * Obullo Framework (c) 2009 - 2010.
  *
  * PHP5 MVC Based Minimalist Software.
  *
@@ -23,20 +23,8 @@ defined('BASE') or exit('Access Denied!');
  * @category        Controller
  * @author          Global Controllers (c) Ersin Guvenc
  * 
- * @version 0.1
- * @version 0.2 added core functions like ob::register
- * @version 0.3 added extending to SSC, moved register
- *              functions to common.php
- * @version 0.4 @deprecated SSC pattern, added $load variable for loader support
- *              helpers, functions..
- * @version 0.5 added 'Obullo Global controller' functionality
- * @version 0.6 added this() shortcut function, added get_config();
- * @version 0.7 !! Returns of the SSC pattern !! :), added SSC class.
- * @version 0.8 Moved ssc to ssc.php , added extend switch support to foreach folders.
- * @version 0.9 added '*' function, added profiler_set() function.
- * @version 1.0 added parse_parents() function, ob:instance() renamed as this()
- * @version 1.1 changed Obullo Mvc2 name as Obullo GC
- * @version 1.2 removed Obullo.php and moved all contents to Controller.php, deleted parse_parents() func.
+ * @version 0.1 removed Obullo.php and moved all contents to Controller.php.
+ * @version 0.2 depreciated old global controllers functionality, deleted parse_parents() func.
  */
 
 define('OBULLO_VERSION', '1.0.1');

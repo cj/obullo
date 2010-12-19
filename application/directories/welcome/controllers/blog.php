@@ -5,7 +5,8 @@ Class Blog extends Controller {
     function __construct()
     {
         parent::__construct();
-        parent::__global();
+        
+        loader::model('');
     }
     
     
