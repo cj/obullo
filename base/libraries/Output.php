@@ -166,6 +166,7 @@ Class OB_Output {
     * Display HMVC Output
     * 
     * @version  0.1
+    * @version  0.2  added parse exec vars
     * @param    string $output
     * @param    object $URI
     * @return   string
@@ -178,18 +179,33 @@ Class OB_Output {
             $this->_write_cache($output, $URI);
         }
         
-        // Does the controller contain a function named _output()?
-        // If so send the output there.  Otherwise, echo it.
-        $OB = this();
-        
-        if (method_exists($OB, '_hmvc_output'))
-        {
-            $OB->_hmvc_output($output);
-        }
-        else
-        {
-            echo $output;
-        }
+            // Does the controller contain a function named _output()?
+            // If so send the output there.  Otherwise, echo it.
+            $OB = this();
+            
+            if (method_exists($OB, '_hmvc_output'))
+            {
+                $OB->_hmvc_output($output);
+            }
+            else
+            {
+                // --------------------------------------------------------------------
+
+                // Parse out the elapsed time and memory usage,
+                // then swap the pseudo-variables with the data
+                
+                $elapsed = benchmark_elapsed_time('total_execution_time_start', 'total_execution_time_end');        
+                $output  = str_replace('{elapsed_time}', $elapsed, $output);
+                        
+                if ($this->parse_exec_vars === TRUE)
+                {
+                    $memory = ( ! function_exists('memory_get_usage')) ? '0' : round(memory_get_usage()/1024/1024, 2).'MB';
+                    $output = str_replace('{elapsed_time}', $elapsed, $output);
+                    $output = str_replace('{memory_usage}', $memory, $output);
+                }       
+                
+                echo $output;
+            }
         
         log_me('debug', 'HMVC '.str_replace('__HMVC_URI__', '', $URI->uri_string).' uri output sent to browser');  
     }

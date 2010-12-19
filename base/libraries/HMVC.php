@@ -201,6 +201,10 @@ Class OB_HMVC
         // Write cache file if cache on ! and Send the final rendered output to the browser
         $output->_display_hmvc($content, $URI);
         
+        
+        $this->clear();  // reset all variables.
+        
+        
         // reset POST data foreach request
         foreach($this->POST_keys as $key => $val)
         {

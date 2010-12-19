@@ -1,6 +1,6 @@
-<?php      
+<?php
 
-Class Start extends Controller {
+Class Start extends Global_controller {
     
     function __construct()
     {   
@@ -12,7 +12,8 @@ Class Start extends Controller {
     }           
     
     public function index()
-    {          
+    {                  
+        /*
         $hmvc = hmvc_call('welcome/blog/write/18282/', 0);
         $hmvc->set_post(array('test' => 'obullXXXX'));
         echo $hmvc->exec();
@@ -22,7 +23,7 @@ Class Start extends Controller {
         $hmvc2 = hmvc_call('welcome/blog/read/4455', 0);
         echo $hmvc2->exec();
         echo '<br />uri_string:'.$hmvc2->uri_string.'<br /><br />';
-
+        */
         // http://devzone.zend.com/article/2418
 
         $query = $this->db->query('SELECT * FROM articles');

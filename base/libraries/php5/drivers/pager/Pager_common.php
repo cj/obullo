@@ -190,7 +190,7 @@ Class Pager_common
         $this->link_tags_raw['prev']  = $this->_get_prev_link_tag(true);
         $this->link_tags_raw['next']  = $this->_get_next_link_tag(true);
         $this->link_tags_raw['last']  = $this->_get_last_link_tag(true);
-
+        
         if ($this->_total_pages > (2 * $this->_delta + 1)) 
         {
             $this->links .= $this->_print_last_page();

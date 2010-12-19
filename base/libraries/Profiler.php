@@ -125,97 +125,102 @@ Class OB_Profiler {
             
         foreach ($total_dbs as $db_name => $db_var)
         {
-            $total_queries = count($ob->{$db_var}->cached_queries) + count($ob->{$db_var}->queries);
-            
-            $output .= '<div id="queries">';
-            $output .= "<table class=\"tableborder\">"; 
-            $output .= "<tr><th>".lang('profiler_queries').": ".$total_queries."&nbsp;&nbsp;&nbsp;</th></tr>";
-            
-            //---------------------- Direct Queries ---------------------------//
-            
-            if ($total_queries == 0)
+            if(isset($ob->{$db_var}))
             {
-                $output .= "<tr><td class=\"td_val\">".lang('profiler_no_queries')."</td></tr>";
-            }
-            else
-            {   
-                $output .= "<tr><td valign='top' class=\"td\"><span class='label'>Database</span></td>";
-                $output .= "<td class=\"td_val\">".$db_name."</td></tr>";
+                $total_queries = count($ob->{$db_var}->cached_queries) + count($ob->{$db_var}->queries);
                 
-                foreach ($ob->{$db_var}->queries as $key => $val)
-                {   
-                    $time = '';
-                    if(isset($ob->{$db_var}->query_times[$key])) 
-                    {
-                        $time = number_format($ob->{$db_var}->query_times[$key], 4);
-                    }
-                    
-                    $val = wordwrap($val, 60,"\n");
-                    $val = highlight_code($val, ENT_QUOTES);
-                    
-                    // remove all spaces and newlines, prevent js errors.
-                    $val = preg_replace('/[\t\s]+/s', ' ', $val);   // ( Obullo Changes )
-                    $val = preg_replace('/[\r\n]/', '<br />', $val);
-                    
-                    foreach ($highlight as $bold)
-                    {
-                        $val = str_replace($bold, '<strong>'.$bold.'</strong>', $val);    
-                    }
-                    
-                    $output .= "<tr><td valign='top' class=\"td\"><span class='label'>";
-                    $output .= $time."</span>&nbsp;&nbsp;</td><td class=\"td_val\">".$val."</td></tr>";
+                $output .= '<div id="queries">';
+                $output .= "<table class=\"tableborder\">"; 
+                $output .= "<tr><th>".lang('profiler_queries').": ".$total_queries."&nbsp;&nbsp;&nbsp;</th></tr>";
+                
+                //---------------------- Direct Queries ---------------------------//
+                
+                if ($total_queries == 0)
+                {
+                    $output .= "<tr><td class=\"td_val\">".lang('profiler_no_queries')."</td></tr>";
                 }
-            }
-            
-            //---------------------- Cached  Queries ---------------------------//
-            
-            if (count($ob->{$db_var}->cached_queries) == 0)
-            {
-                $output .= "";
-            }
-            else
-            {   
-                $i = 0;
-                $is_cached = '';
-                foreach ($ob->{$db_var}->cached_queries as $key => $val)
+                else
                 {   
-                    ++$i;
+                    $output .= "<tr><td valign='top' class=\"td\"><span class='label'>Database</span></td>";
+                    $output .= "<td class=\"td_val\">".$db_name."</td></tr>";
                     
-                    if(isset($ob->{$db_var}->query_times['cached'][$key])) 
-                    {
-                        $time = number_format($ob->{$db_var}->query_times['cached'][$key], 4);
-                    } 
-                     else 
-                    {
-                        $time = '<span class="notice">exec not exist !</span>';
-                    } 
-                    
-                    $val = wordwrap($val, 60,"\n");
-                    $val = highlight_code($val, ENT_QUOTES);
-                    
-                    // remove all spaces and newlines, prevent javascript errors.
-                    $val = preg_replace('/[\t\s]+/s', ' ', $val);   // ( Obullo Changes )
-                    $val = preg_replace('/[\r\n]/', '<br />', $val);
+                    foreach ($ob->{$db_var}->queries as $key => $val)
+                    {   
+                        $time = '';
+                        if(isset($ob->{$db_var}->query_times[$key])) 
+                        {
+                            $time = number_format($ob->{$db_var}->query_times[$key], 4);
+                        }
+                        
+                        $val = wordwrap($val, 60,"\n");
+                        $val = highlight_code($val, ENT_QUOTES);
+                        
+                        // remove all spaces and newlines, prevent js errors.
+                        $val = preg_replace('/[\t\s]+/s', ' ', $val);   // ( Obullo Changes )
+                        $val = preg_replace('/[\r\n]/', '<br />', $val);
+                        
+                        foreach ($highlight as $bold)
+                        {
+                            $val = str_replace($bold, '<strong>'.$bold.'</strong>', $val);    
+                        }
+                        
+                        $output .= "<tr><td valign='top' class=\"td\"><span class='label'>";
+                        $output .= $time."</span>&nbsp;&nbsp;</td><td class=\"td_val\">".$val."</td></tr>";
+                    }
+                }
+                
+                //---------------------- Cached  Queries ---------------------------//
+                
+                if (count($ob->{$db_var}->cached_queries) == 0)
+                {
+                    $output .= "";
+                }
+                else
+                {   
+                    $i = 0;
+                    $is_cached = '';
+                    foreach ($ob->{$db_var}->cached_queries as $key => $val)
+                    {   
+                        ++$i;
+                        
+                        if(isset($ob->{$db_var}->query_times['cached'][$key])) 
+                        {
+                            $time = number_format($ob->{$db_var}->query_times['cached'][$key], 4);
+                        } 
+                         else 
+                        {
+                            $time = '<span class="notice">exec not exist !</span>';
+                        } 
+                        
+                        $val = wordwrap($val, 60,"\n");
+                        $val = highlight_code($val, ENT_QUOTES);
+                        
+                        // remove all spaces and newlines, prevent javascript errors.
+                        $val = preg_replace('/[\t\s]+/s', ' ', $val);   // ( Obullo Changes )
+                        $val = preg_replace('/[\r\n]/', '<br />', $val);
 
-                    
-                    foreach ($highlight as $bold)
-                    {
-                        $val = str_replace($bold, '<strong>'.$bold.'</strong>', $val);    
+                        
+                        foreach ($highlight as $bold)
+                        {
+                            $val = str_replace($bold, '<strong>'.$bold.'</strong>', $val);    
+                        }
+                        
+                        if($i > 1) 
+                        {
+                            $is_cached = '&nbsp;<span class="cached_query">(Cached)</span>';
+                        }
+                        
+                        $output .= "<tr><td valign='top' class=\"td\"><span class='label'>" .$time. $is_cached;
+                        $output .= "</span>&nbsp;&nbsp;</td><td class=\"td_val\">".$val."</td></tr>";
                     }
-                    
-                    if($i > 1) 
-                    {
-                        $is_cached = '&nbsp;<span class="cached_query">(Cached)</span>';
-                    }
-                    
-                    $output .= "<tr><td valign='top' class=\"td\"><span class='label'>" .$time. $is_cached;
-                    $output .= "</span>&nbsp;&nbsp;</td><td class=\"td_val\">".$val."</td></tr>";
                 }
-            }
+                
+                $output .= "</table>";
+                $output .= "</div>";
             
-            $output .= "</table>";
-            $output .= "</div>";
-        }
+            } // end isset
+        
+        } // end foreach
         
         return $output; 
     }

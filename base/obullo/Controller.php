@@ -19,7 +19,7 @@ defined('BASE') or exit('Access Denied!');
  * Dual Controller, Model and View (c) 2010  
  * 
  * @package         Obullo   
- * @subpackage      Base.obullo  
+ * @subpackage      Base.controller 
  * @category        Controller
  * @author          Global Controllers (c) Ersin Guvenc
  * 
@@ -36,60 +36,10 @@ defined('BASE') or exit('Access Denied!');
  * @version 0.9 added '*' function, added profiler_set() function.
  * @version 1.0 added parse_parents() function, ob:instance() renamed as this()
  * @version 1.1 changed Obullo Mvc2 name as Obullo GC
+ * @version 1.2 removed Obullo.php and moved all contents to Controller.php, deleted parse_parents() func.
  */
 
 define('OBULLO_VERSION', '1.0.1');
-
-//------------- Global Controller Extend Switch --------------//
-
-function parse_parents()
-{
-    $_parents = get_config('parents');
-
-    if(isset($_parents['directory'][$GLOBALS['d']]))  // Is there a literal directory match ?
-    {
-        return (string)$_parents['controller'][$GLOBALS['d']];
-    }
-
-    if(isset($_parents['controller'][$GLOBALS['c']]))  // Is there a literal controller match ?
-    {
-        return (string)$_parents['controller'][$GLOBALS['c']];
-    }
-
-    // Loop through the parents array looking for directory wild-cards
-    foreach($_parents['directory'] as $pattern => $gc) 
-    {
-        if (preg_match('/'.$pattern.'/', $GLOBALS['c']))
-        {     
-            return (string)$_parents['controller'][$pattern];
-        }
-    }
-    
-    // Loop through the parents array looking for controller wild-cards
-    foreach($_parents['controller'] as $pattern => $gc)
-    {
-        if (preg_match('/'.$pattern.'/', $GLOBALS['c']))
-        {     
-            return (string)$_parents['controller'][$pattern];
-        }
-    }
-    
-    return 'Global_controller';
-}
-
-$_Global_controller = parse_parents();
-
-if( ! file_exists(APP .'parents'. DS .$_Global_controller. EXT)) 
-{
-     throw new CommonException('Unable locate to Global Controller file: '.$_Global_controller. EXT);
-}
-
-profiler_set('files', 'parents'. DS .'App_controller'. EXT,  APP .'parents'. DS .'App_controller'. EXT);
-profiler_set('files', 'parents'. DS .$_Global_controller. EXT,  APP .'parents'. DS .$_Global_controller. EXT);
-
-eval('Class Controller_CORE extends '.$_Global_controller.'{}'); 
-
-//------------- Global Controller Pattern Extend Switch --------------// 
  
  /**
  * Controller Class.
@@ -100,41 +50,27 @@ eval('Class Controller_CORE extends '.$_Global_controller.'{}');
  * @subpackage      Base.obullo     
  * @category        Libraries
  * @version         0.1
+ * @version         0.2 added extends App_controller
  */
-Class Controller extends Controller_CORE {
+Class Controller extends App_controller {
 
-    /**
-    * Obullo instance
-    * 
-    * @var object
-    */
     private static $instance;
     
     public function __construct()       
     {   
         self::$instance = &$this;
-                                
-        parent::__global();     // Initialize to Global Controller
-                                
-        $this->_ob_init();
-        
-        log_me('debug', "Controller Class Initialized");
-    }
-
-    /**
-    * Initialize to default base libraries.
-    * 
-    * @author   Ersin Guvenc
-    * @return   void
-    */
-    private function _ob_init()
-    {
+                             
         $this->config = base_register('Config');
         $this->router = base_register('Router');
         $this->uri    = base_register('URI');
         $this->output = base_register('Output');
+                                
+        parent::__autoloader();     // Initialize to Application Controller __autoloader().
+                                    // This functionality added in version 1.0.1
+        
+        log_me('debug', "Controller Class Initialized");
     }
-    
+
     /**
     * this();
     * 
@@ -156,7 +92,7 @@ Class Controller extends Controller_CORE {
 * @author  Ersin Guvenc
 * 
 * A Pretty handy function this();
-* We use "this()" function if not available $this in anywhere.
+* We use "this()" function if not available $this anywhere.
 */
 function this() { return Controller::instance(); }
 

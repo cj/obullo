@@ -1,22 +1,15 @@
 <?php
 defined('BASE') or exit('Access Denied!');
 
-Class __autoloader extends App_controller 
-{
-    function __autoloader()
-    {         
-        parent::__autoloader();
+
+Class Global_controller extends Controller
+{                                     
+    public function __construct()
+    {
+        parent::__construct();
         
         loader::base_helper('head_tag');
         loader::base_helper('url');
-    } 
-}
-
-Class Global_controller extends __autoloader
-{                                     
-    public function __global()
-    {
-        parent::__construct();                                             
     }
       
 }

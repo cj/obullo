@@ -105,7 +105,7 @@ body {
 #get table .td {
  background-color: #EFEFEF;
  font-size: 14px; 
- color: black;
+ color: brown;
 }
 
 #get table .td_val {
@@ -125,7 +125,7 @@ body {
 #post table .td {
  background-color: #EFEFEF;
  font-size: 14px; 
- color: black;
+ color: brown;
 }
 
 #post table .td_val {
