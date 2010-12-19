@@ -10,6 +10,7 @@ Class Global_controller extends Controller
         
         loader::base_helper('head_tag');
         loader::base_helper('url');
+        
     }
       
 }
