@@ -108,8 +108,10 @@ if( ! function_exists('ob_system_run'))
         
         // call the controller.
         require (APP .'directories'. DS .$GLOBALS['d']. DS .'controllers'. DS .$GLOBALS['c']. EXT);
-
-        if ( ! class_exists($GLOBALS['c']) OR $GLOBALS['m'] == 'controller'
+        
+        if ( ! class_exists($GLOBALS['c']) OR $GLOBALS['m'] == 'controller' 
+              OR $GLOBALS['m'] == '_output'       // security fix.
+              OR $GLOBALS['m'] == '_hmvc_output'  
               OR in_array(strtolower($GLOBALS['m']), array_map('strtolower', get_class_methods('Controller')))
             )
         {
