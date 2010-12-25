@@ -2,105 +2,110 @@ CHANGE LOG:
 
 Version 1.0.1 Changes
 
-- Deleted old session.php from libraries folder.
-- Global_controller meta tags moved to view_base_layout.php
-- Added $params_or_no_ins instantiate switch to loader::model(); function. User can
+ o Libraries
+    - Deleted old session.php from libraries folder.
+    - Added new HMVC library. -- added to userguide
+    - Added source_url() function to Config.php class. -- added to user guide
+    - Deleted old Pager.php from libraries folder.
+    - Added new Profiler Class. -- added to user guide
+    - Added new Pager Class / Drivers and Html widgets. --  added to userguide
+    - Added auto_base_url() , base_url and source_url functions to config class, updated source_url() function. -- added to user guide
+    - Agent and Parser class moved to /Php5 library folder.
+    - Added init method chaining support to all Php5 libraries " e.g.: echo agent::instance()->init()->browser(); "
+    - Added $no_slash and $uri parameters to Config.php source_url(); function and updated related url helper file.
+    
+ o Config
+    - Config/parents.php file removed from config folder.
+    - added $config['subhelper_prefix'] = 'my_';  to application/config.php file.  -- added to user guide 
+    - added init.php to config/ folder and added date_default_timezone_set() function.
+    - added $config['rewrite_short_tags']   = FALSE; to application/config.php file.
+    - added $config['sess_die_cookie'] = FALSE; to application/config.php
+ 
+ o Loader
+    - Added $params_or_no_ins instantiate switch to loader::model(); function. User can
 switch off Model instantiate using by boolean like loader::model('model_name', false);  -- added to user guide
-- Added $params_or_no_ins Instantiate switch for all Loader Library functions. -- added to user guide
-- Removed "use_bind_value" constant from constants/db.php file.
-- renamed form helper validation_errors() function as "form_validate_errors();"  -- added to user guide form validation class
-- renamed captcha helper create_captcha() function as "captcha_create();" -- added to user guide 
-- Added source_url() function to Config.php class. -- added to user guide 
-- Added source_url() function to url helper. -- added to user guide 
-- Added Profiler Class. -- added to user guide
-- Removed some reserved controller variables (_libs and _mods)  from obullo/ob class.  -- added to user guide
-- config/parents.php extend rules changed. Rules turned into associative arrays.  -- added to user guide Global Controllers
-- Obullo Mvc2 changes: updated obullo.php, Global Controller extend rule changed belonging to 
-$GLOBAL['d'] variable (directory request). Added '*' rule , All controllers in a folder which have the '*' rule before 
-defined in parents.php will extend to its own Global Controller. -- added to user guide
-- removed $path param from css(); function , we use css('css/filename.css') instead of css('filename', $path = 'css');
-- removed path from js(); function , we use js('js/welcome.js'); instead of js('filename') , added content_set_folder('img') support
-to content_set_folder() and img() functions. -- added to user guide
-- mvc2 pattern improvements: added App_controller class to /parents folder. An App Contoller Class will control your
-Global Controller files from now on. -- added to user guide
-- changed loader::file('folder/file') as loader::file('folder/file'.EXT)  -- added to user guide
-- added current_url(), current_dir(), current_class(), current_method() functions to Url helper. -- added to user guide
-- loading model from another path bug fixed. added 'models' string and DS.
-- added $config['subhelper_prefix'] = 'my_';  to config.php file.  -- added to user guide
-- added sess_get_flash('', $prefix = '', $suffix = '') func. parameters to session drivers. -- added to user guide
-- added base_url(), site_url() functions to url helper file. -- added to user guide
-- added set  auto_base_url() , base_url and source_url functions to config class, updated source_url() function. -- added to user guide
-- changed css(filename.css), js(filename.js), img(filename.ext) functions as css(css/filename.css), js(js/filename.js), img(images/filename.ext); -- added to user guide
-- added extra ='' (attributes) param to form_hidden(); function..  -- added to user guide
-- added view('', (object)$data); support ..
-- added script(), script_app(), script_base() functions to head tag helper. -- added to user guide
-- ini_set('display_errors', ..); removed from bootstrap and config.php
-- content helper renamed as view.php and all "content_" function prefix changed as "view_"  -- added to user guide
-- some impromevents for profiler class, added php and php5 libraries colorful track support.
-- added session helper driver extend support, added to all helpers extend support. -- added to user guide
-- added i_request() function to base input helper. -- added to user guide
-- session function all_userdata changed as sess_alldata()
-- changed view helper view_set_folder() 'app_view' switch case string renamed as 'view_app'
-- changed css() function array support in head tag helper -- added to user guide
-- added loaded_helper() function to common.php file, changed bootstrap.php and ob_set_headers func, added loaded helpers track support to profiler class. 
-- add config load and lang load track support for profiler class
-- renamed lang_item() function as lang() in lang.php, updated all libraries. -- added to user guide
-- added auto_source_url(false); function to config class. -- added to user guide
-- added profiler_set($type, key, msg) and profiler_get($key) functions to common.php file, updated all libraries, removed ssc:intance()->_profiler_ variables.
-- removed all php closing tags from all php files (thanks to phpyuz)
-- fixed db.php self::_is_assoc() function bug, removed is_array() added php sizeof() function.
-- added alnum_upper and alnum_lower options to random_string() function (string helper) -- added to user guide
-- fixed class_exists($model, false) // autoload false bug in private loader::_model() function.
-- renamed encrypt class hash() method as hash_encode. (thanks to phpyuz for good suggestions)
-- multiple database connection bug fixed in database/DBFactory.php file. (thanks to Huseyin Basar, he found this bug.)
-- loader::database('', '' , FALSE); active record turn off switch depreciated, we have already this option in config/database.php file.
-- renamed OB_DBFactory::init() func as OB_DBFactory::Connect().
-- added init.php to config/ folder and added date_default_timezone_set() function.
-- postgreSQL connection bug fixed. (thanks to Julio Max)
-- updated $this->config->auto_base_url() func, changed $this->config->base_url() and source_url() functions,
-updated config.php file base_url and source_url items.
-- @depreciated ob::instance() function, added this(); 
-- Renamed ssc class Ssc.
-- added <meta http-equiv="Content-Type" content="text/html; charset=utf-8">  to system/errors/ob_404.php
-- Agent and Parser class moved to /Php5 library folder.
-- added method chaining support to all Php5 libraries " e.g.: echo agent::instance()->init()->browser(); "
-- fixed loader::model('', $objectname); bug , changed param order as loader_model('filename', $object_name, $params); function (thanks to Cj Lazell)
-- loader::model() require '' func changed as require_once ''.
-- added loader::model('./outside_folder/model_name')  outside directory  load support 
-- added loader::app_model('subfolder/model_name')  global directory sub folder load support
-- added loader::model('subfolder/model_name')  local directory sub folder load support (thanks to Cj Lazell good idea)
-- added ob_query_timer_start() and ob_query_timer_end() functions to DB class for profiling.
-- added some codeigniter database result functions result() result_array(); to DB class.
-- added default fetch object support to $this->db->fetch(); and $this->db->fetch_all(); functions. forexample $this->db->fetch(); func.
+    - Added $params_or_no_ins instantiate switch for all Loader Library functions. -- added to user guide
+    - changed loader::file('folder/file') as loader::file('folder/file'.EXT)  -- added to user guide
+    - renamed OB_DBFactory::init() func as OB_DBFactory::Connect().
+    - added loader::model('./outside_folder/model_name')  outside directory  load support 
+    - added loader::app_model('subfolder/model_name')  global directory sub folder load support
+    - added loader::model('subfolder/model_name')  local directory sub folder load support (thanks to Cj Lazell)
+    - added sub folder load support to loader::lib() and loader::app_lib('folder/sub/filename'); functions.
+    
+ o Database
+    - Removed "use_bind_value" constant from constants/db.php file.
+    - added ob_query_timer_start() and ob_query_timer_end() functions to DB class for profiling.,
+    - added some Codeigniter database result functions result() result_array(); to DB class.
+    - added default fetch object support to $this->db->fetch(); and $this->db->fetch_all(); functions. forexample $this->db->fetch(); func.
 fetch data as object by default. $this->db->fetch(assoc); fetch data as associative array().
-- removed LoaderException from register_autoload() function, to play nicely with other autoloaders.
-- added $config['rewrite_short_tags']   = FALSE; to application/config.php file.
-- added short_open_tag support to view helper.
-- added view_var(); function to view helper.  -- added to userguide.
-- added view_render(); function to view helper.  -- added to userguide.
-- added view_set('view_layoutname'); function to view helper.  -- added to userguide.
-- added $use_layout parameter to view_render( , $use_layout);  and view_var(, $use_layout); functions. -- added to userguide.
-- added view_var('body', view_render(array('view_header', 'view_welcome', 'view_footer'), $data)); function  -- added to userguide.
-- added '.' outside folder load support view_var('body', view_render(array('.view_header', 'view_welcome', '.view_footer'), $data))   
-- added sub folder load support to loader::lib() and loader::app_lib('folder/sub/filename'); functions.
-- added sess(); function ( alias of sess_get() ).  -- added to userguide
-- added $config['sess_die_cookie'] = FALSE; to config.php, If set TRUE all sessions will destroy when the browser closed, added this 
+    - added $this->db->row_array() and $this->db->next_row(); functions to DB.php  -- added to userguide
+    - added $query->first_row(), $query->last_row(), $query->previous_row() to DB.php, updated next_row(); functions. -- added to userguide
+    - added __sleep and __wakeup function to DB.php file.
+    
+ o Helpers
+    - added new hmvc helper. -- added to userguide
+    - renamed form helper validation_errors() function as "form_validate_errors();"  -- added to user guide
+    - renamed captcha helper create_captcha() function as "captcha_create();" -- added to user guide 
+    - Added source_url() function to url helper. -- added to user guide 
+    - Head_tag helper changes, removed $path param from css(); function , we use css('css/filename.css') instead of css('filename', $path = 'css');
+    - changed css() function array support in head tag helper
+    - js(filename.js), img(filename.ext) functions changed as js(js/filename.js), img(images/filename.ext); -- added to user guide
+    - Head_tag helper changes, removed path from js(); function , we use js('js/welcome.js'); instead of js('filename')
+    - Removed Content helper, added new View helper file.Depreciated all Content helper functions.
+    - added current_url(), current_dir(), current_class(), current_method() functions to Url helper. -- added to user guide
+    - added sess_get_flash('', $prefix = '', $suffix = '') func. parameters to session helper drivers.
+    - added base_url(), site_url() functions to url helper file. -- added to user guide
+    - added extra ='' (attributes) param to form_hidden(); function..  -- added to user guide
+    - View helper, added view('', (object)$data); support
+    - Head tag helper, added script(), script_app(), script_base() functions to head tag helper. -- added to user guide
+    - added session helper driver extend support, added to all helpers extend support. -- added to user guide
+    - added i_request() function to base input helper. -- added to user guide
+    - renamed lang_item() function as lang() in lang.php, updated all libraries. -- added to user guide
+    - added alnum_upper and alnum_lower options to random_string() function (string helper) -- added to user guide
+    - added short_open_tag support to view helper.
+    - added sess(); function ( alias of sess_get() ).  -- added to userguide
+    - added config['session_die_cookie'] If set TRUE all sessions will destroy when the browser closed, added this 
 functionality helpers/session/cookie_driver.php and database_driver.php files.  -- added to userguide
-- added $this->db->row_array() and $this->db->next_row(); functions to DB.php  -- added to userguide
-- added $query->first_row(), $query->last_row(), $query->previous_row() to DB.php, updated next_row(); functions. -- added to userguide
-- a newline bug fixed in profiler.php
-- removed init() method from PHP5_Library interface.
-- added __sleep and __wakeup function to DB.php file.
-- added new Pager Class / Drivers and Html widgets. --  added to userguide
-- added HMVC library and hmvc helper. -- added to userguide
-- replaces  Obullo::instance() function as this() in all files.
-- removed Obullo.php from /base/obullo/ directory. Updated Bootstrap.php
-- Depreciated using parent::__global() func in all controllers. We moved it to Obullo/Controller.php , parent::__global() function
+    - added $uri parameter to source_url(); function in url helper. Updated related file /base/Config.php
+    - added $no_slash param to Config.php source_url(); function and url helper file.
+    
+ o Core
+    - Removed some reserved controller variables (_libs and _mods)  from obullo/ob class.  -- added to user guide
+    - added loaded_helper() function to common.php file, changed bootstrap.php and ob_set_headers func, added loaded helpers track support to profiler class.
+    - Renamed ssc class Ssc.
+    - @depreciated ob::instance() function, we use this(); function.
+    - added <meta http-equiv="Content-Type" content="text/html; charset=utf-8">  to system/errors/ob_404.php file.
+    - removed LoaderException from register_autoload() function, to play nicely with other autoloaders.
+    - removed init() method from PHP5_Library interface.
+    - replaced  Obullo::instance() function as this() in all files.
+    - removed Obullo/Obullo.php moved all obullo.php contents to Controller.php. Updated Bootstrap.php
+    - Depreciated using parent::__global() func in all controllers. We moved it to Obullo/Controller.php , parent::__global() function
 works automatically from now on.
-- added $uri parameter to source_url(); function in url helper. Updated related file /base/Config.php
-- fixed auto_source_url variable bug in Config.php
-- added $no_slash param to Config.php source_url(); function and url helper file.
+    - added log_me(); function to common.php just alias of log_message();
+    - added profiler_set($type, key, msg) and profiler_get($key) functions to common.php file, updated all libraries, removed ssc:intance()->_profiler_ variables.
+    - added a new controller called App_controller to application/parents folder.
+    - Major changes in Global Controllers removed config/parents.php and updated global controller functionality.
+    
+ o Bug Fixes for 1.0.1
+    - loading model from another path bug fixed. added 'models'.DS.
+    - ini_set('display_errors', ..); removed from bootstrap and config.php
+    - session function all_userdata changed as sess_alldata() in session drivers.
+    - removed all php closing tags from all php files (thanks to phpyuz)
+    - fixed db.php self::_is_assoc() function bug, removed is_array() added php sizeof() function.
+    - fixed class_exists($model, false) // autoload false bug in private loader::_model() function.
+    - renamed encrypt class hash() method as hash_encode. (thanks to phpyuz for good suggestions)
+    - multiple database connection bug fixed in database/DBFactory.php file. (thanks to Huseyin Basar, he found this bug.)
+    - loader::database('', '' , FALSE); active record turn off switch depreciated, we have already this option in config/database.php file.
+    - postgreSQL connection bug fixed. (thanks to Julio Max)
+    - fixed loader::model('', $objectname); bug , changed param order as loader_model('filename', $object_name, $params); function (thanks to Cj Lazell)
+    - loader::model() require '' func changed as require_once ''.
+    - a newline bug fixed in profiler.php
+    - fixed auto_source_url variable bug in Config.php
+    
+
 //-----------------------------------------------------------------------------
+
+
 
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!
 
