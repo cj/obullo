@@ -31,7 +31,7 @@ Class OB_Config
     public $config          = array();
     public $is_loaded       = array();
     public $auto_base_url   = FALSE;
-    public $auto_source_url = TRUE;
+    public $auto_source_url = FALSE;
     
     /**
     * Constructor
@@ -257,21 +257,24 @@ Class OB_Config
     
     
     // --------------------------------------------------------------------
-
+    
     /**
     * Source URL (Get the url for static media files)
     *
     * @access   public
+    * @param    string uri
     * @return   string
     */
-    public function source_url()
+    public function source_url($uri = '')
     {
+        $extra_uri = (trim($uri, '/') != '') ? trim($uri, '/').'/' : '';
+        
         if($this->auto_source_url)    // Obullo changes ..
         {
-            return $this->base_url() . 'sources/';
+            return $this->base_url() . 'sources/'.$extra_uri;
         }
         
-        return $this->slash_item('source_url');
+        return $this->slash_item('source_url').$extra_uri;
     }
     
     // --------------------------------------------------------------------

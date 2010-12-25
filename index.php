@@ -6,7 +6,7 @@
 |
 | PHP5 MVC Based Minimalist Software for PHP 5.1.2 or newer
 |
-| @version .base/obullo/obullo.php
+| @version .base/obullo/Controller.php
 | @see     license.txt
 |
 */ 

@@ -56,9 +56,9 @@ if ( ! function_exists('base_url'))
 */
 if ( ! function_exists('source_url'))
 {
-    function source_url()
+    function source_url($uri = '')
     {
-        return this()->config->source_url();
+        return this()->config->source_url($uri);
     }
 }
 

@@ -35,7 +35,7 @@ reading the <a href="http://obullo.com/user_guide/<?php echo OBULLO_VERSION; ?>/
 <p>
 <br />Page rendered in {elapsed_time} seconds 
 <?php if(function_exists('memory_get_usage')) {?> using {memory_usage} of memory <?php } ?> 
-(Used Head_tag, Url helper, Script file and Global Controllers).
+(Used Head_tag helper, Url helper, Script file and Global Controller).
 </p>
 
 <!-- body content -->
