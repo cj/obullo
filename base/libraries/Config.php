@@ -263,11 +263,17 @@ Class OB_Config
     *
     * @access   public
     * @param    string uri
+    * @param    bool $no_slash  no trailing slashes
     * @return   string
     */
-    public function source_url($uri = '')
+    public function source_url($uri = '', $no_slash = FALSE)
     {
         $extra_uri = (trim($uri, '/') != '') ? trim($uri, '/').'/' : '';
+        
+        if($no_slash)   // Obullo changes ..
+        {
+            $extra_uri = trim($extra_uri, '/');
+        }
         
         if($this->auto_source_url)    // Obullo changes ..
         {

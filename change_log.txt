@@ -99,6 +99,7 @@ functionality helpers/session/cookie_driver.php and database_driver.php files.  
 works automatically from now on.
 - added $uri parameter to source_url(); function in url helper. Updated related file /base/Config.php
 - fixed auto_source_url variable bug in Config.php
+- added $no_slash param to Config.php source_url(); function and url helper file.
 //-----------------------------------------------------------------------------
 
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!

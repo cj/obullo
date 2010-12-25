@@ -52,13 +52,14 @@ if ( ! function_exists('base_url'))
 *
 * @access    public
 * @param     string url
+* @abstract  bool $no_slash  no trailing slash    
 * @return    string
 */
 if ( ! function_exists('source_url'))
 {
-    function source_url($uri = '')
+    function source_url($uri = '', $no_slash = FALSE)
     {
-        return this()->config->source_url($uri);
+        return this()->config->source_url($uri, $no_slash);
     }
 }
 
