@@ -31,20 +31,12 @@ Class DBFactoryException extends CommonException {}
  * @version         0.4 added driver file support.
  * @version         0.5 multiple database connection problem, OB_DBAc_sw Class declaration bug fixed. Added 
  *                  PDO driver is available function, renamed OB_DBFactory::init() func as OB_DBFactory::Connect()
+ * @version         0.6 added static $connected variable
  */                
  
 if ( ! extension_loaded('pdo') )
 {
     throw new DBFactoryException('The PDO extension is required but extension is not loaded !');
-}
- 
-if(db_item('active_record','system')) 
-{
-    eval('Class OB_DBAc_sw extends OB_DBAc_record {}');
-} 
-else 
-{
-    eval('Class OB_DBAc_sw {}');
 }
  
  
@@ -64,8 +56,25 @@ Class OB_DBFactory {
     * @version  0.5 removed class, added simple factory function
     * @return   object of PDO Instance.
     */
-    public static function Connect($param = '', $db_var = 'db')
+    public static function Connect($param = '', $db_var = 'db', $use_active_record = TRUE)
     {                          
+        static $connected = NULL;
+        
+        if ($connected == NULL)
+        {
+            if(db_item('active_record','system') == TRUE OR $use_active_record == TRUE)
+            {
+                eval('Class OB_DBAc_sw extends OB_DBAc_record {}');
+                
+            } 
+            else 
+            {
+                eval('Class OB_DBAc_sw {}');
+            }
+            
+            $connected = TRUE;
+        }
+            
         $dbdriver = is_array($param) ? $param['dbdriver'] : db_item('dbdriver', $db_var); 
         $driver_name = '';
                      
@@ -121,6 +130,11 @@ Class OB_DBFactory {
            
         } // end switch.
         
+    
+        if( db_item('hostname', $db_var) == FALSE)
+        {
+            throw new DBFactoryException('The ' . $db_var . ' database configuration undefined in your config/database.php file !');
+        }
         
         if ( ! in_array($dbdriver, PDO::getAvailableDrivers()))  // check the PDO driver is available
         {

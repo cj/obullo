@@ -496,7 +496,7 @@ Class OB_DB extends OB_DBAc_sw {
     * @access    public
     * @return    object
     */    
-    function first_row($type = obj)
+    public function first_row($type = obj)
     {
         $result = $this->_stmt_result($type);
 
@@ -516,7 +516,7 @@ Class OB_DB extends OB_DBAc_sw {
     * @access    public
     * @return    object
     */    
-    function last_row($type = obj)
+    public function last_row($type = obj)
     {
         $result = $this->_stmt_result($type);
 
@@ -539,7 +539,7 @@ Class OB_DB extends OB_DBAc_sw {
     * @access	public
     * @return	object
     */	
-    function next_row($type = obj)
+    public function next_row($type = obj)
     {
         $result = $this->_stmt_result($type);
 
@@ -564,7 +564,7 @@ Class OB_DB extends OB_DBAc_sw {
     * @access    public
     * @return    object
     */    
-    function previous_row($type = obj)
+    public function previous_row($type = obj)
     {
         $result = $this->_stmt_result($type);
 

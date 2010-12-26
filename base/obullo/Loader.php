@@ -308,8 +308,8 @@ Class loader {
     * 
     * @author   Ersin Guvenc
     * @param    mixed $db_name for manual connection
-    * @param    boolean $instantiate switch
-    * @param    boolean $ac active record switch
+    * @param    boolean $return_object return to db object switch
+    * @param    boolean $use_active_record active record switch
     * @version  0.1
     * @version  0.2 multiple models load::database function support.
     *               Loading model inside again model bug fixed.
@@ -324,14 +324,14 @@ Class loader {
     * @version  0.7 changed DBFactory, moved db_var into DBFactory
     * @version  0.8 changed DBFactory class as static, added $return_object param
     * @version  0.9 renamed OB_DBFactory::init() func as OB_DBFactory::Connect()
-    * @version  1.0 added profiler_set('databases') function.
+    * @version  1.0 added profiler_set('databases') function, added $use_active_record
     * @return   void
     */
-    public static function database($db_name = 'db', $return_object = FALSE)
+    public static function database($db_name = 'db', $return_object = FALSE, $use_active_record = TRUE)
     {
         $OB = this();
         
-        $db_var = $db_name;
+        $db_var = (empty($db_name)) ? 'db' : $db_name;
          
         if(is_array($db_name) AND isset($db_name['variable']))
         {
@@ -350,10 +350,10 @@ Class loader {
         {    
             profiler_set('databases', $db_name, $db_var);  // Store db variables ..
             
-            return OB_DBFactory::Connect($db_name, $db_var); // Return to database object ..
+            return OB_DBFactory::Connect($db_name, $db_var, $use_active_record); // Return to database object ..
         }
         
-        $OB->{$db_var} = OB_DBFactory::Connect($db_name, $db_var);   // Connect to Database
+        $OB->{$db_var} = OB_DBFactory::Connect($db_name, $db_var, $use_active_record);   // Connect to Database
     
         profiler_set('databases', $db_name, $db_var);  // Store db variables
         

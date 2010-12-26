@@ -6,7 +6,7 @@ defined('BASE') or exit('Access Denied!');
 | Global Active Record Switch
 |--------------------------------------------------------------------------
 */
-$database['system']['active_record'] = TRUE;
+$database['system']['active_record'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +37,7 @@ $database['db']['options']  = array();  // Example:  array( PDO::ATTR_PERSISTENT
 $database['db2']['hostname'] = "localhost";
 $database['db2']['username'] = "root";
 $database['db2']['password'] = "";
-$database['db2']['database'] = "";
+$database['db2']['database'] = "obullo";
 $database['db2']['dbdriver'] = "mysql";
 $database['db2']['dbh_port'] = "";
 $database['db2']['char_set'] = "utf8";
