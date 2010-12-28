@@ -154,8 +154,25 @@ function register_autoload($real_name)
         // -------------------------------------------------------------------- 
         if(substr($real_name, -11) == '_controller')
         {
-            require(APP .'parents'. DS .$real_name. EXT);
-            return;
+            if(substr($real_name, -11) == 'App_controller')
+            {
+                require(APP .'parents'. DS .$real_name. EXT);
+                return;
+            }
+        
+            // If Global Controller file exist ..
+            if(file_exists(APP .'parents'. DS .$real_name. EXT))
+            {
+                require(APP .'parents'. DS .$real_name. EXT);
+                return;
+            }
+        
+            // If local Global Controller file exist ..
+            if(file_exists(APP .'directories'. DS .$GLOBALS['d']. DS .'parents'. DS .$real_name. EXT))
+            {
+                require(APP .'directories'. DS .$GLOBALS['d']. DS .'parents'. DS .$real_name. EXT);
+                return;
+            }
         }
                 
         // Database files. 
