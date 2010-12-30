@@ -46,20 +46,20 @@ if ( ! function_exists('base_url'))
 // ------------------------------------------------------------------------
 
 /**
-* Source URL
+* Public URL
 *
-* Returns the "source_url" item from your config file
+* Returns the "public_url" item from your config file
 *
 * @access    public
 * @param     string url
 * @abstract  bool $no_slash  no trailing slash    
 * @return    string
 */
-if ( ! function_exists('source_url'))
+if ( ! function_exists('public_url'))
 {
-    function source_url($uri = '', $no_slash = FALSE)
+    function public_url($uri = '', $no_slash = FALSE)
     {
-        return this()->config->source_url($uri, $no_slash);
+        return this()->config->public_url($uri, $no_slash);
     }
 }
 

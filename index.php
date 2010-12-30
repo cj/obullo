@@ -38,7 +38,7 @@ error_reporting(E_ALL | E_STRICT);
 | User Guide: Chapters / General Topics / Managing Your Applications
 |
 */
-define('BASE', 'base'. DS);
+define('BASE', 'obullo'. DS);
 define('APP',  'application'. DS);
 /*
 |---------------------------------------------------------------
@@ -58,7 +58,7 @@ define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 define('DIR',  APP .'directories'. DS);
 
 require(APP  .'system'. DS .'init'. DS .'Bootstrap'. EXT);  
-require(BASE .'obullo'. DS .'Bootstrap'. EXT);
+require(BASE .'core'. DS .'Bootstrap'. EXT);
 
 /**
 |--------------------------------------------------------------------------

@@ -21,15 +21,15 @@ $config['base_url']              = "/obullo/";
 |--------------------------------------------------------------------------
 |
 | URL to your Static Files.
-| http://static.example.com/sources/
+| http://static.example.com/public/
 |
-|    /sources
-|    /sources/js
-|    /sources/css
-|    /sources/images
+|    /public
+|    /public/js
+|    /public/css
+|    /public/images
 |
 */
-$config['source_url']            = "/obullo/sources/";
+$config['public_url']            = "/obullo/public/";
 
 /*
 |--------------------------------------------------------------------------

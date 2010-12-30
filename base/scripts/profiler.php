@@ -27,7 +27,7 @@ var cssNode     = ob_profiler_window.document.createElement('link');
 
 cssNode.type    = 'text/css';
 cssNode.rel     = 'stylesheet';
-cssNode.href    = '<?php echo this()->config->source_url()?>css/profiler.css';
+cssNode.href    = '<?php echo this()->config->public_url()?>css/profiler.css';
 cssNode.media   = 'screen';
 headID.appendChild(cssNode);
 

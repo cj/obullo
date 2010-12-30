@@ -31,7 +31,7 @@ Class OB_Config
     public $config          = array();
     public $is_loaded       = array();
     public $auto_base_url   = FALSE;
-    public $auto_source_url = FALSE;
+    public $auto_public_url = FALSE;
     
     /**
     * Constructor
@@ -168,14 +168,14 @@ Class OB_Config
     }
     
     /**
-    * Set host based auto source url
+    * Set host based auto public url
     * 
     * @param    boolean  on / off
     * @return   void
     */
-    public function auto_source_url($bool = TRUE)   // Obullo changes ..
+    public function auto_public_url($bool = TRUE)   // Obullo changes ..
     {
-        $this->auto_source_url = $bool;
+        $this->auto_public_url = $bool;
     }
     
     // --------------------------------------------------------------------
@@ -260,14 +260,14 @@ Class OB_Config
     // --------------------------------------------------------------------
     
     /**
-    * Source URL (Get the url for static media files)
+    * Public URL (Get the url for static media files)
     *
     * @access   public
     * @param    string uri
     * @param    bool $no_slash  no trailing slashes
     * @return   string
     */
-    public function source_url($uri = '', $no_slash = FALSE)
+    public function public_url($uri = '', $no_slash = FALSE)
     {
         $extra_uri = (trim($uri, '/') != '') ? trim($uri, '/').'/' : '';
         
@@ -276,12 +276,12 @@ Class OB_Config
             $extra_uri = trim($extra_uri, '/');
         }
         
-        if($this->auto_source_url)    // Obullo changes ..
+        if($this->auto_public_url)    // Obullo changes ..
         {
             return $this->base_url() . 'sources/'.$extra_uri;
         }
         
-        return $this->slash_item('source_url').$extra_uri;
+        return $this->slash_item('public_url').$extra_uri;
     }
     
     // --------------------------------------------------------------------

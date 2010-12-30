@@ -230,7 +230,7 @@ if( ! function_exists('img') )
                 }
                 else
                 {
-                    $img .= ' src="'.$ob->config->source_url(). $path . $v .'" ';   // Obullo changes..
+                    $img .= ' src="'.$ob->config->public_url(). $path . $v .'" ';   // Obullo changes..
                 }
             }
             else

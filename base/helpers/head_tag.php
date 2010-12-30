@@ -76,7 +76,7 @@ if( ! function_exists('js') )
                 
                 if ($k == 'src' AND strpos($v, '://') === FALSE)
                 {
-                    $link .= ' src="'.$ob->config->source_url()  . $v.'" ';
+                    $link .= ' src="'.$ob->config->public_url()  . $v.'" ';
                 }
                 else
                 {
@@ -96,7 +96,7 @@ if( ! function_exists('js') )
             }
             else
             {
-                $link .= ' src="'. $ob->config->source_url() . $src.'" ';
+                $link .= ' src="'. $ob->config->public_url() . $src.'" ';
             }
 
             $link .= $arguments;
@@ -247,7 +247,7 @@ if( ! function_exists('link_tag') )
                     }
                     else
                     {
-                        $link .= ' href="'.$ob->config->source_url() . $path . $v.'" ';
+                        $link .= ' href="'.$ob->config->public_url() . $path . $v.'" ';
                     }
                 }
                 else
@@ -272,7 +272,7 @@ if( ! function_exists('link_tag') )
             }
             else
             {
-                $link .= ' href="'. $ob->config->source_url() . $path . $href.'" ';
+                $link .= ' href="'. $ob->config->public_url() . $path . $href.'" ';
             }
 
             $link .= 'rel="'.$rel.'" type="'.$type.'" ';
