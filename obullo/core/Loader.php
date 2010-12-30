@@ -562,6 +562,8 @@ Class loader {
     * Comman file loader for models and
     * helpers functions.
     * 
+    * @author  Ersin Guvenc
+    * 
     * @param string $filename
     * @param string $folder
     * @param string $loader_func
@@ -571,7 +573,7 @@ Class loader {
     private static function _load_file($filename, $folder = 'helpers', $loader_func = 'app_helper')
     {   
         $real_name  = strtolower($filename);
-        $root       = trim(DIR, DS);  // APP .'directories';
+        $root       = trim(DIR, DS);  // APP .'modules';
         
         if($loader_func == 'app_model')
         $root       = APP .'models';
@@ -591,9 +593,9 @@ Class loader {
            
             $file = $root. DS .$sub_root. $path. DS .$file_name. EXT;
             
-            if(strpos($real_name, '.') === 0)   // ./outside folder request
+            if(strpos($real_name, '.') === 0)   // ../outside folder request
             {
-                $file = DIR .substr($path, 1). DS .$folder. DS .$file_name. EXT;
+                $file = DIR .substr($path, 3). DS .$folder. DS .$file_name. EXT;
             }
                 
             return array('file_name' => $file_name, 'file' => $file);

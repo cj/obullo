@@ -35,10 +35,10 @@ if( ! function_exists('ob_include_files'))
         require (BASE .'constants'. DS .'db'. EXT);
         require (BASE .'constants'. DS .'file'. EXT);
         require (APP  .'config'. DS .'constants'. EXT);  // Your constants ..
-        require (BASE .'obullo'. DS .'Ssc'. EXT);
-        require (BASE .'obullo'. DS .'Registry'. EXT);
-        require (BASE .'obullo'. DS .'Common'. EXT);
-        require (BASE .'obullo'. DS .'Errors'. EXT);
+        require (BASE .'core'. DS .'Ssc'. EXT);
+        require (BASE .'core'. DS .'Registry'. EXT);
+        require (BASE .'core'. DS .'Common'. EXT);
+        require (BASE .'core'. DS .'Errors'. EXT);
         require (APP  .'config'. DS .'init'. EXT);      // Your system init functions ..
         
     }
@@ -96,9 +96,9 @@ if( ! function_exists('ob_system_run'))
             throw new CommonException('Unable to load your default controller.Please make sure the controller specified in your Routes.php file is valid.');
         }
         
-        require (BASE .'obullo'. DS .'Loader'. EXT);
-        require (BASE .'obullo'. DS .'Controller'. EXT);
-        require (BASE .'obullo'. DS .'Model'. EXT);
+        require (BASE .'core'. DS .'Loader'. EXT);
+        require (BASE .'core'. DS .'Controller'. EXT);
+        require (BASE .'core'. DS .'Model'. EXT);
         
         // Set a mark point for benchmarking
         benchmark_mark('loading_time_base_classes_end');
