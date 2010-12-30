@@ -5,6 +5,7 @@ Class Start extends Global_controller {
     function __construct()
     {   
         parent::__construct();
+        
     }           
     
     public function index()

@@ -1,4 +1,4 @@
-<?php echo config_item('html4-trans', 'doctypes')."\n"; ?>
+<?php echo doctype('html4-trans')."\n"; ?>
 <html>
 <head>
 <?php

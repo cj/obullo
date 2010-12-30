@@ -166,7 +166,7 @@ Class OB_HMVC
         }
         
         // Check the controller exists or not
-        if ( ! file_exists(APP .'directories'. DS .$GLOBALS['d']. DS .'controllers'. DS .$GLOBALS['c']. EXT))
+        if ( ! file_exists(DIR .$GLOBALS['d']. DS .'controllers'. DS .$GLOBALS['c']. EXT))
         {
             if(config_item('enable_query_strings') === TRUE) 
             {
@@ -177,7 +177,7 @@ Class OB_HMVC
         }
             
         // Call the controller.
-        require_once(APP .'directories'. DS .$GLOBALS['d']. DS .'controllers'. DS .$GLOBALS['c']. EXT);
+        require_once(DIR .$GLOBALS['d']. DS .'controllers'. DS .$GLOBALS['c']. EXT);
         
         if ( ! class_exists($GLOBALS['c']) OR $GLOBALS['m'] == 'controller' 
               OR $GLOBALS['m'] == '_output'       
@@ -317,13 +317,13 @@ Class OB_HMVC
         
         
         // Check directory
-        if (is_dir(APP .'directories'. DS. $segments[0]))
+        if (is_dir(DIR. $segments[0]))
         {  
             $this->set_directory($segments[0]);
             
             if( ! empty($segments[1])) 
             {
-                if (file_exists(APP .'directories'. DS .$segments[0]. DS .'controllers'. DS .$segments[1]. EXT))
+                if (file_exists(DIR .$segments[0]. DS .'controllers'. DS .$segments[1]. EXT))
                 return $segments;  
             }
 

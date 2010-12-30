@@ -89,7 +89,7 @@ if( ! function_exists('ob_system_run'))
         $GLOBALS['m']   = $router->fetch_method();      // Get requested method
         
         // Check the controller exists or not
-        if ( ! file_exists(APP .'directories'. DS .$GLOBALS['d']. DS .'controllers'. DS .$GLOBALS['c']. EXT))
+        if ( ! file_exists(DIR .$GLOBALS['d']. DS .'controllers'. DS .$GLOBALS['c']. EXT))
         {
             if(config_item('enable_query_strings') === TRUE) show_404("{$GLOBALS['d']} / {$GLOBALS['c']} / {$GLOBALS['m']}");
             
@@ -107,7 +107,7 @@ if( ! function_exists('ob_system_run'))
         benchmark_mark('execution_time_( '.$GLOBALS['d'].' / '.$GLOBALS['c'].' / '.$GLOBALS['m'].' )_start');
         
         // call the controller.
-        require (APP .'directories'. DS .$GLOBALS['d']. DS .'controllers'. DS .$GLOBALS['c']. EXT);
+        require (DIR .$GLOBALS['d']. DS .'controllers'. DS .$GLOBALS['c']. EXT);
         
         if ( ! class_exists($GLOBALS['c']) OR $GLOBALS['m'] == 'controller' 
               OR $GLOBALS['m'] == '_output'       // security fix.

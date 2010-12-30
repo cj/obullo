@@ -55,7 +55,8 @@ define('APP',  'application'. DS);
 define('EXT',  '.php'); 
 define('FCPATH', __FILE__);
 define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
- 
+define('DIR',  APP .'directories'. DS);
+
 require(APP  .'system'. DS .'init'. DS .'Bootstrap'. EXT);  
 require(BASE .'obullo'. DS .'Bootstrap'. EXT);
 

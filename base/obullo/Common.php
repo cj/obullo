@@ -59,7 +59,7 @@ function base_register($Class, $params_or_no_ins = '', $dir = '', $sub_path = ''
     switch($dir)
     {
        case 'directory':
-       $path  = APP .'directories'. DS .$GLOBALS['d']. DS .'libraries'. DS .$sub_path;
+       $path  = DIR .$GLOBALS['d']. DS .'libraries'. DS .$sub_path;
          break;
          
        case 'app':
@@ -168,9 +168,9 @@ function register_autoload($real_name)
             }
         
             // If local Global Controller file exist ..
-            if(file_exists(APP .'directories'. DS .$GLOBALS['d']. DS .'parents'. DS .$real_name. EXT))
+            if(file_exists(DIR .$GLOBALS['d']. DS .'parents'. DS .$real_name. EXT))
             {
-                require(APP .'directories'. DS .$GLOBALS['d']. DS .'parents'. DS .$real_name. EXT);
+                require(DIR .$GLOBALS['d']. DS .'parents'. DS .$real_name. EXT);
                 return;
             }
         }
@@ -199,9 +199,9 @@ function register_autoload($real_name)
         
         // Local php5 libraries load support. 
         // -------------------------------------------------------------------- 
-        if(file_exists(APP .'directories'. DS .$GLOBALS['d']. DS .'libraries'. DS .'php5'. DS .$class. EXT))
+        if(file_exists(DIR .$GLOBALS['d']. DS .'libraries'. DS .'php5'. DS .$class. EXT))
         {
-            require(APP .'directories'. DS .$GLOBALS['d']. DS .'libraries'. DS .'php5'. DS .$class. EXT);
+            require(DIR .$GLOBALS['d']. DS .'libraries'. DS .'php5'. DS .$class. EXT);
             
             profiler_set('libraries', 'php5_local_'.$class.'_loaded', $class);
             return;

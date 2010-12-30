@@ -71,13 +71,14 @@ if ( ! function_exists('source_url'))
 *
 * @access    public
 * @param     string url
+* @param     bool  $suffix switch off suffix by manually if its true in config.php
 * @return    string
 */
 if ( ! function_exists('site_url'))
 {
-    function site_url($uri = '')
+    function site_url($uri = '', $suffix = TRUE)
     {
-        return this()->config->site_url($uri);
+        return this()->config->site_url($uri, $suffix);
     }
 }
  
@@ -159,13 +160,15 @@ if ( ! function_exists('current_method'))
 * @param     string    the URL
 * @param     string    the link title
 * @param     mixed     any attributes
+* @param     bool      switch off suffix by manually
 * @version   0.1    
 * @version   0.2       Sharp character url support    
+* @version   0.3       Added $suffix parameter
 * @return    string
 */
 if ( ! function_exists('anchor'))
 {
-    function anchor($uri = '', $title = '', $attributes = '')
+    function anchor($uri = '', $title = '', $attributes = '', $suffix = TRUE)
     {
         $title = (string) $title;
         $sharp = FALSE;
@@ -180,11 +183,11 @@ if ( ! function_exists('anchor'))
 
         if ( ! is_array($uri))
         {
-            $site_url = ( ! preg_match('!^\w+://! i', $uri)) ? this()->config->site_url($uri) : $uri;
+            $site_url = ( ! preg_match('!^\w+://! i', $uri)) ? this()->config->site_url($uri, $suffix) : $uri;
         }
         else
         {
-            $site_url = this()->config->site_url($uri);
+            $site_url = this()->config->site_url($uri, $suffix);
         }
 
         if ($title == '')
@@ -197,8 +200,10 @@ if ( ! function_exists('anchor'))
             $attributes = _parse_attributes($attributes);
         }
         
-        if($sharp) 
-        $site_url = $site_url.'#'.$sharp_uri[1];  // Obullo changes..
+        if($sharp)
+        {
+            $site_url = $site_url.'#'.$sharp_uri[1];  // Obullo changes..
+        }
         
         return '<a href="'.$site_url.'"'.$attributes.'>'.$title.'</a>';
     }
@@ -213,17 +218,19 @@ if ( ! function_exists('anchor'))
 *
 * @access	public
 * @param	string	the URL
-* @param	string	the link title
+* @param	string	the link title  
 * @param	mixed	any attributes
+* @param    bool    switch off suffix by manually
+* @version  0.1     added suffix parameters
 * @return	string
 */
 if ( ! function_exists('anchor_popup'))
 {
-    function anchor_popup($uri = '', $title = '', $attributes = FALSE)
+    function anchor_popup($uri = '', $title = '', $attributes = FALSE, $suffix = TRUE)
     {
 	    $title = (string) $title;
 
-	    $site_url = ( ! preg_match('!^\w+://! i', $uri)) ? this()->config->site_url($uri) : $uri;
+	    $site_url = ( ! preg_match('!^\w+://! i', $uri)) ? this()->config->site_url($uri, $suffix) : $uri;
 
 	    if ($title == '')
 	    {
@@ -538,30 +545,47 @@ if ( ! function_exists('url_title'))
 * For very fine grained control over headers, you could use the Output
 * Library's set_header() function.
 *
-* @access	public
-* @param	string	the URL
-* @param	string	the method: location or redirect
-* @return	string
+* @access   public
+* @param    string    the URL
+* @param    string    the method: location or redirect
+* @version  0.1       added sharp support and suffix parameter
+* @return   string
 */
 if ( ! function_exists('redirect'))
 {
-    function redirect($uri = '', $method = 'location', $http_response_code = 302)
-    {
-	    if ( ! preg_match('#^https?://#i', $uri))
-	    {
-		    $uri = this()->config->site_url($uri); 
-	    }
-	    
-	    switch($method)
-	    {
-		    case 'refresh'	: header("Refresh:0;url=".$uri);
-			    break;
-		    default			: header("Location: ".$uri, TRUE, $http_response_code);
-			    break;
-	    }
-	    exit;
+    function redirect($uri = '', $method = 'location', $http_response_code = 302, $suffix = TRUE)
+    {        
+        if ( ! preg_match('#^https?://#i', $uri))
+        {
+            $sharp = FALSE;
+
+            // ' # ' sharp support for urls. ( Obullo changes )..
+            if(strpos($uri, '#') > 0)
+            {
+                $sharp_uri = explode('#', $uri);
+                $uri       = $sharp_uri[0];
+                $sharp     = TRUE;
+            }
+            
+            $uri = this()->config->site_url($uri, $suffix);
+            
+            if($sharp) 
+            {
+                $uri = $uri.'#'.$sharp_uri[1];  // Obullo changes..
+            }   
+        }
+        
+        switch($method)
+        {
+            case 'refresh'    : header("Refresh:0;url=".$uri);
+                break;
+            default           : header("Location: ".$uri, TRUE, $http_response_code);
+                break;
+        }
+        exit;
     }
 }
+
 // ------------------------------------------------------------------------
 
 /**

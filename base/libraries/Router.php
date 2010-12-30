@@ -207,13 +207,13 @@ Class OB_Router {
         
         
         // Check directory
-        if (is_dir(APP .'directories'. DS. $segments[0]))
+        if (is_dir(DIR. $segments[0]))
         {  
             $this->set_directory($segments[0]);
             
             if( ! empty($segments[1])) 
             {
-                if (file_exists(APP .'directories'. DS .$segments[0]. DS .'controllers'. DS .$segments[1]. EXT))
+                if (file_exists(DIR .$segments[0]. DS .'controllers'. DS .$segments[1]. EXT))
                 return $segments;  
             }
 

@@ -215,24 +215,25 @@ Class OB_Config
     *
     * @access   public
     * @param    string    the URI string
+    * @param    boolean   switch off suffix by manually
     * @return   string
     */
-    public function site_url($uri = '')
+    public function site_url($uri = '', $suffix = TRUE)
     {
         if (is_array($uri))
         {
             $uri = implode('/', $uri);
         }
-
+        
         if ($uri == '')
         {
             return $this->base_url() . $this->item('index_page');
         }
         else
         {
-            $suffix = ($this->item('url_suffix') == FALSE) ? '' : $this->item('url_suffix');
+            $suffix = ($this->item('url_suffix') == FALSE OR $suffix == FALSE) ? '' : $this->item('url_suffix');
             
-            return $this->base_url() . $this->slash_item('index_page'). preg_replace("|^/*(.+?)/*$|", "\\1", $uri). $suffix;
+            return $this->base_url() . $this->slash_item('index_page'). trim($uri, '/') . $suffix;
         }
     }
     

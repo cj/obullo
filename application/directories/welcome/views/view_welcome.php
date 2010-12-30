@@ -24,7 +24,7 @@ view_var('head', script('welcome'));
 <code><input type="button" onclick="test_me();" value="Script Test !"/></code>
 
 <p>The corresponding <b>Script</b> file for this page is found at:</p>
-<code>application/directories/welcome/scripts/welcome.php</code>
+<code>modules/welcome/scripts/welcome.php</code>
 
 <p>The corresponding <b>Global View</b> file for this page is found at:</p>
 <code>application/views/view_base_layout.php</code>

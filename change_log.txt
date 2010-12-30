@@ -5,7 +5,7 @@ Version 1.0.1 Changes
  o Libraries
     - Deleted old session.php from libraries folder.
     - Added new HMVC library. -- added to userguide
-    - Added source_url() function to Config.php class. -- added to user guide
+    - Added source_url() function to Config.php class, added $suffix parameter to site_url() and added slash '/' support. -- added to user guide
     - Deleted old Pager.php from libraries folder.
     - Added new Profiler Class. -- added to user guide
     - Added new Pager Class / Drivers and Html widgets. --  added to userguide
@@ -56,9 +56,10 @@ fetch data as object by default. $this->db->fetch(assoc); fetch data as associat
     - added current_url(), current_dir(), current_class(), current_method() functions to Url helper. -- added to user guide
     - added sess_get_flash('', $prefix = '', $suffix = '') func. parameters to session helper drivers.
     - added base_url(), site_url() functions to url helper file. -- added to user guide
+    - added $suffix parameter and sharp support to redirect() and anchor() functions.
     - added extra ='' (attributes) param to form_hidden(); function..  -- added to user guide
     - View helper, added view('', (object)$data); support
-    - Head tag helper, added script(), script_app(), script_base() functions to head tag helper. -- added to user guide
+    - Head tag helper, added script(), script_app(), script_base(), doctype() functions to head tag helper. -- added to user guide
     - added session helper driver extend support, added to all helpers extend support. -- added to user guide
     - added i_request() function to base input helper. -- added to user guide
     - renamed lang_item() function as lang() in lang.php, updated all libraries. -- added to user guide
@@ -109,7 +110,7 @@ works automatically from now on.
 
 
 !!!!!!!!!!!!!!!!!!! NEW TODOS !!!!!!!!!!!!!!!
-
+@todo .. multiple database active ercord.
 @todo .. look log_message(); some functions does not work.
 @todo .. add user guide to extending to Core MY_model functionality.
 it works in Obullo !

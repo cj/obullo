@@ -121,7 +121,7 @@ if( ! function_exists('script') )
 {
     function script($filename = '', $data = '')
     {
-        return _load_script(APP .'directories'. DS .$GLOBALS['d']. DS .'scripts'. DS, $filename, $data);
+        return _load_script(DIR .$GLOBALS['d']. DS .'scripts'. DS, $filename, $data);
     }
 }
 // ------------------------------------------------------------------------ 
@@ -291,6 +291,26 @@ if( ! function_exists('link_tag') )
         }
         
         return $link;
+    }
+}
+
+// ------------------------------------------------------------------------
+
+/**
+* Generates a page document type declaration
+* 
+* Valid options are xhtml11, xhtml-strict, xhtml-trans, xhtml-frame,
+* html4-strict, html4-trans, and html4-frame.
+* 
+* Values are saved in the doctypes config file.
+* 
+* @access  public
+*/
+if( ! function_exists('doctype') ) 
+{
+    function doctype($type = 'xhtml1-strict')
+    {
+        return config_item($type, 'doctypes');
     }
 }
 

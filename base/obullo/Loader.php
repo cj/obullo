@@ -571,7 +571,7 @@ Class loader {
     private static function _load_file($filename, $folder = 'helpers', $loader_func = 'app_helper')
     {   
         $real_name  = strtolower($filename);
-        $root       = APP .'directories';
+        $root       = trim(DIR, DS);  // APP .'directories';
         
         if($loader_func == 'app_model')
         $root       = APP .'models';
@@ -593,7 +593,7 @@ Class loader {
             
             if(strpos($real_name, '.') === 0)   // ./outside folder request
             {
-                $file = APP .'directories'. DS .substr($path, 1). DS .$folder. DS .$file_name. EXT;
+                $file = DIR .substr($path, 1). DS .$folder. DS .$file_name. EXT;
             }
                 
             return array('file_name' => $file_name, 'file' => $file);
