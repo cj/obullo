@@ -483,6 +483,19 @@ Class loader {
     
     // --------------------------------------------------------------------
     
+    /**
+    * Just alias of base_helper()
+    * 
+    * @param string $helper
+    * @return void
+    */
+    public static function ob_helper($helper)
+    {   
+        return self::base_helper($helper);
+    }
+    
+    // --------------------------------------------------------------------
+    
     public static function lang($file, $return = FALSE)
     {               
         lang_load($file, '', 'local', $return);
@@ -502,6 +515,11 @@ Class loader {
     public static function base_lang($file = '', $folder = '', $return = FALSE)
     {
         lang_load($file, $folder, 'base' ,$return);
+    }
+    
+    public static function ob_lang($file = '', $folder = '', $return = FALSE)
+    {
+        return self::base_lang($file, $folder, 'base' ,$return);
     }
     
     // --------------------------------------------------------------------
